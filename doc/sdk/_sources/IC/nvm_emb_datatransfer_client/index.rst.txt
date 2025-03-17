@@ -1,0 +1,111 @@
+=========================================================================
+EM EMB Data Transfer Service Client Example
+=========================================================================
+
+Overview
+--------
+
+This application example implements a data transfer service client which goal is to:
+
+#. Scan and connect to BLE peripherals advertising the EM Data Transfer Service.
+#. Discover services on the remote device and configure the Data Transfer Service to 'enable Notification' on the Data Transfer Server (remote device).
+#. Forward the data of each notification received over UART to a host computer.  
+#. Disable the data transfer after 30 seconds.
+
+From a Bluetooth terminology standpoint, the device that is actively scanning and triggering a connection implements the central role. It is most commonly called the 'central'. For further details, refer to the Bluetooth LE core specification 5.4 in §2.2.2.4.
+
+The following figure shows two devices, one acting as the central to scan devices around and to initiate connections.
+
+.. image:: ./imgs/Central_vs_peripheral.png
+
+To give this central role to a device, the SDK provides the `emb_central` library with which the end user application shall be linked. This library is an easy way to include link layer, the host and the profile layers in one single statement with all relevant services and profiles to achieve this behavior.
+
+.. warning::
+
+    This application has configurable SMP parameters `smpCfg_t` where `minKeyLen` can be specified. Reducing this value from 16 to 7 (minimum) reduces the entropy of the encryption key making the device less secure.
+
+.. note::
+
+    To initiate a secure connection, change the `.initiateSec` member of the `gcAfSecCfg` to `TRUE`.
+
+Setup
+-----
+
+The EM9305 sends messages to a host computer through a UART line.
+
+The Tx UART signal is on 'GPIO7'. It is the Tx from the EM9305 perspective meaning that outgoing data will be sent through this pin. 
+
+.. image:: imgs/UART_TxRx_Setup.jpg
+	 :align: center
+
+In this setup, an FTDI cable is used like the one exposed in picture below:
+
+.. image:: imgs/ftdi_cable.jpg
+    :scale: 50%
+    :alt: FTDI cable
+    :align: center
+
+The Tx signal of the FTDI bridge shall be connected to pin GPIO7 of the DVK. Then the bridge is connected to the host computer which will create a virtual COM port (on Windows) or a ttyXXX (on Linux).
+Then, any terminal software can be used to open this port (Docklight, Putty, MobaXterm, …) and to see the messages the GATT server will send.
+
+Implementation details
+----------------------
+
+The *nvm_main.c* file contains code that creates and starts tasks for the Bluetooth Low Energy and the application.
+
+The *my_app/includes/my_app_signals.h* file contains the signals that are used by the whole application (between tasks and internally).
+
+The *my_app/includes/my_app_task.h* file contains the interface to create, start and post events to the application task.
+
+The *my_app/source/my_app_task.c* file contains the implementation to create, start and post events to the application task.
+
+The *my_app/source/my_app.c* file contains the internal and external event processing for the application task.
+
+The *my_app/source/my_app.h* file contains the protected interface to be used by *my_app_task.c*.
+
+The *ble/includes/ble_task.h* file contains the interface to create, start and post events to the BLE task.
+
+The *ble/source/ble_task.c* file contains the implementation to create, start and post events to the BLE task.
+
+The *ble/source/ble.c* file contains the internal and external event processing for the BLE task.
+
+The *ble/source/ble.h* file contains the protected interface to be used by *ble_task.c*.
+
+Build
+-----
+
+The build target of this example is: **nvm_emb_datatransfer_client**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emb_datatransfer_client
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emb_datatransfer_client\nvm_emb_datatransfer_client.ihex --progress
+
+With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).
+
+Then, launch the terminal software and connect to the DVK (UART port) using the COM port dynamically created during the DVK's connection to the host computer. Note that this port is different than the one used to program the application into the flash memory.
+
+Once you have identified the correct COM port, configure the speed to be 115200 bit/s and open the connection.
+
+You will then see UART log messages on your terminal like shown in screenshot below.
+
+.. image:: imgs/UART_log_LocalDevice.jpg
+	:align: center
+	
+Over the Air message exchange for the services discovered , service configured and the Notifications can be checked using the ble sniffer.
+A screenshot image of sniffer log is attached below for Notifications message from dts server implementation (peer).
+
+.. image:: imgs/SnifferLog.jpg
+	:align: center
+

@@ -1,0 +1,220 @@
+.. meta::
+  :keywords lang=en: Firmware update generator package
+
+**************************
+Firmware Package Generator
+**************************
+
+1 General process
+#################
+
+The process of creating a packed firmware image to be used by the firmware update process is depicted in the figure below:
+
+.. image:: ./imgs/firmware_generator_process_description.png
+    :scale: 85%
+    :alt: Firmware image generation flow
+    :align: center
+
+It uses the Python script ``fpg.py`` which takes at least three inputs:
+
+* the firmware image to be packed (in Intel Hex format)
+* the private key in case the firmware image is encrypted/signed
+* the utility script ``firmware_package_pb2.py`` that contains the process configuration
+
+2 Process detailed breakdown
+############################
+
+2.1 Protocol buffer
+^^^^^^^^^^^^^^^^^^^
+
+The file ``firmware_package_pb2.py`` is provided and can be directly used as is, but it can also be generated from the file ``firmware_package.proto`` in case specification change.
+Since this file is compliant with the protocol buffer, the regular protocol buffer compiler ``protoc`` can be used to generate the Python file.
+
+This is done by issuing the following command line:
+
+.. code-block:: bash
+
+    cd <SDK_ROOT>\tools\fw_update\
+    protoc.exe -I=. --python_out=. firmware_package.proto
+
+
+.. note::
+  Protocol Buffers compiler is available on `official github of the project. <https://github.com/protocolbuffers/protobuf/releases>`_
+
+2.2 Firmware package generator usage
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+2.2.1 Prerequisites
+-------------------
+
+One prerequisite is to install the required Python packages. This is done once by issuing the following command:
+
+.. code-block:: bash
+
+    python -m pip install -r requirements.txt
+
+The file ``requirements.txt`` is provided and part of the SDK.
+
+2.2.2 Keys generation
+---------------------
+
+Two types of key are required by the firmware package generator.
+
+  * Signature Key: used to verify the source of the firmware package.
+  * Encryption Key: used to encrypt the content of the firmware package.
+
+**Signature key generation**
+
+The following command will generate a key pair for digital signature based on ECDSA, using curve NIST256p with SHA256 hash function.
+
+The output of this command is three files:
+
+  * private_key.pem: The key used to sign data (i.e., firmware). To keep safe and not to disclose.
+  * public_key.pem: The public key to verify the digital signature
+  * public_key.txt: The public key in ASCII format (X and Y coordinates) that can be used in embedded firmware for signature verification.
+
+  The content of the public_key.txt file can be used in the JSON file to program the Information Page 2 where this key shall be programmed for
+  signature verification.
+
+.. code-block:: bash
+
+  cd <SDK_ROOT>\tools\fw_update\
+  python fpg.py generate_signature_keys [-f key]
+
+
+**Encryption Key Generation**
+
+.. code-block:: bash
+
+  cd <SDK_ROOT>\tools\fw_update\
+  python fpg.py generate_secrete_key [-f secrete_key.txt]
+
+
+2.2.3 Firmware Package Generation
+---------------------------------
+
+The firmware package generator enables the generation of a firmware package for testing purpose and it also enables the generation of a test package made out of a variable ihex files.
+
+**Firmware package generation with IHEX files**
+
+.. code-block:: bash
+
+  cd <SDK_ROOT>\tools\fw_update\
+  python fpg.py generate_fw_package -s private_key.pem --ihex <SDK_ROOT>\emcore\bin\vA.B.C\emcore_standard\emcore_standard.ihex [<SDK_ROOT>\build\projects\nvm_emb_controller\nvm_emb_controller_std_emcore.ihex]
+
+With A.B.C = the version of EMCore.
+
+
+.. note::
+
+  Several ihex can be listed. All ihex files listed in the command parameter will be included in the firmware package.
+
+**Example**
+
+Here is an example of packed firmware image creation using signature and encryption. This is achieved by issuing the following command:
+
+.. code-block:: bash
+
+  cd <SDK_ROOT>\tools\fw_update\
+  python fpg.py generate_fw_package -f test_emb_controller_emcore_ctr_aes0_ecdsa0.pack -s ecdsa0_pri.pem -k aes0.txt -e AES_CTR --ihex <SDK_ROOT>\build\projects\nvm_emb_controller\nvm_emb_controller_std_emcore.ihex <SDK_ROOT>\emcore\bin\vA.B.C\emcore_standard\emcore_standard.ihex
+
+With A.B.C = the version of EMCore.
+
+
+The result of such command is given below:
+
+.. code-block:: bash
+  :linenos:
+
+  Firmware package generation for EM9305 (EM9305-DI05)
+  Generating firmware package
+  Processing nvm_emb_controller_std_emcore.ihex
+  Data Length: 128800
+  len of fw_hdr_raw: 40
+  Signature process in progress
+  Digest: 0x6758c1a9fe3602df8025294ec9b83865a0b12df268ec5ccbf964b1375ed4206c
+  Signature (DER): 0x3045022100f93a6a7858e2dfb5574ec7f6ea7c8061c1c712fd5c58cc85a795553e5ed10cbc022079c9681e6df9f31d03ac629f5f56ee4fc117e6a74c759190cc12c9a06a5fbc6f
+  Signature x(r): 0xf93a6a7858e2dfb5574ec7f6ea7c8061c1c712fd5c58cc85a795553e5ed10cbc
+  Signature y(s): 0x79c9681e6df9f31d03ac629f5f56ee4fc117e6a74c759190cc12c9a06a5fbc6f
+  Firmware Package is encrypted
+  secrete key loaded from aes0.txt
+  Encryption with AES_CTR
+  Encryption of the firmware done in 1002.353 us
+  Processing emcore_standard.ihex
+  Data Length: 32772
+  len of fw_hdr_raw: 40
+  Signature process in progress
+  Digest: 0xe22f92bb6435b1a2d645cc5b1d59a170640eae1f9752ebf49ccd9e7ec20c8b9b
+  Signature (DER): 0x3044022075deca8f5fe1ccbff2397c2851adf359b30a9db710251b6403fcbd030431f98b0220322c397dc1c7a0ee24ecda1e8a0ba45250a1891461211ce7d4a420292400b043
+  Signature x(r): 0x75deca8f5fe1ccbff2397c2851adf359b30a9db710251b6403fcbd030431f98b
+  Signature y(s): 0x322c397dc1c7a0ee24ecda1e8a0ba45250a1891461211ce7d4a420292400b043
+  Firmware Package is encrypted
+  secrete key loaded from aes0.txt
+  Encryption with AES_CTR
+  Encryption of the firmware done in 65.039 us
+
+
+**Verify Firmware Package Content**
+
+The following command verifies all firmware included in the firmware package.
+
+.. code-block:: bash
+
+  cd <SDK_ROOT>\tools\fw_update\
+  python fpg.py verify_fw_package -f test_emb_controller_emcore_ctr_aes0_ecdsa0.pack -s ecdsa0_pub.pem -k aes0.txt
+
+.. code-block:: bash
+  :linenos:
+
+  FW Package Count: 2
+  Encryption Type: AES_CTR
+  Firmware package generation for EM9305 (EM9305-DI05)
+  FW Element 1
+	FW Header
+		Length: 40
+		Section Code: CustomerApp
+		Firmware Start Address: 0x30a028
+		Firmware Size: 128760
+		Firmware CRC: 0x78fefe
+		EM-Core CRC: 0xffffff
+		Firmware Version: 0
+		Firmware Execute Address: 0x302028
+		Firmware Header CRC: 0xa48a29
+	FW Code:
+		Encrypted Length: 128760
+		Dectrypted Length: 128760
+	FW Signature
+		X: f93a6a7858e2dfb5574ec7f6ea7c8061c1c712fd5c58cc85a795553e5ed10cbc
+		Y: 79c9681e6df9f31d03ac629f5f56ee4fc117e6a74c759190cc12c9a06a5fbc6f
+	Crypto Initialization Vector: 0x3dd53e5d7dbe6f24976374bffe8d97a7
+	Signature Verification
+	Digest: 0x6758c1a9fe3602df8025294ec9b83865a0b12df268ec5ccbf964b1375ed4206c
+	Public Key: (can be used in this for in JSON file)
+		Public Key x: 0x2bc75b235b18c989796e6dca744036c37eb94f49a1b2c74fe4a426fa329d93e0
+		Public Key y: 0x9352f7ebef08e699390888c1671d121167fa23dbffce9ab4ddbfad0eadd2a516
+	Signature verified successfuly
+  File test_emb_controller_emcore_ctr_aes0_ecdsa0.h generated
+  FW Element 2
+	FW Header
+		Length: 40
+		Section Code: EM_Core
+		Firmware Start Address: 0x302028
+		Firmware Size: 30244
+		Firmware CRC: 0x596b17
+		EM-Core CRC: 0xffffff
+		Firmware Version: 1
+		Firmware Execute Address: 0x302028
+		Firmware Header CRC: 0x4504e8
+	FW Code:
+		Encrypted Length: 30244
+		Dectrypted Length: 30244
+	FW Signature
+		X: 75deca8f5fe1ccbff2397c2851adf359b30a9db710251b6403fcbd030431f98b
+		Y: 322c397dc1c7a0ee24ecda1e8a0ba45250a1891461211ce7d4a420292400b043
+	Crypto Initialization Vector: 0x9363b2327e72be9dd559db4d4f0d1491
+	Signature Verification
+	Digest: 0xe22f92bb6435b1a2d645cc5b1d59a170640eae1f9752ebf49ccd9e7ec20c8b9b
+	Public Key: (can be used in this for in JSON file)
+		Public Key x: 0x2bc75b235b18c989796e6dca744036c37eb94f49a1b2c74fe4a426fa329d93e0
+		Public Key y: 0x9352f7ebef08e699390888c1671d121167fa23dbffce9ab4ddbfad0eadd2a516
+	Signature verified successfully

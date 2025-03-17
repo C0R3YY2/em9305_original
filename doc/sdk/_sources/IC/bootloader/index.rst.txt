@@ -1,0 +1,89 @@
+=========================================================================
+Bootloader example
+=========================================================================
+
+
+Overview
+--------
+
+This sample application example shows how you can build your own customized bootloader in order to have a fine control over the device start-up process.
+
+This example can be used as a baseline to extrapolate a custom bootloader that would fulfill different start-up requirements.
+
+Moreover, this sample application has its own subset of commands. This can be reused as is or modified.
+
+EMSystem Commands available in the 'Bootloader'
+===============================================
+
+The commands available in this sample application are listed below:
+
+.. csv-table:: Bootloader Command Set
+   :header: "Command", "Description"
+
+   "EMSG_CpuReset",                            "Issue a CPU reset"
+   "EMSG_Read_Product_Information",            "Return some information about the device (RAW data)"
+   "EMSG_Set_Sleep_Options",                   "Enable or disable sleep mode"
+   "EMSG_Calculate_CRC32",                     "Calculate the 32-bit CRC for the specified continuous address range"
+   "EMSG_Enter_Configuration_Mode",            "Enter Configuration Mode. A CPU reset operation is performed"
+   "EMSG_Set_Boot_Mode_Flags",                 "Set Boot Mode Flags"
+   "EMSG_Clear_Mode_Flags",                    "Sets Boot Mode to default (bits are set to 0)"
+   "EMSMM_Read_At_Address",                    "Read one or more bytes at the given address"
+   "EMSMM_Read_Continue",                      "Read one or more bytes beginning from where the previous read command ended"
+   "EMSMM_Write_At_Address",                   "Write one or more bytes at the given address"
+   "EMSMM_Write_Continue",                     "Write one or more bytes beginning from where the previous write command ended"
+   "EMSMM_NVM_Erase_Page",                     "Perform a NVM Page Erase operation. It erases the page given in parameter"
+   "EMSMM_NVM_Get_Lock_Page",                  "Get the lock status of a page in NVM"
+   "EMSMM_NVM_Lock_Page",                      "Lock a page in NVM"
+   "EMSMM_Write_At_Address_Without_Response",  "Write one or more bytes at the given address"
+   "EMSMM_Write_Continue_Without_Response",    "rite one or more bytes beginning from where the previous write command ended"
+
+
+Build
+-----
+
+The build target of this example is:
+
+* **bootloader**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target bootloader
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\bootloader\bootloader.ihex --progress
+
+With YY = the COM port number of your DVK.
+
+Note that before going further and for being be able to execute this `bootloader`, the `NVM_Bootloader` shall be programmed at the beginning of the NVM if it has not already been done. This program is responsible to find and to verify the firmware images located in the NVM before actually running them.
+
+To program the `NVM_Bootloader`:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ../../emcore/bin/nvm_bootloader/nvm_bootloader_base.ihex
+
+.. warning::
+  Be sure not to be confused between the sample application `bootloader` and the start-up application `NVM_Bootloader` even if both contain the same wording *bootloader* in their respective names. The `NVM_Bootloader` application is always needed to start any customer application and is always located at the beginning of the NVM. Its goal is to scan the NVM content to find valid firmware images, and then to execute one of them depending on the startup configuration.
+
+
+Test
+----
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port=COMYY --debug
+
+With YY = the COM port number of your DVK.
+
+Should see the ENTER_BOOTLOADER_MODE event when the BEN button on the DVK is pressed.

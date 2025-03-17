@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controller Developer’s Guide &mdash; em | bleu Controller 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=665bc78d" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Getting Started" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: LightSlateGray" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            em | bleu Controller
+              <img src="_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Controller Developer’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#audience">Audience</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abbreviations">Abbreviations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#system-context">System Context</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-configuration">System Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#execution-context">Execution Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interface">Interface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#message-passing-api-functions">Message Passing API Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#direct-execute-api-functions">Direct Execute API Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#callback-functions">Callback Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#transmit-path">Transmit Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receive-path">Receive Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scheduler">Scheduler</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#medium-access-scheduler">Medium Access Scheduler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reservation-manager">Reservation Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-anchor-point-selection">Initial Anchor Point Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limiting-high-density-reservations">Limiting High-Density Reservations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conflict-resolution">Conflict Resolution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rescheduling-priority">Rescheduling Priority</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transport-aware-priority">Transport-Aware Priority</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#adjacent-scheduling">Adjacent Scheduling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#periodic-advertising-and-big">Periodic Advertising and BIG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acl-and-cis">ACL and CIS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#folder-organization">Folder Organization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#controller-folder">controller folder</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#porting">Porting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pal-porting">PAL Porting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wsf-porting">WSF Porting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hci-porting">HCI Porting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#initialization">Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ll-initialization">LL Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compile-time">Compile Time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#runtime">Runtime</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-considerations">Implementation Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vendor-specific-hci-commands">Vendor Specific HCI Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-error-codes">Hardware Error Codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enabling-cte-feature">Enabling CTE Feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-transmit-power-adjustment">Manual Transmit Power Adjustment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: LightSlateGray" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">em | bleu Controller</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Controller Developer’s Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/controller-dg.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="controller-developer-s-guide">
+<span id="controller-dg"></span><h1>Controller Developer’s Guide<a class="headerlink" href="#controller-developer-s-guide" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This document is the Developer’s Guide for the em | bleu Controller software.</p>
+<section id="audience">
+<h3>Audience<a class="headerlink" href="#audience" title="Link to this heading"></a></h3>
+<p>This book is written for experienced software engineers who might or might not have experience with em | bleu products. Such engineers typically have experience writing Bluetooth applications but might have limited experience with em | bleu software. The reader is assumed to have embedded C software experience.</p>
+</section>
+<section id="abbreviations">
+<h3>Abbreviations<a class="headerlink" href="#abbreviations" title="Link to this heading"></a></h3>
+<p>Definitions of abbreviations used in this document are listed below:</p>
+<ul class="simple">
+<li><p>ACL: Asynchronous Connectionless data packet</p></li>
+<li><p>AD: Advertising Data</p></li>
+<li><p>AoA: Angle of Arrival</p></li>
+<li><p>AoD: Angle of Departure</p></li>
+<li><p>BIG: Broadcast Isochronous Group</p></li>
+<li><p>BIS: Broadcast Isochronous Stream</p></li>
+<li><p>BLE: Bluetooth Low Energy</p></li>
+<li><p>BOD: Baseband Operational Descriptor</p></li>
+<li><p>CHCI: Controller Host-Controller Interface</p></li>
+<li><p>CIG: Connected Isochronous Group</p></li>
+<li><p>CIS: Connected Isochronous Stream</p></li>
+<li><p>CTE: Constant Tone Expression</p></li>
+<li><p>HCI: Host Controller Interface</p></li>
+<li><p>ISO: ISOchronous</p></li>
+<li><p>LL: Link Layer</p></li>
+<li><p>LLCP: Link Layer Control Protocol</p></li>
+<li><p>LTK: Long Term Key</p></li>
+<li><p>WSF: Wireless Software Foundation software service</p></li>
+</ul>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
+<p>The following documents are referenced by this document.</p>
+<ul class="simple">
+<li><p>1: Bluetooth SIG, “Bluetooth Core Specification”, Version 5.4, January 31, 2023.</p></li>
+<li><p>2: Packetcraft, Inc., “WSF Developer’s Guide”</p></li>
+</ul>
+</section>
+</section>
+<section id="system-context">
+<h2>System Context<a class="headerlink" href="#system-context" title="Link to this heading"></a></h2>
+<!--The Packetcraft Controller software system consists of two main components:
+
+* Packetcraft Link Layer
+* Packetcraft 802.15.4
+-->
+<p>The software system is dependent on WSF and PAL. WSF is an OS porting layer. It provides general-purpose software services such as queues, timers, and buffer management. PAL is the hardware platform abstraction layer. It provides the platform specific implementation to the hardware’s BSP libraries.</p>
+<a class="reference internal image-reference" href="_images/ble_ll_soc_system_2x.png"><img alt="_images/ble_ll_soc_system_2x.png" src="_images/ble_ll_soc_system_2x.png" style="width: 350px;" /></a>
+<p><strong>Figure 2-1.</strong> BLE LL in a single-chip SoC system</p>
+<section id="system-configuration">
+<h3>System Configuration<a class="headerlink" href="#system-configuration" title="Link to this heading"></a></h3>
+<p>The Host and Profiles are designed to support single-chip SoC systems and dual-chip systems.</p>
+<p>When operating in a single-chip system the Host and Profiles run on the processor inside the SoC. A “thin” HCI layer adapts to the software interface of the target’s BLE Link Layer.</p>
+<p>When operating in a dual-chip system the Host and Profiles run on a microcontroller and communicate with a BLE Controller chip over a wired interface such as UART or SPI. A standard transport-based HCI layer manages the communication between the two devices.</p>
+<img alt="_images/pack_host_soc_sys.png" src="_images/pack_host_soc_sys.png" />
+<p><strong>Figure 2-2.</strong> The Host and Profiles in a single-chip SoC system and dual-chip system</p>
+<!-- For more information see the Link Layer API. --></section>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>This section describes the software architecture used by the em | bleu Controller.</p>
+<section id="execution-context">
+<h3>Execution Context<a class="headerlink" href="#execution-context" title="Link to this heading"></a></h3>
+<p>The Controller operates in following execution contexts.</p>
+<ol class="arabic simple">
+<li><p>ISR</p></li>
+<li><p>STACK</p></li>
+</ol>
+<p>The ISR execution context is where the interrupt service routines execute. These interrupt service routines are called upon packet transmit and receive completions from the BB. These interrupt handlers have the highest priority and preempt other execution contexts.</p>
+<p>The STACK execution context executes handler routines dispatched by the WSF task scheduler. For single chip configurations, the STACK task will also execute the upper layer protocols such as the em | bleu Host and em | bleu Profile task handlers.</p>
+<p>In order to simplify single-chip requirements for upper layer software, the MAC layer handles all time critical operations (BLE TIFS) in the interrupt context. This will give processing priority to routines that need to meet time specific operations and give freedom to the upper layer software to execute with fewer timing restrictions.</p>
+</section>
+<section id="interface">
+<h3>Interface<a class="headerlink" href="#interface" title="Link to this heading"></a></h3>
+<p>Upper layer clients access MAC services through an API interface. The handling of the direct access, resource locking/synchronization or message passing nature of these routines is hidden from the client. Refer to the protocol specific API documentation for details.</p>
+<p>The MAC uses the BB porting layer as an abstraction layer to the baseband hardware. This interface provides the hardware and protocol specific interfaces for operations scheduled by each MAC. Refer to the BB API documentation for more information.</p>
+<p>For dual chip solutions, the MAC also provides a transport entity that operates above the API (for example HCI transport).</p>
+<section id="message-passing-api-functions">
+<h4>Message Passing API Functions<a class="headerlink" href="#message-passing-api-functions" title="Link to this heading"></a></h4>
+<p>Message passing API functions result in a message being sent to the task running the stack. These functions typically involve an operation that requires synchronization with a higher priority task or a remote device operation.</p>
+</section>
+<section id="direct-execute-api-functions">
+<h4>Direct Execute API Functions<a class="headerlink" href="#direct-execute-api-functions" title="Link to this heading"></a></h4>
+<p>Direct execute API functions run entirely in the context of the calling function. These functions typically involve simple operations like reading or setting internal data. Resource locking, for example <code class="docutils literal notranslate"><span class="pre">WsfCsEnter()</span></code> and <code class="docutils literal notranslate"><span class="pre">WsfCsExit()</span></code>, may be used to provide atomic read or writes to internal data.</p>
+</section>
+<section id="callback-functions">
+<h4>Callback Functions<a class="headerlink" href="#callback-functions" title="Link to this heading"></a></h4>
+<p>Callback functions are implemented by the client of the LL API and execute in the call context of the STACK task. Callback functions are used to send events and data to the client.</p>
+<p><img alt="" src="_images/message_pass_2x.png" /></p>
+<p><strong>Figure 2-1.</strong> Message passing and direct execute interfaces</p>
+</section>
+</section>
+<section id="transmit-path">
+<h3>Transmit Path<a class="headerlink" href="#transmit-path" title="Link to this heading"></a></h3>
+<p>The transmit path prepares packets for delivery to the baseband. Packet preparation involves framing (for example LL PDU header) and scheduling of packet delivery on the medium. Transmit packets accumulate in an ARQ queue until it can be scheduled. When the receiving device acknowledges receipt of the packet, the packet is removed from the ARQ queue and the upper layer is notified that the transmit buffer is released (flow control).</p>
+<p>In order to support back-to-back transmit packets the MAC must free transmit data buffers as fast as possible. The scheduler will provide transmit buffers to the BB just in time (JIT). This is done via callbacks between the BB and scheduler. JIT will give as much time as possible for transmit packet processing before having to flow control.</p>
+<p>The MAC does not copy any data. Packet framing (prepending a MAC header) is achieved by pointer manipulation and therefore no buffer copy is required. The platform specific transport and BB implementations may perform data copies of buffers, as it is DMAâ€™ed to and from hardware.</p>
+<p>The transmit path does not allocate data buffers. Buffer allocation is performed above the API. For single chip implementations this is typically the protocol stack. For dual chip implementations this will be the transport layer.</p>
+</section>
+<section id="receive-path">
+<h3>Receive Path<a class="headerlink" href="#receive-path" title="Link to this heading"></a></h3>
+<p>The receive path processes packets received by the BB. Packet processing includes filtering packets, packet disassembly and packet routing.</p>
+<p>Filtering packets (dropping) is conditional based on a mismatched CRC or a packet received from an unexpected device (for example BLE white list device address filtering). Packet disassembly involves removing and parsing MAC header. Once disassembled, the packetâ€™s PDU is delivered to route to either the external protocol stack or internal LLCP.</p>
+<p>In order to support back-to-back receive packets the upper layers must process and free received packets as fast as possible. The BB will allocate receive buffers in a just in time (JIT) manner as it sets up for a receive action. JIT will give as much time as possible for receive packet processing before having to flow control.</p>
+<p>The receive path does not allocate data buffers. Buffers are allocated by the BB layer and passed to the LL receive path. Upon completion of MAC receive path processing, the buffer is stored in a receive queue. The buffer is “pulled” by the upper layer. Buffer deallocation is performed by the upper layer. For single chip implementations this will be the transport layer.</p>
+</section>
+<section id="scheduler">
+<h3>Scheduler<a class="headerlink" href="#scheduler" title="Link to this heading"></a></h3>
+<p>The MAC scheduler manages a sequence of timed operations which is consumed by the baseband.
+The types of timed operations are defined by the BB porting layer, such as BLE advertising/scanning and connection operations. The scheduler will prioritize operations based on protocol requirements. Additional protocol specific parameters are also specified based on protocol requirements, such as:</p>
+<ul class="simple">
+<li><p>RF channel</p></li>
+<li><p>transmit power level</p></li>
+<li><p>receive access address filtering</p></li>
+<li><p>CRC initial value</p></li>
+</ul>
+<p>The scheduler maintains a list of BOD in non-overlapping time order. The scheduler provides the next BOD to the BB in a sequential manner. After the BB completes a BOD, the scheduler is notified and the next BOD is provided to the BB.</p>
+<img alt="_images/mac_shed.png" src="_images/mac_shed.png" />
+<p><strong>Figure 2-1.</strong> MAC scheduler</p>
+</section>
+</section>
+<section id="medium-access-scheduler">
+<h2>Medium Access Scheduler<a class="headerlink" href="#medium-access-scheduler" title="Link to this heading"></a></h2>
+<p>em | bleu controller protocol stacks use a service called the Medium Access Scheduler (MAS) to share access to a common radio. Protocols can reserve timed operations, e.g. set of one or more packet transactions, with an element called Baseband Operational Descriptor (BOD). A BOD contains timing and scheduling information such that MAS can schedule operations based on certain performance criteria such as throughput or radio idle power savings.</p>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>MAS maintains a list of BODs in non-overlapping time order. This list is implemented using a doubly linked list. The list is sorted in BOD time order. A BOD specifies a due time and a duration. This is illustrated in the top portion of Figure 1. A BOD may be reinserted after it completes to perform periodic operations. In Figure 1, op[0] repeats as op[0]’ and op[1] repeats as op[1]’.</p>
+<!--
+<span class="images">![](../_static/figures/MAS_BOD_Example.png)</span>
+
+**Figure 1. BOD Example**
+-->
+<p>A Protocol Timer (PT) is used as a reference clock for BOD start times. The PT is implemented with a 32-bit free-running clock, which monotonically counts continuously even when the system is sleeping. MAS will schedule an interrupt to execute the BOD at the head of the list at the BOD’s due time minus <code class="docutils literal notranslate"><span class="pre">schSetupDelay</span></code>. The <code class="docutils literal notranslate"><span class="pre">schSetupDelay</span></code> time period is a fixed time to accommodate radio wakeup as well as any logic processing to begin the BOD.</p>
+<p>At the completion of each BOD, MAS will remove the BOD from the BOD list and notify the client the operation is complete. MAS will continue to operate on the new head BOD.</p>
+<p>Each role-specific BLE transport uses an inherited BOD to schedule operations with MAS. For BLE, the following transports use BOD to schedule radio operations.</p>
+<ul class="simple">
+<li><p>DTM, Tx Test</p></li>
+<li><p>DTM, Rx Test</p></li>
+<li><p>Legacy Advertiser</p></li>
+<li><p>Legacy Scanner</p></li>
+<li><p>ACL, Peripheral Role</p></li>
+<li><p>ACL, Central Role</p></li>
+<li><p>Extended Advertiser</p></li>
+<li><p>Extended Scanner</p></li>
+<li><p>Periodic Advertiser</p></li>
+<li><p>Periodic Scanner</p></li>
+<li><p>BIS, Broadcaster Role</p></li>
+<li><p>BIS, Synchronizer Role</p></li>
+<li><p>CIS, Peripheral Role</p></li>
+<li><p>CIS, Central Role</p></li>
+</ul>
+</section>
+<section id="reservation-manager">
+<h2>Reservation Manager<a class="headerlink" href="#reservation-manager" title="Link to this heading"></a></h2>
+<p>TDMA (Time Division Multiple Access) technologies such as BLE may have multiple transports which will contend for the radio. The Reservation Manager (RM) is a module of MAS which manages the quality of service between a collection of BODs.</p>
+<ul class="simple">
+<li><p>Limiting a maximum capacity threshold</p></li>
+<li><p>Flexible host specified intervals: specific, range, preferred, non-preferred</p></li>
+<li><p>Minimize diminished performance due to additional connections</p></li>
+<li><p>Minimize CE (Connection Event) collisions between connected slaves</p></li>
+<li><p>Minimize throughput loss (CE termination due to encroaching BODs)</p></li>
+</ul>
+<p>RM is used by periodic transports that control the timing of peer device(s). In BLE these are the following transport specific to certain roles:</p>
+<ul class="simple">
+<li><p>Periodic Advertiser</p></li>
+<li><p>ACL, Central Role</p></li>
+<li><p>CIS, Central Role</p></li>
+</ul>
+<section id="initial-anchor-point-selection">
+<h3>Initial Anchor Point Selection<a class="headerlink" href="#initial-anchor-point-selection" title="Link to this heading"></a></h3>
+<p>RM attempts to avoid collisions by setting an initial anchor in the least likely place of collision. This place it the middle of the largest gap between any BODs.</p>
+<!--
+The example in Figure 2 illustrates RM aligning an ACL BOD as a Central to avoid a collision. The largest gap is between the reservations for handle=1 and handle=2. RM computes an offset for a BOD to start in the middle of this gap. For an ACL BOD as a Central, this offset is used for `txWindowOffset`.
+
+<span class="images">![](../_static/figures/MAS_txWindowsOffset_Selection_Example.png)</span>
+
+**Figure 2. txWindowOffset Selection Example**
+-->
+<p>This method of avoiding collision works if the intervals between BODs are a common multiple of each other. The example in Figure 2 is the ideal case when all intervals are precisely the same size. RM also works if intervals are a common multiple of each other, take for example see the scenario below. Since all handles have a common multiple of 10ms, RM is able to issue offsets with no overlap.</p>
+<ul class="simple">
+<li><p>handle=0, interval=10ms</p></li>
+<li><p>handle=1, interval=20ms</p></li>
+<li><p>handle=2, interval=30ms</p></li>
+</ul>
+<p>Due to computation size limitations, the limit on the depth of the multiple is 4. Interval depth is the 2^N distance between the smallest interval and the largest. For example, the depth between 16 (2^4) and 64 (2^6) is 2.</p>
+<p>In the example below, handle=2 will not be provided an adequate offset since the interval is not a common multiple.</p>
+<ul class="simple">
+<li><p>handle=0, interval=10ms</p></li>
+<li><p>handle=1, interval=10ms</p></li>
+<li><p>handle=2, interval=60ms</p></li>
+</ul>
+<p>There are scenarios where RM cannot find a common multiple and therefore is not able to adjust for non-overlapping BODs. For example with the example listed below, overlap will eventually occur.</p>
+<ul class="simple">
+<li><p>handle=0, interval=17ms</p></li>
+<li><p>handle=1, interval=33ms</p></li>
+<li><p>handle=2, interval=45ms</p></li>
+</ul>
+<p>When configuring a system with multiple transports that own the radio timing, use intervals with common multiples. The ratio between the largest and smallest intervals should be within a depth of 4.</p>
+</section>
+<section id="limiting-high-density-reservations">
+<h3>Limiting High-Density Reservations<a class="headerlink" href="#limiting-high-density-reservations" title="Link to this heading"></a></h3>
+<p>RM will limit the maximum number of reservations using the following rule:</p>
+<p>ReservationLimit = 2 × N, where N = ConnectionInterval ÷ <code class="docutils literal notranslate"><span class="pre">SCH_RM_PREF_PER</span></code></p>
+<p>Any reservations beyond this limit will be rejected. The typical value for <code class="docutils literal notranslate"><span class="pre">SCH_RM_PREF_PER</span></code> is 10 ms.</p>
+<p>For example, RM will allow the following scenarios:</p>
+<ul class="simple">
+<li><p>Central can schedule at most, 2 connections with a ConnectionInterval = 7.5-ms (minimum BLE Connection Interval)</p></li>
+<li><p>Central can schedule at most, 4 connections with a ConnectionInterval = 20-ms</p></li>
+</ul>
+</section>
+</section>
+<section id="conflict-resolution">
+<h2>Conflict Resolution<a class="headerlink" href="#conflict-resolution" title="Link to this heading"></a></h2>
+<p>BOD collisions is when a BOD is inserted into the list but an existing BOD overlaps in time. Figure 3 shows an example of op[3] attempting insertion, however, overlaps in time with the existing op[2].</p>
+<!--
+<span class="images">![](../_static/figures/MAS_Conflict_Example.png)</span>
+
+**Figure 3. Conflict Example**
+
+-->
+<p>MAS uses a two-level method to resolve conflicts:</p>
+<ol class="arabic simple">
+<li><p>Rescheduling Priority: BOD with the highest rescheduling priority wins</p></li>
+<li><p>Transport-Aware Priority: BOD with the same rescheduling priority may use a transport-aware conflict resolution handler</p></li>
+</ol>
+<section id="rescheduling-priority">
+<h3>Rescheduling Priority<a class="headerlink" href="#rescheduling-priority" title="Link to this heading"></a></h3>
+<p>The inserting BOD is compared to all BODs that are in conflict. More than one existing BOD may be in conflict, especially when the inserting BOD has long durations. If the inserting BOD has a higher priority (smaller number) than any of the existing BODs, the inserting BOD wins the conflict and the existing BODs are rescheduled.</p>
+<p>Each BOD sets a rescheduling priority property to one of the following values, listed in priority order:</p>
+<ol class="arabic simple">
+<li><p>Fixed Preferred: rescheduling has limited recoverable consequences</p></li>
+<li><p>Fixed: rescheduling has recoverable consequences</p></li>
+<li><p>Moveable Preferred: rescheduling has minor consequences</p></li>
+<li><p>Moveable: rescheduling has no consequences</p></li>
+</ol>
+<p>For BLE, the following rescheduling priorities are assigned to each of the role-specific transports.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>BLE Transport</strong></p></td>
+<td><p><strong>Rescheduling Priority</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Broadcaster Advertising Event</p></td>
+<td><p>Moveable</p></td>
+</tr>
+<tr class="row-even"><td><p>Broadcaster Auxiliary Event</p></td>
+<td><p>Moveable Preferred</p></td>
+</tr>
+<tr class="row-odd"><td><p>Broadcaster Synchronous Event</p></td>
+<td><p>Moveable Preferred</p></td>
+</tr>
+<tr class="row-even"><td><p>Broadcaster Isochronous Event</p></td>
+<td><p>Fixed Preferred</p></td>
+</tr>
+<tr class="row-odd"><td><p>Observer Advertising Event</p></td>
+<td><p>Moveable</p></td>
+</tr>
+<tr class="row-even"><td><p>Observer Auxiliary Event</p></td>
+<td><p>Moveable Preferred</p></td>
+</tr>
+<tr class="row-odd"><td><p>Observer Synchronous Event</p></td>
+<td><p>Moveable Preferred</p></td>
+</tr>
+<tr class="row-even"><td><p>Observer Isochronous Event</p></td>
+<td><p>Fixed Preferred</p></td>
+</tr>
+<tr class="row-odd"><td><p>Initiator Advertising Event</p></td>
+<td><p>Moveable Preferred</p></td>
+</tr>
+<tr class="row-even"><td><p>Initiator Auxiliary Event</p></td>
+<td><p>Moveable Preferred</p></td>
+</tr>
+<tr class="row-odd"><td><p>Central Connection Event</p></td>
+<td><p>Fixed</p></td>
+</tr>
+<tr class="row-even"><td><p>Peripheral Connection Event</p></td>
+<td><p>Fixed</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="transport-aware-priority">
+<h3>Transport-Aware Priority<a class="headerlink" href="#transport-aware-priority" title="Link to this heading"></a></h3>
+<p>If the inserting BOD has the same priority as all the existing BODs in conflict then conflict resolution is handled based on transport-specific requirements.</p>
+<p>For ACL, these requirements are based on the risk of connection loss, throughput performance, and power savings. The following algorithm is used:</p>
+<ol class="arabic simple">
+<li><p>BLE connection event is preferred</p></li>
+<li><p>Else an established connection (i.e. not initiating) is preferred</p></li>
+<li><p>Else a connection with an imminent supervision timeout expiration is preferred</p></li>
+<li><p>Else a connection with an active LLCP is preferred</p></li>
+<li><p>Else a connection with a Tx Data PDU pending is preferred</p></li>
+<li><p>Else a connection with less frequent connection interval is preferred</p></li>
+<li><p>Else the existing connection (i.e. not newly inserted) is preferred</p></li>
+</ol>
+</section>
+</section>
+<section id="adjacent-scheduling">
+<h2>Adjacent Scheduling<a class="headerlink" href="#adjacent-scheduling" title="Link to this heading"></a></h2>
+<p>Some transports are dependent and related to parent transports. These parent and child BODs relationships are best scheduled adjacent to each other.</p>
+<section id="periodic-advertising-and-big">
+<h3>Periodic Advertising and BIG<a class="headerlink" href="#periodic-advertising-and-big" title="Link to this heading"></a></h3>
+<p>In BLE, a Periodic Advertiser is used to announce the properties and timing of a BIG such that a synchronizing device can locate the BIG. There is one and only one relationship between a Periodic Advertiser and its BIG, and vice-versa.</p>
+<!--
+<span class="images">![](../_static/figures/MAS_Periodic_Advertiser_and_BIG.png)</span>
+
+**Figure 4. Periodic Advertiser and BIG**
+-->
+<p>Radio sleep/idle efficiency is improved by adjacent operation scheduling since active radio transactions are grouped together and the system may sleep for a longer period of time.</p>
+<p>An additional benefit of treating the Periodic Advertising and BIG as a single long transaction improves radio bandwidth (density) due to minimal fragmentation of operations. This allows the greater possibility of scheduling additional operations.</p>
+<p>When configuring a BIG, the Periodic Advertising interval must be a multiple of the BIG IsoInterval, i.e. PA_Interval = N x IsoInterval, where N = 1, 2, 3, etc. Failure to adhere to this pattern will result in packet loss.</p>
+<p>Consider these examples:</p>
+<ul class="simple">
+<li><p>BIG IsoInterval = 7.5-ms, then PA_Interval = 7.5-ms, 15-ms, 22.5-ms, etc.</p></li>
+<li><p>BIG IsoInterval = 10-ms, then PA_Interval = 10-ms, 20-ms, 30-ms, etc.</p></li>
+</ul>
+</section>
+<section id="acl-and-cis">
+<h3>ACL and CIS<a class="headerlink" href="#acl-and-cis" title="Link to this heading"></a></h3>
+<p>In BLE, an ACL transport is associated to one CIS. The Central coordinates the offset between the ACL and CIS. The Central will reserve each ACL and CIS independetly with the RM. As a result, the ACL interval should be a multiple of the CIS interval.</p>
+<p>For example, if a CIG contains 2 CIS, using the following ACL intervals will place the ACL events in an alternating manner.</p>
+<ul class="simple">
+<li><p>CIG IsoInterval = 7.5-ms, then ACL Interval = 15-ms, 30-ms, 60-ms, etc.</p></li>
+<li><p>CIG IsoInterval = 10-ms, then ACL Interval = 20-ms, 40-ms, 80-ms, etc.</p></li>
+</ul>
+</section>
+</section>
+<section id="folder-organization">
+<h2>Folder Organization<a class="headerlink" href="#folder-organization" title="Link to this heading"></a></h2>
+<p>The contents of the root directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>controller</p></td>
+<td class="text-left"><p>Controller software</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>platform</p></td>
+<td class="text-left"><p>Platform specific software</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>projects</p></td>
+<td class="text-left"><p>Controller project files</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>wsf</p></td>
+<td class="text-left"><p>Wireless Software Foundation</p></td>
+</tr>
+</tbody>
+</table>
+<section id="controller-folder">
+<h3>controller folder<a class="headerlink" href="#controller-folder" title="Link to this heading"></a></h3>
+<p>The contents of the controller directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration / Makefiles</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>include</p></td>
+<td class="text-left"><p>Controller API</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources</p></td>
+<td class="text-left"><p>Controller source</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="porting">
+<h2>Porting<a class="headerlink" href="#porting" title="Link to this heading"></a></h2>
+<p>The porting process typically consists of two main steps:</p>
+<ol class="arabic simple">
+<li><p>Porting PAL to the target system.</p></li>
+<li><p>Porting WSF interfaces and services to the target OS and software system.</p></li>
+</ol>
+<section id="pal-porting">
+<h3>PAL Porting<a class="headerlink" href="#pal-porting" title="Link to this heading"></a></h3>
+<p>Consult the em | bleu PAL Developer’s Guide for PAL porting.</p>
+</section>
+<section id="wsf-porting">
+<h3>WSF Porting<a class="headerlink" href="#wsf-porting" title="Link to this heading"></a></h3>
+<p>Consult the WSF Developer’s Guide for WSF porting.</p>
+</section>
+<section id="hci-porting">
+<h3>HCI Porting<a class="headerlink" href="#hci-porting" title="Link to this heading"></a></h3>
+<p>em | bleu’s HCI layer is designed to be portable and support different transport and chip configurations. The porting process depends on the chip configuration:</p>
+<ul class="simple">
+<li><p>If the stack is ported to a single-chip system then a “thin HCI” porting process is used.</p></li>
+<li><p>If the stack is ported to a two-chip system with wired HCI transport then a transport-based porting process is used.</p></li>
+</ul>
+</section>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h2>
+<p>This section describes the initialization procedures for this component.</p>
+<section id="ll-initialization">
+<h3>LL Initialization<a class="headerlink" href="#ll-initialization" title="Link to this heading"></a></h3>
+<p>Initialization helper routines are available in <code class="docutils literal notranslate"><span class="pre">controller/sources/ble/init/*.c</span></code>. A single function call initializes the LL, <code class="docutils literal notranslate"><span class="pre">LlInit()</span></code>. This routines uses the following conditional compilation flags to determine the types of supported roles to compile:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_BROADCASTER</span></code>: initialize broadcaster role and PAwR advertiser</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_OBSERVER</span></code>: initialize observer role and PAwR synchronizer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_PERIPHERAL</span></code>: initialize peripheral role and PAwR advertiser</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_CENTRAL</span></code>: initialize central role and PAwR synchronizer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_ENCRYPTED</span></code>: initialize encryption feature across all logical transports</p></li>
+</ul>
+<p>The purpose of LL Initialization defines in the Packetcraft stack is to exclude initialization code which allows the linker to exclude some functions and static variables saving RAM and ROM.</p>
+<p>Periodic Advertising and PAwR use much of the same features as Extended Advertising, so those features are associated with INIT_PERIPHERAL.  The PAwR responder features need the scan code that is included with INIT_CENTRAL.</p>
+<p>One of the features of PAwR is to provide a mechanism for creating a standard ACL connection to one of the synchronized responders without another advertising set (see [Vol 6], Part B, Section 4.4.2.12.2). If that feature is used, the periodic advertiser becomes the central and the synchronizer becomes the peripheral in the ACL connection. This is a feature used by Electronic Shelf Label (ESL).  If the Periodic Advertising Connection procedure as described in GAP (see [Vol 3], Part C, Section 9.5.5 ) is used, then all of the roles must be enabled.</p>
+<p>Feature level enables allow code and RAM savings if the feature is not needed.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_CTE</span></code>: enable CTE feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_PAST</span></code>: enable PAST feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_PC</span></code>: enable Power Control feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_BIS</span></code>: enable BIS feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_CIS</span></code>: enable CIS feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_ECU</span></code>: enable ECU feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_ISO</span></code>: enable ISO feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_PAWR</span></code>: enable PAWR feature</p></li>
+</ul>
+<p>In addition, Bluetooth version specific features are compiled by setting the following flag:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BT_VER</span></code>: see <code class="docutils literal notranslate"><span class="pre">LL_VER_BT_CORE_SPEC_X_Y</span></code> in <code class="docutils literal notranslate"><span class="pre">ll_defs.h</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="compile-time">
+<h3>Compile Time<a class="headerlink" href="#compile-time" title="Link to this heading"></a></h3>
+<p>The Controller uses immutable compile time configurations determined by the system requirements. These values are defined in the following files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">controller/include/common/cfg_mac.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">controller/include/common/cfg_mac_ble.h</span></code></p></li>
+</ul>
+<p>See source files for definitions.</p>
+</section>
+<section id="runtime">
+<h3>Runtime<a class="headerlink" href="#runtime" title="Link to this heading"></a></h3>
+<p>Runtime configuration allows a ROM’ed binary the flexibility to configure the system at initialization time. A constrained memory device can use boot strap settings to alter runtime configurations for specific applications.</p>
+<p><span class="notes"><strong>Note:</strong> Runtime configuration values cannot be altered after initialization.</span></p>
+<p>Runtime configurations are defined in <code class="docutils literal notranslate"><span class="pre">LlInitRtCfg_t</span></code>. The definition can be found in <code class="docutils literal notranslate"><span class="pre">ll_api.h</span></code>.</p>
+</section>
+</section>
+<section id="implementation-considerations">
+<h2>Implementation Considerations<a class="headerlink" href="#implementation-considerations" title="Link to this heading"></a></h2>
+<p>This section discusses various implementation considerations available in this component.</p>
+<section id="vendor-specific-hci-commands">
+<h3>Vendor Specific HCI Commands<a class="headerlink" href="#vendor-specific-hci-commands" title="Link to this heading"></a></h3>
+<p>Custom vendor specific commands can be added to supply platform specific functionality and diagnostics. These commands are enabled with the following LL conditional compilations values modified in <code class="docutils literal notranslate"><span class="pre">cfg_mac.h</span></code> or as an override value with a compiler flag.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LHCI_ENABLE_VS</span></code>: Enable vendor specific command processing.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LHCI_ENABLE_VS_TEST</span></code>: Enable vendor specific test commands.</p></li>
+</ul>
+<p>The stack offers several custom vendor specific commands. These commands are implemented in the <code class="docutils literal notranslate"><span class="pre">lhci_cmd_vs.c</span></code>. Additional commands can be added to support platform specific features.</p>
+<p>Step 1. Add a custom vendor specific command decoder after the LL is initialized using <code class="docutils literal notranslate"><span class="pre">LhciVsExtInit(lhciVsExtDecodeCmdPkt);</span></code>. Where <code class="docutils literal notranslate"><span class="pre">lhciVsExtDecodeCmdPkt</span></code> is defined as follows.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*************************************************************************************************/</span>
+<span class="cm">/*!</span>
+<span class="cm"> *  \brief  Decode extended vendor specific HCI command packet.</span>
+<span class="cm"> *</span>
+<span class="cm"> *  \param  pHdr    Unpacked command header.</span>
+<span class="cm"> *  \param  pBuf    Packed HCI packet buffer.</span>
+<span class="cm"> *</span>
+<span class="cm"> *  Command processing for vendor specific commands.</span>
+<span class="cm"> *</span>
+<span class="cm"> *  \return true if opcode handled, false otherwise.</span>
+<span class="cm"> */</span>
+<span class="cm">/*************************************************************************************************/</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">lhciVsExtDecodeCmdPkt</span><span class="p">(</span><span class="n">LhciHdr_t</span><span class="w"> </span><span class="o">*</span><span class="n">pHdr</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pBuf</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Step 2. Define a custom opcode for the command. In the example stub file the following opcodes are defined.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="cp">#define LHCI_OPCODE_VS_CMD1  HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x000)</span>
+<span class="w">  </span><span class="cp">#define LHCI_OPCODE_VS_CMD2  HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x001)</span>
+</pre></div>
+</div>
+<p>Step 3. Add command parameter parser in the upper switch statement of lhciVsExtDecodeCmdPkt(). For example:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">LHCI_OPCODE_VS_CMD1</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">param32</span><span class="p">;</span>
+<span class="w">    </span><span class="n">BSTREAM_TO_UINT32</span><span class="p">(</span><span class="n">param32</span><span class="p">,</span><span class="w"> </span><span class="n">pBuf</span><span class="p">);</span>
+<span class="w">    </span><span class="cm">/* TODO: perform CMD1 operation */</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">LHCI_OPCODE_VS_CMD2</span><span class="p">:</span>
+<span class="w">    </span><span class="cm">/* TODO: perform CMD2 operation */</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">evtParamLen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Step 4. Add command response builder in the lower switch statement of lhciVsExtDecodeCmdPkt(). For example:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">LHCI_OPCODE_VS_CMD1</span><span class="p">:</span>
+<span class="w">    </span><span class="cm">/* TODO: fill CMD1 response data, if needed */</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="no">LHCI_OPCODE_VS_CMD2</span><span class="p">:</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* TODO: fill CMD2 response data, if needed */</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">param8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="w">    </span><span class="n">UINT8_TO_BSTREAM</span><span class="p">(</span><span class="n">pBuf</span><span class="p">,</span><span class="w"> </span><span class="n">param8</span><span class="p">);</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+<!--
+Standard Vendor Specific HCI Commands
+-------------------------------------
+
+The available Packetcraft Vendor Specific Commands are summarized in the opcode table below.
+
+Opcode  | Symbol                                  | Description
+:-----  | :-----                                  | :----------
+0x3A0   | LHCI_OPCODE_VS_SYSTEM_RESET             | System reset
+0x3A1   | LHCI_OPCODE_VS_ENTER_BOOTLOADER         | Enter bootloader
+0x3A2   | LHCI_OPCODE_VS_SET_LED_PIN              | Set LED pin
+0x3A3   | LHCI_OPCODE_VS_SET_RADIO_FE_CFG         | Set radio front-end configuration
+0x3A4   | LHCI_OPCODE_VS_GCOV_EXIT                | Dumps GCOV info to the coverage buffer
+0x3B0   | LHCI_OPCODE_VS_ENABLE_RSP_OBS           | Enable or disable Response Observation
+0x3B1   | LHCI_OPCODE_VS_SET_RSP_OBS_SLOTS        | Set a list of response slots to observe
+0x3B2   | LHCI_OPCODE_VS_SET_RSP_OBS_DATA         | Set the response data for multiple response slots
+0x3B3   | LHCI_OPCODE_VS_SET_PER_SCAN_IMMED_SKIP  | Set the Periodic Scanner immediate skip
+0x3C0   | LHCI_OPCODE_VS_GET_CONTEXT_SIZES        | Get context sizes
+0x3C1   | LHCI_OPCODE_VS_GET_BIS_STATS            | Get BIS Statistics
+0x3C2   | LHCI_OPCODE_VS_START_EDS                | Start EDS
+0x3C3   | LHCI_OPCODE_VS_STOP_EDS                 | Stop EDS
+0x3C4   | LHCI_OPCODE_VS_GET_EDS_ASSESSMENT       | Get current EDS assessment
+0x3C5   | LHCI_OPCODE_VS_START_DAA                | Start DAA
+0x3C6   | LHCI_OPCODE_VS_STOP_DAA                 | Stop DAA
+0x3CD   | LHCI_OPCODE_VS_SET_SNIFFER_ENABLE       | Enable sniffer packet forwarding
+0x3D0   | LHCI_OPCODE_VS_SET_AUX_DELAY            | Set Additional AuxPtr offset
+0x3D1   | LHCI_OPCODE_VS_SET_EXT_ADV_FRAG_LEN     | Set extended advertising data fragmentation length
+0x3D2   | LHCI_OPCODE_VS_SET_EXT_ADV_PHY_OPTS     | Set extended advertising PHY options
+0x3D3   | LHCI_OPCODE_VS_SET_EXT_ADV_DEF_PHY_OPTS | Set extended advertising default PHY options
+0x3D4   | LHCI_OPCODE_VS_SET_EXT_SCAN_PHY_OPTS    | Set extended scanning default PHY options
+0x3D5   | LHCI_OPCODE_VS_GENERATE_ISO             | Generate ISO Packets
+0x3D6   | LHCI_OPCODE_VS_GET_ISO_TEST_REPORT      | Get ISO Test Report
+0x3D7   | LHCI_OPCODE_VS_ENA_ISO_SINK             | Enable ISO Packet Sink
+0x3D8   | LHCI_OPCODE_VS_ENA_AUTO_GEN_ISO         | Enable Auto Generate ISO Packets
+0x3D9   | LHCI_OPCODE_VS_GET_CIS_STATS            | Get CIS Statistics
+0x3DA   | LHCI_OPCODE_VS_GET_AUX_ADV_STATS        | Get Auxiliary Advertising Statistics
+0x3DB   | LHCI_OPCODE_VS_GET_AUX_SCAN_STATS       | Get Auxiliary Scanning Statistics
+0x3DC   | LHCI_OPCODE_VS_GET_PER_SCAN_STATS       | Get Periodic Scanning Statistics
+0x3DD   | LHCI_OPCODE_VS_SET_CONN_PHY_TX_PWR      | Set Connection PHY Tx Power
+0x3DE   | LHCI_OPCODE_VS_GET_PER_CHAN_MAP         | Get channel map of periodic scan/adv
+0x3DF   | N/A                                     | DEPRECATED
+0x3E0   | LHCI_OPCODE_VS_SET_SCAN_CH_MAP          | Scan Channel Map
+0x3E1   | LHCI_OPCODE_VS_SET_EVENT_MASK           | Set Vendor Specific Event Mask
+0x3E2   | N/A                                     | DEPRECATED
+0x3E3   | LHCI_OPCODE_VS_ENA_ACL_SINK             | Enable ACL Packet Sink
+0x3E4   | LHCI_OPCODE_VS_GENERATE_ACL             | Generate ACL Packets
+0x3E5   | LHCI_OPCODE_VS_ENA_AUTO_GEN_ACL         | Enable Auto Generate ACL Packets
+0x3E6   | LHCI_OPCODE_VS_SET_TX_TEST_ERR_PATT     | Set Tx Test Error Pattern
+0x3E7   | LHCI_OPCODE_VS_SET_CONN_OP_FLAGS        | Set Connection Operational Flags
+0x3E8   | LHCI_OPCODE_VS_SET_P256_PRIV_KEY        | Set P-256 Private Key
+0x3E9   | LHCI_OPCODE_VS_GET_ACL_TEST_REPORT      | Get ACL Test Report
+0x3EA   | LHCI_OPCODE_VS_SET_LOCAL_MIN_USED_CHAN  | Set local minimum number of used channels
+0x3EB   | LHCI_OPCODE_VS_GET_PEER_MIN_USED_CHAN   | Get peer minimum number of used channels
+0x3EC   | LHCI_OPCODE_VS_VALIDATE_PUB_KEY_MODE    | Set validate public key mode between ALT1 and ALT2
+0x3F0   | LHCI_OPCODE_VS_SET_BD_ADDR              | Set BD address
+0x3F1   | LHCI_OPCODE_VS_GET_RAND_ADDR            | Get Random Address
+0x3F2   | LHCI_OPCODE_VS_SET_LOCAL_FEAT           | Set Local Feature
+0x3F3   | LHCI_OPCODE_VS_SET_OP_FLAGS             | Set Operational Flags
+0x3F4   | LHCI_OPCODE_VS_GET_PDU_FILT_STATS       | Get PDU Filter Statistics
+0x3F5   | LHCI_OPCODE_VS_SET_ADV_TX_PWR           | Set Advertising Tx Power
+0x3F6   | LHCI_OPCODE_VS_SET_CONN_TX_PWR          | Set Connection Tx Power
+0x3F7   | LHCI_OPCODE_VS_SET_ENC_MODE             | Set Encryption Mode
+0x3F8   | LHCI_OPCODE_VS_SET_CHAN_MAP             | Set Channel Map
+0x3F9   | LHCI_OPCODE_VS_SET_DIAG_MODE            | Set Diagnostic Mode
+0x3FA   | LHCI_OPCODE_VS_GET_SYS_STATS            | Get Memory Statistics
+0x3FB   | LHCI_OPCODE_VS_GET_ADV_STATS            | Get Advertising Statistics
+0x3FC   | LHCI_OPCODE_VS_GET_SCAN_STATS           | Get Scan Statistics
+0x3FD   | LHCI_OPCODE_VS_GET_CONN_STATS           | Get Connection Statistics
+0x3FE   | LHCI_OPCODE_VS_GET_TEST_STATS           | Get Test Statistics
+0x3FF   | LHCI_OPCODE_VS_GET_POOL_STATS           | Get Pool Statistics
+
+
+### (0x3E0) Set Scan Channel Map
+
+Note: This function must be called when scanning is disabled.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+chanMap         | 1       | Scan channel map
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3E1) Scan Report Enable
+
+Set Vendor Specific Event Mask opcode.
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+enable          | 1       | Set to true to enable scan reports, false to disable scan reports.
+
+
+### (0x3E3) Enable ACL Packet Sink
+
+Enable ACL sink. Free all received ACL packets without delivery over HCI.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+enable          | 1       | true to enable, false to disable
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3E4) Generate ACL Packets
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle
+pktLen          | 2       | Packet length
+numPkts         | 1       | Number of packets
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3E5) Enable Auto Generate ACL Packets
+
+Auto generate ACL packets. Generate a new ACL packet upon receiving ACL Tx completion.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+length          | 2       | Packet length
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3E6) Set Pattern of Errors for Tx Test
+
+Note: The error pattern must be set after the Tx test is started.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+pattern         | 4       | Error pattern (1s = no error; 0s = CRC failure)
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3E7) Set Connection's Operational Mode Flags
+
+Set connection's operational mode flags governing LL operations.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle
+flags           | 4       | Flags
+enable          | 1       | true to set flags or false to clear flags
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3E8) Set P-256 Private Key for Debug Purposes
+
+Set P-256 private key or clear set private key.  The private key will be used for generate key pairs and Diffie-Hellman keys until cleared.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+privKey         | 1       | Private key, or all zeros to clear set private key.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3DE) Get Channel Map of Periodic scan/adv
+
+Get the 64-bit channel mask of the channel map.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Periodic advertiser/scanner handle.
+isAdv           | 1       | true for periodic advertiser, false for periodic scanner.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+chM             | 8       | Channel map.
+
+
+### (0x3E9) Get ACL Test Report
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+RecvAclPktCnt   | 4       | Received ACL packet count.
+RecvAclOctetCnt | 4       | Received ACL total octect count.
+GenPktCnt       | 4       | Generated packet count.
+GenOctectCnt    | 4       | Generated total octect count.
+
+
+### (0x3EA) Set Local minimum Number of Used Channels
+
+Set local minimum number of used channels.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+phys            | 1       | Bitmask for the PHYs.
+pwrThres        | 1       | Power threshold.
+minUsedCh       | 1       | Minimum number of used channels.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+### (0x3EB) Get Peer Minimum Number of Used Channels
+
+Get peer minimum number of used channels.
+
+Command Input Parameters:
+
+Parameter        | Length  | Description
+:--------        | :-----  | :----------
+handle           | 2       | Connection handle.
+pPeerMinUsedChan | 1      | Storage for the peer minimum number of used channels.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+### (0x3EC) Set validate Public Key Mode
+
+Set validate public key mode between ALT1 and ALT2.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+validateMode    | 1       | ALT1 or ALT2.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F0) Set BD address
+
+Set the BD address to be used by LL.
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+pAddr           | 1       | Bluetooth device address.
+
+
+### (0x3F1) Get Random Address
+
+Get random device address.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+pAddr           | 1       | Random Bluetooth device address.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F2) Set Local Feature
+
+Set the LE features supported by the LL.
+
+Note: This function must only be called when controller is not connected to another device.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+pFeatures       | 1       | Supported features bitmask.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F3)  Set operational mode flags
+
+Set mode flags governing LL operations.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+flags           | 4       | Flags.
+enable          | 1       | true to set flags or false to clear flags.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F5)  Set Operational Flags
+
+Set the advertising transmit power.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+advTxPwr        | 1       | Advertising transmit power level.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F6) Set Connection Tx Power opcode.
+
+Set connection's TX power level (all PHYs).
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle.
+level           | 1       | Transmit power level.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F7) Set Encryption Mode
+
+Set the encryption mode used by a connection. Must be called before encryption is started or when encryption is paused.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle.
+pMode           | 1       | New encryption mode.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F8) Set Channel Map
+
+Set connection's channel map.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle.
+pChanMap        | 1       | Channel map.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3F9) Set Diagnostic Mode
+
+Set system trap.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+enable          | 1       | Enable assert trap or not.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3CD) Enable Sniffer Packet Forwarding
+
+Initialize packet sniffer with specified output method.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+outMethod       | 1       | Output method.
+enable          | 1       | Enable.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3F4) Get PDU Filter Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter            | Length  | Description
+:--------            | :-----  | :----------
+status               | 1       | Status error code.
+failPduTypeFilt      | 2       | Number of PDUs failing PDU type filter.
+passPduTypeFilt      | 2       | Number of PDUs passing PDU type filter.
+failWlFilt           | 2       | Number of PDUs failing whitelist filter.
+passWlFilt           | 2       | Number of PDUs passing whitelist filter.
+failPeerAddrMatch    | 2       | Number of PDUS failing peer address match.
+passPeerAddrMatch    | 2       | Number of PDUs passing peer address match.
+failLocalAddrMatch   | 2       | Number of PDUS failing local address match.
+passLocalAddrMatch   | 2       | Number of PDUs passing local address match.
+failPeerRpaVerify    | 2       | Number of peer RPAs failing verification.
+passPeerRpaVerify    | 2       | Number of peer RPAs passing verification.
+failLocalRpaVerify   | 2       | Number of local RPAs failing verification.
+passLocalRpaVerify   | 2       | Number of local RPAs passing verification.
+failPeerPrivAddrReq  | 2       | Number of peer addresses failing requirement to be RPAs.
+failLocalPrivAddrReq | 2       | Number of local addresses failing requirement to be RPAs.
+failPeerAddrResReq   | 2       | Number of PDUs failing required peer address resolution.
+passPeerAddrResOpt   | 2       | Number of PDUs passing optional peer address resolution.
+passLocalAddrResOpt  | 2       | Number of PDUs passing optional local address resolution.
+peerResAddrPend      | 2       | Number of peer address resolutions pended.
+localResAddrPend     | 2       | Number of local address resolutions pended.
+
+
+### (0x3FA) Get Memory Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter                 | Length  | Description
+:--------                 | :-----  | :----------
+status                    | 1       | Status error code.
+stackWatermark            | 2       | Number of bytes used by the stack.
+freeMem                   | 4       | Number of bytes of heap memory available.
+usedMem                   | 4       | Number of bytes of heap memory used.
+csWatermarkUsec           | 2       | Critical section duration watermark level.
+llHandlerWatermarkUsec    | 2       | Watermark level in microseconds.
+schHandlerWatermarkUsec   | 2       | Watermark level in microseconds.
+
+
+### (0x3C0) Get Context Sizes
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3FB) Get Advertising Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+txAdv           | 4       | Number of sent advertising packets.
+rxReq           | 4       | Number of successfully received advertising requests.
+rxReqCrc        | 4       | Number of received advertising requests with CRC errors.
+rxReqTimeout    | 4       | Number of timed out received advertising requests (receive timeout).
+txRsp           | 4       | Number of sent response packets.
+errAdv          | 4       | Number of advertising transaction errors.
+rxSetupUsec     | 4       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 4       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 4       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 4       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3FC) Get Scan Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+rxAdv           | 4       | Number of successfully received advertising packets.
+rxAdvCrc        | 4       | Number of received advertising packets with CRC errors.
+rxAdvTimeout    | 4       | Number of timed out advertising packets (receive timeout).
+txReq           | 4       | Number of sent advertising requests.
+rxRsp           | 4       | Number of successfully received advertising response packets.
+rxRspCrc        | 4       | Number of received advertising response packets with CRC errors.
+rxRspTimeout    | 4       | Number of timed out advertising response packets (receive timeout).
+errScan         | 4       | Number of scan transaction errors.
+rxSetupUsec     | 4       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 4       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 4       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 4       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3FD) Get Connection Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+rxDat           | 4       | Number of successfully received data packets.
+rxDataCrc       | 4       | Number of received data packets with CRC errors.
+rxDataTimeout   | 4       | Number of timed out data packets (receive timeout).
+txData          | 4       | Number of sent data packets.
+errData         | 4       | Number of data transaction errors.
+rxSetupUsec     | 2       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 2       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 2       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 2       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3FE) Get Test Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+rxDat           | 4       | Number of successfully received data packets.
+rxDataCrc       | 4       | Number of received data packets with CRC errors.
+rxDataTimeout   | 4       | Number of timed out data packets (receive timeout).
+txData          | 4       | Number of sent data packets.
+errData         | 4       | Number of data transaction errors.
+rxSetupUsec     | 2       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 2       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 2       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 2       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3FF) Get Pool Statistics
+
+Get statistics for each pool.
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+bufSize         | 2       | Pool buffer size.
+numBuf          | 1       | Total number of buffers.
+numAlloc        | 1       | Number of outstanding allocations.
+maxAlloc        | 1       | High allocation watermark.
+maxReqLen       | 2       | Maximum requested buffer length.
+
+
+### (0x3D0) Set Additional AuxPtr Offset
+
+Additional delay given to auxiliary packets specified by AuxPtr. Offset values are limited by the advertising interval.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 1       | Advertising handle.
+delayUsec       | 4       | Additional time in microseconds. "0" to disable.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code
+
+
+### (0x3D1) Set Extended Advertising Data Fragmentation Length
+
+Fragmentation size for Advertising Data and Scan Response Data when selected by the host.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 1       | Advertising handle.
+fragLen         | 1       | Fragmentation length.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D2) Set Extended Advertising PHY Options
+
+PHY options for extended advertising transmissions. New values are applied dynamically.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 1       | Advertising handle.
+priPhyOpts      | 1       | Primary advertising channel PHY options.
+secPhyOpts      | 1       | Secondary advertising channel PHY options.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D3) Set Extended Advertising Default PHY Options
+
+Set the default TX PHY options for extended adv slave primary and secondary channel.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+phyOptions      | 1       | PHY options.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D4) Set Extended Scanning Default PHY Options
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D5) Generate ISO Packets
+
+PHY options for extended advertising transmissions. New values are applied dynamically.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle.
+pktLen          | 2       | Packet length.
+numPkts         | 1       | Number of packets.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D6) Get ISO Test Report
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+recvIsoPktCnt   | 4       | Receive ISO packet count.
+recvIsoOctetCnt | 4       | Receive ISO octet count.
+genPktCnt       | 4       | Generate ISO packet count.
+genOctetCnt     | 4       | Generate ISO octet count.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D7) Enable ISO Packet Sink
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+enable          | 1       | Enable receive ISO sink.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D8) Enable Auto Generate ISO Packets
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+genPktLen       | 2       | Generate ACL packet length (0 to disable).
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3D9) Get CIS Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+rxData          | 4       | Number of successfully received data packets.
+rxDataCrc       | 4       | Number of received data packets with CRC errors.
+rxDataTimeout   | 4       | Number of timed out data packets (receive timeout).
+txData          | 4       | Number of sent data packets.
+errData         | 4       | Number of data transaction errors.
+rxSetupUsec     | 2       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 2       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 2       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 2       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3C1) Get BIS Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+rxData          | 4       | Number of successfully received data packets.
+rxDataCrc       | 4       | Number of received data packets with CRC errors.
+rxDataTimeout   | 4       | Number of timed out data packets (receive timeout).
+txData          | 4       | Number of sent data packets.
+errData         | 4       | Number of data transaction errors.
+rxSetupUsec     | 2       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 2       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 2       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 2       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3C2) Start EDS
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+durUsec         | 4       | Scan duration (single channel) in microseconds.
+chanMask        | 8       | EDS scan mask.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3C3) Stop EDS
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3C4) Get Current DAA EDS Assessment
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+antId           | 1       | Antenna index.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+daaData         | 40      | RSSI values for all channels (in dBm).
+
+
+### (0x3C5) Start DAA
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle.
+mode            | 1       | DAA mode (SLOW or FAST)
+updateIntervalMs| 4       | DAA  update interval (ms)
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3C6) Stop DAA
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+### (0x3DA) Get Auxiliary Advertising Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+txAdv           | 4       | Number of sent advertising packets.
+rxReq           | 4       | Number of successfully received advertising requests.
+rxReqCrc        | 4       | Number of received advertising requests with CRC errors.
+rxReqTimeout    | 4       | Number of timed out received advertising requests (receive timeout).
+txRsp           | 4       | Number of sent response packets.
+txChain         | 4       | Number of sent chain packets.
+errAdv          | 4       | Number of advertising transaction errors.
+rxSetupUsec     | 2       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 2       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 2       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 2       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3DB) Get Auxiliary Scanning Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+rxAdv           | 4       | Number of successfully received advertising packets.
+rxAdvCrc        | 4       | Number of received advertising packets with CRC errors.
+rxAdvTimeout    | 4       | Number of timed out advertising packets (receive timeout).
+txReq           | 4       | Number of sent advertising requests.
+rxRsp           | 4       | Number of successfully received advertising response packets.
+rxRspCrc        | 4       | Number of received advertising response packets with CRC errors.
+rxRspTimeout    | 4       | Number of timed out advertising response packets (receive timeout).
+rxChain         | 4       | Number of successfully received chain packets.
+rxChainCrc      | 4       | Number of received chain packets with CRC errors.
+rxChainTimeout  | 4       | Number of timed out chain packets (receive timeout).
+errScan         | 2       | Number of scan transaction errors.
+rxSetupUsec     | 2       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 2       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 2       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 2       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3DC) Get Periodic Scanning Statistics
+
+Command Input Parameters:
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+rxAdv           | 4       | Number of successfully received advertising packets.
+rxAdvCrc        | 4       | Number of received advertising packets with CRC errors.
+rxAdvTimeout    | 4       | Number of timed out advertising packets (receive timeout).
+rxChain         | 4       | Number of successfully received chain packets.
+rxChainCrc      | 4       | Number of received chain packets with CRC errors.
+rxChainTimeout  | 4       | Number of timed out chain packets (receive timeout).
+errScan         | 4       | Number of scan transaction errors.
+rxSetupUsec     | 2       | Rx packet setup watermark in microseconds.
+txSetupUsec     | 2       | Tx packet setup watermark in microseconds.
+rxIsrUsec       | 2       | Rx ISR processing watermark in microseconds.
+txIsrUsec       | 2       | Tx ISR processing watermark in microseconds.
+
+
+### (0x3DD) Set Connection Phy Tx Power
+
+Set connection's TX power level for a PHY.
+
+Command Input Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 2       | Connection handle.
+level           | 1       | Transmit power level.
+phy             | 1       | PHY txPower to change.
+
+Command Complete Output Parameters:
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+status          | 1       | Status error code.
+
+
+### (0x3A0) System Reset
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter        | Length  | Description
+:--------        | :-----  | :----------
+status           | 1       | Status error code.
+lhciResetPending | 1       | Sets to true.
+
+
+### (0x3A1) Enter Bootloader
+
+No input parameters.
+
+Command Complete Output Parameters:
+
+Parameter                  | Length  | Description
+:--------                  | :-----  | :----------
+status                     | 1       | Status error code.
+lhciEnterBootloaderPending | 1       | Sets to true.
+
+
+### (0x3A2) Set LED Pin Map
+
+Remap functions to LED/pin. Each function can specify a pin and polarity.
+
+The parameter `id` describes the LED function. Available values are:
+
+* `0x10` for `PAL_LED_ID_CPU_ACTIVE`: CPU activity
+* `0x11` for `PAL_LED_ID_ERROR`: system fault, exception or failed assertion
+* `0x12` for `PAL_LED_ID_BLE_TX`: BLE radio transmit
+* `0x13` for `PAL_LED_ID_BLE_RX`: BLE radio receive
+* `0x14` for `PAL_LED_ID_CODEC_ACTIVE`: codec activity
+* `0x15` for `PAL_LED_ID_CODEC_FAULT`: codec fault (buffer over/under run or packet loss)
+
+The `mode` parameter describes how the pin is toggled. Available values are:
+
+* `0x00` for active low
+* `0x01` for active high
+* `0xFF` to disable toggle
+
+The `pin` is the pin designator of the GPIO.
+
+Some `id` values are not operational in some build configurations.
+
+`PAL_LED_ID_ERROR` function is persistent; once set, always set.
+
+Command Input Parameters:
+
+Parameter        | Length  | Description
+:--------        | :-----  | :----------
+id               | 1       | LED ID.
+mode             | 1       | Pin mode.
+pin              | 2       | LED pin location.
+
+Command Complete Output Parameters:
+
+Parameter        | Length  | Description
+:--------        | :-----  | :----------
+status           | 1       | Status error code.
+
+
+### (0x3A3) Set Radio Front-End Configuration
+
+Set Radio front-end configuration parameters for on-chip PA (Power Amplifier) and external FEM (Front End Module).
+
+Note: Using this command while a radio option is in progress may have unexpected effects and result in packet corruption.
+
+Command Input Parameters:
+
+Parameter        | Length  | Description
+:--------        | :-----  | :----------
+maxTxPwr         | 1       | Maximum Tx Power.
+antId            | 1       | Antenna ID.
+
+Command Complete Output Parameters:
+
+Parameter        | Length  | Description
+:--------        | :-----  | :----------
+status           | 1       | Status error code.
+
+
+### (0x3B0) Enable or disable Response Observation
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+enable          | 1       | Set to True to enable, False to diable.
+
+Command Complete Output Parameters:
+
+Parameter                  | Length  | Description
+:--------                  | :-----  | :----------
+status                     | 1       | Status error code.
+
+
+### (0x3B1) Set Periodic Advertising Response Observer Slots
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 1       | Least significant 8 bits of the sync handle or the advertiser handle.
+subevent        | 1       | The subevent from the periodic advertisement the host is observing.
+count           | 1       | The number of slots to observe.
+slotList        | count   | The list of slots to observe.
+
+Command Complete Output Parameters:
+
+Parameter                  | Length  | Description
+:--------                  | :-----  | :----------
+status                     | 1       | Status error code.
+
+
+### (0x3B2) Set Response Observation Response Data
+
+Parameter       | Length  | Description
+:--------       | :-----  | :----------
+handle          | 1       | Least significant 8 bits of the sync handle or the advertiser handle.
+role            | 1       | Device role (advertiser or scanner).
+reqEvent        | 2       | Event the Indication came in.
+reqSubevent     | 1       | Subevent the Indication came in.
+rspSubevent     | 1       | Subevent to send the response.
+count           | 1       | The number of responses.
+rspList         | count   | The list of responses.
+
+Command Complete Output Parameters:
+
+Parameter                  | Length  | Description
+:--------                  | :-----  | :----------
+status                     | 1       | Status error code.
+Test Modes
+----------
+-->
+<p>Certain LL features can be disabled to aid in tuning and debugging BB operation.</p>
+<blockquote>
+<div><p>Note: Disabling these features results in a non-compliant LL.</p>
+</div></blockquote>
+<p>The following LL conditional compilations values can be modified in <code class="docutils literal notranslate"><span class="pre">cfg_mac.h</span></code> or as an override value with a compiler flag.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LL_ENABLE_WW</span></code>: Window widening enable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LL_ENABLE_ADV_DLY</span></code>: Enable advertising delay.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LL_ENABLE_SLV_LATENCY</span></code>: Enable slave latency.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LL_ENABLE_LLCP_TIMER</span></code>: Enable LLCP timer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LL_ENABLE_LLCP_STARTUP</span></code>: Enable LL generated LLCP messages at start of connection.</p></li>
+</ul>
+</section>
+<section id="hardware-error-codes">
+<h3>Hardware Error Codes<a class="headerlink" href="#hardware-error-codes" title="Link to this heading"></a></h3>
+<p>The Controller may report unexpected errors by using the <code class="docutils literal notranslate"><span class="pre">LL_ERROR_IND</span></code> event when using “thin HCI’ or the <code class="docutils literal notranslate"><span class="pre">HCI_HW_ERROR_EVT</span></code> HCI event when using a HCI transport.</p>
+<p>Errors reported by the LL will use the standard HCI error codes for the <code class="docutils literal notranslate"><span class="pre">Hardware_Code</span></code>. If an error is detected, the LL will attempt to recover gracefully, but likely the Host and LL are out of sync. The typical error code reported by the LL are the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LL_ERROR_CODE_MEM_CAP_EXCEEDED</span></code>: A transmit buffer was requested beyond the negotiated capability by the LL.</p></li>
+</ul>
+<p>If a serialized HCI transport is used (e.g. UART, SPI), the receive packet state machine may report errors. The state machine will attempt to restart byte processing to the start of frame. The following error codes may be reported:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CHCI_TR_CODE_INVALID_DATA</span> <span class="pre">(0xA0)</span></code>: Invalid data was received.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CHCI_TR_CODE_INVALID_DATA_LEN</span> <span class="pre">(0xA1)</span></code>: Invalid data length was received.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CHCI_TR_CODE_OUT_OF_MEMORY</span> <span class="pre">(0xA2)</span></code>: Out of memory.</p></li>
+</ul>
+</section>
+<section id="enabling-cte-feature">
+<h3>Enabling CTE Feature<a class="headerlink" href="#enabling-cte-feature" title="Link to this heading"></a></h3>
+<p>The following LL conditional compilations values are set to enable CTE.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CTE_PRESENT=1</span></code>: Set to <code class="docutils literal notranslate"><span class="pre">1</span></code> to indicate CTE HW is available</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INIT_FEAT_CTE</span></code>: defined symbol to initialize CTE feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BT_VER&gt;=10</span></code>: Set to 10 or greater to initialize CTE feature</p></li>
+</ul>
+</section>
+<section id="manual-transmit-power-adjustment">
+<h3>Manual Transmit Power Adjustment<a class="headerlink" href="#manual-transmit-power-adjustment" title="Link to this heading"></a></h3>
+<p>Transmit power is adjustable for all logical transports. This section below describes the APIs used to adjust the transmit power for each logical transport.</p>
+<p>For legacy Advertising, Extended Advertising and Periodic Advertising:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HCI_LE_Set_Extended_Advertising_Parameters::Advertising_TX_Power</span></code> == 0x7F (No Preference)</p>
+<ul>
+<li><p>Primary Channel uses default value set with VS command: <code class="docutils literal notranslate"><span class="pre">LHCI_OPCODE_VS_SET_ADV_TX_PWR</span></code></p></li>
+<li><p>Secondary Channel uses default value set with VS command: <code class="docutils literal notranslate"><span class="pre">LHCI_OPCODE_VS_SET_ADV_TX_PWR</span></code></p></li>
+<li><p>Note: Actual value used is dependent on platform capabilities.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HCI_LE_Set_Extended_Advertising_Parameters::Advertising_TX_Power</span></code> != 0x7F</p>
+<ul>
+<li><p>Primary Channel uses: <code class="docutils literal notranslate"><span class="pre">LHCI_LE_Set_Extended_Advertising_Parameters::Advertising_TX_Power</span></code></p></li>
+<li><p>Secondary Channel uses: <code class="docutils literal notranslate"><span class="pre">LHCI_LE_Set_Extended_Advertising_Parameters::Advertising_TX_Power</span></code></p></li>
+<li><p>Note: Actual value used is dependent on platform capabilities.</p></li>
+</ul>
+</li>
+</ul>
+<p>For ACL (assumes LE Power Control feature is disabled or unmanaged):</p>
+<ul class="simple">
+<li><p>Uses default value in our runtime configuration setting, typically +0dBm. This is adjustable in <code class="docutils literal notranslate"><span class="pre">pal_cfg.h</span></code>.</p></li>
+<li><p>Modification while connected is possible with VS command: <code class="docutils literal notranslate"><span class="pre">LHCI_OPCODE_VS_SET_CONN_TX_PWR</span></code></p></li>
+</ul>
+<p>For BIG/BIS:</p>
+<ul class="simple">
+<li><p>BIS Data PDUs uses default value set with VS command: <code class="docutils literal notranslate"><span class="pre">LHCI_OPCODE_VS_SET_ADV_TX_PWR</span></code></p></li>
+<li><p>BIS Control PDUs uses default value set with VS command: <code class="docutils literal notranslate"><span class="pre">LHCI_OPCODE_VS_SET_ADV_TX_PWR</span></code></p></li>
+</ul>
+<p>For CIG/CIS:</p>
+<ul class="simple">
+<li><p>Uses the same value as its parent ACL. In other words, setting the ACL Tx Power will propagate to the CIS.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023 EM Microelectronic. All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

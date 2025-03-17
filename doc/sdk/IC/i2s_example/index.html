@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I2S Example &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="I2C with EEPROM Example" href="../i2c_example/index.html" />
+    <link rel="prev" title="ADC in Continuous mode using DMA Example" href="../adc_continuous_example/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Examples.html">Sample Applications</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples/drivers.html">EM9305 Drivers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc_single_example/index.html">ADC in Single mode Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adc_continuous_example/index.html">ADC in Continuous mode using DMA Example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">I2S Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run">Run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c_example/index.html">I2C with EEPROM Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec_example/index.html">QDEC Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master_example/index.html">SPI Master Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave_example/index.html">SPI Slave Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc_example/index.html">RTC Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ti_example/index.html">Temperature Indicator (TI) Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer_example/index.html">Timer Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog_example/index.html">Watchdog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/bluetooth.html">Bluetooth Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/firmware_update.html">Firmware Update Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/misc.html">Miscellaneous Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Examples.html">Sample Applications</a></li>
+          <li class="breadcrumb-item"><a href="../examples/drivers.html">EM9305 Drivers</a></li>
+      <li class="breadcrumb-item active">I2S Example</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="i2s-example">
+<h1>I2S Example<a class="headerlink" href="#i2s-example" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The purpose of this example is to show how to use the I2S driver (Master, TX_ONLY).</p>
+<p>This example output 2 sine waves of different frequencies in right and left channels.</p>
+<p>The <a class="reference external" href="https://digilent.com/reference/pmod/pmodi2s2/start">PmodI2S2</a> module is used to demonstrate the use of the I2S master driver.</p>
+<a class="reference internal image-reference" href="../../_images/pmodi2s2.png"><img alt="PmodI2S2" class="align-center" src="../../_images/pmodi2s2.png" style="width: 300.0px; height: 259.0px;" /></a>
+<p>The output is a sine wave of 220.5Hz on the left channel and 441Hz on the right channel.</p>
+<p>I2S configuration:</p>
+<ul class="simple">
+<li><p>Master TX only</p></li>
+<li><p>Protocol I2S, phase delay 1</p></li>
+<li><p>Sampling rate 44.1kHz (Fsync freq)</p></li>
+<li><p>Sclk freq 2.8224MHz (64 * 44.1kHz), fsync length 32, phase length 32</p></li>
+<li><p>Mclk freq 22.5792MHz (512 * 44.1kHz)</p></li>
+<li><p>Data format 16 bits</p></li>
+<li><p>1 tx channel on phase0 and phase1</p></li>
+</ul>
+<p>GPIOs used:</p>
+<ul class="simple">
+<li><p>I2S Sclk on GPIO8</p></li>
+<li><p>I2S Sdata on GPIO9</p></li>
+<li><p>I2S Fsync on GPIO10</p></li>
+<li><p>I2S Mclk on GPIO11</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This example uses GPIOs 8-11 so JTAG can’t be used.</p>
+</div>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>The build target of this example is: <strong>i2s_example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>i2s_example
+</pre></div>
+</div>
+</section>
+<section id="run">
+<h2>Run<a class="headerlink" href="#run" title="Link to this heading"></a></h2>
+<p>To program and run the example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\i</span>2s_example<span class="se">\i</span>2s_example.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>With YY = the COM port number of your DVK.</p>
+<p>You should see the following signals on GPIO8-11:</p>
+<a class="reference internal image-reference" href="../../_images/saleae_i2s_capture.png"><img alt="I2S signals" class="align-center" src="../../_images/saleae_i2s_capture.png" style="width: 650.1px; height: 242.55px;" /></a>
+<p>If you connect the PmodI2S2 to the DVK and a speaker to the PmodI2S2 jack plug, you should be able to hear the sine waves.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../adc_continuous_example/index.html" class="btn btn-neutral float-left" title="ADC in Continuous mode using DMA Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../i2c_example/index.html" class="btn btn-neutral float-right" title="I2C with EEPROM Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

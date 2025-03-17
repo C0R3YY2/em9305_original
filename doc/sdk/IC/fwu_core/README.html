@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The firmware update core sub-system library gathers a set of functions that can be used to
+implement a firmware updater application which main goal is to update any embedded firmware
+image within the device.</p>
+<p>This library comes with a sample application that showcase how to use some of the provided functions.</p>
+<p>The library API covers various functionalities from getting informations on the installed firmware images
+along with their versions to verify a proper and correct new firmware image installation. Using all of
+the provided functions is not mandatory. It depends on the operations a firmware update application needs
+to do and these checks are up to the end user when designing his own application.</p>
+<p>Moreover, the library defines operational codes (so called <cite>opcodes</cite>) that trigger specific actions whenever
+they are received.
+If an end user wants to reuse this library, then the same opcodes will have to be reused because they are
+put into the action answer sent back to the requester.</p>
+<p>For example, the opcode <cite>0x01</cite> corresponds to the function to get firmware information. When receiving this
+opcode, the function <cite>FWU_GetFirmwareUpdateInformationResponse()</cite> is called from the sample application.
+Such function actually does the action of gathering firmware images information. Such data is then pushed
+into the answer that will be sent back to the requester (which can be a mobile phone for example). Added
+to this response packet is the opcode that triggered the action.</p>
+<p>The process depicted in the following diagram is an overview on the various operations that must be done for a firmware image update and the opcodes that must be sent to the device from the source of the update process (e.g. from a mobile device). These opcodes are represented in red background boxes.</p>
+<img alt="../../_images/FW_Update_Opcodes_Sequence.png" src="../../_images/FW_Update_Opcodes_Sequence.png" />
+<p>For example, it is usual that the first operation would be to identify the device and its content. This is why the opcode ` <cite>FWU_CMD_OPCODE_GET_FWU_INFORMATION</cite> is sent. This triggers the execution of the function <cite>FWU_GetFirmwareUpdateInformationResponse()</cite> on the EM9305 side which returns the expected information. Based on that, the requester can decide if a reboot to the FW updater mode is needed, for example because it needs to update the application while the latter is under execution.</p>
+<p>Then, by sending some other opcodes, the next steps of the process are executed and completed until the new firmware image is fully uploaded and verified.</p>
+<p>As said earlier, the sample application <cite>nvm_fwu_target</cite> is a typical example of a firmware update implementation on the device side. The main condition for it to work properly is that the mobile application sends the exact same opcodes that are defined and processed within this example.</p>
+<p>Moreover, this sample application can be used as a starting point to design a more complete one with extra feature which are application dependant. This can be done by adding extra checks and actions when receiving these opcodes.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WSF Developer’s Guide &mdash; em | bleu WSF 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=665bc78d" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Getting Started" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: LightSlateGray" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            em | bleu WSF
+              <img src="_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">WSF Developer’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#audience">Audience</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abbreviations">Abbreviations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#system-context">System Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#folder-organization">Folder Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#porting">Porting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#baremetal">Baremetal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rtos">RTOS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#initialization">Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pool-memory">Pool Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timer">Timer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rtos">RTOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#diagnostics">Diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#main-loop-for-baremetal">Main Loop for baremetal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#threads-for-rtos">Threads for RTOS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wsf-assert-h"><code class="docutils literal notranslate"><span class="pre">wsf_assert.h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wsf-buf-h"><code class="docutils literal notranslate"><span class="pre">wsf_buf.h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wsf-cs-h"><code class="docutils literal notranslate"><span class="pre">wsf_cs.h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wsf-efs-h"><code class="docutils literal notranslate"><span class="pre">wsf_efs.h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wsf-timer-h"><code class="docutils literal notranslate"><span class="pre">wsf_timer.h</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wsf-trace-h"><code class="docutils literal notranslate"><span class="pre">wsf_trace.h</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-considerations">Implementation Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tokenized-tracing">Tokenized Tracing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: LightSlateGray" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">em | bleu WSF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">WSF Developer’s Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/wsf-dg.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wsf-developer-s-guide">
+<span id="wsf-dg"></span><h1>WSF Developer’s Guide<a class="headerlink" href="#wsf-developer-s-guide" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This document is the Developer’s Guide for the Wireless Software Foundation (WSF) software.</p>
+<section id="audience">
+<h3>Audience<a class="headerlink" href="#audience" title="Link to this heading"></a></h3>
+<p>This book is written for experienced software engineers who might or might not have experience with em | bleu products. Such engineers typically have experience writing Bluetooth applications but might have limited experience with em | bleu software. The reader is assumed to have embedded C software experience.</p>
+</section>
+<section id="abbreviations">
+<h3>Abbreviations<a class="headerlink" href="#abbreviations" title="Link to this heading"></a></h3>
+<p>Definitions of abbreviations used in this document are listed below:</p>
+<ul class="simple">
+<li><p>WSF: Wireless Software Foundation software service</p></li>
+</ul>
+</section>
+</section>
+<section id="system-context">
+<h2>System Context<a class="headerlink" href="#system-context" title="Link to this heading"></a></h2>
+<p>WSF is an OS porting layer. It provides general-purpose software services such as queues, timers, and buffer management.</p>
+<p>WSF is dependent on the PAL, a hardware platform abstraction layer. PAL provides the platform specific implementation to the hardware’s BSP libraries.</p>
+</section>
+<section id="folder-organization">
+<h2>Folder Organization<a class="headerlink" href="#folder-organization" title="Link to this heading"></a></h2>
+<p>The contents of the wsf directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>docs</p></td>
+<td class="text-left"><p>Documentation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>include</p></td>
+<td class="text-left"><p>Public API</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sources/port</p></td>
+<td class="text-left"><p>OS porting sources</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/util</p></td>
+<td class="text-left"><p>Common utility sources</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="porting">
+<h2>Porting<a class="headerlink" href="#porting" title="Link to this heading"></a></h2>
+<p>Porting WSF typically consists of the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create common data types for the target compiler.</p></li>
+<li><p>Interface to a system timer to receive timer updates.</p></li>
+<li><p>Implement WSF OS wrapper functions and interfaces.</p></li>
+<li><p>Implement WSF diagnostics.</p></li>
+</ol>
+<a class="reference internal image-reference" href="_images/wsf_port_proc_2x.png"><img alt="_images/wsf_port_proc_2x.png" src="_images/wsf_port_proc_2x.png" style="width: 350px;" /></a>
+<p><strong>Figure 7-1.</strong> WSF porting process to a target system.</p>
+<section id="baremetal">
+<h3>Baremetal<a class="headerlink" href="#baremetal" title="Link to this heading"></a></h3>
+<p>A baremetal (no RTOS) example is provided which implements step 3 described above.</p>
+</section>
+<section id="rtos">
+<h3>RTOS<a class="headerlink" href="#rtos" title="Link to this heading"></a></h3>
+<p>A RTOS example is provided which implements step 3 described above. In step 3, threads can be initialized, created and started.</p>
+</section>
+</section>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h2>
+<p>This section describes the initialization procedures for this component.</p>
+<section id="pool-memory">
+<h3>Pool Memory<a class="headerlink" href="#pool-memory" title="Link to this heading"></a></h3>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">numPools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">mainPoolDesc</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">mainPoolDesc</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">memUsed</span><span class="p">;</span>
+<span class="w">  </span><span class="n">memUsed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WsfBufInit</span><span class="p">(</span><span class="n">numPools</span><span class="p">,</span><span class="w"> </span><span class="n">mainPoolDesc</span><span class="p">);</span>
+<span class="w">  </span><span class="n">WsfHeapAlloc</span><span class="p">(</span><span class="n">memUsed</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="timer">
+<h3>Timer<a class="headerlink" href="#timer" title="Link to this heading"></a></h3>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="n">WsfTimerInit</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="rtos">
+<h3>RTOS<a class="headerlink" href="#rtos" title="Link to this heading"></a></h3>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="n">osKernelInitialize</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="diagnostics">
+<h3>Diagnostics<a class="headerlink" href="#diagnostics" title="Link to this heading"></a></h3>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#if (WSF_TOKEN_ENABLED == true) || (WSF_TRACE_ENABLED == true)</span>
+<span class="w">  </span><span class="n">WsfTraceRegisterHandler</span><span class="p">(</span><span class="n">WsfBufIoWrite</span><span class="p">);</span>
+<span class="w">  </span><span class="n">WsfTraceEnable</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</section>
+<section id="main-loop-for-baremetal">
+<h3>Main Loop for baremetal<a class="headerlink" href="#main-loop-for-baremetal" title="Link to this heading"></a></h3>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">WsfTimerSleepUpdate</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">wsfOsDispatcher</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">WsfTimerSleep</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="threads-for-rtos">
+<h3>Threads for RTOS<a class="headerlink" href="#threads-for-rtos" title="Link to this heading"></a></h3>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">mainThreadId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">osThreadNew</span><span class="p">(</span><span class="n">mainThread</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mainAttr</span><span class="p">);</span><span class="w">    </span><span class="cm">/* Create application main thread. */</span>
+<span class="n">osKernelStart</span><span class="p">();</span><span class="w">                                            </span><span class="cm">/* Start thread execution. */</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>This section describes the compile-time options for this component.</p>
+<section id="wsf-assert-h">
+<h3><code class="docutils literal notranslate"><span class="pre">wsf_assert.h</span></code><a class="headerlink" href="#wsf-assert-h" title="Link to this heading"></a></h3>
+<p>Configurations for <code class="docutils literal notranslate"><span class="pre">wsf_assert.h</span></code> are as follows:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Configuration Name</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_ASSERT_ENABLED</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td class="text-left"><p>Enable assertion statements.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wsf-buf-h">
+<h3><code class="docutils literal notranslate"><span class="pre">wsf_buf.h</span></code><a class="headerlink" href="#wsf-buf-h" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">wsf_buf.h</span></code> is the interface for the buffer pool manager for the Packetcraft stack. All of the dynamically allocated RAM used for message passing within the Packetcraft stack uses the pool buffers.</p>
+<p>The application can choose to allocate memory differently for it’s own purposes. For example, nothing is preventing an application from calling malloc directly and using a completely different chunk of memory for application data, but the controller should use the pool buffer implementation, which is optimized to operate to control the radio (ISR’s, time for allocation/deallocation, etc).  Wsf messages are received by the application for stack events.  And the application must allocate pool buffers when sending zero copy data.</p>
+<p>And the application must call WsfBufInit() when it is initializing the stack.</p>
+<p>The order of the list of pools MUST be in increasing order of pool size (length of buffers in pool).   The pools should be optimized to optimize RAM.  Of course if RAM is not limited, increasing the pool buffers can eliminate issues due to improper optimization or out of memory issues.</p>
+<p>If a WsfBufAlloc() call is made to allocate a buffer, and there are no buffers of a particular buffer pool length, it will return a buffer from the next size up.  That means that if there are a bunch of small buffers being allocated and the small buffer length size is out of buffers, larger and larger buffer sizes could be used, and then when there is an allocation for a larger buffer it could fail if the smaller allocations took them all.</p>
+<p>The wsf_buf.c implementation is specific to the target OS.  The baremetal version has a number of compile time options that can help optimize the pools.  These are mentioned in /wsf/docs/wsf_dg/09_configuration.md. It is a good idea when optimizing the memory pools to understand how they work when measuring requirements for the application.  For example, an application that supports 3 connections would need a different pool configuration than one that supports 1 connection if the pool buffers are properly optimized for the application.</p>
+<p>WSF_BUF_ALLOC_FAIL_ASSERT=TRUE Will assert if WsfBufAlloc() ever returns NULL.</p>
+<p>WSF_BUF_FREE_CHECK_ASSERT=TRUE Will assert if WsfBufFree() is called to free a pointer that does not point to a freeable buffer.</p>
+<p>WSF_BUF_ALLOC_BEST_FIT_FAIL_ASSERT=TRUE Will assert if WsfBufAlloc() ever has to move to the next size up buffer pool.</p>
+<p>WSF_BUF_STATS_HIST=TRUEKeeps an array of every possible allocation length, wsfPoolOverFlowCount, with how many times each has been allocated. Also, keeps an array, wsfPoolOverFlowCount, with a counter for each pool size if it overflows.  Counters are 8-bits when turned on, so it is more useful to prevent rollover by making them 32-bit.</p>
+<p>WSF_BUF_STATS=TRUE For each WsfBufPool size, keeps track of Number of buffers currently allocated from pool, maximum buffers ever allocated from pool, and maximum request length from pool.</p>
+<p>Configurations for <code class="docutils literal notranslate"><span class="pre">wsf_buf.h</span></code> are as follows:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Configuration Name</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_BUF_FREE_CHECK_ASSERT</span> </code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td class="text-left"><p>Check if trying to free a buffer that is already free.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_BUF_ALLOC_BEST_FIT_FAIL_ASSERT</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Assert on best-fit buffer allocation failure.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_BUF_ALLOC_FAIL_ASSERT</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td class="text-left"><p>Assert on buffer allocation failure.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_BUF_STATS_HIST</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Buffer histogram stats.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wsf-cs-h">
+<h3><code class="docutils literal notranslate"><span class="pre">wsf_cs.h</span></code><a class="headerlink" href="#wsf-cs-h" title="Link to this heading"></a></h3>
+<p>Configurations for <code class="docutils literal notranslate"><span class="pre">wsf_cs.h</span></code> are as follows:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Configuration Name</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_CS_STATS</span> </code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Use CS statistics hooks.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wsf-efs-h">
+<h3><code class="docutils literal notranslate"><span class="pre">wsf_efs.h</span></code><a class="headerlink" href="#wsf-efs-h" title="Link to this heading"></a></h3>
+<p>Configurations for <code class="docutils literal notranslate"><span class="pre">wsf_efs.h</span></code> are as follows:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Configuration Name</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_EFS_MAX_FILES</span> </code></p></td>
+<td class="text-left"><p>6</p></td>
+<td class="text-left"><p>Max Number of Files and Media.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_EFS_MAX_MEDIA</span> </code></p></td>
+<td class="text-left"><p>4</p></td>
+<td class="text-left"><p>Max Number of Media.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wsf-timer-h">
+<h3><code class="docutils literal notranslate"><span class="pre">wsf_timer.h</span></code><a class="headerlink" href="#wsf-timer-h" title="Link to this heading"></a></h3>
+<p>Configurations for <code class="docutils literal notranslate"><span class="pre">wsf_timer.h</span></code> are as follows:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Configuration Name</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_MS_PER_TICK</span> </code></p></td>
+<td class="text-left"><p>10</p></td>
+<td class="text-left"><p>Default milliseconds per tick rate.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wsf-trace-h">
+<h3><code class="docutils literal notranslate"><span class="pre">wsf_trace.h</span></code><a class="headerlink" href="#wsf-trace-h" title="Link to this heading"></a></h3>
+<p>Configurations for <code class="docutils literal notranslate"><span class="pre">wsf_trace.h</span></code> are as follows:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Configuration Name</p></th>
+<th class="head text-left"><p>Default</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_TOKEN_ENABLED</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Enable tokenized tracing.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">WSF_TRACE_ENABLED</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td class="text-left"><p>Enable string tracing.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="implementation-considerations">
+<h2>Implementation Considerations<a class="headerlink" href="#implementation-considerations" title="Link to this heading"></a></h2>
+<p>This section discusses various implementation considerations available in this component.</p>
+<section id="tokenized-tracing">
+<h3>Tokenized Tracing<a class="headerlink" href="#tokenized-tracing" title="Link to this heading"></a></h3>
+<p>Tokenized tracing are printf() like statements in the source code which is complied in as an encoded string with a single word parameter. The benefit of this method of tracing is:</p>
+<ol class="arabic simple">
+<li><p>reduced binary size, since the strings are not stored in the binary, and</p></li>
+<li><p>negligible impact to timing.</p></li>
+</ol>
+<p>Certain projects use tokenized tracing. To compile with tokens add <code class="docutils literal notranslate"><span class="pre">TOKEN=1</span></code> to your make command. When invoking make with this configuration, source files are scanned for trace messages and a token definition file, typically called <code class="docutils literal notranslate"><span class="pre">&lt;project-name&gt;.tokens</span></code>, is created.
+A host PC is used to receive token messages over a serial port. The <code class="docutils literal notranslate"><span class="pre">token.monitor</span></code> target is used with the project’s makefile to start the detokenizing script.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023 EM Microelectronic.  All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

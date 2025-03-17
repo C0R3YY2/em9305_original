@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLE Host Developer’s Guide &mdash; em|bleu ble-host 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=665bc78d" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=e6d2ae3a" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="BLE Host API" href="host-api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: LightSlateGray" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            em|bleu ble-host
+              <img src="_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="host-api.html">BLE Host API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BLE Host Developer’s Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: LightSlateGray" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">em|bleu ble-host</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">BLE Host Developer’s Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/host-dg.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ble-host-developer-s-guide">
+<span id="host-dg"></span><h1>BLE Host Developer’s Guide<a class="headerlink" href="#ble-host-developer-s-guide" title="Link to this heading"></a></h1>
+<div class="markdown docutils container" id="intro-md">
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This document is the Developer’s Guide for the em | bleu Host software.</p>
+<section id="audience">
+<h3>Audience<a class="headerlink" href="#audience" title="Link to this heading"></a></h3>
+<p>This book is written for experienced software engineers who might or might not have experience with em | bleu products. Such engineers typically have experience writing Bluetooth applications but might have limited experience with em | bleu software. The reader is assumed to have embedded C software experience.</p>
+</section>
+<section id="abbreviations">
+<h3>Abbreviations<a class="headerlink" href="#abbreviations" title="Link to this heading"></a></h3>
+<p>Definitions of abbreviations used in this document are listed below:</p>
+<ul class="simple">
+<li><p>ACL: Asynchronous Connectionless data packet</p></li>
+<li><p>AD: Advertising Data</p></li>
+<li><p>ARQ: Automatic Repeat reQuest</p></li>
+<li><p>ATT: Attribute Protocol, also attribute protocol software subsystem</p></li>
+<li><p>ATTC: Attribute Protocol Client software subsystem</p></li>
+<li><p>ATTS: Attribute Protocol Server software subsystem</p></li>
+<li><p>BIG: Broadcast Isochronous Group</p></li>
+<li><p>BIS: Broadcast Isochronous Stream</p></li>
+<li><p>BLE: Bluetooth Low Energy</p></li>
+<li><p>CCC: Client Characteristic Configuration</p></li>
+<li><p>CCCD: Client Characteristic Configuration Descriptor</p></li>
+<li><p>CID: Connection Identifier</p></li>
+<li><p>CIG: Connected Isochronous Group</p></li>
+<li><p>CIS: Connected Isochronous Stream</p></li>
+<li><p>CSRK: Connection Signature Resolving Key</p></li>
+<li><p>DM: Device Manager software subsystem</p></li>
+<li><p>GAP: Generic Access Profile</p></li>
+<li><p>GATT: Generic Attribute Profile</p></li>
+<li><p>HCI: Host Controller Interface</p></li>
+<li><p>IRK: Identity Resolving Key</p></li>
+<li><p>JIT: Just In Time</p></li>
+<li><p>L2C: L2CAP software subsystem</p></li>
+<li><p>L2CAP: Logical Link Control Adaptation Protocol</p></li>
+<li><p>LL: Link Layer</p></li>
+<li><p>LLCP: Link Layer Control Protocol</p></li>
+<li><p>LTK: Long Term Key</p></li>
+<li><p>MITM: Man In The Middle pairing (authenticated pairing)</p></li>
+<li><p>OOB: Out Of Band data</p></li>
+<li><p>SMP: Security Manager Protocol, also security manager protocol software subsystem</p></li>
+<li><p>SMPI: Security Manager Protocol Initiator software subsystem</p></li>
+<li><p>SMPR: Security Manager Protocol Responder software subsystem</p></li>
+<li><p>STK: Short Term Key</p></li>
+<li><p>WSF: Wireless Software Foundation software service</p></li>
+</ul>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
+<p>The following documents are referenced by this document.</p>
+<ul class="simple">
+<li><p>1: Bluetooth SIG, “Bluetooth Core Specification”, Version 5.4, January 31, 2023.</p></li>
+<li><p>2: Packetcraft, Inc., “WSF Developer’s Guide”</p></li>
+</ul>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="context-md">
+<section id="system-context">
+<h2>System Context<a class="headerlink" href="#system-context" title="Link to this heading"></a></h2>
+<p>The BLE Host software system consists of two main components:</p>
+<ul class="simple">
+<li><p>em | bleu Host Host</p></li>
+<li><p>em | bleu Profiles Profiles</p></li>
+</ul>
+<p>The software system is dependent on WSF and PAL. WSF is an OS porting layer. It provides general-purpose software services such as queues, timers, and buffer management. PAL is the hardware platform abstraction layer. It provides the platform specific implementation to the hardware’s BSP libraries.</p>
+<section id="system-configuration">
+<h3>System Configuration<a class="headerlink" href="#system-configuration" title="Link to this heading"></a></h3>
+<p>The Host and Profiles are designed to support single-chip SoC systems and dual-chip systems.</p>
+<p>When operating in a single-chip system the Host and Profiles run on the processor inside the SoC. A “thin” HCI layer adapts to the software interface of the target’s BLE Link Layer.</p>
+<p>When operating in a dual-chip system the Host and Profiles run on a microcontroller and communicate with a BLE Controller chip over a wired interface such as UART or SPI. A standard transport-based HCI layer manages the communication between the two devices.</p>
+<a class="reference internal image-reference" href="_images/arch_block_diag_2x.png"><img alt="_images/arch_block_diag_2x.png" src="_images/arch_block_diag_2x.png" style="width: 650px;" /></a>
+<p><strong>Figure 2-1.</strong>  Host and Profiles in a single-chip SoC system and dual-chip system.</p>
+</section>
+<section id="em-bleu-profiles">
+<h3>em | bleu Profiles<a class="headerlink" href="#em-bleu-profiles" title="Link to this heading"></a></h3>
+<p><a id="embleu-profiles"></a></p>
+<p>Profiles consists of <em>Sample Application</em>, interoperable Bluetooth <em>Profiles and Services</em> components and an <em>Application Framework</em> for simplified application development and porting.</p>
+<a class="reference internal image-reference" href="_images/arch_block_diag_app_2x.png"><img alt="_images/arch_block_diag_app_2x.png" src="_images/arch_block_diag_app_2x.png" style="width: 400px;" /></a>
+<p><strong>Figure 2-2.</strong> em | bleu Profiles software system.</p>
+<!-- For more information see [ATT API](../att_api/index.html). -->
+<section id="sample-applications">
+<h4>Sample Applications<a class="headerlink" href="#sample-applications" title="Link to this heading"></a></h4>
+<p>em | bleu Bluetooth Low Energy sample applications provides example source code for products such as a proximity keyfob, health sensor, and watch. The sample applications are designed with a product-oriented focus, with each application supporting one or more BLE profile. The sample applications interface to the Profiles and Services and the Application Framework.</p>
+</section>
+<section id="profiles-and-services">
+<h4>Profiles and Services<a class="headerlink" href="#profiles-and-services" title="Link to this heading"></a></h4>
+<p>The profiles and services are interoperable components designed to Bluetooth profile and service specification requirements. The profiles and services are used in applications to implement particular profile and service features.</p>
+<p>The profiles are implemented in separate files for each profile role. The services, however, may be grouped together in files based on their logical function and the profile they are used by.</p>
+</section>
+<section id="application-framework">
+<h4>Application Framework<a class="headerlink" href="#application-framework" title="Link to this heading"></a></h4>
+<p>The Application Framework performs many operations common to BLE embedded applications, such as:</p>
+<ul class="simple">
+<li><p>Application-level device, connection, and security management.</p></li>
+<li><p>Simple user interface abstractions for button press handling, sounds, display, and other user feedback.</p></li>
+<li><p>An abstracted device database for storing bonding data and other device parameters.</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/app_frame_ss_2x.png"><img alt="_images/app_frame_ss_2x.png" src="_images/app_frame_ss_2x.png" style="width: 500px;" /></a>
+<p><strong>Figure 2-3.</strong> Application Framework software subsystem.</p>
+<p>The Application Framework consists of several modules, each with their own API interface file:</p>
+<ul class="simple">
+<li><p><strong>Main</strong>: Device, connection, and security management.</p></li>
+<li><p><strong>UI</strong>: User interface abstraction.</p></li>
+<li><p><strong>DB</strong>: Device database.</p></li>
+<li><p><strong>HW</strong>: Hardware sensor interface abstraction.</p></li>
+</ul>
+</section>
+</section>
+<section id="em-bleu-host">
+<h3>em | bleu Host<a class="headerlink" href="#em-bleu-host" title="Link to this heading"></a></h3>
+<p><a id="embleu-host"></a></p>
+<p>The Host is complete host protocol stack solution for single-mode BLE devices. It consists of five protocol layers:</p>
+<ul class="simple">
+<li><p><strong>ATT</strong>: Attribute protocol.</p></li>
+<li><p><strong>SMP</strong>: Security manager protocol.</p></li>
+<li><p><strong>L2C</strong>: L2CAP protocol.</p></li>
+<li><p><strong>HCI</strong>: Host controller interface protocol.</p></li>
+<li><p><strong>DM</strong>: Device manager.</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/pack_host_ss_2x.png"><img alt="_images/pack_host_ss_2x.png" src="_images/pack_host_ss_2x.png" style="width: 400px;" /></a>
+<p><strong>Figure 2-4.</strong> em | bleu Host software system.</p>
+<section id="att">
+<h4>ATT<a class="headerlink" href="#att" title="Link to this heading"></a></h4>
+<p>The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and attribute protocol server (ATTS).</p>
+<p>ATTC implements all attribute protocol client features and is designed to meet the client requirements of the generic attribute profile. ATTC can support multiple simultaneous connections to different servers.</p>
+<p>ATTS implements all attribute protocol server features and has support for multiple simultaneous client connections. ATTS also implements the server features defined by the generic attribute
+profile.</p>
+<p>For more information see the ATT API.</p>
+</section>
+<section id="smp">
+<h4>SMP<a class="headerlink" href="#smp" title="Link to this heading"></a></h4>
+<p>The SMP subsystem implements the security manager protocol. It contains two independent subsystems:</p>
+<ul class="simple">
+<li><p>The initiator (SMPI). SMPI implements the initiator features of the security manager protocol and has support for multiple simultaneous connections.</p></li>
+<li><p>The responder (SMPR). SMPR implements the responder features of the security manager protocol and has support for only one connection (by Bluetooth specification design).</p></li>
+</ul>
+<p>SMP also implements the cryptographic toolbox, which uses AES. The interface to AES is asynchronous and abstracted through WSF. SMP also implements functions to support data signing.</p>
+<!-- For more information see [SMP API](../smp_api/index.html). -->
+</section>
+<section id="l2c">
+<h4>L2C<a class="headerlink" href="#l2c" title="Link to this heading"></a></h4>
+<p>The L2C subsystem implements the BLE L2CAP protocol. It is a substantially scaled-down version of regular Bluetooth L2CAP.</p>
+<p>In the TX data path, the main function of L2C is building L2CAP packets and sending them to HCI. In the RX data path, its main function is receiving packets from HCI and routing them to SMP, ATT, or L2CAP connection-oriented channels.</p>
+<p>L2C also implements the connection parameter update procedure.</p>
+<!-- For more information see [L2CAP API](../l2cap_api/index.html). -->
+</section>
+<section id="hci">
+<h4>HCI<a class="headerlink" href="#hci" title="Link to this heading"></a></h4>
+<p>The HCI subsystem implements the host-controller interface specification. This specification defines commands, events, and data packets sent between a BLE protocol stack on a host and a link layer on a controller.</p>
+<p>The HCI API is optimized to be a thin interface layer for a single chip system. It is configurable for either a single chip system or traditional system with wired HCI.</p>
+<p>This configurability is accomplished through a layered implementation. A core layer can be configured for either a single chip system or wired HCI. A transport and driver layer below the core layer can be configured for different wired transports such as UART.</p>
+<!-- For more information see [HCI API](../hci_api/index.html).-->
+</section>
+<section id="dm">
+<h4>DM<a class="headerlink" href="#dm" title="Link to this heading"></a></h4>
+<p>The DM subsystem implements device management procedures required by the stack. These procedures are partitioned by procedure category and device role (master or slave). The following procedures are implemented in DM:</p>
+<ul class="simple">
+<li><p><strong>Advertising and device visibility</strong>: Enable/disable advertising, set advertising parameters and data, set connectability and discoverability.</p></li>
+<li><p><strong>Scanning and device discovery</strong>: Start/stop scanning, set scan parameters, advertising reports, name discovery.</p></li>
+<li><p><strong>Connection management</strong>: Create/accept/remove connections, set/update connection parameters, read RSSI.</p></li>
+<li><p><strong>Security management</strong>: Bonding, storage of security parameters, authentication, encryption, authorization, random address management.</p></li>
+<li><p><strong>Local device management</strong>: Initialization and reset, set local parameters, vendor-specific commands.</p></li>
+</ul>
+<p>DM procedures support the Generic Access Profile (GAP) when applicable.</p>
+<!-- For more information see [DM API](../dm_api/index.html). -->
+</section>
+<section id="wsf">
+<h4>WSF<a class="headerlink" href="#wsf" title="Link to this heading"></a></h4>
+<p>The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, and general-purpose software service used by the software system. The goal of WSF is to stay small and lean, supporting only the basic services required by the stack. It consists of the following:</p>
+<ul class="simple">
+<li><p>Event handler service with event and message passing.</p></li>
+<li><p>Timer service.</p></li>
+<li><p>Queue and buffer management service.</p></li>
+<li><p>Portable data types.</p></li>
+<li><p>Critical sections and task locking.</p></li>
+<li><p>Trace and assert diagnostic services.</p></li>
+<li><p>Security interfaces for encryption and random number generation.</p></li>
+</ul>
+<p>For more information see WSF Developer’s Guide.</p>
+</section>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="arch-md">
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>This section describes the software architecture used by the em | bleu Host.</p>
+<section id="interfaces">
+<h3>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h3>
+<p>The software system uses function calls and callback functions in its APIs, as described below.</p>
+<section id="message-passing-api-functions">
+<h4>Message Passing API Functions<a class="headerlink" href="#message-passing-api-functions" title="Link to this heading"></a></h4>
+<p>Message passing API functions result in a message being sent to the task running the stack. These functions typically involve a complex operation, such as creating a connection, and do not access internal (private) data.</p>
+</section>
+<section id="direct-execute-api-functions">
+<h4>Direct Execute API Functions<a class="headerlink" href="#direct-execute-api-functions" title="Link to this heading"></a></h4>
+<p>Direct execute API functions run entirely in the context of the calling function. These functions typically involve simple operations like reading or setting internal data. Task scheduling is locked when accessing internal data.</p>
+</section>
+<section id="callback-functions">
+<h4>Callback Functions<a class="headerlink" href="#callback-functions" title="Link to this heading"></a></h4>
+<p>Callback functions are implemented by the client using the protocol stack and execute in the context of the stack.</p>
+<p>Callback functions are used to send events and data to the client.</p>
+<a class="reference internal image-reference" href="_images/message_pass_and_dei_2x.png"><img alt="_images/message_pass_and_dei_2x.png" src="_images/message_pass_and_dei_2x.png" style="width: 400px;" /></a>
+<p><strong>Figure 3-1.</strong> Message passing and direct execute interfaces.</p>
+</section>
+</section>
+<section id="event-handlers-and-tasks">
+<h3>Event Handlers and Tasks<a class="headerlink" href="#event-handlers-and-tasks" title="Link to this heading"></a></h3>
+<p>em | bleu software system defines an event handler service that forms a basis for the asynchronous communication mechanisms used in the system. An event handler can receive messages and events. Each software subsystem typically has its own event handler; for example, each layer of the protocol stack has its own event handler.</p>
+<p>The stack is designed to be flexible and allow for different task architectures. The software system does not define any tasks but defines some interfaces to tasks. It relies on the target OS to implement tasks and manage the timer and event handler services from target OS tasks. A typical single-chip software system will use separate tasks for the application, stack, and link layer. However there is nothing in the design of the protocol stack or profiles that prevent them from being run in the same task as other software systems.</p>
+<a class="reference internal image-reference" href="_images/ex_sys_show_ehe_2x.png"><img alt="_images/ex_sys_show_ehe_2x.png" src="_images/ex_sys_show_ehe_2x.png" style="width: 700px;" /></a>
+<p><strong>Figure 3-2.</strong> Example system showing event handlers executing within an OS task.</p>
+</section>
+<section id="data-path">
+<h3>Data Path<a class="headerlink" href="#data-path" title="Link to this heading"></a></h3>
+<p>This section describes the data flow between applications and the HCI.</p>
+<section id="tx-path">
+<h4>TX Path<a class="headerlink" href="#tx-path" title="Link to this heading"></a></h4>
+<p>The TX data path covers the flow of data as it is sent from the application, through the stack, and then on to HCI.</p>
+<p>When copying there can be two data copies in the TX data path:</p>
+<ul class="simple">
+<li><p>When data is sent from the application to the stack</p></li>
+<li><p>When data is sent from the stack to HCI</p></li>
+</ul>
+<p>As an optimization the Host provides zero-copy APIs that use a single data buffer between the application and stack. A zero-copy API is also utilized between the stack and HCI when running on a single CPU architecture.</p>
+<p>The stack does not copy data internally between layers.</p>
+<p>The allocation and deallocation of data buffers takes place at the point where data is copied. When the application sends data to the stack, a buffer is allocated and data is copied to the buffer.</p>
+<p>When data is sent from the stack to the HCI or the link layer, the data is copied to an HCI or link layer buffer and the stack buffer is deallocated.</p>
+<a class="reference internal image-reference" href="_images/tx_data_path_2x.png"><img alt="_images/tx_data_path_2x.png" src="_images/tx_data_path_2x.png" style="width: 500px;" /></a>
+<p><strong>Figure 3-3.</strong> TX data path.</p>
+<p>In this scenario, the application calls an ATTC API function which initiates transmission of a packet. The ATTC function allocates a buffer and builds an attribute protocol packet, while reserving space at the start of the packet for the L2CAP and HCI headers. ATTC looks up the HCI handle for this instance and calls an L2C function, passing the handle along with the packet and packet length to L2C.</p>
+<p>L2C checks that the link for this handle is connected. If it is not, L2C discards the packet.</p>
+<p><span class="notes"><strong>Note</strong>: It is OK to silently discard the packet in this race condition because ATTC will be notified immediately afterwards that the link has been disconnected.</span></p>
+<p>L2C then builds the L2CAP and HCI headers for the packet and calls an HCI function to send the packet to HCI.</p>
+<p>HCI then processes the packet. The detailed operation of HCI depends on the system configuration. In general HCI will copy the data, deallocate the buffer, and queue the data.</p>
+</section>
+<section id="rx-path">
+<h4>RX Path<a class="headerlink" href="#rx-path" title="Link to this heading"></a></h4>
+<p>The RX data path covers the flow of data as it is sent from HCI, through the stack, and then on to
+the application. Like the TX path, there can be two data copies in the RX data path: when data is
+sent from the stack to the application and when data is sent from HCI to the stack. The stack does
+not copy data internally between layers.</p>
+<p>Buffers are allocated by the HCI layer and then deallocated internally by the stack.</p>
+<a class="reference internal image-reference" href="_images/rx_data_path_2x.png"><img alt="_images/rx_data_path_2x.png" src="_images/rx_data_path_2x.png" style="width: 500px;" /></a>
+<p><strong>Figure 3-4.</strong> RX data path.</p>
+<p>HCI receives a data packet. It allocates a WSF buffer and copies the entire data packet, including the HCI handle and length, to the buffer. Then HCI calls an L2C callback function to send the data to L2C.</p>
+<p>L2C receives the packet and performs some basic error checking on the length and PSM. If there is an error the packet is discarded and the buffer is deallocated. If the packet is good it is routed to SMP, ATT, or L2CAP connection-oriented channels. In this example the packet is routed to ATT and L2C calls an ATT callback function.</p>
+<p>ATT receives the packet and performs error checking on the length and the attribute opcode. If there is an error the packet is discarded and the buffer is deallocated. If the packet is good it is routed to either ATTC or ATTS. In this example the packet is routed to ATTS and ATT calls an ATTS callback function.</p>
+<p>ATTS processes the received packet according to the attribute protocol specification. In this example, the packet is passed to the application for further processing. ATTS calls the application callback function which allocates a WSF message buffer, copies data to the buffer, and sends the message to the application task. After calling the application callback function ATTS deallocates the packet buffer.</p>
+</section>
+</section>
+<section id="connection">
+<h3>Connection<a class="headerlink" href="#connection" title="Link to this heading"></a></h3>
+<section id="create-connection">
+<h4>Create Connection<a class="headerlink" href="#create-connection" title="Link to this heading"></a></h4>
+<p>Before a connection is created the application determines the peer device with which to connect. If the application has not discovered the peer it initiates discovery and the stack starts a scan. When the peer is found the discovery result is returned to the application. The application then calls the DM Connection Open API function which initiates a connection. The stack allocates a connection context for this new connection and then creates the connection. When the connection is complete the stack allocates connection contexts for ATTC, ATTS, and SMPI if used and not already allocated, and sends a DM Connection Opened Indication up to the application.</p>
+</section>
+<section id="accept-connection">
+<h4>Accept Connection<a class="headerlink" href="#accept-connection" title="Link to this heading"></a></h4>
+<p>The application sets the advertising parameters, advertising data and scan response data. Then the application enables advertising.</p>
+<p>When a peer device connects the stack will receive an HCI_LE_Connection_Complete_Event. The stack allocates a device record, if not already allocated, and a connection context. The stack also allocates connection contexts for ATTC, ATTS, and SMPR if used and not already allocated, and sends a DM Connection Opened Indication up to the application.</p>
+</section>
+</section>
+<section id="hci">
+<h3>HCI<a class="headerlink" href="#hci" title="Link to this heading"></a></h3>
+<p>This section describes the platform and transport independent portion of the design.</p>
+<section id="main-event-handler">
+<h4>Main Event Handler<a class="headerlink" href="#main-event-handler" title="Link to this heading"></a></h4>
+<p>A WSF event handler is used to process events and messages such as the HCI command timeout event (if applicable) and received HCI events and ACL data. An example event handler for the dual chip implementation is in function <code class="docutils literal notranslate"><span class="pre">HciCoreHandler()</span></code> in file <code class="docutils literal notranslate"><span class="pre">hci_core_ps.c</span></code>. This function does the following:</p>
+<ul class="simple">
+<li><p>Handle HCI command timeout</p></li>
+<li><p>Process incoming data in the HCI Rx queue</p></li>
+<li><p>Handle the reset sequence during HCI event processing</p></li>
+<li><p>Execute the reassembly function for incoming ACL data.</p></li>
+<li><p>Pass reassembled ACL packets to the stack via callback.</p></li>
+</ul>
+</section>
+<section id="reset-sequence">
+<h4>Reset Sequence<a class="headerlink" href="#reset-sequence" title="Link to this heading"></a></h4>
+<p>The reset sequence procedure is executed on system initialization. Its purpose is to send an HCI reset to the controller or link layer and also read static information from the controller or link layer. The reset sequence procedure typically sends an HCI Reset command followed by several HCI commands in sequence. For a dual chip implementation, this function sends a sequence of HCI commands which may be specific to the particular manufacturer of the controller. It also parses received HCI Command Complete events and uses these events to trigger transmission of the next command in the sequence.</p>
+<p>The dual chip example implementation is in function <code class="docutils literal notranslate"><span class="pre">hciCoreResetSequence()</span></code> in file <code class="docutils literal notranslate"><span class="pre">hci_vs.c</span></code>.</p>
+</section>
+<section id="optimization-api">
+<h4>Optimization API<a class="headerlink" href="#optimization-api" title="Link to this heading"></a></h4>
+<p>The optimization API is an optimized interface for certain HCI commands which simply read a value. The stack uses these functions rather than their corresponding functions in the command interface. The functions in the optimization API are described in more detail in [2]. The example dual chip implementation is in file <code class="docutils literal notranslate"><span class="pre">hci_core_ps.c</span></code>.</p>
+</section>
+<section id="connection-management">
+<h4>Connection Management<a class="headerlink" href="#connection-management" title="Link to this heading"></a></h4>
+<p>HCI needs to store state for each connection in order to manage fragmentation and reassembly and to properly account for controller ACL packet buffers. The following connection management functions are implemented in file <code class="docutils literal notranslate"><span class="pre">hci_core.c</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreConnOpen()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreConnClose()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreConnAlloc()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreConnFree()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreConnByHandle()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreNextConnFragment()</span></code></p></li>
+</ul>
+</section>
+<section id="data-path-configuration">
+<h4>Data Path Configuration<a class="headerlink" href="#data-path-configuration" title="Link to this heading"></a></h4>
+<p>There are two functions in <code class="docutils literal notranslate"><span class="pre">hci_core.c</span></code> used to configure the receive and transmit data paths. Function <code class="docutils literal notranslate"><span class="pre">HciSetAclQueueWatermarks()</span></code> sets the high and low watermarks used for flow control in the transmit data path. When the number of queued buffers reaches the high watermark flow control is asserted. When the number of buffers reaches the low watermark flow control is released.</p>
+<p>Function <code class="docutils literal notranslate"><span class="pre">HciSetMaxRxAclLen()</span></code> is used to set the maximum reassembled ACL packet size. The minimum value is set to 27, which is also the default value. To receive larger ACL packets, for example when SMP BLE secure connections is used or larger ATT MTU sizes are used, this function must be called to set a higher value.</p>
+</section>
+<section id="fragmentation">
+<h4>Fragmentation<a class="headerlink" href="#fragmentation" title="Link to this heading"></a></h4>
+<p>ACL packet fragmentation is performed by functions in file <code class="docutils literal notranslate"><span class="pre">hci_core.c</span></code>. When a packet is transmitted and it is larger than the controller ACL packet size then the fragmentation procedure is started. The larger packet is broken into multiple smaller ACL packets up to the controller packet size in length. Fragments are sent from the original large ACL packet buffer so no new buffer allocation or data copy is required for fragmentation. However this does require special consideration for deallocation the large ACL buffer. When the transmission of each ACL fragment packet is complete (or upon transmission of an unfragmented ACL packet) function <code class="docutils literal notranslate"><span class="pre">hciCoreTxAclComplete()</span></code> must be called by the transport layer. This function frees the ACL packet buffer when fragmentation is complete.</p>
+</section>
+<section id="reassembly">
+<h4>Reassembly<a class="headerlink" href="#reassembly" title="Link to this heading"></a></h4>
+<p>ACL packet reassembly is performed by function <code class="docutils literal notranslate"><span class="pre">hciCoreAclReassembly()</span></code> in file <code class="docutils literal notranslate"><span class="pre">hci_core.c</span></code>. This function allocates a large buffer that will contain the entire reassembled packet and then copies received packet fragments to this buffer to reassemble the packet. This function also performs a number of protocol and length checks to verify the received packet fragments are valid.</p>
+</section>
+<section id="vendor-specific-commands-and-events">
+<h4>Vendor-Specific Commands and Events<a class="headerlink" href="#vendor-specific-commands-and-events" title="Link to this heading"></a></h4>
+<p>The HCI code is designed to accommodate Vendor-Specific HCI commands and events. Functions to handle these commands and events can be added to <code class="docutils literal notranslate"><span class="pre">hci_vs.c</span></code>. The example implementation for dual chip contains the following placeholder functions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreVSCmdCmplRcvd()</span></code>: Handle vendor specific HCI command complete events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreVsEvtRcvd()</span></code>: Handle vendor specific HCI events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hciCoreHwErrorRcvd()</span></code>: Perform internal HCI processing for hardware error events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HciVsInit()</span></code>: Vendor-Specific controller initialization.</p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h3>HCI<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<section id="acl-transmit-data-path">
+<h4>ACL Transmit Data Path<a class="headerlink" href="#acl-transmit-data-path" title="Link to this heading"></a></h4>
+<p>The ACL transmit data path covers the ACL packet data flow from the stack to the wired transport or link layer. The data path implements several HCI procedures which may optionally be included depending on the requirements of the platform. Figure 3-7 shows the typical operation of this data path.</p>
+<p>Data packets passed to function <code class="docutils literal notranslate"><span class="pre">HciSendAclData()</span></code> are queued. If the packet is longer than the maximum ACL packet buffer size of the controller then the packet is fragmented. Then packets are passed to an admission control mechanism which implements HCI packet flow control, processing of HCI Number of Completed Packets events, and sending of flow control events to the HCI client. Function <code class="docutils literal notranslate"><span class="pre">HciTrSendAclData()</span></code> is a transport-specific function that sends a single ACL packet to the wired transport or link layer.</p>
+<a class="reference internal image-reference" href="_images/trans_data_path_2x.png"><img alt="_images/trans_data_path_2x.png" src="_images/trans_data_path_2x.png" style="width: 800px;" /></a>
+<p><strong>Figure 3-7.</strong> Typical transmit data path.</p>
+</section>
+<section id="acl-receive-data-path">
+<h4>ACL Receive Data Path<a class="headerlink" href="#acl-receive-data-path" title="Link to this heading"></a></h4>
+<p>The ACL receive data path covers ACL packet flow from the link layer or wired transport to the stack. The data path implements several HCI procedures which may optionally be included depending on the requirements of the platform. Figure 3-8 shows the typical operation of this data path.
+First the packet is received from the wired transport or link layer. If the packet is fragmented it is reassembled. Then the packet is queued to the HCI event handler. When the HCI event handler runs it processes the queue and calls the client callback function to send the packet to the stack.</p>
+<a class="reference internal image-reference" href="_images/receive_data_path_2x.png"><img alt="_images/receive_data_path_2x.png" src="_images/receive_data_path_2x.png" style="width: 800px;" /></a>
+<p><strong>Figure 3-8.</strong> Typical receive data path.</p>
+</section>
+<section id="iso-transmit-data-path">
+<h4>ISO Transmit Data Path<a class="headerlink" href="#iso-transmit-data-path" title="Link to this heading"></a></h4>
+<p>Similar to the ACL transmit data path, the ISO transmit data path covers the ISO packet data flow from the stack to the wired transport or link layer.</p>
+<p>Data packets passed to function <code class="docutils literal notranslate"><span class="pre">HciSendIsoData()</span></code> go through an admission control mechanism which implements processing of HCI Number of Completed ISO Packets events. Since fragmentation is not supported yet, the ISO packet is processed only if it is shorter than or equal to the maximum OSI packet buffer size of the controller. Function <code class="docutils literal notranslate"><span class="pre">HciTrSendIsoData()</span></code> is a transport-specific function that sends a single ISO packet to the wired transport or link layer.</p>
+</section>
+<section id="iso-receive-data-path">
+<h4>ISO Receive Data Path<a class="headerlink" href="#iso-receive-data-path" title="Link to this heading"></a></h4>
+<p>Similar to the ACL receive data path, the ISO receive data path covers ISO packet flow from the link layer or wired transport to the stack.</p>
+<p>First the packet is received from the wired transport or link layer. Since reassembly is not supported yet, only complete SDUs are processed. Then the packet is queued to the HCI event handler. When the HCI event handler runs it processes the queue and calls the client callback function to send the packet to the stack.</p>
+</section>
+<section id="command-data-path">
+<h4>Command Data Path<a class="headerlink" href="#command-data-path" title="Link to this heading"></a></h4>
+<p>The command data path covers commands sent from the stack to the wired transport or link layer. Figure 3-9 shows the typical operation of this data path. The stack calls an HCI API function to send an HCI command. If a command is already pending the command is queued. When a Command Complete or Command Status event is received function <code class="docutils literal notranslate"><span class="pre">hciTrSendCmd()</span></code> is called to send the next command to the wired transport or link layer.</p>
+<p>For wired transport, a timeout handles a non-responsive controller that does not send back an event. If a timeout occurs, an HCI event for the corresponding command is internally generated with an error status.</p>
+<a class="reference internal image-reference" href="_images/command_data_path_2x.png"><img alt="_images/command_data_path_2x.png" src="_images/command_data_path_2x.png" style="width: 650px;" /></a>
+<p><strong>Figure 3-9.</strong> Typical command data path.</p>
+</section>
+<section id="event-data-path">
+<h4>Event Data Path<a class="headerlink" href="#event-data-path" title="Link to this heading"></a></h4>
+<p>The event data path covers events sent from the link layer or wired transport to the stack. Figure 3-10 shows the typical operation of this data path.</p>
+<p>After an HCI event is received from the wired transport or link layer it is sent in a message to the HCI event handler. When the HCI event handler executes it processes the message and calls the HCI client callback, if applicable.</p>
+<a class="reference internal image-reference" href="_images/ev_data_path_2x.png"><img alt="_images/ev_data_path_2x.png" src="_images/ev_data_path_2x.png" style="width: 800px;" /></a>
+<p><strong>Figure 3-10.</strong> Typical event data path.</p>
+</section>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="org-md">
+<section id="folder-organization">
+<h2>Folder Organization<a class="headerlink" href="#folder-organization" title="Link to this heading"></a></h2>
+<p>The contents of the root directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>ble-host</p></td>
+<td class="text-left"><p>Host software</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ble-profiles</p></td>
+<td class="text-left"><p>Profiles and Services software</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>platform</p></td>
+<td class="text-left"><p>Platform integration and example source</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>projects</p></td>
+<td class="text-left"><p>project sample applications</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wsf</p></td>
+<td class="text-left"><p>Wireless Software Foundation</p></td>
+</tr>
+</tbody>
+</table>
+<section id="ble-host-folder">
+<h3>ble-host folder<a class="headerlink" href="#ble-host-folder" title="Link to this heading"></a></h3>
+<p>The contents of the ble-host directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration / Makefiles</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>include</p></td>
+<td class="text-left"><p>Host API</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/hci</p></td>
+<td class="text-left"><p>Host HCI source</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sources/sec</p></td>
+<td class="text-left"><p>Host security support (AES, ECC)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/stack</p></td>
+<td class="text-left"><p>Host stack source</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ble-profiles-folder">
+<h3>ble-profiles folder<a class="headerlink" href="#ble-profiles-folder" title="Link to this heading"></a></h3>
+<p>The contents of the ble-profiles directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration / Makefiles</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>include</p></td>
+<td class="text-left"><p>Profiles API</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/af</p></td>
+<td class="text-left"><p>Application framework</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sources/profiles</p></td>
+<td class="text-left"><p>BLE profiles</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/services</p></td>
+<td class="text-left"><p>BLE services</p></td>
+</tr>
+</tbody>
+</table>
+<p>The apps directory contains the Application Framework.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>af</p></td>
+<td class="text-left"><p>App Framework</p></td>
+</tr>
+</tbody>
+</table>
+<p>The profiles directory contains the BLE profiles.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>anpc</p></td>
+<td class="text-left"><p>Alert Notification Profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>bas</p></td>
+<td class="text-left"><p>Battery Service server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>blpc</p></td>
+<td class="text-left"><p>Blood Pressure Profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>blps</p></td>
+<td class="text-left"><p>Blood Pressure Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>cpp</p></td>
+<td class="text-left"><p>Cycling Power Profile server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>cscp</p></td>
+<td class="text-left"><p>Cycling Speed and Cadence Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>dis</p></td>
+<td class="text-left"><p>Device Information Service client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>fmpl</p></td>
+<td class="text-left"><p>Find Me Profile locator</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>gap</p></td>
+<td class="text-left"><p>GAP Profile</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>gatt</p></td>
+<td class="text-left"><p>Generic Attribute Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>glpc</p></td>
+<td class="text-left"><p>Glucose Profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>glps</p></td>
+<td class="text-left"><p>Glucose Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>hid</p></td>
+<td class="text-left"><p>HID device</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>hrpc</p></td>
+<td class="text-left"><p>Heart Rate Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>hrps</p></td>
+<td class="text-left"><p>Heart Rate Profile server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>htpc</p></td>
+<td class="text-left"><p>Health Thermometer Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>htps</p></td>
+<td class="text-left"><p>Health Thermometer Profile server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>paspc</p></td>
+<td class="text-left"><p>Phone Alert Status Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>plxpc</p></td>
+<td class="text-left"><p>Pulse Oximeter Profile collector</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>plxps</p></td>
+<td class="text-left"><p>Pulse Oximeter Profile sensor</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>rscp</p></td>
+<td class="text-left"><p>Running Speed and Cadence Profile sensor</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>scpps</p></td>
+<td class="text-left"><p>Scan Parameter Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sensor</p></td>
+<td class="text-left"><p>Example Temperature and Gyroscope Service Profile</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>tipc</p></td>
+<td class="text-left"><p>Time Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>udsc</p></td>
+<td class="text-left"><p>User Data Service Collector</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>uribeacon</p></td>
+<td class="text-left"><p>Uribeacon Configuration Profile</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wdxs</p></td>
+<td class="text-left"><p>Proprietary Data Exchange Server Profile</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>wdxc</p></td>
+<td class="text-left"><p>Proprietary Data Exchange Client Profile</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wpc</p></td>
+<td class="text-left"><p>Packetcraft proprietary profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>wspc</p></td>
+<td class="text-left"><p>Weight Scale Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wsps</p></td>
+<td class="text-left"><p>Weight Scale Profile server</p></td>
+</tr>
+</tbody>
+</table>
+<p>The services directory contains the BLE services.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>svc_alert</p></td>
+<td class="text-left"><p>Example Alert-related services implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_batt</p></td>
+<td class="text-left"><p>Example Battery service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_bps</p></td>
+<td class="text-left"><p>Example Blood Pressure service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_core</p></td>
+<td class="text-left"><p>Example GATT and GAP service implementations</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_cps</p></td>
+<td class="text-left"><p>Example Cycling Power Service Server implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_cscs</p></td>
+<td class="text-left"><p>Example Cycling Speed and Cadence Service Server implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_cte</p></td>
+<td class="text-left"><p>Example Constant Tone Extension Service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_dis</p></td>
+<td class="text-left"><p>Example Device Information Service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_gls</p></td>
+<td class="text-left"><p>Example Glucose service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_gyro</p></td>
+<td class="text-left"><p>Example gyroscope sensor service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_hid</p></td>
+<td class="text-left"><p>Human Interface Device service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_hrs</p></td>
+<td class="text-left"><p>Example Heart Rate service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_hts</p></td>
+<td class="text-left"><p>Example Health Thermometer service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_ipss</p></td>
+<td class="text-left"><p>Example Internet Profile Support Service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_mics</p></td>
+<td class="text-left"><p>Example Microphone Control Service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_plxs</p></td>
+<td class="text-left"><p>Example Pulse Oximeter Service Server implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_px</p></td>
+<td class="text-left"><p>Example Proximity services implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_rscs</p></td>
+<td class="text-left"><p>Example Running Speed and Cadence Service Server implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_scpss</p></td>
+<td class="text-left"><p>Example Scan Parameter Service Server implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_temp</p></td>
+<td class="text-left"><p>Example temperature sensor service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_time</p></td>
+<td class="text-left"><p>Example Time-related services implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_uricfg</p></td>
+<td class="text-left"><p>UriCfg configuration service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_wdxs</p></td>
+<td class="text-left"><p>Wireless Data Exchange service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_wss</p></td>
+<td class="text-left"><p>Example Weight Scale service implementation</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ble-apps-folder">
+<h3>ble-apps folder<a class="headerlink" href="#ble-apps-folder" title="Link to this heading"></a></h3>
+<p>The contents of the ble-apps directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration / Makefiles</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sources</p></td>
+<td class="text-left"><p>Sample applications</p></td>
+</tr>
+</tbody>
+</table>
+<p>The apps directory contains the sample applications.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>assettag</p></td>
+<td class="text-left"><p>Asset tracking tag sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>cycling</p></td>
+<td class="text-left"><p>Cycling sensor sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>datc</p></td>
+<td class="text-left"><p>Proprietary data transfer client sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>dats</p></td>
+<td class="text-left"><p>Proprietary data transfer server sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>fit</p></td>
+<td class="text-left"><p>Fitness sensor sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>gluc</p></td>
+<td class="text-left"><p>Glucose sensor sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>hidapp</p></td>
+<td class="text-left"><p>HID sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>locator</p></td>
+<td class="text-left"><p>Asset tracking locator sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>medc</p></td>
+<td class="text-left"><p>Health data collector sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>meds</p></td>
+<td class="text-left"><p>Health sensor sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sensor</p></td>
+<td class="text-left"><p>Sensor sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>tag</p></td>
+<td class="text-left"><p>Proximity tag sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>uribeacon</p></td>
+<td class="text-left"><p>Uribeacon sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>watch</p></td>
+<td class="text-left"><p>Watch sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wdxs</p></td>
+<td class="text-left"><p>Wireless data exchange application</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="porting-md">
+<section id="porting">
+<h2>Porting<a class="headerlink" href="#porting" title="Link to this heading"></a></h2>
+<p>The porting process typically consists of two main steps:</p>
+<ol class="arabic simple">
+<li><p>Porting WSF interfaces and services to the target OS and software system.</p></li>
+<li><p>Porting HCI to the target system and writing a transport driver, if applicable.</p></li>
+</ol>
+<section id="wsf-porting">
+<h3>WSF Porting<a class="headerlink" href="#wsf-porting" title="Link to this heading"></a></h3>
+<p>Consult the WSF Developer’s Guide for WSF porting.</p>
+</section>
+<section id="hci-porting">
+<h3>HCI Porting<a class="headerlink" href="#hci-porting" title="Link to this heading"></a></h3>
+<p>The HCI layer is designed to be portable and support different transport and chip configurations. The porting process depends on the chip configuration:</p>
+<ul class="simple">
+<li><p>If the stack is ported to a single-chip system then a “thin HCI” porting process is used.</p></li>
+<li><p>If the stack is ported to a two-chip system with wired HCI transport then a transport-based porting process is used.</p></li>
+</ul>
+</section>
+<section id="persistent-memory">
+<h3>Persistent Memory<a class="headerlink" href="#persistent-memory" title="Link to this heading"></a></h3>
+<p>This section describes structures and information that should be saved in persistent storage.</p>
+<section id="application-database">
+<h4>Application Database<a class="headerlink" href="#application-database" title="Link to this heading"></a></h4>
+<p>The application database (<code class="docutils literal notranslate"><span class="pre">app_db.c</span></code>) stores records for bonding with peer devices and should be stored in persistent memory.</p>
+<p><span class="notes"><strong>Note</strong>: out-of-the box implementation of the stack saves all data in non-persistent memory, so modifications must be made based on the host CPU.</span></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! \brief Database */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">appDb_t</span><span class="w"> </span><span class="n">appDb</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="initialization-md">
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading"></a></h2>
+<p>This section describes the initialization procedures for this component.</p>
+<section id="stack-initialization">
+<h3>Stack Initialization<a class="headerlink" href="#stack-initialization" title="Link to this heading"></a></h3>
+<p>For all roles, the stack must first initialize the needed stack components by setting up handlers
+and calling the initialization for each component that will be utilized. Sample applications
+provide this in the <code class="docutils literal notranslate"><span class="pre">StackInit&lt;app&gt;(void)</span></code> function call. The table below defines the components
+that may need to be called during initialization.</p>
+<p><strong>Table 1: Summary of sample applications</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Function</p></th>
+<th class="head text-left"><p>Role</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">SecInit()</span></code></p></td>
+<td class="text-left"><p>All Connectable Roles</p></td>
+<td class="text-left"><p>Initialize general security</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">SecAesInit()</span></code></p></td>
+<td class="text-left"><p>All Connectable Roles</p></td>
+<td class="text-left"><p>Required when AES security is utilized</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">SecCmacInit()</span></code></p></td>
+<td class="text-left"><p>All Connectable Roles</p></td>
+<td class="text-left"><p>Required when CMAC operations utilized</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">SecEccInit()</span></code></p></td>
+<td class="text-left"><p>All Connectable Roles</p></td>
+<td class="text-left"><p>Required when ECC security is utilized</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmAdvInit()</span></code></p></td>
+<td class="text-left"><p>GAP Slave</p></td>
+<td class="text-left"><p>Initialize advertising device</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmDevPrivInit()</span></code></p></td>
+<td class="text-left"><p>GAP Slave / Master</p></td>
+<td class="text-left"><p>Initialize device privacy module</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmExtAdvInit()</span></code></p></td>
+<td class="text-left"><p>5.0: GAP Slave</p></td>
+<td class="text-left"><p>Initialize DM extended advertising</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmExtConnMasterInit()</span></code></p></td>
+<td class="text-left"><p>5.0: GAP Master</p></td>
+<td class="text-left"><p>Initialize DM connection manager for operation as extended master</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmExtConnSlaveInit()</span></code></p></td>
+<td class="text-left"><p>5.0: GAP Slave</p></td>
+<td class="text-left"><p>Initialize DM connection manager for operation as extended slave</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmExtScanInit()</span></code></p></td>
+<td class="text-left"><p>5.0: GAP Master</p></td>
+<td class="text-left"><p>Initialize DM extended scanning</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmScanInit()</span></code></p></td>
+<td class="text-left"><p>GAP Master</p></td>
+<td class="text-left"><p>Initialize scanning device</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmConnInit()</span></code></p></td>
+<td class="text-left"><p>GAP Connectable</p></td>
+<td class="text-left"><p>Initialize connectable device</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmConnSlaveInit()</span></code></p></td>
+<td class="text-left"><p>GAP Connectable Slave</p></td>
+<td class="text-left"><p>Initialize connectable slave</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmConnMasterInit()</span></code></p></td>
+<td class="text-left"><p>GAP Connectable Master</p></td>
+<td class="text-left"><p>Initialize connectable master</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmSecInit()</span></code></p></td>
+<td class="text-left"><p>GAP Security</p></td>
+<td class="text-left"><p>Initialize legacy security</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmSecLescInit()</span></code></p></td>
+<td class="text-left"><p>GAP Enhanced Security</p></td>
+<td class="text-left"><p>Initialize LESC security</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmPrivInit()</span></code></p></td>
+<td class="text-left"><p>GAP Privacy</p></td>
+<td class="text-left"><p>Initialize RPA security</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmPhyInit()</span></code></p></td>
+<td class="text-left"><p>5.0: GAP Phy</p></td>
+<td class="text-left"><p>Initialize PHY interface</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmConnCteInit()</span></code></p></td>
+<td class="text-left"><p>5.1: GAP Connection CTE</p></td>
+<td class="text-left"><p>Initialize Connection Constant Tone Extension (CTE)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmPastInit()</span></code></p></td>
+<td class="text-left"><p>5.1: GAP PAST</p></td>
+<td class="text-left"><p>Initialize Periodic Advertising Sync Transfer (PAST)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmCisInit()</span></code></p></td>
+<td class="text-left"><p>5.2: GAP CIS</p></td>
+<td class="text-left"><p>Initialize Connected Isochronous Stream (CIS)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmCisMasterInit()</span></code></p></td>
+<td class="text-left"><p>5.2: GAP CIS Master</p></td>
+<td class="text-left"><p>Initialize Connected Isochronous Stream (CIS) manager for operation as master</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmCisSlaveInit()</span></code></p></td>
+<td class="text-left"><p>5.2: GAP CIS Slave</p></td>
+<td class="text-left"><p>Initialize Connected Isochronous Stream (CIS) manager for operation as slave</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmBisMasterInit()</span></code></p></td>
+<td class="text-left"><p>5.2: GAP BIS Master</p></td>
+<td class="text-left"><p>Initialize Broadcast Isochronous Stream (BIS) management for master</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmBisSlaveInit()</span></code></p></td>
+<td class="text-left"><p>5.2: GAP BIS Slave</p></td>
+<td class="text-left"><p>Initialize Broadcast Isochronous Stream (BIS) management for slave</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DmIsoInit()</span></code></p></td>
+<td class="text-left"><p>5.2: GAP ISO</p></td>
+<td class="text-left"><p>Initialize Isochronous (ISO) data path management</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">AttsInit()</span></code></p></td>
+<td class="text-left"><p>GATT Server</p></td>
+<td class="text-left"><p>Initialize ATT manager for Server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">AttsIndInit()</span></code></p></td>
+<td class="text-left"><p>GATT Server</p></td>
+<td class="text-left"><p>Initialize indications and notifications</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">AttsSignInit()</span></code></p></td>
+<td class="text-left"><p>GATT Server</p></td>
+<td class="text-left"><p>Initialize data signing</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">AttcInit()</span></code></p></td>
+<td class="text-left"><p>GATT Client</p></td>
+<td class="text-left"><p>Initialize ATT manager for Client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">AttcSignInit()</span></code></p></td>
+<td class="text-left"><p>GATT Client</p></td>
+<td class="text-left"><p>Initialize data signing</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">EattInit()</span></code></p></td>
+<td class="text-left"><p>5.2: EATT</p></td>
+<td class="text-left"><p>Initialize Enhanced ATT subsystem</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">EattsInit()</span></code></p></td>
+<td class="text-left"><p>5.2: EATT Server</p></td>
+<td class="text-left"><p>Initialize Enhanced ATT Server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">EattcInit()</span></code></p></td>
+<td class="text-left"><p>5.2: EATT Client</p></td>
+<td class="text-left"><p>Initialize Enhanced ATT Client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">SmpiScInit()</span></code></p></td>
+<td class="text-left"><p>SMP Initiator</p></td>
+<td class="text-left"><p>Initialize SMP manager for Initiator</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">SmprScInit()</span></code></p></td>
+<td class="text-left"><p>SMP Responder</p></td>
+<td class="text-left"><p>Initialize SMP manager for Responder</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">L2cInit()</span></code></p></td>
+<td class="text-left"><p>ALL</p></td>
+<td class="text-left"><p>Initialize L2CAP</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">L2cSlaveInit()</span></code></p></td>
+<td class="text-left"><p>GAP Slave</p></td>
+<td class="text-left"><p>Initialize L2CAP Slave side</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">L2cMasterInit()</span></code></p></td>
+<td class="text-left"><p>GAP Master</p></td>
+<td class="text-left"><p>Initialize L2CAP Master side</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">L2cCocInit()</span></code></p></td>
+<td class="text-left"><p>L2CAP COC</p></td>
+<td class="text-left"><p>Initialize connection oriented channel</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="device-roles">
+<h3>Device Roles<a class="headerlink" href="#device-roles" title="Link to this heading"></a></h3>
+<p>The Host can be configured to support GAP Master (central) and/or GAP Slave (peripheral)
+functionality. A device can also be configured to operate as a GATT Client and/or GATT Server.
+From the application perspective a device may operate in any combination of these roles, including
+supporting master and slave, and client and server simultaneously. The responsibility falls on the
+application to configure and manage whatever combination of roles and responsibilities are required
+by the device. This section provides some insight and guidelines as to how to configure device
+roles when building an application.</p>
+<section id="gap-central-master-role">
+<h4>GAP Central / Master Role<a class="headerlink" href="#gap-central-master-role" title="Link to this heading"></a></h4>
+<p>A Central / Master device is responsible for scanning for advertisements (Observer role) and when
+appropriate, initiating a connection, pairing, and potentially bonding with a Peripheral device.
+To configure the stack to support functionality required by the Central role, the <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;_main.c</span></code>
+must define (discussed in Sample App User’s Guide) and setup the master configuration pointers
+(below) and initialize the application subsystem by calling the appropriate stack initialization
+functions from Table 1 above.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Set configuration pointers */</span>
+<span class="n">pAppMasterCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appMasterCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">datcMasterCfg</span><span class="p">;</span>
+<span class="n">pAppSecCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appSecCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">datcSecCfg</span><span class="p">;</span>
+<span class="n">pAppDiscCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appDiscCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">datcDiscCfg</span><span class="p">;</span>
+<span class="n">pAppCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">datcAppCfg</span><span class="p">;</span>
+<span class="n">pSmpCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">smpCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">datcSmpCfg</span><span class="p">;</span>
+
+<span class="cm">/* Initialize application framework */</span>
+<span class="n">AppMasterInit</span><span class="p">();</span>
+<span class="n">AppDiscInit</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The application must also wire up the master application callback and then in the application
+handler utilize the AppMaster* API defined in app_api.h (see App Framework API) to process
+connection, security related, and discovery events.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* process DM messages */</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">event</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">DM_CBACK_END</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/* process advertising and connection-related messages */</span>
+<span class="w">  </span><span class="n">AppMasterProcDmMsg</span><span class="p">((</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">pMsg</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* process security-related messages */</span>
+<span class="w">  </span><span class="n">AppMasterSecProcDmMsg</span><span class="p">((</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">pMsg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>When operating as a Central it is the responsibility of the application to initiate scanning.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">AppScanStart</span><span class="p">(</span><span class="n">datcMasterCfg</span><span class="p">.</span><span class="n">discMode</span><span class="p">,</span><span class="w"> </span><span class="n">datcMasterCfg</span><span class="p">.</span><span class="n">scanType</span><span class="p">,</span>
+<span class="w">             </span><span class="n">datcMasterCfg</span><span class="p">.</span><span class="n">scanDuration</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If desired the application can initiate a connection based on the received scan report.</p>
+<p><span class="notes"><strong>Note</strong>: the application must stop scanning before opening a connection (our sample code will use the scan report to save information on the device it wishes to connect with and then stop scanning, using the <code class="docutils literal notranslate"><span class="pre">DM_SCAN_STOP_IND</span></code> to trigger the connection procedure).</span></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="no">DM_SCAN_REPORT_IND</span><span class="p">:</span>
+<span class="w">  </span><span class="n">datcScanReport</span><span class="p">(</span><span class="n">pMsg</span><span class="p">);</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
+
+<span class="k">case</span><span class="w"> </span><span class="no">DM_SCAN_STOP_IND</span><span class="p">:</span>
+<span class="w">  </span><span class="n">datcScanStop</span><span class="p">(</span><span class="n">pMsg</span><span class="p">);</span>
+<span class="w">  </span><span class="n">uiEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">APP_UI_SCAN_STOP</span><span class="p">;</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The application support layer provies an interface for initiating a connection as a Master. This
+API returns the <code class="docutils literal notranslate"><span class="pre">dmConnId_t</span></code> structure (<code class="docutils literal notranslate"><span class="pre">uint8_t</span></code>) used to store the connection ID that is used for
+subsequent communication on this connection.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">dmConnId_t</span><span class="w"> </span><span class="nf">AppConnOpen</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">addrType</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pAddr</span><span class="p">,</span><span class="w"> </span><span class="n">appDbHdl_t</span><span class="w"> </span><span class="n">dbHdl</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Finally when operating as a GAP Central a device will also assume the role of the SMP Initiator.
+This requires calling the initialization interface and setting the appropriate SMP configuration
+parameters.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! SMP security parameter configuration */</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">smpCfg_t</span><span class="w"> </span><span class="n">tagSmpCfg</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="mi">3000</span><span class="p">,</span><span class="w">                                   </span><span class="cm">/*! &#39;Repeated attempts&#39; timeout in msec */</span>
+<span class="w">  </span><span class="n">SMP_IO_NO_IN_NO_OUT</span><span class="p">,</span><span class="w">                    </span><span class="cm">/*! I/O Capability */</span>
+<span class="w">  </span><span class="mi">7</span><span class="p">,</span><span class="w">                                      </span><span class="cm">/*! Minimum encryption key length */</span>
+<span class="w">  </span><span class="mi">16</span><span class="p">,</span><span class="w">                                     </span><span class="cm">/*! Maximum encryption key length */</span>
+<span class="w">  </span><span class="mi">3</span><span class="p">,</span><span class="w">                                      </span><span class="cm">/*! Attempts to trigger &#39;repeated attempts&#39; timeout */</span>
+<span class="w">  </span><span class="mi">0</span><span class="w">                                       </span><span class="cm">/*! Device authentication requirements */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="gap-peripheral-slave-role">
+<h4>GAP Peripheral / Slave Role<a class="headerlink" href="#gap-peripheral-slave-role" title="Link to this heading"></a></h4>
+<p>A Peripheral / Slave device is responsible for advertising (Broadcaster role) and handling a
+connection attempt from a Central / Master device. To configure the stack to support functionality
+required by the Peripheral role, the <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;_main.c</span></code> must define (discussed in Sample App User’s Guide)
+and setup the slave configuration pointers (below) and initialize the application subsystem by
+calling the appropriate stack initialization functions listed in Table 1 above.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Set configuration pointers */</span>
+<span class="n">pAppAdvCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appAdvCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fitAdvCfg</span><span class="p">;</span>
+<span class="n">pAppSlaveCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appSlaveCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fitSlaveCfg</span><span class="p">;</span>
+<span class="n">pAppSecCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appSecCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fitSecCfg</span><span class="p">;</span>
+<span class="n">pAppUpdateCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">appUpdateCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fitUpdateCfg</span><span class="p">;</span>
+
+<span class="cm">/* Initialize application framework */</span>
+<span class="n">AppSlaveInit</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The application must also wire up the slave application callback and then in the application handler
+utilize the AppSlave* API defined in app_api.h (see App Framework API) to process connection,
+security related and discovery events.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* process DM messages */</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">event</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">DM_CBACK_END</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/* process advertising and connection-related messages */</span>
+<span class="w">  </span><span class="n">AppSlaveProcDmMsg</span><span class="p">((</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">pMsg</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* process security-related messages */</span>
+<span class="w">  </span><span class="n">AppSlaveSecProcDmMsg</span><span class="p">((</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">pMsg</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* process discovery-related messages */</span>
+<span class="w">  </span><span class="n">AppDiscProcDmMsg</span><span class="p">((</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">pMsg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When operating as a Peripheral it is the responsibility of the application to initiate advertising.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* start advertising; automatically set connectable/discoverable mode and bondable mode */</span>
+<span class="n">AppAdvStart</span><span class="p">(</span><span class="n">APP_MODE_AUTO_INIT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The application must also update the peer address information when a connection is established.</p>
+<p><span class="notes"><strong>Note</strong>: <code class="docutils literal notranslate"><span class="pre">DM_CONN_OPEN_IND</span></code> message contains the connection ID (<code class="docutils literal notranslate"><span class="pre">dmConnId_t</span></code>) in the messages hdr-param  field which can be used for subsequent communication on this connection.</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="n">DM_CONN_OPEN_IND</span><span class="p">:</span>
+  <span class="n">tagOpen</span><span class="p">(</span><span class="n">pMsg</span><span class="p">);</span>
+  <span class="n">uiEvent</span> <span class="o">=</span> <span class="n">APP_UI_CONN_OPEN</span><span class="p">;</span>
+  <span class="k">break</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Finally when operating as a GAP Peripheral a device will also assume the role of the SMP Responder.
+This requires calling the initialization interface and setting the appropriate SMP configuration
+parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*! SMP security parameter configuration */
+static const smpCfg_t tagSmpCfg =
+{
+  3000,                                   /*! &#39;Repeated attempts&#39; timeout in msec */
+  SMP_IO_NO_IN_NO_OUT,                    /*! I/O Capability */
+  7,                                      /*! Minimum encryption key length */
+  16,                                     /*! Maximum encryption key length */
+  3,                                      /*! Attempts to trigger &#39;repeated attempts&#39; timeout */
+  0                                       /*! Device authentication requirements */
+};
+</pre></div>
+</div>
+</section>
+<section id="gatt-client">
+<h4>GATT Client<a class="headerlink" href="#gatt-client" title="Link to this heading"></a></h4>
+<p>To act as a GATT Client for GATT Discovery the application must enumerate a list of services to be
+discovered and define a handle list for maintaining the handles of discovered service attributes.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! \brief Discovery states:  enumeration of services to be discovered */</span>
+<span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">DATC_DISC_GATT_SVC</span><span class="p">,</span><span class="w">      </span><span class="cm">/*! GATT service */</span>
+<span class="w">  </span><span class="n">DATC_DISC_GAP_SVC</span><span class="p">,</span><span class="w">       </span><span class="cm">/*! GAP service */</span>
+<span class="w">  </span><span class="n">DATC_DISC_WP_SVC</span><span class="p">,</span><span class="w">        </span><span class="cm">/*! Wicentric proprietary service */</span>
+<span class="w">  </span><span class="n">DATC_DISC_SVC_MAX</span><span class="w">        </span><span class="cm">/*! Discovery complete */</span>
+<span class="p">};</span>
+
+<span class="cm">/* Pointers into handle list for each service&#39;s handles */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="o">*</span><span class="n">pDatcGattHdlList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">datcCb</span><span class="p">.</span><span class="n">hdlList</span><span class="p">[</span><span class="n">DATC_DISC_GATT_START</span><span class="p">];</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="o">*</span><span class="n">pDatcGapHdlList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">datcCb</span><span class="p">.</span><span class="n">hdlList</span><span class="p">[</span><span class="n">DATC_DISC_GAP_START</span><span class="p">];</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="o">*</span><span class="n">pDatcWpHdlList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">datcCb</span><span class="p">.</span><span class="n">hdlList</span><span class="p">[</span><span class="n">DATC_DISC_WP_START</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>During discovery these handle lists are populated so a Client can read/write attributes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">discover</span> <span class="n">proprietary</span> <span class="n">data</span> <span class="n">service</span> <span class="o">*/</span>
+<span class="n">WpcP1Discover</span><span class="p">(</span><span class="n">connId</span><span class="p">,</span> <span class="n">pDatcWpHdlList</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To receive indications / notifications the application must configure the appropriate CCCD upon
+completing discovery.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* start configuration */</span>
+<span class="n">AppDiscConfigure</span><span class="p">(</span><span class="n">connId</span><span class="p">,</span><span class="w"> </span><span class="n">APP_DISC_CFG_START</span><span class="p">,</span><span class="w"> </span><span class="n">DATC_DISC_CFG_LIST_LEN</span><span class="p">,</span>
+<span class="w">   </span><span class="p">(</span><span class="n">attcDiscCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">datcDiscCfgList</span><span class="p">,</span><span class="w"> </span><span class="n">DATC_DISC_HDL_LIST_LEN</span><span class="p">,</span><span class="w"> </span><span class="n">datcCb</span><span class="p">.</span><span class="n">hdlList</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="gatt-server">
+<h4>GATT Server<a class="headerlink" href="#gatt-server" title="Link to this heading"></a></h4>
+<p>To configure the GATT Server for GATT Discovery a device’s application in general will share a
+list of services supported as part of its advertisememt and will register the CCCDs for supported
+services with ATT.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">AttsCccRegister</span><span class="p">(</span><span class="n">FIT_NUM_CCC_IDX</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">attsCccSet_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">fitCccSet</span><span class="p">,</span><span class="w"> </span><span class="n">fitCccCback</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A Server application must also handle the case where CCCD values are changed to ensure that attributes are notified / indicated as appropriate.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">fitProcCccState</span><span class="p">(</span><span class="n">fitMsg_t</span><span class="w"> </span><span class="o">*</span><span class="n">pMsg</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="n">APP_TRACE_INFO3</span><span class="p">(</span><span class="s">&quot;ccc state ind value:%d handle:%d idx:%d&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">ccc</span><span class="p">.</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">ccc</span><span class="p">.</span><span class="n">handle</span><span class="p">,</span><span class="w"> </span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">ccc</span><span class="p">.</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="w">  </span><span class="cm">/* handle heart rate measurement CCC */</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">ccc</span><span class="p">.</span><span class="n">idx</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FIT_HRS_HRM_CCC_IDX</span><span class="p">)</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">ccc</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ATT_CLIENT_CFG_NOTIFY</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+</pre></div>
+</div>
+<p>The application must register its ATT services with the GATT server:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Initialize attribute server database */</span>
+<span class="n">SvcCoreAddGroup</span><span class="p">();</span>
+<span class="n">SvcHrsCbackRegister</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">HrpsWriteCback</span><span class="p">);</span>
+<span class="n">SvcHrsAddGroup</span><span class="p">();</span>
+<span class="n">SvcDisAddGroup</span><span class="p">();</span>
+<span class="n">SvcBattCbackRegister</span><span class="p">(</span><span class="n">BasReadCback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="n">SvcBattAddGroup</span><span class="p">();</span>
+<span class="n">SvcRscsAddGroup</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="advertising-only">
+<h4>Advertising Only<a class="headerlink" href="#advertising-only" title="Link to this heading"></a></h4>
+<p>When implementing a minimal advertising only device the subsystem initialization for connections
+and GATT/ATT are not required. In addition you will not require code for security, key and device
+management, or services and the discovery process. To minimize code size you will need to ensure
+that you are not initializing or calling any unnecessary initialization functions to avoid
+compiling in those libraries.</p>
+<p>When calling <code class="docutils literal notranslate"><span class="pre">AppSetAdvType(uint8_t</span> <span class="pre">advType)</span></code> the type should be set to <code class="docutils literal notranslate"><span class="pre">DM_ADV_NONCONN_UNDIRECT</span></code>.</p>
+</section>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="configuration-md">
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="compile-time">
+<h3>Compile Time<a class="headerlink" href="#compile-time" title="Link to this heading"></a></h3>
+<p>The following configurable parameters are defined in <code class="docutils literal notranslate"><span class="pre">./ble-host/sources/stack/cfg/cfg_stack.h</span></code></p>
+<section id="hci-tx-data-tailroom">
+<h4><code class="docutils literal notranslate"><span class="pre">HCI_TX_DATA_TAILROOM</span></code><a class="headerlink" href="#hci-tx-data-tailroom" title="Link to this heading"></a></h4>
+<p>For single CPU solutions using the Host, a zero-copy interface allows for optimal performance by eliminating unnecessary data copying. Zero-copy is used when a packet sent across the HCI interface from the Host to the Controller does not require fragmentation. In this scenario extra space must be allocated in the buffer for Link Layer operations and is defined by this parameter.</p>
+<p><span class="notes"><strong>Note</strong>: Use of the zero-copy API requires the Link Layer to free the HCI buffer.</span></p>
+</section>
+<section id="dm-conn-max">
+<h4><code class="docutils literal notranslate"><span class="pre">DM_CONN_MAX</span></code><a class="headerlink" href="#dm-conn-max" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">DM_CONN_MAX</span></code> specifies the maximum number of connections that the stack can simultaneously support. This parameter is set to 3 by default with the only limitation on <code class="docutils literal notranslate"><span class="pre">DM_CONN_MAX</span></code>’s configured value being the available memory of the system.</p>
+</section>
+<section id="dm-sync-max">
+<h4><code class="docutils literal notranslate"><span class="pre">DM_SYNC_MAX</span></code><a class="headerlink" href="#dm-sync-max" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">DM_SYNC_MAX</span></code> defines the maximum number of periodic synchronized advertisements supported by the host stack by the scanner / observer. This parameter is specific to Bluetooth 5.0 and later versions of the specification. The default value for this parameter is set to 1.</p>
+</section>
+<section id="dm-num-adv-sets">
+<h4><code class="docutils literal notranslate"><span class="pre">DM_NUM_ADV_SETS</span></code><a class="headerlink" href="#dm-num-adv-sets" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">DM_NUM_ADV_SETS</span></code> defines the number of supported advertising sets as defined by the Bluetooth 5.0 specification.</p>
+<p><span class="notes"><strong>Note</strong>: this parameter must be set to 1 for legacy advertising.</span></p>
+</section>
+<section id="dm-num-phys">
+<h4><code class="docutils literal notranslate"><span class="pre">DM_NUM_PHYS</span></code><a class="headerlink" href="#dm-num-phys" title="Link to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">DM_NUM_PHYS</span></code> defines the number of scanner and initiator PHYs (BLE 1M, BLE 2M, BLE Coded) as defined by the Bluetooth 5.0 specification.</p>
+<p><span class="notes"><strong>Note</strong>: this parameter must be set to 1 for legacy scanner and initiator functionality to work.</span></p>
+</section>
+</section>
+<section id="hci-flow-control">
+<h3>HCI Flow Control<a class="headerlink" href="#hci-flow-control" title="Link to this heading"></a></h3>
+<p>The Host implements a flow control mechanism to prevent overwhelming the Controller with more data than it can handle. The flow control mechanism operates as follows:</p>
+<p>A call to an ATT function (e.g. <code class="docutils literal notranslate"><span class="pre">AttsHandleValueNtf()</span></code>) that results in an over-the-air packet from the application results in copying the application data into a WSF buffer (if available) and scheduling the packet for delivery to L2CAP. The message is then handled by the L2CAP process and passed down to the <code class="docutils literal notranslate"><span class="pre">HciSendAclData()</span></code> function where it is sent out over HCI, if buffers are available, after which a Confirm status is propagated back up to the application so the application knows the packet has gone out (over HCI–not over the air).</p>
+<p>To manage flow control for the case that the application / stack tries to overwhelm the HCI with too many packets, a flow control mechanism is configured per connection. The <code class="docutils literal notranslate"><span class="pre">pConn-&gt;flowDisabled</span></code> flag manages whether or not packet flow into HCI has been disabled.</p>
+<p>The flow control mechanism kicks in when all of the HCI buffers are full. This occurs when the number of queued buffers for a connection exceeds the configurable hi water mark (<code class="docutils literal notranslate"><span class="pre">HCI_ACL_QUEUE_HI</span></code>). When this occurs the HCI connections (<code class="docutils literal notranslate"><span class="pre">hciCoreConn_t</span></code>) flowDisabled flag is set to prevent further buffering of data. Flow control is later re-enabled after enough HCI Number of Completed Packet Events are processed by the host such that the outgoing (queued) buffer list drops to or below the configured low water mark (<code class="docutils literal notranslate"><span class="pre">HCI_ACL_QUEUE_LO</span></code>). The high and low water marks for flow control are defined in <code class="docutils literal notranslate"><span class="pre">./ble-host/sources/hci/common/hci-core.c</span></code>.</p>
+<p>The HCI flow control mechanism is wired up through L2CAP to the ATT and SMP modules to simultaneously enable and disable flow control higher up in the stack. For the ATT server the callbacks are wired up to the <code class="docutils literal notranslate"><span class="pre">attsIndCtrlCback</span></code> (note: the callbacks are not wired up for the ATT client) when flow control is re-enabled.</p>
+</section>
+<section id="bluetooth-5">
+<h3>Bluetooth 5<a class="headerlink" href="#bluetooth-5" title="Link to this heading"></a></h3>
+<p>Bluetooth 5 enhanced features are conditionally enabled. These enhanced features include support for 2 Mbps and Long Range (Coded) PHY modes of operation, enabling use of Advertising Extensions including support for Periodic Advertising and Scanning, and more. This section discusses these included features including how to enable them.</p>
+<section id="advertising-extensions">
+<h4>Advertising Extensions<a class="headerlink" href="#advertising-extensions" title="Link to this heading"></a></h4>
+<p>To enable advertising extensions for an application configuration currently utilizing legacy advertising on the Slave side simply replace the <code class="docutils literal notranslate"><span class="pre">DmAdvInit()</span></code> initialization call with one to <code class="docutils literal notranslate"><span class="pre">DmExtAdvInit()</span></code> and replace the <code class="docutils literal notranslate"><span class="pre">DmConnMasterInit()</span></code> call with one to <code class="docutils literal notranslate"><span class="pre">DmExtConnMasterInit()</span></code>.. Similarly enable advertising extensions on the Master side by replacing <code class="docutils literal notranslate"><span class="pre">DmScanInit()</span></code> with <code class="docutils literal notranslate"><span class="pre">DmExtScanInit()</span></code> and <code class="docutils literal notranslate"><span class="pre">DmConnSlaveInit()</span></code> with <code class="docutils literal notranslate"><span class="pre">DmExtConnSlaveInit()</span></code> during system startup. When configuring the advertising type through <code class="docutils literal notranslate"><span class="pre">AppSetAdvType(advType)</span></code> you can also use the Extended Advertising type’s defined in <code class="docutils literal notranslate"><span class="pre">dm_api.h</span></code>.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Name</p></th>
+<th class="head text-left"><p>Value</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DM_EXT_ADV_CONN_UNDIRECT</span></code></p></td>
+<td class="text-left"><p>5</p></td>
+<td class="text-left"><p>Connectable undirected advertising</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DM_EXT_ADV_NONCONN_DIRECT</span></code></p></td>
+<td class="text-left"><p>6</p></td>
+<td class="text-left"><p>Non-connectable and non-scannable directed advertising</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">DM_EXT_ADV_SCAN_DIRECT</span></code></p></td>
+<td class="text-left"><p>7</p></td>
+<td class="text-left"><p>Scannable directed advertising</p></td>
+</tr>
+</tbody>
+</table>
+<p>In addition to the legacy DM API’s, the following API can be utilized for an advertising device utilizing AE features:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">DmPerAdvConfig</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmPerAdvSetData</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">op</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pData</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmPerAdvStart</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmPerAdvStop</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAdvSetRandAddr</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pAddr</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAdvUseLegacyPdu</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">useLegacyPdu</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAdvOmitAdvAddr</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">omitAdvAddr</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAdvIncTxPwr</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">incTxPwr</span><span class="p">,</span><span class="w"> </span><span class="kt">int8_t</span><span class="w"> </span><span class="n">advTxPwr</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAdvSetPhyParam</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">priAdvPhy</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">secAdvMaxSkip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">secAdvPhy</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAdvScanReqNotifEnable</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">scanReqNotifEna</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAdvSetFragPref</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">fragPref</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmPerAdvSetInterval</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">intervalMin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">intervalMax</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmPerAdvIncTxPwr</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advHandle</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">incTxPwr</span><span class="p">)</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">DmAdvModeExt</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition to the legacy DM API’s, the following API can also be utilized by a scanning device utilizing AE features:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">DmSyncStart</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advSid</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advAddrType</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pAdvAddr</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">skip</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">syncTimeout</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmSyncStop</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">syncId</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmAddDeviceToPerAdvList</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advAddrType</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pAdvAddr</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advSid</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmRemoveDeviceFromPerAdvList</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advAddrType</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pAdvAddr</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">advSid</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">DmClearPerAdvList</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">DmScanModeExt</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more information on these function please reference the Device Manager API Guide.</p>
+</section>
+<section id="mbps-phy">
+<h4>2Mbps PHY<a class="headerlink" href="#mbps-phy" title="Link to this heading"></a></h4>
+<p>The BT5 Stack inherently supports 2 Mbps mode. 2 Mpbs mode can be enabled utilizing the <code class="docutils literal notranslate"><span class="pre">DmSetPhy()</span></code> call (see the Device Manager API Guide for more information). See the <code class="docutils literal notranslate"><span class="pre">dats</span></code> sample application for an example configuration that support 2 Mbps operation.</p>
+</section>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="considerations-md">
+<section id="implementation-considerations">
+<h2>Implementation Considerations<a class="headerlink" href="#implementation-considerations" title="Link to this heading"></a></h2>
+<p>This section discusses various implementation considerations available in this component.</p>
+<section id="security">
+<h3>Security<a class="headerlink" href="#security" title="Link to this heading"></a></h3>
+<p>Bluetooth Low Energy supports data encryption used to prevent passive and active man-in-the-middle (MITM) eavesdropping attacks on a link. In order to establish shared keys for encryption Bluetooth Low Energy devices must pair and exchange various keys depending on security requirements. Pairing is carried out in three phases:</p>
+<ol class="arabic simple">
+<li><p>Two connected devices announce their input and output capabilities and from that information determine a suitable method for the next phase.</p></li>
+<li><p>A Short Term Key (STK) is generated and used in the final phase to secure long term key distribution.</p></li>
+<li><p>Up to three keys are distributed using the STK. This includes the Long Term Key (LTK) used for Link Layer encryption and authentication; the Connection Signature Resolving Key (CSRK) used for data signing at the ATT layer; the Identity Resolving Key (IRK) used to generate and resolve Private Random Addresses (RPAs).</p></li>
+</ol>
+<p>Bluetooth Low Energy also supports Out Of Band (OOB) Pairing, where instead of the previously mentioned 3 phase key exchanges the required secret keys are exchanged using another communication medium such as Near Field Communication (NFC). For more information on security see the latest Bluetooth Core specification.</p>
+<section id="security-manager-configuration">
+<h4>Security Manager Configuration<a class="headerlink" href="#security-manager-configuration" title="Link to this heading"></a></h4>
+<p>STK key generation and exchange depends on a device’s input and output capabilities. To configure I/O capabilities for an application set the appropriate I/O capability in the <code class="docutils literal notranslate"><span class="pre">smpCfg_t</span></code> parameter set. Supported I/O capabilities are:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* I/O capabilities */</span>
+<span class="cp">#define SMP_IO_DISP_ONLY                0x00      </span><span class="cm">/*!&lt; DisplayOnly */</span>
+<span class="cp">#define SMP_IO_DISP_YES_NO              0x01      </span><span class="cm">/*!&lt; DisplayYesNo */</span>
+<span class="cp">#define SMP_IO_KEY_ONLY                 0x02      </span><span class="cm">/*!&lt; KeyboardOnly */</span>
+<span class="cp">#define SMP_IO_NO_IN_NO_OUT             0x03      </span><span class="cm">/*!&lt; NoInputNoOutput */</span>
+<span class="cp">#define SMP_IO_KEY_DISP                 0x04      </span><span class="cm">/*!&lt; KeyboardDisplay */</span>
+</pre></div>
+</div>
+<p>To enable security upon connection set the <code class="docutils literal notranslate"><span class="pre">initiateSec</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">appSecCfg_t</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code> and set the authentication and bonding flags (auth).</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Pairing authentication/security properties bit mask */</span>
+<span class="cp">#define DM_AUTH_BOND_FLAG               SMP_AUTH_BOND_FLAG      </span><span class="cm">/*!&lt; Bonding requested */</span>
+<span class="cp">#define DM_AUTH_MITM_FLAG               SMP_AUTH_MITM_FLAG      </span><span class="cm">/*!&lt; MITM (authenticated pairing) requested */</span>
+<span class="cp">#define DM_AUTH_SC_FLAG                 SMP_AUTH_SC_FLAG        </span><span class="cm">/*!&lt; BLE Secure Connections requested */</span>
+<span class="cp">#define DM_AUTH_KP_FLAG                 SMP_AUTH_KP_FLAG        </span><span class="cm">/*!&lt; Keypress notifications requested */</span>
+</pre></div>
+</div>
+<p>Also set the initiator (master) key distribution (iKeyDist) and the responder (slave) key distribution (rKeyDist) flags.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Key distribution bit mask */</span>
+<span class="cp">#define DM_KEY_DIST_LTK                 SMP_KEY_DIST_ENC    </span><span class="cm">/*!&lt; Distribute LTK used for encryption */</span>
+<span class="cp">#define DM_KEY_DIST_IRK                 SMP_KEY_DIST_ID     </span><span class="cm">/*!&lt; Distribute IRK used for privacy */</span>
+<span class="cp">#define DM_KEY_DIST_CSRK                SMP_KEY_DIST_SIGN   </span><span class="cm">/*!&lt; Distribute CSRK used for signed data */</span>
+</pre></div>
+</div>
+<p>Resolvable Public Addresses (RPAs) are used when an IRK is present. If a device enables IRK key distribution it must also configure the stack with a specified IRK. This is accomplished by first defining a 16 byte IRK</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! \brief local IRK */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">localIrk</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="mh">0xA6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xD9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0xD6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1E</span><span class="p">,</span><span class="w"> </span><span class="mh">0xF0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xA4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x46</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5F</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8D</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x19</span><span class="p">,</span><span class="w"> </span><span class="mh">0xF3</span><span class="p">,</span><span class="w"> </span><span class="mh">0xB4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x96</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>and during system initialization registering the IRK with the Device Manager (DM).</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Set IRK for the local device */</span>
+<span class="n">DmSecSetLocalIrk</span><span class="p">(</span><span class="n">localIrk</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>As part of Privacy 1.2, the LL can also generate and resolve RPA’s. If the RPA is not resolved by the Controller, it is then the responsibility of the application to utilize a peer device’s IRK to resolve the RPA when appropriate</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* if the peer device uses an RPA */</span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">DM_RAND_ADDR_RPA</span><span class="p">(</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">scanReport</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">scanReport</span><span class="p">.</span><span class="n">addrType</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="cm">/* reslove advertiser&#39;s RPA to see if we already have a bond with this device */</span>
+<span class="w">  </span><span class="n">AppMasterResolveAddr</span><span class="p">(</span><span class="n">pMsg</span><span class="p">,</span><span class="w"> </span><span class="n">APP_DB_HDL_NONE</span><span class="p">,</span><span class="w"> </span><span class="n">APP_RESOLVE_ADV_RPA</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When configuring a device to use a Resolve Private Address (RPA) the application should call <code class="docutils literal notranslate"><span class="pre">DmDevPrivStart(uint16_t</span> <span class="pre">changeInterval)</span></code> with the changeInterval in seconds. This will automatically enable the use of LL privacy, if supported.</p>
+</section>
+</section>
+<section id="data-throughput">
+<h3>Data Throughput<a class="headerlink" href="#data-throughput" title="Link to this heading"></a></h3>
+<p>This section discussed how to maximize data throughput with the em | bleu Host and Profiles.</p>
+<section id="mtu-payload-size">
+<h4>MTU Payload Size<a class="headerlink" href="#mtu-payload-size" title="Link to this heading"></a></h4>
+<p>The permitted MTU size is going to depend on the capabilities of both master and slave. During pairing the MTU exchange will determine the maximum size supported, which is the lesser of the supported MTU sizes of both devices. To configure the MTU payload size supported by the Host set the <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;AttCfg</span></code>’s 2nd parameter, the desired ATT MTU size.</p>
+<p><span class="notes"><strong>Note</strong>: If the application does not contain a <code class="docutils literal notranslate"><span class="pre">&lt;app&gt;AttCfg</span></code> structure then one should be created.</span></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">attCfg_t</span><span class="w"> </span><span class="n">tagAttCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This structure must then be configured during application initialization.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">pAttCfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">attCfg_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tagAttCfg</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In addition since the stack does not allow us to send packets into the HCI unless we are also capable of receiving a packet of the same size (minus overhead), we also need to configure the HCI on the read side to be able to handle a packet of the configured size + 4 bytes of ATT overhead.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="n">HciSetMaxRxAclLen</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Once this is done the application is now capable of sending payloads of the configured size to the controller to be sent. Please note that other considerations that must be taken into consideration are the supported maximum MTU size specified by the version of the stack being utilized, the Controller’s maximum supported buffer sizes for receiving packets over HCI, as well as fragmentation features in L2CAP, HCI, and in the Controller itself. For example the <code class="docutils literal notranslate"><span class="pre">HCI_OPCODE_LE_READ_BUF_SIZE</span></code> is used to determine the maximum size packet the controller can receive over HCI and any packet larger than this size will be discarded by the Controller.</p>
+</section>
+<section id="negotiated-mtu-size">
+<h4>Negotiated MTU Size<a class="headerlink" href="#negotiated-mtu-size" title="Link to this heading"></a></h4>
+<p>While connecting peer devices go through a negotiation of the maximum supported MTU size. In the case that this negotiated size is greater than the set default value the stack will issue a callback notifying the application of this negotiated maximum. The handler for application callbacks (<code class="docutils literal notranslate"><span class="pre">&lt;app&gt;ProcMsg()</span></code>) requires a case for the <code class="docutils literal notranslate"><span class="pre">ATT_MTU_UPDATE_IND</span></code> to handle this event. The mtu size information can be extracted from the attEvt_t structure’s mtu field (pMsg-&gt;mtu).</p>
+</section>
+<section id="zero-copy-api">
+<h4>Zero Copy API<a class="headerlink" href="#zero-copy-api" title="Link to this heading"></a></h4>
+<p>The Host provides an enhanced API for the application that avoids an unnecessary data copy between the application payload and the host stack. To utilize this enhanced feature the application must first allocate the ATT message buffer through a specialized interface to ensure proper header management between layers of the stack. Once allocated properly, this message buffer can then be transferred through the enhanced zero-copy API.</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/* allocate zero-copy buffer */</span>
+<span class="n">pBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AttMsgAlloc</span><span class="p">((</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">readLen</span><span class="p">,</span><span class="w"> </span><span class="n">ATT_PDU_VALUE_NTF</span><span class="p">);</span>
+<span class="cm">/* send notification */</span>
+<span class="n">AttsHandleValueNtfZeroCpy</span><span class="p">(</span><span class="n">connId</span><span class="p">,</span><span class="w"> </span><span class="n">WDXS_FTD_HDL</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">readLen</span><span class="p">,</span><span class="w"> </span><span class="n">pBuf</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="maximize-throughput">
+<h4>Maximize Throughput<a class="headerlink" href="#maximize-throughput" title="Link to this heading"></a></h4>
+<p>There are many considerations when attempting to maximize throughput at the application layer including the supported version and features of the Controller on both sides of the link as well as buffer allocation and HCI configuration limitations. What follows is a general guideline for maximizing application throughput.</p>
+<p>In general to maximize throughput at the application layer we want to fill up the controller’s buffers as quickly as possible and keep them as full as possible so the utilization of the time allocated on the PHY for communication between the two devices is maximized. We want to maximize the payload size to reduce overhead as much as possible.</p>
+<p><span class="notes"><strong>Note</strong>: the limit here is going to be the maximum allowable packet size supported by and negotiated by both devices (see previous section).</span></p>
+<p>Finally at the application layer we want to package data into maximum packets (which will get fragmented at the HCI layer and in the Controller). However these packets can’t be so big that they create memory problems or overrun the stacks ability to receive a similar size packet.</p>
+<p>One influential configuration parameter negotiated between the Master and Peripheral devices is the connection interval. On the one hand the Controller can increase the connection interval to a maximum value allowing more unacknowledged packets (Notifications and Write Commands) to be sent per connection interval, thereby minimizing time “wasted” in sleep and PHY management overhead. On the other hand if you want to have the ability to maximize throughput of packets such as Indications and Write Requests then you want to set the connection interval to a minimum since the protocol limits the sendings of these packet types to a single handshake exchange per connection interval.</p>
+<p>In configuring the stack for maximum throughput we also want to understand the maximum packet that can be received by the Controller over HCI. To do this we read the <code class="docutils literal notranslate"><span class="pre">LE_READ_BUF_SIZE</span></code> during system reset. This provides a limit on the size that the Controller can accept, so anything larger passed to HCI will have to be fragmented first. We then need to configure the application to maximize the supported MTU size in correspondence with the maximum packet size supported by the Controller and the number of supported buffers. For example if the Controller supports a maximum packet of 256 bytes and there are 4 buffers available, then the application could send a payload of (256 x 4 – 4 [payload overhead]) 1020 bytes which would get fragmented at the HCI layer and passed to the Controller in 4 separate payloads. This would essentially keep the Controller buffers full and maximize use of the channel. See Section 5.1 for more information on configuring MTU size.</p>
+<p>Once this is done the application is now configured to send the maximum payload size capable of being buffered in the Controller. In general to maximize throughput you will need to use Notifications when sending data, as Indications require acklowledgement before another message can be sent and therefore add significant overhead and delay.</p>
+</section>
+</section>
+</section>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="host-api.html" class="btn btn-neutral float-left" title="BLE Host API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024 EM Microelectronic.  All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

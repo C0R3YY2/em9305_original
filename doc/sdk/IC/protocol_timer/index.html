@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protocol Timer Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="QDEC Driver" href="../qdec/index.html" />
+    <link rel="prev" title="PML Driver" href="../pml/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Protocol Timer Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#protocol-timer">Protocol Timer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Protocol Timer Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="protocol-timer-driver">
+<h1>Protocol Timer Driver<a class="headerlink" href="#protocol-timer-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The protocol timer driver is used by the BLE stack and should not be accessed directly.</p>
+<p>The API is shown here for informational purposes only.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using this API incorrectly can have an impact on BLE operations.</p>
+</div>
+</section>
+<section id="protocol-timer">
+<h2>Protocol Timer<a class="headerlink" href="#protocol-timer" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d0/d6f/group__prottim"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">prottim</span></span></dt>
+<dd><p>Driver for the Protocol Timer. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PROT_TIM_COMPARE_CHANNELS">
+<span class="target" id="d0/d6f/group__prottim_1ga510f1217371b1652ab62fa3bfde28d81"></span><span class="sig-name descname"><span class="n"><span class="pre">PROT_TIM_COMPARE_CHANNELS</span></span></span> <span class="pre">8</span><a class="headerlink" href="#c.PROT_TIM_COMPARE_CHANNELS" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of compare channels in Protocol Timer </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PROT_TIM_CAPTURE_CHANNELS">
+<span class="target" id="d0/d6f/group__prottim_1ga99bf874fc3c26839a50efcacf9b80aef"></span><span class="sig-name descname"><span class="n"><span class="pre">PROT_TIM_CAPTURE_CHANNELS</span></span></span> <span class="pre">4</span><a class="headerlink" href="#c.PROT_TIM_CAPTURE_CHANNELS" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of capture channels in Protocol Timer </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PROT_TIM_HW_EVENTS">
+<span class="target" id="d0/d6f/group__prottim_1ga55b1658367d0dfc6b2569222f6fd9fe8"></span><span class="sig-name descname"><span class="n"><span class="pre">PROT_TIM_HW_EVENTS</span></span></span> <span class="pre">8</span><a class="headerlink" href="#c.PROT_TIM_HW_EVENTS" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of HW events in capture channel in Protocol Timer </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PROT_TIMER_US_TO_SYSTEM_TIME">
+<span class="target" id="d0/d6f/group__prottim_1gaa4b1e6cf0f8590dfe0e38d367a2d5343"></span><span class="sig-name descname"><span class="n"><span class="pre">PROT_TIMER_US_TO_SYSTEM_TIME</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">us</span></span><span class="sig-paren">)</span> <span class="pre">((SystemTime_t)((SystemTime_t)(us)</span> <span class="pre">*</span> <span class="pre">CLOCK_FREQ_MHZ))</span><a class="headerlink" href="#c.PROT_TIMER_US_TO_SYSTEM_TIME" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert us in system time. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PROT_TIMER_MS_TO_SYSTEM_TIME">
+<span class="target" id="d0/d6f/group__prottim_1ga57bdb497e221ce043b4241482d8530dd"></span><span class="sig-name descname"><span class="n"><span class="pre">PROT_TIMER_MS_TO_SYSTEM_TIME</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ms</span></span><span class="sig-paren">)</span> <span class="pre">((SystemTime_t)((SystemTime_t)(ms)</span> <span class="pre">*</span> <span class="pre">CLOCK_FREQ_MHZ</span> <span class="pre">*</span> <span class="pre">1000u))</span><a class="headerlink" href="#c.PROT_TIMER_MS_TO_SYSTEM_TIME" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert ms in system time. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PROT_TIMER_SYSTEM_TIME_TO_US">
+<span class="target" id="d0/d6f/group__prottim_1gac71e7dbef2a59b8b69bda40783be00bd"></span><span class="sig-name descname"><span class="n"><span class="pre">PROT_TIMER_SYSTEM_TIME_TO_US</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">systime</span></span><span class="sig-paren">)</span> <span class="pre">((SystemTime_t)((SystemTime_t)(systime)</span> <span class="pre">/</span> <span class="pre">CLOCK_FREQ_MHZ))</span><a class="headerlink" href="#c.PROT_TIMER_SYSTEM_TIME_TO_US" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert system time in us. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.PROT_TIMER_SYSTEM_TIME_TO_MS">
+<span class="target" id="d0/d6f/group__prottim_1ga7d6afbded8a39fd723647eaff5ebcb38"></span><span class="sig-name descname"><span class="n"><span class="pre">PROT_TIMER_SYSTEM_TIME_TO_MS</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">systime</span></span><span class="sig-paren">)</span> <span class="pre">((SystemTime_t)(((SystemTime_t)(systime)</span> <span class="pre">/</span> <span class="pre">CLOCK_FREQ_MHZ)</span> <span class="pre">/</span> <span class="pre">1000u))</span><a class="headerlink" href="#c.PROT_TIMER_SYSTEM_TIME_TO_MS" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert system time in ms. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv429ProtTimer_EventTimeCallback_t">
+<span id="_CPPv329ProtTimer_EventTimeCallback_t"></span><span id="_CPPv229ProtTimer_EventTimeCallback_t"></span><span id="ProtTimer_EventTimeCallback_t"></span><span class="target" id="d0/d6f/group__prottim_1ga18f080c484b48fffccc9269ae244c4d6"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv430_ProtTimer_EventTimeCallback_t" title="_ProtTimer_EventTimeCallback_t"><span class="n"><span class="pre">_ProtTimer_EventTimeCallback_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_EventTimeCallback_t</span></span></span><a class="headerlink" href="#_CPPv429ProtTimer_EventTimeCallback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Callback for software to notify the system of upcoming events. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv420ProtTimer_HwEvents_t">
+<span id="_CPPv320ProtTimer_HwEvents_t"></span><span id="_CPPv220ProtTimer_HwEvents_t"></span><span class="target" id="d0/d6f/group__prottim_1gabc9a7100dafce14718349eb116fbd084"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_HwEvents_t</span></span></span><a class="headerlink" href="#_CPPv420ProtTimer_HwEvents_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer HW events. </p>
+<p>HW event codes for Protocol Timer capture function. For other peripheries codes might be different. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t27PT_HW_EVENT_RF_RX_SYNC_WORDE">
+<span id="_CPPv3N20ProtTimer_HwEvents_t27PT_HW_EVENT_RF_RX_SYNC_WORDE"></span><span id="_CPPv2N20ProtTimer_HwEvents_t27PT_HW_EVENT_RF_RX_SYNC_WORDE"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084a3bea180b7aabea22bc89d5a0a4bfb0cd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_RF_RX_SYNC_WORD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t27PT_HW_EVENT_RF_RX_SYNC_WORDE" title="Link to this definition"></a><br /></dt>
+<dd><p>RF - RX Syncword received </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_RX_DONEE">
+<span id="_CPPv3N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_RX_DONEE"></span><span id="_CPPv2N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_RX_DONEE"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084ab5040be090cf7b33c1c836c7f38cb5c2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_RF_RX_DONE</span></span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_RX_DONEE" title="Link to this definition"></a><br /></dt>
+<dd><p>RF - RX packet received </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_TX_DONEE">
+<span id="_CPPv3N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_TX_DONEE"></span><span id="_CPPv2N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_TX_DONEE"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084ace7f91a84275081afe4c8742d5a74bf2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_RF_TX_DONE</span></span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t22PT_HW_EVENT_RF_TX_DONEE" title="Link to this definition"></a><br /></dt>
+<dd><p>RF - TX packet sent </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_0E">
+<span id="_CPPv3N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_0E"></span><span id="_CPPv2N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_0E"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084a5ec312817718cc19115771d014426c7f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_GPIO_0</span></span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_0E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO - edge/level detected on pin 0. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_1E">
+<span id="_CPPv3N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_1E"></span><span id="_CPPv2N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_1E"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084a69f09bcc73c6e89220133b41fd14ed48"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_GPIO_1</span></span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_1E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO - edge/level detected on pin 1. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_2E">
+<span id="_CPPv3N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_2E"></span><span id="_CPPv2N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_2E"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084a5539f927139f1f1f7387cc0c8bf6045a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_GPIO_2</span></span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_2E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO - edge/level detected on pin 2. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_3E">
+<span id="_CPPv3N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_3E"></span><span id="_CPPv2N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_3E"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084a1263175143efece84e456e8696a93695"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_GPIO_3</span></span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_3E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO - edge/level detected on pin 3. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_4E">
+<span id="_CPPv3N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_4E"></span><span id="_CPPv2N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_4E"></span><span class="target" id="d0/d6f/group__prottim_1ggabc9a7100dafce14718349eb116fbd084a5726d83f467a2aeacbde036508a97306"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_HW_EVENT_GPIO_4</span></span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_HwEvents_t18PT_HW_EVENT_GPIO_4E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO - edge/level detected on pin 4. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv420ProtTimer_RunState_t">
+<span id="_CPPv320ProtTimer_RunState_t"></span><span id="_CPPv220ProtTimer_RunState_t"></span><span class="target" id="d0/d6f/group__prottim_1ga1bdbfca6f4acbe955ab3f0ea4aaf4048"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_RunState_t</span></span></span><a class="headerlink" href="#_CPPv420ProtTimer_RunState_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer run state. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_RunState_t13PT_STATE_IDLEE">
+<span id="_CPPv3N20ProtTimer_RunState_t13PT_STATE_IDLEE"></span><span id="_CPPv2N20ProtTimer_RunState_t13PT_STATE_IDLEE"></span><span class="target" id="d0/d6f/group__prottim_1gga1bdbfca6f4acbe955ab3f0ea4aaf4048a245921d80ff8a84c6313e25b40f9738c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_STATE_IDLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_RunState_t13PT_STATE_IDLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer in Idle state. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_RunState_t25PT_STATE_RUNNIG_SYNC_STOPE">
+<span id="_CPPv3N20ProtTimer_RunState_t25PT_STATE_RUNNIG_SYNC_STOPE"></span><span id="_CPPv2N20ProtTimer_RunState_t25PT_STATE_RUNNIG_SYNC_STOPE"></span><span class="target" id="d0/d6f/group__prottim_1gga1bdbfca6f4acbe955ab3f0ea4aaf4048adbdce16fa8976bc244019faa13aed190"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_STATE_RUNNIG_SYNC_STOP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_RunState_t25PT_STATE_RUNNIG_SYNC_STOPE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol timer running and waiting for trigger to stop. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_RunState_t24PT_STATE_IDLE_SYNC_STARTE">
+<span id="_CPPv3N20ProtTimer_RunState_t24PT_STATE_IDLE_SYNC_STARTE"></span><span id="_CPPv2N20ProtTimer_RunState_t24PT_STATE_IDLE_SYNC_STARTE"></span><span class="target" id="d0/d6f/group__prottim_1gga1bdbfca6f4acbe955ab3f0ea4aaf4048a37de9d091efa01f8fa3e4a31fd6d7807"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_STATE_IDLE_SYNC_START</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_RunState_t24PT_STATE_IDLE_SYNC_STARTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol timer in Idle state and waiting for trigger to start. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ProtTimer_RunState_t16PT_STATE_RUNNINGE">
+<span id="_CPPv3N20ProtTimer_RunState_t16PT_STATE_RUNNINGE"></span><span id="_CPPv2N20ProtTimer_RunState_t16PT_STATE_RUNNINGE"></span><span class="target" id="d0/d6f/group__prottim_1gga1bdbfca6f4acbe955ab3f0ea4aaf4048aed739fc9f7605e7de4a97aaa786a9410"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_STATE_RUNNING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N20ProtTimer_RunState_t16PT_STATE_RUNNINGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer in Running state. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv424ProtTimer_RestoreState_t">
+<span id="_CPPv324ProtTimer_RestoreState_t"></span><span id="_CPPv224ProtTimer_RestoreState_t"></span><span class="target" id="d0/d6f/group__prottim_1ga5cc68a2d20f3cd0bd2aa27d16aba5cb3"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_RestoreState_t</span></span></span><a class="headerlink" href="#_CPPv424ProtTimer_RestoreState_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer restore state. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24ProtTimer_RestoreState_t21PT_RESTORE_STATE_IDLEE">
+<span id="_CPPv3N24ProtTimer_RestoreState_t21PT_RESTORE_STATE_IDLEE"></span><span id="_CPPv2N24ProtTimer_RestoreState_t21PT_RESTORE_STATE_IDLEE"></span><span class="target" id="d0/d6f/group__prottim_1gga5cc68a2d20f3cd0bd2aa27d16aba5cb3aafa89f16a512e0ac31e9fdc2247cf43a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_RESTORE_STATE_IDLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N24ProtTimer_RestoreState_t21PT_RESTORE_STATE_IDLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer not started and adjusted. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24ProtTimer_RestoreState_t24PT_RESTORE_STATE_STARTEDE">
+<span id="_CPPv3N24ProtTimer_RestoreState_t24PT_RESTORE_STATE_STARTEDE"></span><span id="_CPPv2N24ProtTimer_RestoreState_t24PT_RESTORE_STATE_STARTEDE"></span><span class="target" id="d0/d6f/group__prottim_1gga5cc68a2d20f3cd0bd2aa27d16aba5cb3ae1e3b6e0d8c762981a726794f3b8497a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_RESTORE_STATE_STARTED</span></span></span><a class="headerlink" href="#_CPPv4N24ProtTimer_RestoreState_t24PT_RESTORE_STATE_STARTEDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer started (restored) but not adjusted yet. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N24ProtTimer_RestoreState_t37PT_RESTORE_STATE_STARTED_AND_ADJUSTEDE">
+<span id="_CPPv3N24ProtTimer_RestoreState_t37PT_RESTORE_STATE_STARTED_AND_ADJUSTEDE"></span><span id="_CPPv2N24ProtTimer_RestoreState_t37PT_RESTORE_STATE_STARTED_AND_ADJUSTEDE"></span><span class="target" id="d0/d6f/group__prottim_1gga5cc68a2d20f3cd0bd2aa27d16aba5cb3a3763ac496be0504179ca2ac45f82104d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_RESTORE_STATE_STARTED_AND_ADJUSTED</span></span></span><a class="headerlink" href="#_CPPv4N24ProtTimer_RestoreState_t37PT_RESTORE_STATE_STARTED_AND_ADJUSTEDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer started (restored) and adjusted. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv425ProtTimer_EventTimeResult">
+<span id="_CPPv325ProtTimer_EventTimeResult"></span><span id="_CPPv225ProtTimer_EventTimeResult"></span><span class="target" id="d0/d6f/group__prottim_1ga3ee164c416eaa2a120de52fd79480c32"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_EventTimeResult</span></span></span><a class="headerlink" href="#_CPPv425ProtTimer_EventTimeResult" title="Link to this definition"></a><br /></dt>
+<dd><p>Result of the event time callback. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_EventTimeResult25PT_EVENT_TIME_STAMP_VALIDE">
+<span id="_CPPv3N25ProtTimer_EventTimeResult25PT_EVENT_TIME_STAMP_VALIDE"></span><span id="_CPPv2N25ProtTimer_EventTimeResult25PT_EVENT_TIME_STAMP_VALIDE"></span><span class="target" id="d0/d6f/group__prottim_1gga3ee164c416eaa2a120de52fd79480c32ae88f1d54f6e23ffa8044bf8cad89248e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_EVENT_TIME_STAMP_VALID</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_EventTimeResult25PT_EVENT_TIME_STAMP_VALIDE" title="Link to this definition"></a><br /></dt>
+<dd><p>The system timestamp to the next event is valid. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_EventTimeResult27PT_EVENT_TIME_INFINITE_TIMEE">
+<span id="_CPPv3N25ProtTimer_EventTimeResult27PT_EVENT_TIME_INFINITE_TIMEE"></span><span id="_CPPv2N25ProtTimer_EventTimeResult27PT_EVENT_TIME_INFINITE_TIMEE"></span><span class="target" id="d0/d6f/group__prottim_1gga3ee164c416eaa2a120de52fd79480c32a664b241ca30e68d7aa19e5cce11c0bd2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_EVENT_TIME_INFINITE_TIME</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_EventTimeResult27PT_EVENT_TIME_INFINITE_TIMEE" title="Link to this definition"></a><br /></dt>
+<dd><p>The next event is not known; the system may sleep for an infinite time. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_EventTimeResult29PT_EVENT_TIME_SLEEP_FORBIDDENE">
+<span id="_CPPv3N25ProtTimer_EventTimeResult29PT_EVENT_TIME_SLEEP_FORBIDDENE"></span><span id="_CPPv2N25ProtTimer_EventTimeResult29PT_EVENT_TIME_SLEEP_FORBIDDENE"></span><span class="target" id="d0/d6f/group__prottim_1gga3ee164c416eaa2a120de52fd79480c32a2ceae45381523424a7727623ae502321"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PT_EVENT_TIME_SLEEP_FORBIDDEN</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_EventTimeResult29PT_EVENT_TIME_SLEEP_FORBIDDENE" title="Link to this definition"></a><br /></dt>
+<dd><p>The system may not go to sleep. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414ProtTimer_Initv">
+<span id="_CPPv314ProtTimer_Initv"></span><span id="_CPPv214ProtTimer_Initv"></span><span id="ProtTimer_Init__void"></span><span class="target" id="d0/d6f/group__prottim_1ga70cdd1a881e423931a578f23f857925a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_Init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414ProtTimer_Initv" title="Link to this definition"></a><br /></dt>
+<dd><p>ProtocolTimer init function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421ProtTimer_StoreConfigv">
+<span id="_CPPv321ProtTimer_StoreConfigv"></span><span id="_CPPv221ProtTimer_StoreConfigv"></span><span id="ProtTimer_StoreConfig__void"></span><span class="target" id="d0/d6f/group__prottim_1ga770b20380defa079d274313337029ebf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_StoreConfig</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421ProtTimer_StoreConfigv" title="Link to this definition"></a><br /></dt>
+<dd><p>Store configuration of Protocol Timer. </p>
+<p>This function stores Protocol Timer HW configuration into persistant memory. This allows later on (after leaving sleep mode) to restore configuration. <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#d0/d6f/group__prottim_1ga6ab6beb4a5dc95665520e1fe2cca8529"><span class="std std-ref">ProtTimer_RestoreConfig</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423ProtTimer_RestoreConfigv">
+<span id="_CPPv323ProtTimer_RestoreConfigv"></span><span id="_CPPv223ProtTimer_RestoreConfigv"></span><span id="ProtTimer_RestoreConfig__void"></span><span class="target" id="d0/d6f/group__prottim_1ga6ab6beb4a5dc95665520e1fe2cca8529"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_RestoreConfig</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423ProtTimer_RestoreConfigv" title="Link to this definition"></a><br /></dt>
+<dd><p>ReStore configuration of Protocol Timer. </p>
+<p>This function restores Protocol Timer HW configuration from previously stored configuration in persistant memory. This allows after leaving sleep mode to restore complete configuration of Protocol Timer HW.</p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#d0/d6f/group__prottim_1ga770b20380defa079d274313337029ebf"><span class="std std-ref">ProtTimer_StoreConfig</span></a></p>
+</div>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>configuration is in RAM persistent during sleep, but not during POR. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>that not all can be restored namely:<ul class="simple">
+<li><p>RegProtTimCapture0-3 </p></li>
+</ul>
+</p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415ProtTimer_Startv">
+<span id="_CPPv315ProtTimer_Startv"></span><span id="_CPPv215ProtTimer_Startv"></span><span id="ProtTimer_Start__void"></span><span class="target" id="d0/d6f/group__prottim_1ga9ec95f88afeedc97f2065a4351001018"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_Start</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415ProtTimer_Startv" title="Link to this definition"></a><br /></dt>
+<dd><p>Start Protocol Timer. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Protocol Timer is not cleared when started. Instead it continues counting from previous value. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414ProtTimer_Stopv">
+<span id="_CPPv314ProtTimer_Stopv"></span><span id="_CPPv214ProtTimer_Stopv"></span><span id="ProtTimer_Stop__void"></span><span class="target" id="d0/d6f/group__prottim_1gaaa9bad11a2a5a96b95510a48faf6fe17"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_Stop</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414ProtTimer_Stopv" title="Link to this definition"></a><br /></dt>
+<dd><p>Stop Protocol Timer. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Protocol Timer is not cleared when stopped. Value of Protocol Timer is kept and can be read. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415ProtTimer_Clearv">
+<span id="_CPPv315ProtTimer_Clearv"></span><span id="_CPPv215ProtTimer_Clearv"></span><span id="ProtTimer_Clear__void"></span><span class="target" id="d0/d6f/group__prottim_1gadc75c933060d7106a38b1ef37adf04ea"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_Clear</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415ProtTimer_Clearv" title="Link to this definition"></a><br /></dt>
+<dd><p>Clear Protocol Timer. </p>
+<p>It clears Protocol Timer. After clearing Protocol Timer value is zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422ProtTimer_DividerClearv">
+<span id="_CPPv322ProtTimer_DividerClearv"></span><span id="_CPPv222ProtTimer_DividerClearv"></span><span id="ProtTimer_DividerClear__void"></span><span class="target" id="d0/d6f/group__prottim_1gaf8d5a8318a201b17b1428e1289f1200d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_DividerClear</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422ProtTimer_DividerClearv" title="Link to this definition"></a><br /></dt>
+<dd><p>Clear Protocol Timer divider. </p>
+<p>It clears (restart) Protocol Timer divider. After clearing divider status value is zero and it counts to predefined divider value. <div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#d0/d6f/group__prottim_1ga6186284dc2fd0b60d810da0584dc131d"><span class="std std-ref">ProtTimer_SetDivider</span></a></p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#d0/d6f/group__prottim_1ga541d7c263760bc9698c0bd97c9ce1d90"><span class="std std-ref">ProtTimer_GetDivider</span></a></p>
+</div>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425ProtTimer_GetCurrentStatev">
+<span id="_CPPv325ProtTimer_GetCurrentStatev"></span><span id="_CPPv225ProtTimer_GetCurrentStatev"></span><span id="ProtTimer_GetCurrentState__void"></span><span class="target" id="d0/d6f/group__prottim_1gae01891cdf6c07545d1ed50f674b47da3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420ProtTimer_RunState_t" title="ProtTimer_RunState_t"><span class="n"><span class="pre">ProtTimer_RunState_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetCurrentState</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425ProtTimer_GetCurrentStatev" title="Link to this definition"></a><br /></dt>
+<dd><p>Get current state of Protocol Timer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current state of Protocol Timer. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425ProtTimer_GetCurrentValuev">
+<span id="_CPPv325ProtTimer_GetCurrentValuev"></span><span id="_CPPv225ProtTimer_GetCurrentValuev"></span><span id="ProtTimer_GetCurrentValue__void"></span><span class="target" id="d0/d6f/group__prottim_1ga9c99211b4ee8b3442274fe0b7c8f7c31"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetCurrentValue</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425ProtTimer_GetCurrentValuev" title="Link to this definition"></a><br /></dt>
+<dd><p>Get current value of Protocol Timer. </p>
+<p>
+It reads and returns current value of Protocol Timer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current value of Protocol Timer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422ProtTimer_SetFullValue8uint32_t">
+<span id="_CPPv322ProtTimer_SetFullValue8uint32_t"></span><span id="_CPPv222ProtTimer_SetFullValue8uint32_t"></span><span id="ProtTimer_SetFullValue__uint32_t"></span><span class="target" id="d0/d6f/group__prottim_1gaf52290115f56703b9ca1f0b203b76c29"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetFullValue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fullValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422ProtTimer_SetFullValue8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set full value of Protocol Timer. </p>
+<p>
+It sets full value of Protocol Timer. Once full value is reached interrupt is generated and Protocol Timer either stops to count or it reloads to zero and then it continues. Protocol Timer counts from 0 to fullVal (number of ticks between two interrupts is equal to fullValue+1). If fullValue is set to -1 Protocol Timer counts up to 0xFFFFFFFF and then it continues from zero. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fullValue</strong> – Full value to be set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422ProtTimer_GetFullValuev">
+<span id="_CPPv322ProtTimer_GetFullValuev"></span><span id="_CPPv222ProtTimer_GetFullValuev"></span><span id="ProtTimer_GetFullValue__void"></span><span class="target" id="d0/d6f/group__prottim_1gaac56ef60cc83ff475120163952b849a4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetFullValue</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422ProtTimer_GetFullValuev" title="Link to this definition"></a><br /></dt>
+<dd><p>Get full value of Protocol Timer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current Full value of Protocol Timer. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425ProtTimer_SetCompareValue7uint8_t8uint32_t">
+<span id="_CPPv325ProtTimer_SetCompareValue7uint8_t8uint32_t"></span><span id="_CPPv225ProtTimer_SetCompareValue7uint8_t8uint32_t"></span><span id="ProtTimer_SetCompareValue__uint8_t.uint32_t"></span><span class="target" id="d0/d6f/group__prottim_1gae43dea7c92598c9ca4aa0b8ec33371c1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetCompareValue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">compareValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425ProtTimer_SetCompareValue7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set compare value of given compare channel in Protocol Timer. </p>
+<p>
+It sets compare value of given compare channel in Protocol Timer. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if compare channel number is in valid range. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> – Compare channel number, allowed range &lt;0:7&gt;. </p></li>
+<li><p><strong>compareValue</strong> – Compare value to be set.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425ProtTimer_GetCompareValue7uint8_t">
+<span id="_CPPv325ProtTimer_GetCompareValue7uint8_t"></span><span id="_CPPv225ProtTimer_GetCompareValue7uint8_t"></span><span id="ProtTimer_GetCompareValue__uint8_t"></span><span class="target" id="d0/d6f/group__prottim_1gae5d482d5beb61720ca351b3b27a60f78"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetCompareValue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425ProtTimer_GetCompareValue7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get compare value of given compare channel. </p>
+<p>
+It reads and returns compare value of given compare channel. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if compare channel number is in valid range. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> – Compare channel number, allowed range &lt;0:7&gt; </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Compare value of given compare channel.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419ProtTimer_SWCapture7uint8_t">
+<span id="_CPPv319ProtTimer_SWCapture7uint8_t"></span><span id="_CPPv219ProtTimer_SWCapture7uint8_t"></span><span id="ProtTimer_SWCapture__uint8_t"></span><span class="target" id="d0/d6f/group__prottim_1ga7593da2eba0c18bddf24bfb05e87c9b1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SWCapture</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419ProtTimer_SWCapture7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Capture current Protocol Timer value by SW. </p>
+<p>
+It captures current Protocol Timer value into capture register specified by capture channel. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if capture channel number is in valid range. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> – Capture channel number, allowed range &lt;0:3&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv427ProtTimer_SetHWCaptureEvent7uint8_t7uint8_t">
+<span id="_CPPv327ProtTimer_SetHWCaptureEvent7uint8_t7uint8_t"></span><span id="_CPPv227ProtTimer_SetHWCaptureEvent7uint8_t7uint8_t"></span><span id="ProtTimer_SetHWCaptureEvent__uint8_t.uint8_t"></span><span class="target" id="d0/d6f/group__prottim_1ga1b3a42bee208b8f4a044336768e95576"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetHWCaptureEvent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hwEvent</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv427ProtTimer_SetHWCaptureEvent7uint8_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set HW capture event for given capture channel. </p>
+<p>
+It assigns specified HW event for given capture channel. Protol Timer current value is then captured once specified HW event occurs. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if capture channel number is in valid range. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> – Capture channel number, allowed range &lt;0:3&gt; </p></li>
+<li><p><strong>hwEvent</strong> – Selected HW event to trigger capture.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv431ProtTimer_SetHWCaptureEventSync7uint8_t">
+<span id="_CPPv331ProtTimer_SetHWCaptureEventSync7uint8_t"></span><span id="_CPPv231ProtTimer_SetHWCaptureEventSync7uint8_t"></span><span id="ProtTimer_SetHWCaptureEventSync__uint8_t"></span><span class="target" id="d0/d6f/group__prottim_1gaccc6ba09085507ae028cd294207e166a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetHWCaptureEventSync</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hwEventMask</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431ProtTimer_SetHWCaptureEventSync7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable/disable dual FF synchronization on HW event. </p>
+<p>
+It enables/disables dual FF synchronization for HW events used in Protocol Timer. Each HW event is represented by one bit in mask. Dual FF synchronization is enabled for those HW events which mask bit is set to 1. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hwEventMask</strong> – Mask for enabling/disabling dual FF synchronization</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426ProtTimer_GetCapturedValue7uint8_t">
+<span id="_CPPv326ProtTimer_GetCapturedValue7uint8_t"></span><span id="_CPPv226ProtTimer_GetCapturedValue7uint8_t"></span><span id="ProtTimer_GetCapturedValue__uint8_t"></span><span class="target" id="d0/d6f/group__prottim_1ga80ba87e4d8b8aa7a7ec62073e59f6758"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetCapturedValue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426ProtTimer_GetCapturedValue7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get captured value from given channel. </p>
+<p>
+It reads and returns previously captured value from specified capture channel. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if capture channel number is in valid range. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> – Capture channel number, allowed range &lt;0:3&gt; </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Captured value in given capture channel.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419ProtTimer_IsRunningv">
+<span id="_CPPv319ProtTimer_IsRunningv"></span><span id="_CPPv219ProtTimer_IsRunningv"></span><span id="ProtTimer_IsRunning__void"></span><span class="target" id="d0/d6f/group__prottim_1gae1bd9da6a2002bf90e862cd7fcf6bfd1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_IsRunning</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419ProtTimer_IsRunningv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return if protocol timer is running. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if Protocol Timer is running, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437ProtTimer_GetSleepTimerChannelForSyncv">
+<span id="_CPPv337ProtTimer_GetSleepTimerChannelForSyncv"></span><span id="_CPPv237ProtTimer_GetSleepTimerChannelForSyncv"></span><span id="ProtTimer_GetSleepTimerChannelForSync__void"></span><span class="target" id="d0/d6f/group__prottim_1ga5e65b1d54f5321e5201d86d6244815a3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetSleepTimerChannelForSync</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437ProtTimer_GetSleepTimerChannelForSyncv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return if protocol timer is running. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if Protocol Timer is running, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ProtTimer_SetDivider7uint8_t">
+<span id="_CPPv320ProtTimer_SetDivider7uint8_t"></span><span id="_CPPv220ProtTimer_SetDivider7uint8_t"></span><span id="ProtTimer_SetDivider__uint8_t"></span><span class="target" id="d0/d6f/group__prottim_1ga6186284dc2fd0b60d810da0584dc131d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetDivider</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">divFactor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ProtTimer_SetDivider7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set divider factor. </p>
+<p>
+Protocol timer is running on 24MHz/divFactor except value 0. Divider factor 0 is interpreted as 256. With divider factor of 1 Protocol timer is running at full speed (24MHz). With divider factor of 255 Protocol timer is running at 24MHz/255. With divider factor of 0 (256) Protocol timer is running at 24MHz/256. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Divider factor shall be changed only if Protocol timer is not running. No check of running Protocol timer is done. Valid range is not checked, bigger values are presented as divFactor mod 256. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>divFactor</strong> – Divider factor, allowed range &lt;0:255&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ProtTimer_GetDividerv">
+<span id="_CPPv320ProtTimer_GetDividerv"></span><span id="_CPPv220ProtTimer_GetDividerv"></span><span id="ProtTimer_GetDivider__void"></span><span class="target" id="d0/d6f/group__prottim_1ga541d7c263760bc9698c0bd97c9ce1d90"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetDivider</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ProtTimer_GetDividerv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get current divider factor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current Divider factor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426ProtTimer_SetConfigurationbb">
+<span id="_CPPv326ProtTimer_SetConfigurationbb"></span><span id="_CPPv226ProtTimer_SetConfigurationbb"></span><span id="ProtTimer_SetConfiguration__b.b"></span><span class="target" id="d0/d6f/group__prottim_1gaa382a30980e0f605a93a5019701d833e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetConfiguration</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">autoReload</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">syncStart</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426ProtTimer_SetConfigurationbb" title="Link to this definition"></a><br /></dt>
+<dd><p>Set Protocol Timer configuration. </p>
+<p>
+It enables/disables Auto Reload mode and Synchronous Start/Stop. In Auto Reload mode Protocol Timer continues in counting from zero after reaching Full Value. Synchronous Start/Stop ensures that timer is started/sopped synchronously with low frequency clock. This ensures that timing is correctly maintained in sleep modes. This mode is required when used together with Sleep Timer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After changing Synchronous Start/Stop state SW needs to wait for at least 4 clock cycles (4 NOP instructions) before starting/stopping Protocol Timer. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>autoReload</strong> – Enable for Auto Reload mode. </p></li>
+<li><p><strong>syncStart</strong> – Enable for synchronous start/stop.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414ProtTimer_Load8uint32_t">
+<span id="_CPPv314ProtTimer_Load8uint32_t"></span><span id="_CPPv214ProtTimer_Load8uint32_t"></span><span id="ProtTimer_Load__uint32_t"></span><span class="target" id="d0/d6f/group__prottim_1ga6fac49c2c8e2f9d90ec72c60d0ea6dae"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_Load</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">loadValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414ProtTimer_Load8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Load Protocol Timer. </p>
+<p>
+It preloads Protocol Timer with specified value. After preloading Protocol Timer value is equal to load value and Protocol Timer continues from this loaded value. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Protocol Timer can be preloaded even when running. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loadValue</strong> – Value to be loaded into Protocol Timer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416ProtTimer_Adjust8uint32_t">
+<span id="_CPPv316ProtTimer_Adjust8uint32_t"></span><span id="_CPPv216ProtTimer_Adjust8uint32_t"></span><span id="ProtTimer_Adjust__uint32_t"></span><span class="target" id="d0/d6f/group__prottim_1gab719f68208e2f2a1042b60af67e75ea7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_Adjust</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">adjustValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416ProtTimer_Adjust8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Adjust Protocol Timer value. </p>
+<p>
+It adjusts Protocol Timer value with specified value. After adjusting Protocol Timer value is equal to old_value + adjustValue. Adjustment can be done in both dirrection (add/subtract). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Protocol Timer can be adjusted even when running. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>adjustValue</strong> – Value to be added into Protocol Timer current value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426ProtTimer_SetCompareEnable7uint8_tb">
+<span id="_CPPv326ProtTimer_SetCompareEnable7uint8_tb"></span><span id="_CPPv226ProtTimer_SetCompareEnable7uint8_tb"></span><span id="ProtTimer_SetCompareEnable__uint8_t.b"></span><span class="target" id="d0/d6f/group__prottim_1ga6ca21f61b7868f527ba7de004d9e28d6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetCompareEnable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426ProtTimer_SetCompareEnable7uint8_tb" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable/disable given compare channel. </p>
+<p>
+It enables or disables given compare channel in Protocol Timer. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if compare channel number is in valid range. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is not interrupt safe. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> – Compare channel number, allowed range &lt;0:7&gt;. </p></li>
+<li><p><strong>enable</strong> – Compare channel enable/disable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426ProtTimer_GetCompareEnable7uint8_t">
+<span id="_CPPv326ProtTimer_GetCompareEnable7uint8_t"></span><span id="_CPPv226ProtTimer_GetCompareEnable7uint8_t"></span><span id="ProtTimer_GetCompareEnable__uint8_t"></span><span class="target" id="d0/d6f/group__prottim_1ga7e9a9b3ebac2f7969a217a0b408fcb96"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetCompareEnable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426ProtTimer_GetCompareEnable7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Check if the given compare channel is enabled/disabled. </p>
+<p>
+It returns true if the given compare channel in Protocol Timer is enabled. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if compare channel number is in valid range. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> – Compare channel number, allowed range &lt;0:7&gt;. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the compare channel is enabled, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428ProtTimer_SetHwTriggerEnable7uint8_tb">
+<span id="_CPPv328ProtTimer_SetHwTriggerEnable7uint8_tb"></span><span id="_CPPv228ProtTimer_SetHwTriggerEnable7uint8_tb"></span><span id="ProtTimer_SetHwTriggerEnable__uint8_t.b"></span><span class="target" id="d0/d6f/group__prottim_1ga0766f0d0712d8504c5e9f5b65057c1a9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetHwTriggerEnable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428ProtTimer_SetHwTriggerEnable7uint8_tb" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable/disable HW trigger for RF from given compare channel. </p>
+<p>
+It enables/disables given compare channel in Protocol Timer to generate HW trigger for RF. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if compare channel number is in valid range. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is not interrupt safe. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> – Compare channel number, allowed range &lt;0:7&gt;. </p></li>
+<li><p><strong>enable</strong> – Compare channel enable/disable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428ProtTimer_SetHWCaptureEnable7uint8_tb">
+<span id="_CPPv328ProtTimer_SetHWCaptureEnable7uint8_tb"></span><span id="_CPPv228ProtTimer_SetHWCaptureEnable7uint8_tb"></span><span id="ProtTimer_SetHWCaptureEnable__uint8_t.b"></span><span class="target" id="d0/d6f/group__prottim_1gaa23c7dfb4260a64989b0998808786981"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_SetHWCaptureEnable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">channel</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428ProtTimer_SetHWCaptureEnable7uint8_tb" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable/disable HW capture for given capture channel. </p>
+<p>
+It enables/disabled given capture channel in Protocol Timer to be triggered by HW event. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>No check is performed if capture channel number is in valid range. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is not interrupt safe. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> – Capture channel number, allowed range &lt;0:3&gt;. </p></li>
+<li><p><strong>enable</strong> – Capture channel enable/disable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv427ProtTimer_UpdateRestartTimev">
+<span id="_CPPv327ProtTimer_UpdateRestartTimev"></span><span id="_CPPv227ProtTimer_UpdateRestartTimev"></span><span id="ProtTimer_UpdateRestartTime__void"></span><span class="target" id="d0/d6f/group__prottim_1ga23a181bc82ed6d491a44990fe1e3b1a8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_UpdateRestartTime</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv427ProtTimer_UpdateRestartTimev" title="Link to this definition"></a><br /></dt>
+<dd><p>Update time when PT start synchronously started. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Function also disables HW capture of sleep timer. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422ProtTimer_RestoreStartv">
+<span id="_CPPv322ProtTimer_RestoreStartv"></span><span id="_CPPv222ProtTimer_RestoreStartv"></span><span id="ProtTimer_RestoreStart__void"></span><span class="target" id="d0/d6f/group__prottim_1ga7c38668d98590826785a157a38fe773a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_RestoreStart</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422ProtTimer_RestoreStartv" title="Link to this definition"></a><br /></dt>
+<dd><p>Start protocol timer after configuration restoring. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It loads protocol timer by restore value and run it. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TRUE if Timer was started and needs adjustment, FALSE otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423ProtTimer_RestoreAdjustv">
+<span id="_CPPv323ProtTimer_RestoreAdjustv"></span><span id="_CPPv223ProtTimer_RestoreAdjustv"></span><span id="ProtTimer_RestoreAdjust__void"></span><span class="target" id="d0/d6f/group__prottim_1gac74f9e1abb84be8fe09a520309298a08"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_RestoreAdjust</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423ProtTimer_RestoreAdjustv" title="Link to this definition"></a><br /></dt>
+<dd><p>Adjust protocol timer after configuration restoring. </p>
+<p>Protocol timer is adjusted by time spent when the system was in sleep mode or ptocol timer was disabled ().</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It must wait for PT run. Only then sleep timer will capture it’s value (synchronously with PT start) </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Then sleep clocks can be calculated and PT value can be adjusted </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We could just read SleepTimer Count but based on code we do not know if PT is started now or next LF clock. Thus we would not know if to add to PT SleepClockDiff or SleepClockDiff-1 </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ProtTimer_WasRunningv">
+<span id="_CPPv320ProtTimer_WasRunningv"></span><span id="_CPPv220ProtTimer_WasRunningv"></span><span id="ProtTimer_WasRunning__void"></span><span class="target" id="d0/d6f/group__prottim_1gac321c9e2115522c4493fa22e711ccd33"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_WasRunning</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ProtTimer_WasRunningv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return if Protocol Timer was running when called <a class="reference internal" href="#d0/d6f/group__prottim_1ga770b20380defa079d274313337029ebf"><span class="std std-ref">ProtTimer_StoreConfig()</span></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if Protocol Timer was running when called <a class="reference internal" href="#d0/d6f/group__prottim_1ga770b20380defa079d274313337029ebf"><span class="std std-ref">ProtTimer_StoreConfig()</span></a>, else otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv427ProtTimer_RestartAfterSleepv">
+<span id="_CPPv327ProtTimer_RestartAfterSleepv"></span><span id="_CPPv227ProtTimer_RestartAfterSleepv"></span><span id="ProtTimer_RestartAfterSleep__void"></span><span class="target" id="d0/d6f/group__prottim_1gab6b2550a1d7cc235bd48c77ecf68eb52"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_RestartAfterSleep</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv427ProtTimer_RestartAfterSleepv" title="Link to this definition"></a><br /></dt>
+<dd><p>Restart Protocol Timer after Sleep. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423ProtTimer_GetSystemTimev">
+<span id="_CPPv323ProtTimer_GetSystemTimev"></span><span id="_CPPv223ProtTimer_GetSystemTimev"></span><span id="ProtTimer_GetSystemTime__void"></span><span class="target" id="d0/d6f/group__prottim_1ga6f8f189abeb65fa44abb23c408a63172"></span><span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetSystemTime</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423ProtTimer_GetSystemTimev" title="Link to this definition"></a><br /></dt>
+<dd><p>Get an absolute timestamp of the system timer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the absolute timestamp of the system timer. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv432ProtTimer_GetTimestampedRegisterPVK8uint32_tP8uint32_t">
+<span id="_CPPv332ProtTimer_GetTimestampedRegisterPVK8uint32_tP8uint32_t"></span><span id="_CPPv232ProtTimer_GetTimestampedRegisterPVK8uint32_tP8uint32_t"></span><span id="ProtTimer_GetTimestampedRegister__uint32_tVCP.uint32_tP"></span><span class="target" id="d0/d6f/group__prottim_1ga7adbae8b46a34df4f596521f725a4e61"></span><span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetTimestampedRegister</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pRegister</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pDestination</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432ProtTimer_GetTimestampedRegisterPVK8uint32_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Read a register and get the system timestamp for when that register was read. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pRegister</strong> – Address of the register to read. </p></li>
+<li><p><strong>pDestination</strong> – Pointer to the variable to store the register contents into. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>System timestamp when the register was read. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415ProtTimer_AddUs12SystemTime_t8uint32_t">
+<span id="_CPPv315ProtTimer_AddUs12SystemTime_t8uint32_t"></span><span id="_CPPv215ProtTimer_AddUs12SystemTime_t8uint32_t"></span><span id="ProtTimer_AddUs__SystemTime_t.uint32_t"></span><span class="target" id="d0/d6f/group__prottim_1ga8e36a93810b1cb3cc3390986cbdefa30"></span><span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_AddUs</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timestamp</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeInUs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415ProtTimer_AddUs12SystemTime_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the system time plus a number of us. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timestamp</strong> – The system timestamp to add to. </p></li>
+<li><p><strong>timeInUs</strong> – The number of microseconds to add to the timestamp. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>System timestamp added with the number of microseconds </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv435ProtTimer_RegisterEventTimeCallbackP29ProtTimer_EventTimeCallback_t">
+<span id="_CPPv335ProtTimer_RegisterEventTimeCallbackP29ProtTimer_EventTimeCallback_t"></span><span id="_CPPv235ProtTimer_RegisterEventTimeCallbackP29ProtTimer_EventTimeCallback_t"></span><span id="ProtTimer_RegisterEventTimeCallback__ProtTimer_EventTimeCallback_tP"></span><span class="target" id="d0/d6f/group__prottim_1gac5e5da08bbad40ad0b533301d730125e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_RegisterEventTimeCallback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429ProtTimer_EventTimeCallback_t" title="ProtTimer_EventTimeCallback_t"><span class="n"><span class="pre">ProtTimer_EventTimeCallback_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCallback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv435ProtTimer_RegisterEventTimeCallbackP29ProtTimer_EventTimeCallback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Register a callback to be called by the system to query software of the next event that was scheduled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pCallback</strong> – Pointer to the callback structure. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the callback was registered, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv435ProtTimer_GetFirstEventTimeCallbackv">
+<span id="_CPPv335ProtTimer_GetFirstEventTimeCallbackv"></span><span id="_CPPv235ProtTimer_GetFirstEventTimeCallbackv"></span><span id="ProtTimer_GetFirstEventTimeCallback__void"></span><span class="target" id="d0/d6f/group__prottim_1ga0c4964e4aac214a14cc98822d89d38a2"></span><a class="reference internal" href="#_CPPv429ProtTimer_EventTimeCallback_t" title="ProtTimer_EventTimeCallback_t"><span class="n"><span class="pre">ProtTimer_EventTimeCallback_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetFirstEventTimeCallback</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv435ProtTimer_GetFirstEventTimeCallbackv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a pointer to the first event time callback. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the first event time callback or NULL if there is none. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429ProtTimer_GetTimeToFirstEventP12SystemTime_tP12SystemTime_tP12SystemTime_t">
+<span id="_CPPv329ProtTimer_GetTimeToFirstEventP12SystemTime_tP12SystemTime_tP12SystemTime_t"></span><span id="_CPPv229ProtTimer_GetTimeToFirstEventP12SystemTime_tP12SystemTime_tP12SystemTime_t"></span><span id="ProtTimer_GetTimeToFirstEvent__SystemTime_tP.SystemTime_tP.SystemTime_tP"></span><span class="target" id="d0/d6f/group__prottim_1ga29fb8401a9f8a9d005e8a37462a5ceeb"></span><a class="reference internal" href="#_CPPv425ProtTimer_EventTimeResult" title="ProtTimer_EventTimeResult"><span class="n"><span class="pre">ProtTimer_EventTimeResult</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_GetTimeToFirstEvent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTimeToFirstEvent</span></span>, <span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pDeltaToFirstEvent</span></span>, <span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pQueryStart</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429ProtTimer_GetTimeToFirstEventP12SystemTime_tP12SystemTime_tP12SystemTime_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the time to the first event that is scheduled in the future.</p>
+<p>Modules can register to the protocol timer module with the function <a class="reference internal" href="#d0/d6f/group__prottim_1gac5e5da08bbad40ad0b533301d730125e"><span class="std std-ref">ProtTimer_RegisterEventTimeCallback</span></a>. To get the time to the first event in the future, the registered “event time callbacks” are questioned one after the other. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pTimeToFirstEvent</strong> – <strong>[out]</strong> Timestamp of the next event. </p></li>
+<li><p><strong>pDeltaToFirstEvent</strong> – <strong>[out]</strong> Delta time to the next event. </p></li>
+<li><p><strong>pQueryStart</strong> – <strong>[out]</strong> Reference timestamp for <code class="docutils literal notranslate"><span class="pre">pDeltaToFirstEvent</span></code> . </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>PT_EVENT_TIME_STAMP_VALID</strong> – The time to the first event is returned in the parameters <code class="docutils literal notranslate"><span class="pre">pTimeToFirstEvent</span></code> , <code class="docutils literal notranslate"><span class="pre">pDeltaToFirstEvent</span></code> and <code class="docutils literal notranslate"><span class="pre">pQueryStart</span></code> . </p></li>
+<li><p><strong>PT_EVENT_TIME_INFINITE_TIME</strong> – No event are planned in the future. </p></li>
+<li><p><strong>PT_EVENT_TIME_SLEEP_FORBIDDEN</strong> – At least one module has an event in the future but the time of that event is not known. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv412gPROT_Config">
+<span id="_CPPv312gPROT_Config"></span><span id="_CPPv212gPROT_Config"></span><span id="gPROT_Config__PROT_Configuration_tV"></span><span class="target" id="d0/d6f/group__prottim_1ga09a4e9b723230367d2bec65ab8b33846"></span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420PROT_Configuration_t" title="PROT_Configuration_t"><span class="n"><span class="pre">PROT_Configuration_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gPROT_Config</span></span></span><a class="headerlink" href="#_CPPv412gPROT_Config" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv427gProtTimer_PersistentMemory">
+<span id="_CPPv327gProtTimer_PersistentMemory"></span><span id="_CPPv227gProtTimer_PersistentMemory"></span><span id="gProtTimer_PersistentMemory__cA"></span><span class="target" id="d0/d6f/group__prottim_1ga2bb016e9e9b6555a64c9ca65995b7fa5"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gProtTimer_PersistentMemory</span></span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv427gProtTimer_PersistentMemory" title="Link to this definition"></a><br /></dt>
+<dd><p>Reference to the persistent memory for the Protocol Timer module. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not use this directly. </p>
+</div>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv420PROT_Configuration_t">
+<span id="_CPPv320PROT_Configuration_t"></span><span id="_CPPv220PROT_Configuration_t"></span><span id="PROT_Configuration_t"></span><span class="target" id="da/df4/struct_p_r_o_t___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PROT_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv420PROT_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;prot_timer.h&gt;</em></div>
+<p>Protocol configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20PROT_Configuration_t12moduleConfigE">
+<span id="_CPPv3N20PROT_Configuration_t12moduleConfigE"></span><span id="_CPPv2N20PROT_Configuration_t12moduleConfigE"></span><span id="PROT_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="da/df4/struct_p_r_o_t___configuration__t_1ab42b222dab51df88738661f9d2bf2faa"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N20PROT_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20PROT_Configuration_t19sleepChanSyncCaptPtE">
+<span id="_CPPv3N20PROT_Configuration_t19sleepChanSyncCaptPtE"></span><span id="_CPPv2N20PROT_Configuration_t19sleepChanSyncCaptPtE"></span><span id="PROT_Configuration_t::sleepChanSyncCaptPt__uint8_t"></span><span class="target" id="da/df4/struct_p_r_o_t___configuration__t_1aed894a5b9da76d8a5e854d4d9ad27430"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sleepChanSyncCaptPt</span></span></span><a class="headerlink" href="#_CPPv4N20PROT_Configuration_t19sleepChanSyncCaptPtE" title="Link to this definition"></a><br /></dt>
+<dd><p>dedicated channel of sleep timer for synchronous start/stop of PT </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20PROT_Configuration_t15recoveryRangeUsE">
+<span id="_CPPv3N20PROT_Configuration_t15recoveryRangeUsE"></span><span id="_CPPv2N20PROT_Configuration_t15recoveryRangeUsE"></span><span id="PROT_Configuration_t::recoveryRangeUs__uint16_t"></span><span class="target" id="da/df4/struct_p_r_o_t___configuration__t_1a239bf1ccb69ac1dca21031b04f432858"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">recoveryRangeUs</span></span></span><a class="headerlink" href="#_CPPv4N20PROT_Configuration_t15recoveryRangeUsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Recovery range to apply after resuming from Sleep mode. Events (compare IRQs) occuring in the past after resuming from Sleep mode would be manually triggered if in recovery range. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv425ProtTimer_HardwareState_t">
+<span id="_CPPv325ProtTimer_HardwareState_t"></span><span id="_CPPv225ProtTimer_HardwareState_t"></span><span id="ProtTimer_HardwareState_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_HardwareState_t</span></span></span><a class="headerlink" href="#_CPPv425ProtTimer_HardwareState_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;prot_timer.h&gt;</em></div>
+<p>Store structure for Protocol Timer configuration state. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t13RegProtTimCfgE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t13RegProtTimCfgE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t13RegProtTimCfgE"></span><span id="ProtTimer_HardwareState_t::RegProtTimCfg__RegProtTimCfg_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a2e9519d88493e47e4a519252639d15be"></span><span class="n"><span class="pre">RegProtTimCfg_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCfg</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t13RegProtTimCfgE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t15RegProtTimCountE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t15RegProtTimCountE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t15RegProtTimCountE"></span><span id="ProtTimer_HardwareState_t::RegProtTimCount__RegProtTimCount_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1ae10aefff45f0f781f824b1bb4111d456"></span><span class="n"><span class="pre">RegProtTimCount_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCount</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t15RegProtTimCountE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer counter value. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t14RegProtTimStatE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t14RegProtTimStatE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t14RegProtTimStatE"></span><span id="ProtTimer_HardwareState_t::RegProtTimStat__RegProtTimStat_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a1ff08d4c3dda128c3fe57f7d17d7ece2"></span><span class="n"><span class="pre">RegProtTimStat_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimStat</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t14RegProtTimStatE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer counter value. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t17RegProtTimFullValE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t17RegProtTimFullValE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t17RegProtTimFullValE"></span><span id="ProtTimer_HardwareState_t::RegProtTimFullVal__RegProtTimFullVal_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1ae3647fefdf7fc4c11f923ae098831b26"></span><span class="n"><span class="pre">RegProtTimFullVal_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimFullVal</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t17RegProtTimFullValE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer status. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t17RegProtTimLoadValE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t17RegProtTimLoadValE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t17RegProtTimLoadValE"></span><span id="ProtTimer_HardwareState_t::RegProtTimLoadVal__RegProtTimLoadVal_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1aa8176dda53ef50163fbb1654d2fcf57a"></span><span class="n"><span class="pre">RegProtTimLoadVal_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimLoadVal</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t17RegProtTimLoadValE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer full value. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t20RegProtTimCompareCfgE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t20RegProtTimCompareCfgE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t20RegProtTimCompareCfgE"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompareCfg__RegProtTimCompareCfg_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a5698051ec11c58c596b8d695716f4973"></span><span class="n"><span class="pre">RegProtTimCompareCfg_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompareCfg</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t20RegProtTimCompareCfgE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare0E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare0E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare0E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare0__RegProtTimCompare0_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a8d371d7d92b30f0352b1abf580d3c7be"></span><span class="n"><span class="pre">RegProtTimCompare0_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare0</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare0E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 0. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare1E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare1E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare1E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare1__RegProtTimCompare1_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a3d67065c6f260b49aa80e756576b19f4"></span><span class="n"><span class="pre">RegProtTimCompare1_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare1</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 1. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare2E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare2E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare2E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare2__RegProtTimCompare2_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a7a6a044eae25073b9f637cadcf60ef6e"></span><span class="n"><span class="pre">RegProtTimCompare2_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare2</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 2. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare3E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare3E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare3E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare3__RegProtTimCompare3_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1aae6295c02ee17b617cf7d81e07928f76"></span><span class="n"><span class="pre">RegProtTimCompare3_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare3</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 3. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare4E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare4E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare4E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare4__RegProtTimCompare4_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1afb62d6dab8f6a6f2d3441b21bc5465d8"></span><span class="n"><span class="pre">RegProtTimCompare4_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare4</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare4E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 4. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare5E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare5E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare5E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare5__RegProtTimCompare5_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1ab1a0ef804ddf29d1d6eac88dabe9bb05"></span><span class="n"><span class="pre">RegProtTimCompare5_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare5</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare5E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 5. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare6E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare6E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare6E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare6__RegProtTimCompare6_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a48f3365173d8141ba9382ff46a8e4962"></span><span class="n"><span class="pre">RegProtTimCompare6_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare6</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare6E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 6. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare7E">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18RegProtTimCompare7E"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18RegProtTimCompare7E"></span><span id="ProtTimer_HardwareState_t::RegProtTimCompare7__RegProtTimCompare7_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a97a0f025a63533a9cbe4e417e99c825c"></span><span class="n"><span class="pre">RegProtTimCompare7_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCompare7</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18RegProtTimCompare7E" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer output compare value - channel 7. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t21RegProtTimCaptureCtrlE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t21RegProtTimCaptureCtrlE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t21RegProtTimCaptureCtrlE"></span><span id="ProtTimer_HardwareState_t::RegProtTimCaptureCtrl__RegProtTimCaptureCtrl_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a71b7275433bfa838d780f07a99d667b8"></span><span class="n"><span class="pre">RegProtTimCaptureCtrl_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCaptureCtrl</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t21RegProtTimCaptureCtrlE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer input capture control. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t22RegProtTimHWEvtSyncSelE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t22RegProtTimHWEvtSyncSelE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t22RegProtTimHWEvtSyncSelE"></span><span id="ProtTimer_HardwareState_t::RegProtTimHWEvtSyncSel__RegProtTimHWEvtSyncSel_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1ac6f4a4c69bfe8a9028c4896e3974f72c"></span><span class="n"><span class="pre">RegProtTimHWEvtSyncSel_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimHWEvtSyncSel</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t22RegProtTimHWEvtSyncSelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer HW event synchronizer selection. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t25RegProtTimCaptureHWEvtSelE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t25RegProtTimCaptureHWEvtSelE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t25RegProtTimCaptureHWEvtSelE"></span><span id="ProtTimer_HardwareState_t::RegProtTimCaptureHWEvtSel__RegProtTimCaptureHWEvtSel_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a229066d05d14ee368cd353614698c04f"></span><span class="n"><span class="pre">RegProtTimCaptureHWEvtSel_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegProtTimCaptureHWEvtSel</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t25RegProtTimCaptureHWEvtSelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Protocol Timer input capture HW event selection. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t18stopTimeInSleepClkE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t18stopTimeInSleepClkE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t18stopTimeInSleepClkE"></span><span id="ProtTimer_HardwareState_t::stopTimeInSleepClk__uint32_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1ab567c47d1eadf6fe7db328c4812318c7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stopTimeInSleepClk</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t18stopTimeInSleepClkE" title="Link to this definition"></a><br /></dt>
+<dd><p>last stop time </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25ProtTimer_HardwareState_t21restartTimeInSleepClkE">
+<span id="_CPPv3N25ProtTimer_HardwareState_t21restartTimeInSleepClkE"></span><span id="_CPPv2N25ProtTimer_HardwareState_t21restartTimeInSleepClkE"></span><span id="ProtTimer_HardwareState_t::restartTimeInSleepClk__uint32_t"></span><span class="target" id="d5/d33/struct_prot_timer___hardware_state__t_1a74d9ff64caa86145210dd0a96f0fd625"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">restartTimeInSleepClk</span></span></span><a class="headerlink" href="#_CPPv4N25ProtTimer_HardwareState_t21restartTimeInSleepClkE" title="Link to this definition"></a><br /></dt>
+<dd><p>last restart time </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv430_ProtTimer_EventTimeCallback_t">
+<span id="_CPPv330_ProtTimer_EventTimeCallback_t"></span><span id="_CPPv230_ProtTimer_EventTimeCallback_t"></span><span id="_ProtTimer_EventTimeCallback_t"></span><span class="target" id="db/d99/struct___prot_timer___event_time_callback__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_ProtTimer_EventTimeCallback_t</span></span></span><a class="headerlink" href="#_CPPv430_ProtTimer_EventTimeCallback_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;prot_timer.h&gt;</em></div>
+<p>Callback for software to notify the system of upcoming events. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N30_ProtTimer_EventTimeCallback_t16pTimeToNextEventE">
+<span id="_CPPv3N30_ProtTimer_EventTimeCallback_t16pTimeToNextEventE"></span><span id="_CPPv2N30_ProtTimer_EventTimeCallback_t16pTimeToNextEventE"></span><span class="target" id="db/d99/struct___prot_timer___event_time_callback__t_1a20ed55a2246a9502a9703f7254ab2bce"></span><a class="reference internal" href="#_CPPv425ProtTimer_EventTimeResult" title="ProtTimer_EventTimeResult"><span class="n"><span class="pre">ProtTimer_EventTimeResult</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pTimeToNextEvent</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">SystemTime_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pSystemTimeOfEvent</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N30_ProtTimer_EventTimeCallback_t16pTimeToNextEventE" title="Link to this definition"></a><br /></dt>
+<dd><p>Callback to query when the next event will happen. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Param pSystemTimeOfEvent<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the variable to store the timestamp of the next event in. </p>
+</dd>
+<dt class="field-even">Return<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result of the event time callback. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N30_ProtTimer_EventTimeCallback_t5pNextE">
+<span id="_CPPv3N30_ProtTimer_EventTimeCallback_t5pNextE"></span><span id="_CPPv2N30_ProtTimer_EventTimeCallback_t5pNextE"></span><span id="_ProtTimer_EventTimeCallback_t::pNext___ProtTimer_EventTimeCallback_tP"></span><span class="target" id="db/d99/struct___prot_timer___event_time_callback__t_1a5fce37b4974712fd9df6a9ecc0ed43b1"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv430_ProtTimer_EventTimeCallback_t" title="_ProtTimer_EventTimeCallback_t"><span class="n"><span class="pre">_ProtTimer_EventTimeCallback_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pNext</span></span></span><a class="headerlink" href="#_CPPv4N30_ProtTimer_EventTimeCallback_t5pNextE" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal pointer to the next callback. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv428ProtTimer_PersistentMemory_t">
+<span id="_CPPv328ProtTimer_PersistentMemory_t"></span><span id="_CPPv228ProtTimer_PersistentMemory_t"></span><span id="ProtTimer_PersistentMemory_t"></span><span class="target" id="dd/d92/struct_prot_timer___persistent_memory__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProtTimer_PersistentMemory_t</span></span></span><a class="headerlink" href="#_CPPv428ProtTimer_PersistentMemory_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;prot_timer_memory.h&gt;</em></div>
+<p>Persistent memory for the Protocol Timer module. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N28ProtTimer_PersistentMemory_t13hardwareStateE">
+<span id="_CPPv3N28ProtTimer_PersistentMemory_t13hardwareStateE"></span><span id="_CPPv2N28ProtTimer_PersistentMemory_t13hardwareStateE"></span><span id="ProtTimer_PersistentMemory_t::hardwareState__ProtTimer_HardwareState_t"></span><span class="target" id="dd/d92/struct_prot_timer___persistent_memory__t_1a3d12867167ac0461733363e482629e63"></span><a class="reference internal" href="#_CPPv425ProtTimer_HardwareState_t" title="ProtTimer_HardwareState_t"><span class="n"><span class="pre">ProtTimer_HardwareState_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hardwareState</span></span></span><a class="headerlink" href="#_CPPv4N28ProtTimer_PersistentMemory_t13hardwareStateE" title="Link to this definition"></a><br /></dt>
+<dd><p>State of the Protocol Timer hardware. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N28ProtTimer_PersistentMemory_t12restoreStateE">
+<span id="_CPPv3N28ProtTimer_PersistentMemory_t12restoreStateE"></span><span id="_CPPv2N28ProtTimer_PersistentMemory_t12restoreStateE"></span><span id="ProtTimer_PersistentMemory_t::restoreState__ProtTimer_RestoreState_t"></span><span class="target" id="dd/d92/struct_prot_timer___persistent_memory__t_1ad4bbe2f31f0eb732f2845dde31825257"></span><a class="reference internal" href="#_CPPv424ProtTimer_RestoreState_t" title="ProtTimer_RestoreState_t"><span class="n"><span class="pre">ProtTimer_RestoreState_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">restoreState</span></span></span><a class="headerlink" href="#_CPPv4N28ProtTimer_PersistentMemory_t12restoreStateE" title="Link to this definition"></a><br /></dt>
+<dd><p>Restore state indicating actions after wake-up. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-3-0">
+<h3>Version 0.3.0<a class="headerlink" href="#version-0-3-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fix endless loop in protocol timer related by sleep manager when trying to enter sleep mode.</p></li>
+</ul>
+</section>
+<section id="version-0-2-0">
+<h3>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>New function: ProtTimer_GetCompareEnable.</p></li>
+</ul>
+</section>
+<section id="version-0-1-1">
+<h3>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>[FIX] Protocol Timer recovery after resuming from Sleep mode.</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../pml/index.html" class="btn btn-neutral float-left" title="PML Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../qdec/index.html" class="btn btn-neutral float-right" title="QDEC Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

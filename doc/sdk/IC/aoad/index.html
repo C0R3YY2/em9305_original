@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AOAD Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DMA Driver" href="../dma/index.html" />
+    <link rel="prev" title="ADC Driver" href="../adc/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">AOAD Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-of-aoad">Configuration of AoAD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">AOAD Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aoad-driver">
+<h1>AOAD Driver<a class="headerlink" href="#aoad-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The AoAD driver enables the configuration of hardware for <em>Angle of Departure</em> (AoD) and <em>Angle of Arrival</em> (AoA) in BLE operations.</p>
+<p>The chapter <em>Direction Finding (AOA/AOD)</em> in the EM9305 datasheet explains how the lookup table (LUT) and GPIOs work together for controlling the antenna switching.
+Please refer to this chapter for more details on LUT mapping with the GPIO matrix.</p>
+</section>
+<section id="configuration-of-aoad">
+<h2>Configuration of AoAD<a class="headerlink" href="#configuration-of-aoad" title="Link to this heading"></a></h2>
+<p>First of all, the AoAD header file shall be included to get access to the AoAD API as shown in the following code snippet.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;aoad.h&quot;</span>
+</pre></div>
+</div>
+<p>The AoAD module shall first be registered in the <cite>NVM_ConfigModules()</cite> function before the GPIOs used for antenna switching can be configured.</p>
+<p>The AoAD configuration relies on a globally defined structure that shall be declared as extern in any application that use this feature.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="n">AOAD_Configuration_t</span><span class="w"> </span><span class="n">gAOAD_Config</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Once done, the AoAD driver can be registered and configured.</p>
+<p>In this example, GPIO 8, 9, 10 and 11 are used for antenna switching.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Bit 0 of LUT (Lookup table) will drive GPIO 8 state.</p></li>
+<li><p>Bit 1 of LUT (Lookup table) will drive GPIO 9 state.</p></li>
+<li><p>Bit 2 of LUT (Lookup table) will drive GPIO 10 state.</p></li>
+<li><p>Bit 3 of LUT (Lookup table) will drive GPIO 11 state.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">AOAD_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Configure GPIOs for AOAD</span>
+<span class="w">    </span><span class="c1">// GPIO 8 - 11 used for AOAD</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel8</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 0 of Lut on GPIO 8</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel9</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 1 of Lut on GPIO 9</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 2 of Lut on GPIO 10</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel11</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 3 of Lut on GPIO 11</span>
+
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Once the hardware configuration is complete, the AoA/AoD feature can be used.</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d4/d05/group__aoad"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">aoad</span></span></dt>
+<dd><p>Driver for the AOAC. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419AOAD_RegisterModulev">
+<span id="_CPPv319AOAD_RegisterModulev"></span><span id="_CPPv219AOAD_RegisterModulev"></span><span id="AOAD_RegisterModule__void"></span><span class="target" id="d4/d05/group__aoad_1ga4f76d368fc648cff4cb51824e1ba5158"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AOAD_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419AOAD_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the AOAD module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411AOAD_Updatev">
+<span id="_CPPv311AOAD_Updatev"></span><span id="_CPPv211AOAD_Updatev"></span><span id="AOAD_Update__void"></span><span class="target" id="d4/d05/group__aoad_1gaacee6a622688ffa8cd3eaace7a0cc2f7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AOAD_Update</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411AOAD_Updatev" title="Link to this definition"></a><br /></dt>
+<dd><p>Update configuration register from configuration structure. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425AOAD_SetMatrixLookUpTable7uint8_tPK7uint8_t7uint8_t">
+<span id="_CPPv325AOAD_SetMatrixLookUpTable7uint8_tPK7uint8_t7uint8_t"></span><span id="_CPPv225AOAD_SetMatrixLookUpTable7uint8_tPK7uint8_t7uint8_t"></span><span id="AOAD_SetMatrixLookUpTable__uint8_t.uint8_tCP.uint8_t"></span><span class="target" id="d4/d05/group__aoad_1ga20576291d052cf07a61ab98262fa76dc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AOAD_SetMatrixLookUpTable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">antIdRef</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pAntId</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">swPattLen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425AOAD_SetMatrixLookUpTable7uint8_tPK7uint8_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set Look Up table for Antenna Switch. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>antIdRef</strong> – antenna id for reference period </p></li>
+<li><p><strong>pAntId</strong> – antenna id pattern </p></li>
+<li><p><strong>swPattLen</strong> – length of antenna id pattern </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424AOAD_AntennaSwitchEnablebb7uint8_tb">
+<span id="_CPPv324AOAD_AntennaSwitchEnablebb7uint8_tb"></span><span id="_CPPv224AOAD_AntennaSwitchEnablebb7uint8_tb"></span><span id="AOAD_AntennaSwitchEnable__b.b.uint8_t.b"></span><span class="target" id="d4/d05/group__aoad_1gacdf6127a8417271871750f03b563e5ba"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AOAD_AntennaSwitchEnable</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">antennaSwitchEnable</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">aoaRx2us</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cteType</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataChannelPdu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424AOAD_AntennaSwitchEnablebb7uint8_tb" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable / Disable Antenna Switch matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>antennaSwitchEnable</strong> – enable antenna switching </p></li>
+<li><p><strong>aoaRx2us</strong> – true if switching time period is 2 us </p></li>
+<li><p><strong>cteType</strong> – CTE type, 0 = AoA, 1 = AoD 1 us, 2 = AoD 2 us </p></li>
+<li><p><strong>dataChannelPdu</strong> – If true Data chanel PDU format is used to decode CTEInfo field in packet, otherwise Advertising channel PDU format is used to decode CTEInfo field in packet. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv411GPIO_Sel0_t">
+<span id="_CPPv311GPIO_Sel0_t"></span><span id="_CPPv211GPIO_Sel0_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GPIO_Sel0_t</span></span></span><a class="headerlink" href="#_CPPv411GPIO_Sel0_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;aoad.h&gt;</em></div>
+<p>GPIO Selection. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t6configE">
+<span id="_CPPv3N11GPIO_Sel0_t6configE"></span><span id="_CPPv2N11GPIO_Sel0_t6configE"></span><span id="GPIO_Sel0_t::config__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1a8cea67085525a6d1951c51310bbb1069"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">config</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t6configE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Selection config bytes. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t13gpio_out_sel0E">
+<span id="_CPPv3N11GPIO_Sel0_t13gpio_out_sel0E"></span><span id="_CPPv2N11GPIO_Sel0_t13gpio_out_sel0E"></span><span id="GPIO_Sel0_t::gpio_out_sel0__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1a50ab24bd605c0763c75b95e65d3ef637"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel0</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t13gpio_out_sel0E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 0, defines which LUT bit is selected to GPIO0. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t9reserved1E">
+<span id="_CPPv3N11GPIO_Sel0_t9reserved1E"></span><span id="_CPPv2N11GPIO_Sel0_t9reserved1E"></span><span id="GPIO_Sel0_t::reserved1__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1a79976b976f6f1ddfe6f0298825fb1092"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved1</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t9reserved1E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t13gpio_out_sel1E">
+<span id="_CPPv3N11GPIO_Sel0_t13gpio_out_sel1E"></span><span id="_CPPv2N11GPIO_Sel0_t13gpio_out_sel1E"></span><span id="GPIO_Sel0_t::gpio_out_sel1__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1aadd560650aa9c6a7100f7f1b4ddc03f5"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel1</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t13gpio_out_sel1E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 1, defines which LUT bit is selected to GPIO1. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t9reserved2E">
+<span id="_CPPv3N11GPIO_Sel0_t9reserved2E"></span><span id="_CPPv2N11GPIO_Sel0_t9reserved2E"></span><span id="GPIO_Sel0_t::reserved2__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1aa9ce82c878ab3690d8447890233c98eb"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved2</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t9reserved2E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t13gpio_out_sel2E">
+<span id="_CPPv3N11GPIO_Sel0_t13gpio_out_sel2E"></span><span id="_CPPv2N11GPIO_Sel0_t13gpio_out_sel2E"></span><span id="GPIO_Sel0_t::gpio_out_sel2__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1a1557971b63b50bf89a259ef9114ff1dd"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel2</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t13gpio_out_sel2E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 2, defines which LUT bit is selected to GPIO2. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t9reserved3E">
+<span id="_CPPv3N11GPIO_Sel0_t9reserved3E"></span><span id="_CPPv2N11GPIO_Sel0_t9reserved3E"></span><span id="GPIO_Sel0_t::reserved3__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1a53043c397ee75d49d9d1ba9a8c9bd023"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved3</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t9reserved3E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t13gpio_out_sel3E">
+<span id="_CPPv3N11GPIO_Sel0_t13gpio_out_sel3E"></span><span id="_CPPv2N11GPIO_Sel0_t13gpio_out_sel3E"></span><span id="GPIO_Sel0_t::gpio_out_sel3__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1a3bce5bd6a102a6afcf252fd830b4996c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel3</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t13gpio_out_sel3E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 3, defines which LUT bit is selected to GPIO3. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t9reserved4E">
+<span id="_CPPv3N11GPIO_Sel0_t9reserved4E"></span><span id="_CPPv2N11GPIO_Sel0_t9reserved4E"></span><span id="GPIO_Sel0_t::reserved4__uint32_t"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1ae2f88765204e4cab33546c7d32cf7e2e"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved4</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t9reserved4E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel0_t4bitsE">
+<span id="_CPPv3N11GPIO_Sel0_t4bitsE"></span><span id="_CPPv2N11GPIO_Sel0_t4bitsE"></span><span class="target" id="da/d5e/union_g_p_i_o___sel0__t_1ae789a3b3f1c208a7c33c9691770960c7"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411GPIO_Sel0_t" title="GPIO_Sel0_t"><span class="n"><span class="pre">GPIO_Sel0_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel0_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv411GPIO_Sel1_t">
+<span id="_CPPv311GPIO_Sel1_t"></span><span id="_CPPv211GPIO_Sel1_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GPIO_Sel1_t</span></span></span><a class="headerlink" href="#_CPPv411GPIO_Sel1_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;aoad.h&gt;</em></div>
+<p>GPIO Selection. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t6configE">
+<span id="_CPPv3N11GPIO_Sel1_t6configE"></span><span id="_CPPv2N11GPIO_Sel1_t6configE"></span><span id="GPIO_Sel1_t::config__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1aab1d3a7a11ef3f52cf06c108a46cc8e3"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">config</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t6configE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Selection config bytes. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t13gpio_out_sel4E">
+<span id="_CPPv3N11GPIO_Sel1_t13gpio_out_sel4E"></span><span id="_CPPv2N11GPIO_Sel1_t13gpio_out_sel4E"></span><span id="GPIO_Sel1_t::gpio_out_sel4__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1a1d721798796b07977f6576aaf823ddc8"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel4</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t13gpio_out_sel4E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 4, defines which LUT bit is selected to GPIO4. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t9reserved1E">
+<span id="_CPPv3N11GPIO_Sel1_t9reserved1E"></span><span id="_CPPv2N11GPIO_Sel1_t9reserved1E"></span><span id="GPIO_Sel1_t::reserved1__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1afccbcb6401aebc63752ff359e7ae54cb"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved1</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t9reserved1E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t13gpio_out_sel5E">
+<span id="_CPPv3N11GPIO_Sel1_t13gpio_out_sel5E"></span><span id="_CPPv2N11GPIO_Sel1_t13gpio_out_sel5E"></span><span id="GPIO_Sel1_t::gpio_out_sel5__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1a10b71687698af605b5a23ff5aeea1b02"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel5</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t13gpio_out_sel5E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 5, defines which LUT bit is selected to GPIO5. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t9reserved2E">
+<span id="_CPPv3N11GPIO_Sel1_t9reserved2E"></span><span id="_CPPv2N11GPIO_Sel1_t9reserved2E"></span><span id="GPIO_Sel1_t::reserved2__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1a7657b7f687ab0d79888cee2cab68d78d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved2</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t9reserved2E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t13gpio_out_sel6E">
+<span id="_CPPv3N11GPIO_Sel1_t13gpio_out_sel6E"></span><span id="_CPPv2N11GPIO_Sel1_t13gpio_out_sel6E"></span><span id="GPIO_Sel1_t::gpio_out_sel6__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1a55cfce6a1cb2e430a918f1d448de3e7d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel6</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t13gpio_out_sel6E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 6, defines which LUT bit is selected to GPIO6. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t9reserved3E">
+<span id="_CPPv3N11GPIO_Sel1_t9reserved3E"></span><span id="_CPPv2N11GPIO_Sel1_t9reserved3E"></span><span id="GPIO_Sel1_t::reserved3__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1a61f1166b67abbc1fe1b8858053a58e3f"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved3</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t9reserved3E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t13gpio_out_sel7E">
+<span id="_CPPv3N11GPIO_Sel1_t13gpio_out_sel7E"></span><span id="_CPPv2N11GPIO_Sel1_t13gpio_out_sel7E"></span><span id="GPIO_Sel1_t::gpio_out_sel7__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1a5ccbb956aee1f5a80d8969e5f21fc379"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel7</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t13gpio_out_sel7E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 7, defines which LUT bit is selected to GPIO7. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t9reserved4E">
+<span id="_CPPv3N11GPIO_Sel1_t9reserved4E"></span><span id="_CPPv2N11GPIO_Sel1_t9reserved4E"></span><span id="GPIO_Sel1_t::reserved4__uint32_t"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1a4f94d0b6c3e75b4e12ec09ab7e9862d8"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved4</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t9reserved4E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel1_t4bitsE">
+<span id="_CPPv3N11GPIO_Sel1_t4bitsE"></span><span id="_CPPv2N11GPIO_Sel1_t4bitsE"></span><span class="target" id="db/d26/union_g_p_i_o___sel1__t_1aacb7a418ce56671bd7663375ea6dabcf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411GPIO_Sel1_t" title="GPIO_Sel1_t"><span class="n"><span class="pre">GPIO_Sel1_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel1_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv411GPIO_Sel2_t">
+<span id="_CPPv311GPIO_Sel2_t"></span><span id="_CPPv211GPIO_Sel2_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GPIO_Sel2_t</span></span></span><a class="headerlink" href="#_CPPv411GPIO_Sel2_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;aoad.h&gt;</em></div>
+<p>GPIO Selection. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t6configE">
+<span id="_CPPv3N11GPIO_Sel2_t6configE"></span><span id="_CPPv2N11GPIO_Sel2_t6configE"></span><span id="GPIO_Sel2_t::config__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a2e1f6f1daea6877cfc69fb5ab74d3800"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">config</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t6configE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Selection config bytes. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t13gpio_out_sel8E">
+<span id="_CPPv3N11GPIO_Sel2_t13gpio_out_sel8E"></span><span id="_CPPv2N11GPIO_Sel2_t13gpio_out_sel8E"></span><span id="GPIO_Sel2_t::gpio_out_sel8__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a8eeec0e0febdf209500c652e1711672c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel8</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t13gpio_out_sel8E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 8, defines which LUT bit is selected to GPIO8. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t9reserved1E">
+<span id="_CPPv3N11GPIO_Sel2_t9reserved1E"></span><span id="_CPPv2N11GPIO_Sel2_t9reserved1E"></span><span id="GPIO_Sel2_t::reserved1__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1aada5c84d3ea91663c9fd7cc2002f29ab"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved1</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t9reserved1E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t13gpio_out_sel9E">
+<span id="_CPPv3N11GPIO_Sel2_t13gpio_out_sel9E"></span><span id="_CPPv2N11GPIO_Sel2_t13gpio_out_sel9E"></span><span id="GPIO_Sel2_t::gpio_out_sel9__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1aa91364d42eb8ef8e1bfe2c19e747180c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel9</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t13gpio_out_sel9E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 9, defines which LUT bit is selected to GPIO9. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t9reserved2E">
+<span id="_CPPv3N11GPIO_Sel2_t9reserved2E"></span><span id="_CPPv2N11GPIO_Sel2_t9reserved2E"></span><span id="GPIO_Sel2_t::reserved2__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a3e4b850413998cae2dface6ec48a228d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved2</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t9reserved2E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t14gpio_out_sel10E">
+<span id="_CPPv3N11GPIO_Sel2_t14gpio_out_sel10E"></span><span id="_CPPv2N11GPIO_Sel2_t14gpio_out_sel10E"></span><span id="GPIO_Sel2_t::gpio_out_sel10__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a2687a7dd8448f2e085bd03265fa7ec71"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel10</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t14gpio_out_sel10E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 10, defines which LUT bit is selected to GPIO10. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t9reserved3E">
+<span id="_CPPv3N11GPIO_Sel2_t9reserved3E"></span><span id="_CPPv2N11GPIO_Sel2_t9reserved3E"></span><span id="GPIO_Sel2_t::reserved3__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a8a0383f2c2b87c239d3c1d28bb66b78b"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved3</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t9reserved3E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t14gpio_out_sel11E">
+<span id="_CPPv3N11GPIO_Sel2_t14gpio_out_sel11E"></span><span id="_CPPv2N11GPIO_Sel2_t14gpio_out_sel11E"></span><span id="GPIO_Sel2_t::gpio_out_sel11__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a3a3633afb6afa4a83b7afdc2e90f7433"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_out_sel11</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t14gpio_out_sel11E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Out Sel 11, defines which LUT bit is selected to GPIO11. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t9reserved4E">
+<span id="_CPPv3N11GPIO_Sel2_t9reserved4E"></span><span id="_CPPv2N11GPIO_Sel2_t9reserved4E"></span><span id="GPIO_Sel2_t::reserved4__uint32_t"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a359edd2da97a164b3ec420a18c6e1447"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved4</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t9reserved4E" title="Link to this definition"></a><br /></dt>
+<dd><p>reserved. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11GPIO_Sel2_t4bitsE">
+<span id="_CPPv3N11GPIO_Sel2_t4bitsE"></span><span id="_CPPv2N11GPIO_Sel2_t4bitsE"></span><span class="target" id="dc/dda/union_g_p_i_o___sel2__t_1a6df5dca00d41d793a61fb1758a47845e"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411GPIO_Sel2_t" title="GPIO_Sel2_t"><span class="n"><span class="pre">GPIO_Sel2_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N11GPIO_Sel2_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv420AOAD_Configuration_t">
+<span id="_CPPv320AOAD_Configuration_t"></span><span id="_CPPv220AOAD_Configuration_t"></span><span id="AOAD_Configuration_t"></span><span class="target" id="d4/d8d/struct_a_o_a_d___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AOAD_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv420AOAD_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;aoad.h&gt;</em></div>
+<p>AOAD configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20AOAD_Configuration_t12moduleConfigE">
+<span id="_CPPv3N20AOAD_Configuration_t12moduleConfigE"></span><span id="_CPPv2N20AOAD_Configuration_t12moduleConfigE"></span><span id="AOAD_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="d4/d8d/struct_a_o_a_d___configuration__t_1aedd06b616c0b99d06b809128c43d036a"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N20AOAD_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20AOAD_Configuration_t9gpio_sel0E">
+<span id="_CPPv3N20AOAD_Configuration_t9gpio_sel0E"></span><span id="_CPPv2N20AOAD_Configuration_t9gpio_sel0E"></span><span id="AOAD_Configuration_t::gpio_sel0__GPIO_Sel0_t"></span><span class="target" id="d4/d8d/struct_a_o_a_d___configuration__t_1a85eff143562ac56e8913bc62b9b943cd"></span><a class="reference internal" href="#_CPPv411GPIO_Sel0_t" title="GPIO_Sel0_t"><span class="n"><span class="pre">GPIO_Sel0_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_sel0</span></span></span><a class="headerlink" href="#_CPPv4N20AOAD_Configuration_t9gpio_sel0E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Sel 0, Defines which LUT bit is selected for GPIO0 to GPIO3. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20AOAD_Configuration_t9gpio_sel1E">
+<span id="_CPPv3N20AOAD_Configuration_t9gpio_sel1E"></span><span id="_CPPv2N20AOAD_Configuration_t9gpio_sel1E"></span><span id="AOAD_Configuration_t::gpio_sel1__GPIO_Sel1_t"></span><span class="target" id="d4/d8d/struct_a_o_a_d___configuration__t_1a9dbdf823d2ca7ea71d77a8f388381817"></span><a class="reference internal" href="#_CPPv411GPIO_Sel1_t" title="GPIO_Sel1_t"><span class="n"><span class="pre">GPIO_Sel1_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_sel1</span></span></span><a class="headerlink" href="#_CPPv4N20AOAD_Configuration_t9gpio_sel1E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Sel 1, Defines which LUT bit is selected for GPIO4 to GPIO7. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20AOAD_Configuration_t9gpio_sel2E">
+<span id="_CPPv3N20AOAD_Configuration_t9gpio_sel2E"></span><span id="_CPPv2N20AOAD_Configuration_t9gpio_sel2E"></span><span id="AOAD_Configuration_t::gpio_sel2__GPIO_Sel2_t"></span><span class="target" id="d4/d8d/struct_a_o_a_d___configuration__t_1a79906d5d122ba433a4b606ba702cd86f"></span><a class="reference internal" href="#_CPPv411GPIO_Sel2_t" title="GPIO_Sel2_t"><span class="n"><span class="pre">GPIO_Sel2_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_sel2</span></span></span><a class="headerlink" href="#_CPPv4N20AOAD_Configuration_t9gpio_sel2E" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO Sel 2, Defines which LUT bit is selected for GPIO8 to GPIO11. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20AOAD_Configuration_t13gpio_for_aoadE">
+<span id="_CPPv3N20AOAD_Configuration_t13gpio_for_aoadE"></span><span id="_CPPv2N20AOAD_Configuration_t13gpio_for_aoadE"></span><span id="AOAD_Configuration_t::gpio_for_aoad__bA"></span><span class="target" id="d4/d8d/struct_a_o_a_d___configuration__t_1a104115826c569c7aaf302caac28ef105"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpio_for_aoad</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">12</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N20AOAD_Configuration_t13gpio_for_aoadE" title="Link to this definition"></a><br /></dt>
+<dd><p>Table of GPIO used for AOAD. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20AOAD_Configuration_t7enabledE">
+<span id="_CPPv3N20AOAD_Configuration_t7enabledE"></span><span id="_CPPv2N20AOAD_Configuration_t7enabledE"></span><span id="AOAD_Configuration_t::enabled__uint8_t"></span><span class="target" id="d4/d8d/struct_a_o_a_d___configuration__t_1a3a13914e2feae77df3a41f3dc26ee3a3"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><a class="headerlink" href="#_CPPv4N20AOAD_Configuration_t7enabledE" title="Link to this definition"></a><br /></dt>
+<dd><p>If the driver is enabled or not. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../adc/index.html" class="btn btn-neutral float-left" title="ADC Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../dma/index.html" class="btn btn-neutral float-right" title="DMA Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

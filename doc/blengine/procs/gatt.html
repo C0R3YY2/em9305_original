@@ -1,0 +1,1678 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gatt Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hci Procedures" href="hci.html" />
+    <link rel="prev" title="gap Procedures" href="gap.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html">authentication Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ble.html">ble Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firmware_update.html">firmware_update Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">gap Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">gatt Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-register-server">gatt.register_server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-register-client">gatt.register_client</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-deregister-client">gatt.deregister_client</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-read-value">gatt.read_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-write-value">gatt.write_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-write-without-response">gatt.write_without_response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-write-long-value">gatt.write_long_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-read-multiple">gatt.read_multiple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-read-long-value">gatt.read_long_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-read-value-by-type">gatt.read_value_by_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-exchange-mtu">gatt.exchange_mtu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-discover-all-services">gatt.discover_all_services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-discover-service-by-type">gatt.discover_service_by_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-discover-all-characteristic">gatt.discover_all_characteristic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-find-included-service">gatt.find_included_service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gatt-discover-all-char-descriptors">gatt.discover_all_char_descriptors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hci.html">hci Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">l2cap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sm.html">sm Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">gatt Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gatt-procedures">
+<h1>gatt Procedures<a class="headerlink" href="#gatt-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="gatt-register-server">
+<span id="proc-gatt-register-server"></span><h2><a class="reference internal" href="#gatt-register-server">gatt.register_server</a><a class="headerlink" href="#gatt-register-server" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Register the Local Device as a Server. (EMSHI)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">register_server</span>
+
+<span class="n">register_server</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">register_server</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Register the Local Device as a Server. (EMSHI)</span>
+
+<span class="sd">    :param      engine:  The engine</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTS_Init&quot;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTS_IndInit&quot;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTS_SignInit&quot;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATT_Register&quot;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTS_DynInit&quot;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATT_ConnRegister&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Registered as server&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-register-client">
+<span id="proc-gatt-register-client"></span><h2><a class="reference internal" href="#gatt-register-client">gatt.register_client</a><a class="headerlink" href="#gatt-register-client" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Register the Local Device as a Client. (EMSHI)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">register_client</span>
+
+<span class="n">register_client</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">register_client</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Register the Local Device as a Client. (EMSHI)</span>
+
+<span class="sd">    :param      engine:  The engine</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_Init&quot;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATT_Register&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Registered as client&quot;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_RegisterClient&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Unregistered client failure&quot;</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_IsRegisterClient&quot;</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="s2">&quot;Registered as client&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-deregister-client">
+<span id="proc-gatt-deregister-client"></span><h2><a class="reference internal" href="#gatt-deregister-client">gatt.deregister_client</a><a class="headerlink" href="#gatt-deregister-client" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Register the Local Device as a Client. (EMSHI)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+<dt class="field-even">raises     AssertionError<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ exception_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">deregister_client</span>
+
+<span class="n">deregister_client</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">deregister_client</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Register the Local Device as a Client. (EMSHI)</span>
+
+<span class="sd">    :param      engine:          The engine</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+
+<span class="sd">    :raises     AssertionError:  { exception_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_DeRegisterClient&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_IsRegisterClient&quot;</span><span class="p">)</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="s2">&quot;no more registered as client&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-read-value">
+<span id="proc-gatt-read-value"></span><h2><a class="reference internal" href="#gatt-read-value">gatt.read_value</a><a class="headerlink" href="#gatt-read-value" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Read a Characteristic Value. (EMSHI)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      value_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value handle</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">read_value</span>
+
+<span class="n">read_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.read_value<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle<span class="w"> </span>value_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">value_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">read_char_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Read a Characteristic Value. (EMSHI)</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      value_handle:  The value handle</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ReadReq&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">handle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_ReadCharacteristicValueByHandle&quot;</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">ValueHandle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-write-value">
+<span id="proc-gatt-write-value"></span><h2><a class="reference internal" href="#gatt-write-value">gatt.write_value</a><a class="headerlink" href="#gatt-write-value" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>write a characteristic values</p>
+<p>TODO: the firmware send 3 to 5 differents events for each write, what ???</p>
+<p>TODO: manage errors (permissions, etc…)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      value_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value handle</p>
+</dd>
+<dt class="field-even">param      value<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value</p>
+</dd>
+<dt class="field-odd">param      length<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The length</p>
+</dd>
+<dt class="field-even">param      timeout<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timeout</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">write_value</span>
+
+<span class="n">write_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.write_value<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--timeout<span class="w"> </span>TIMEOUT<span class="o">]</span>
+<span class="w">                         </span>conn_handle<span class="w"> </span>value_handle<span class="w"> </span>value
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">value_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value Handle</p>
+</dd>
+<dt class="field-odd">value<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Value Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--timeout <var>TIMEOUT</var></span></kbd></dt>
+<dd><p>timeout</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">write_char_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">write_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    write a characteristic values</span>
+
+<span class="sd">    TODO: the firmware send 3 to 5 differents events for each write, what ???</span>
+
+<span class="sd">    TODO: manage errors (permissions, etc...)</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      value_handle:  The value handle</span>
+<span class="sd">    :param      value:         The value</span>
+<span class="sd">    :param      length:        The length</span>
+<span class="sd">    :param      timeout:       The timeout</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">is_write_complete</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">write_complete</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes a complete.</span>
+
+<span class="sd">        :param      pkt:  The packet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">is_write_complete</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_ATTC_WRITE_RSP&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_WriteReq&quot;</span><span class="p">,</span>
+                <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                <span class="n">handle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                <span class="n">valueLen</span><span class="o">=</span><span class="n">length</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+                <span class="n">pValue</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="n">is_write_complete</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_ATTC_WRITE_RSP&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">done</span><span class="p">,</span> <span class="n">pkt</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;BLEGATTEVENT_CHARACTERISTICVALUEWRITECOMPLETE&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_WriteCharacteristicValue&quot;</span><span class="p">,</span>
+                <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                <span class="n">ValueHandle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                <span class="n">ValueLen</span><span class="o">=</span><span class="n">length</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+                <span class="n">Value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;BLEGATTEVENT_CHARACTERISTICVALUEWRITECOMPLETE&quot;</span> \
+            <span class="ow">and</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ErrorCode&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">is_write_complete</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="n">is_write_complete</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;BLEGATTEVENT_CHARACTERISTICVALUEWRITECOMPLETE&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">done</span><span class="p">,</span> <span class="n">pkt</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-write-without-response">
+<span id="proc-gatt-write-without-response"></span><h2><a class="reference internal" href="#gatt-write-without-response">gatt.write_without_response</a><a class="headerlink" href="#gatt-write-without-response" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>write a characteristic values without response (Write Command)</p>
+<p>TODO: the firmware send 3 to 5 differents events for each write, what ???</p>
+<p>TODO: manage errors (permissions, etc…)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      value_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value handle</p>
+</dd>
+<dt class="field-even">param      value<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value</p>
+</dd>
+<dt class="field-odd">param      length<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The length</p>
+</dd>
+<dt class="field-even">param      timeout<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timeout</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">write_without_response</span>
+
+<span class="n">write_without_response</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.write_without_response<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--timeout<span class="w"> </span>TIMEOUT<span class="o">]</span>
+<span class="w">                                    </span>conn_handle<span class="w"> </span>value_handle<span class="w"> </span>value
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">value_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value Handle</p>
+</dd>
+<dt class="field-odd">value<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Value Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--timeout <var>TIMEOUT</var></span></kbd></dt>
+<dd><p>timeout</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">write_without_rsp_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">write_without_response</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    write a characteristic values without response (Write Command)</span>
+
+<span class="sd">    TODO: the firmware send 3 to 5 differents events for each write, what ???</span>
+
+<span class="sd">    TODO: manage errors (permissions, etc...)</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      value_handle:  The value handle</span>
+<span class="sd">    :param      value:         The value</span>
+<span class="sd">    :param      length:        The length</span>
+<span class="sd">    :param      timeout:       The timeout</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">is_write_sent</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">write_sent</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write is complete.</span>
+
+<span class="sd">        :param      pkt:  The packet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">is_write_sent</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;ATTC_WRITE_CMD_RSP&quot;</span><span class="p">,</span> <span class="n">write_sent</span><span class="p">)</span>
+
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_WriteCmd&quot;</span><span class="p">,</span>
+                      <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                      <span class="n">handle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                      <span class="n">valueLen</span><span class="o">=</span><span class="n">length</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+                      <span class="n">pValue</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="n">is_write_sent</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;ATTC_WRITE_CMD_RSP&quot;</span><span class="p">,</span> <span class="n">write_sent</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">done</span><span class="p">,</span> <span class="n">pkt</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;BLEGATTEVENT_WRITEWITHOUTRESPONSESENT&quot;</span><span class="p">,</span> <span class="n">write_sent</span><span class="p">)</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_WriteCharacteristicValueWithoutResponse&quot;</span><span class="p">,</span>
+                      <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                      <span class="n">ValueHandle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                      <span class="n">ValueLen</span><span class="o">=</span><span class="n">length</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+                      <span class="n">Value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;BLEGATTEVENT_WRITEWITHOUTRESPONSESENT&quot;</span> \
+            <span class="ow">and</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">is_write_sent</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="n">is_write_sent</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;BLEGATTEVENT_CHARACTERISTICVALUEWRITECOMPLETE&quot;</span><span class="p">,</span> <span class="n">write_sent</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">done</span><span class="p">,</span> <span class="n">pkt</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-write-long-value">
+<span id="proc-gatt-write-long-value"></span><h2><a class="reference internal" href="#gatt-write-long-value">gatt.write_long_value</a><a class="headerlink" href="#gatt-write-long-value" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>write a characteristic values</p>
+<p>TODO: the firmware send 3 to 5 differents events for each write, what ???</p>
+<p>TODO: manage errors (permissions, etc…)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      value_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value handle</p>
+</dd>
+<dt class="field-even">param      offset<span class="colon">:</span></dt>
+<dd class="field-even"><p>The offset to start to write the characteristic Value.</p>
+</dd>
+<dt class="field-odd">param      value<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value</p>
+</dd>
+<dt class="field-even">param      length<span class="colon">:</span></dt>
+<dd class="field-even"><p>The length</p>
+</dd>
+<dt class="field-odd">param      timeout<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The timeout</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">write_long_value</span>
+
+<span class="n">write_long_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">writeAll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.write_long_value<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--timeout<span class="w"> </span>TIMEOUT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--offset<span class="w"> </span>OFFSET<span class="o">]</span>
+<span class="w">                              </span><span class="o">[</span>--writeAll<span class="w"> </span>WRITEALL<span class="o">]</span>
+<span class="w">                              </span><span class="o">[</span>--continuing<span class="w"> </span>CONTINUING<span class="o">]</span>
+<span class="w">                              </span>conn_handle<span class="w"> </span>value_handle<span class="w"> </span>value
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">value_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value Handle</p>
+</dd>
+<dt class="field-odd">value<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Value Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--timeout <var>TIMEOUT</var></span></kbd></dt>
+<dd><p>timeout</p>
+</dd>
+<dt><kbd><span class="option">--offset <var>OFFSET</var></span></kbd></dt>
+<dd><p>Offset</p>
+</dd>
+<dt><kbd><span class="option">--writeAll <var>WRITEALL</var></span></kbd></dt>
+<dd><p>TRUE to write all queued writes, FALSE to cancel all
+queued writes.</p>
+</dd>
+<dt><kbd><span class="option">--continuing <var>CONTINUING</var></span></kbd></dt>
+<dd><p>TRUE if ATTC continues sending requests until
+complete.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">write_long_value_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">write_long_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">writeAll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    write a characteristic values</span>
+
+<span class="sd">    TODO: the firmware send 3 to 5 differents events for each write, what ???</span>
+
+<span class="sd">    TODO: manage errors (permissions, etc...)</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      value_handle:  The value handle</span>
+<span class="sd">    :param      offset:        The offset to start to write the characteristic Value.</span>
+<span class="sd">    :param      value:         The value</span>
+<span class="sd">    :param      length:        The length</span>
+<span class="sd">    :param      timeout:       The timeout</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">is_write_complete</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">write_complete</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Writes a complete.</span>
+
+<span class="sd">        :param      pkt:  The packet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">is_write_complete</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_ATTC_EXECUTE_WRITE_RSP&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_PrepareWriteReq&quot;</span><span class="p">,</span>
+                      <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                      <span class="n">handle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                      <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+                      <span class="n">valueLen</span><span class="o">=</span><span class="n">length</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+                      <span class="n">valueByRef</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">continuing</span><span class="o">=</span><span class="n">continuing</span><span class="p">,</span>
+                      <span class="n">pValue</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ExecuteWriteReq&quot;</span><span class="p">,</span>
+                      <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                      <span class="n">writeAll</span><span class="o">=</span><span class="n">writeAll</span><span class="p">)</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="n">is_write_complete</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_ATTC_EXECUTE_WRITE_RSP&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+
+        <span class="k">return</span> <span class="n">done</span><span class="p">,</span> <span class="n">pkt</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;BLEGATTEVENT_LONGCHARACTERISTICVALUEWRITECOMPLETE&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_WriteLongCharacteristicValueEx&quot;</span><span class="p">,</span>
+                      <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                      <span class="n">ValueHandle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                      <span class="n">Offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+                      <span class="n">ValueLen</span><span class="o">=</span><span class="n">length</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+                      <span class="n">Value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;BLEGATTEVENT_LONGCHARACTERISTICVALUEWRITECOMPLETE&quot;</span> \
+            <span class="ow">and</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ErrorCode&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">is_write_complete</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="n">is_write_complete</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;BLEGATTEVENT_LONGCHARACTERISTICVALUEWRITECOMPLETE&quot;</span><span class="p">,</span> <span class="n">write_complete</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">done</span><span class="p">,</span> <span class="n">pkt</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-read-multiple">
+<span id="proc-gatt-read-multiple"></span><h2><a class="reference internal" href="#gatt-read-multiple">gatt.read_multiple</a><a class="headerlink" href="#gatt-read-multiple" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Read multiple values</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      num_handles<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of handles to read</p>
+</dd>
+<dt class="field-even">param      handles<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of handles to be read</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">read_multiple</span>
+
+<span class="n">read_multiple</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">num_handles</span><span class="p">,</span> <span class="n">handles</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.read_multiple<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle<span class="w"> </span>num_handles<span class="w"> </span>handles
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">num_handles<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of handles to read</p>
+</dd>
+<dt class="field-odd">handles<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Value Handles</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">read_multiple_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_multiple</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">num_handles</span><span class="p">,</span> <span class="n">handles</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read multiple values</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      num_handles:   The number of handles to read</span>
+<span class="sd">    :param      handles:       Array of handles to be read</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="c1">#Converting elements of str type in the tuple to int</span>
+        <span class="n">int_tuple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="n">handles</span><span class="p">)</span>
+
+        <span class="c1">#Populating format string based on the size of the tuple</span>
+        <span class="n">format_string</span><span class="o">=</span> <span class="s2">&quot;H&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">int_tuple</span><span class="p">)</span>
+
+        <span class="c1">#packing the tuple into bytes to be sent to prj_emshi</span>
+        <span class="n">handles_packed</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">format_string</span><span class="p">,</span> <span class="o">*</span><span class="n">int_tuple</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ReadMultipleReq&quot;</span><span class="p">,</span>
+                                <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">numHandles</span><span class="o">=</span><span class="n">num_handles</span><span class="p">,</span>
+                                <span class="n">pHandles</span><span class="o">=</span><span class="n">handles_packed</span><span class="p">)</span>
+
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="n">Value</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">Value</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_ReadMultipleValues&quot;</span><span class="p">,</span>
+                                <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">NumHandle</span><span class="o">=</span><span class="n">num_handles</span><span class="p">,</span>
+                                <span class="n">Handles</span><span class="o">=</span><span class="n">handles</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-read-long-value">
+<span id="proc-gatt-read-long-value"></span><h2><a class="reference internal" href="#gatt-read-long-value">gatt.read_long_value</a><a class="headerlink" href="#gatt-read-long-value" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Read a Long Characteristic Value. (EMSHI)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      value_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value handle</p>
+</dd>
+<dt class="field-even">param      offset<span class="colon">:</span></dt>
+<dd class="field-even"><p>The offset to start to read the characteristic Value.</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">read_long_value</span>
+
+<span class="n">read_long_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.read_long_value<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--offset<span class="w"> </span>OFFSET<span class="o">]</span>
+<span class="w">                             </span>conn_handle<span class="w"> </span>value_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">value_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--offset <var>OFFSET</var></span></kbd></dt>
+<dd><p>Offset</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">read_long_value_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_long_value</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">value_handle</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Read a Long Characteristic Value. (EMSHI)</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      value_handle:  The value handle</span>
+<span class="sd">    :param      offset:        The offset to start to read the characteristic Value.</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>         <span class="c1"># Without this, the test does not run the command multiple times</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ReadLongReq&quot;</span><span class="p">,</span>
+                                <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">handle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                                <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+                                <span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_ReadLongCharacteristicValueByHandleEx&quot;</span><span class="p">,</span>
+                                <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">ValueHandle</span><span class="o">=</span><span class="n">value_handle</span><span class="p">,</span>
+                                <span class="n">Offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-read-value-by-type">
+<span id="proc-gatt-read-value-by-type"></span><h2><a class="reference internal" href="#gatt-read-value-by-type">gatt.read_value_by_type</a><a class="headerlink" href="#gatt-read-value-by-type" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Read a Characteristic Value by Type (Characteristic UUID). (EMSHI)</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      start_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The service starting handle</p>
+</dd>
+<dt class="field-even">param      end_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The service ending handle</p>
+</dd>
+<dt class="field-odd">param      uuid<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The UUID of the Characteristic from which the value is to be read</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">read_value_by_type</span>
+
+<span class="n">read_value_by_type</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">,</span> <span class="n">uuid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.read_value_by_type<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                </span>conn_handle<span class="w"> </span>start_handle<span class="w"> </span>end_handle<span class="w"> </span>uuid
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">start_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Service Starting Handle</p>
+</dd>
+<dt class="field-odd">end_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Service Ending Handle</p>
+</dd>
+<dt class="field-even">uuid<span class="colon">:</span></dt>
+<dd class="field-even"><p>Characteristic UUID to be read</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">read_value_by_type_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_value_by_type</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">,</span> <span class="n">uuid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Read a Characteristic Value by Type (Characteristic UUID). (EMSHI)</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      start_handle:  The service starting handle</span>
+<span class="sd">    :param      end_handle:    The service ending handle</span>
+<span class="sd">    :param      uuid:          The UUID of the Characteristic from which the value is to be read</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ReadByTypeReq&quot;</span><span class="p">,</span>
+                                <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">startHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span>
+                                <span class="n">endHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">,</span>
+                                <span class="n">uuidLen</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">uuid</span><span class="p">),</span>
+                                <span class="n">pUuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+                                <span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">UUIDType</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_ReadCharacteristicValueByType&quot;</span><span class="p">,</span>
+                                <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">ServiceStartingHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span>
+                                <span class="n">ServiceEndingHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">,</span>
+                                <span class="n">UUIDType</span><span class="o">=</span><span class="n">UUIDType</span><span class="p">,</span>
+                                <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-exchange-mtu">
+<span id="proc-gatt-exchange-mtu"></span><h2><a class="reference internal" href="#gatt-exchange-mtu">gatt.exchange_mtu</a><a class="headerlink" href="#gatt-exchange-mtu" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Send a Exchange MTU Request</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">exchange_mtu</span>
+
+<span class="n">exchange_mtu</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">mtu</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.exchange_mtu<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mtu<span class="w"> </span>MTU<span class="o">]</span><span class="w"> </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--mtu <var>MTU</var></span></kbd></dt>
+<dd><p>Connection Handle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">exchange_mtu_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">exchange_mtu</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span><span class="n">mtu</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Send a Exchange MTU Request</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_MtuReq&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span><span class="n">mtu</span><span class="o">=</span><span class="n">mtu</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="n">mtu</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;negociatedMTUValue&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">mtu</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_ExchangeMTU&quot;</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="n">mtu</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;negociatedMTUValue&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">mtu</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-discover-all-services">
+<span id="proc-gatt-discover-all-services"></span><h2><a class="reference internal" href="#gatt-discover-all-services">gatt.discover_all_services</a><a class="headerlink" href="#gatt-discover-all-services" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Client discover all the services supported by the remote ATTRIBUTE SERVER</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">discover_all_services</span>
+
+<span class="n">discover_all_services</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.discover_all_services<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">discover_all_services_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">discover_all_services</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Client discover all the services supported by the remote ATTRIBUTE SERVER</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ReadByGroupTypeReq&quot;</span><span class="p">,</span>
+                        <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                        <span class="n">startHandle</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Start this from 0x0001</span>
+                        <span class="n">endHandle</span><span class="o">=</span><span class="mi">65535</span><span class="p">,</span><span class="c1"># End this at 0xFFFF</span>
+                        <span class="n">uuidLen</span> <span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">pUuid</span> <span class="o">=</span> <span class="mi">10240</span><span class="p">,</span> <span class="c1"># 0x2800 Primary Service UUID</span>
+                        <span class="n">continuing</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pkt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_DiscoverAllPrimaryServices&quot;</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">ConnHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ConnHandle&quot;</span><span class="p">)</span>
+            <span class="n">ServiceStartingHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ServiceStartingHandle&quot;</span><span class="p">)</span>
+            <span class="n">ServiceEndingHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ServiceEndingHandle&quot;</span><span class="p">)</span>
+            <span class="n">NumServices</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NumServices&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="p">,</span> <span class="n">ServiceStartingHandle</span><span class="p">,</span> <span class="n">ServiceEndingHandle</span><span class="p">,</span> <span class="n">NumServices</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-discover-service-by-type">
+<span id="proc-gatt-discover-service-by-type"></span><h2><a class="reference internal" href="#gatt-discover-service-by-type">gatt.discover_service_by_type</a><a class="headerlink" href="#gatt-discover-service-by-type" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Client discover if a specified service UUID is supported by the remote SERVER</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      uuid<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Service UUID to be discovered</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">discover_service_by_type</span>
+
+<span class="n">discover_service_by_type</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">uuid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.discover_service_by_type<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle<span class="w"> </span>uuid
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">uuid<span class="colon">:</span></dt>
+<dd class="field-even"><p>Service UUID</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">discover_service_by_type_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">discover_service_by_type</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">uuid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Client discover if a specified service UUID is supported by the remote SERVER</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      uuid:          Service UUID to be discovered</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_FindByTypeValueReq&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                        <span class="n">startHandle</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">endHandle</span><span class="o">=</span><span class="mi">65535</span><span class="p">,</span>
+                        <span class="n">uuid16</span><span class="o">=</span><span class="mi">10240</span><span class="p">,</span>
+                        <span class="n">valueLen</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">uuid</span><span class="p">),</span>
+                        <span class="n">pValue</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+                        <span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">UUIDType</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_DiscoverPrimaryServiceByType&quot;</span><span class="p">,</span>
+                          <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                          <span class="n">UUIDType</span><span class="o">=</span><span class="n">UUIDType</span><span class="p">,</span>
+                          <span class="n">UUID</span><span class="o">=</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">ConnHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ConnHandle&quot;</span><span class="p">)</span>
+            <span class="n">ServiceStartingHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ServiceStartingHandle&quot;</span><span class="p">)</span>
+            <span class="n">ServiceEndingHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ServiceEndingHandle&quot;</span><span class="p">)</span>
+            <span class="n">NumServices</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NumServices&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="p">,</span> <span class="n">ServiceStartingHandle</span><span class="p">,</span> <span class="n">ServiceEndingHandle</span><span class="p">,</span> <span class="n">NumServices</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-discover-all-characteristic">
+<span id="proc-gatt-discover-all-characteristic"></span><h2><a class="reference internal" href="#gatt-discover-all-characteristic">gatt.discover_all_characteristic</a><a class="headerlink" href="#gatt-discover-all-characteristic" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Client discover all the Characteristic supported by a service</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      start_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The service starting handle</p>
+</dd>
+<dt class="field-even">param      end_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The service ending handle</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">discover_all_characteristic</span>
+
+<span class="n">discover_all_characteristic</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.discover_all_characteristic<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                         </span>conn_handle<span class="w"> </span>start_handle
+<span class="w">                                         </span>end_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">start_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Service Starting Handle</p>
+</dd>
+<dt class="field-odd">end_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Service Ending Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">discover_all_characteristic_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">discover_all_characteristic</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Client discover all the Characteristic supported by a service</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      start_handle:  The service starting handle</span>
+<span class="sd">    :param      end_handle:    The service ending handle</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ReadByTypeReq&quot;</span><span class="p">,</span>
+                        <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                        <span class="n">startHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span>
+                        <span class="n">endHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">,</span>
+                        <span class="n">pUuid</span><span class="o">=</span><span class="mi">10243</span><span class="p">,</span> <span class="c1">#Char UUID 0x2803</span>
+                        <span class="n">uuidLen</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_DiscoverAllCharacteristic&quot;</span><span class="p">,</span>
+                          <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                          <span class="n">ServiceStartingHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span>
+                          <span class="n">ServiceEndingHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">ConnHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ConnHandle&quot;</span><span class="p">)</span>
+            <span class="n">NumCharacteristics</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NumCharacteristics&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="p">,</span> <span class="n">NumCharacteristics</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-find-included-service">
+<span id="proc-gatt-find-included-service"></span><h2><a class="reference internal" href="#gatt-find-included-service">gatt.find_included_service</a><a class="headerlink" href="#gatt-find-included-service" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Client discover all the included services of the specified service</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      start_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The service starting handle</p>
+</dd>
+<dt class="field-even">param      end_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The service ending handle</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">find_included_service</span>
+
+<span class="n">find_included_service</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.find_included_service<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                   </span>conn_handle<span class="w"> </span>start_handle<span class="w"> </span>end_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">start_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Service Starting Handle</p>
+</dd>
+<dt class="field-odd">end_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Service Ending Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">find_included_service_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">find_included_service</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Client discover all the included services of the specified service</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      start_handle:  The service starting handle</span>
+<span class="sd">    :param      end_handle:    The service ending handle</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_ReadByTypeReq&quot;</span><span class="p">,</span>
+                        <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                        <span class="n">startHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span> <span class="c1">#Start this from 0x2A00</span>
+                        <span class="n">endHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">,</span><span class="c1"># End this at 0x2BF5</span>
+                        <span class="n">pUuid</span><span class="o">=</span><span class="mi">10242</span><span class="p">,</span>
+                        <span class="n">uuidLen</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_FindIncludedService&quot;</span><span class="p">,</span>
+                          <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                          <span class="n">ServiceStartingHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span>
+                          <span class="n">ServiceEndingHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gatt-discover-all-char-descriptors">
+<span id="proc-gatt-discover-all-char-descriptors"></span><h2><a class="reference internal" href="#gatt-discover-all-char-descriptors">gatt.discover_all_char_descriptors</a><a class="headerlink" href="#gatt-discover-all-char-descriptors" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Client discover all the characteristic descriptors supported by a characteristic</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      start_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The characteristic starting handle</p>
+</dd>
+<dt class="field-even">param      end_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The characteristic ending handle</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gatt</span> <span class="kn">import</span> <span class="n">discover_all_char_descriptors</span>
+
+<span class="n">discover_all_char_descriptors</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GATT.discover_all_char_descriptors<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                           </span>conn_handle<span class="w"> </span>start_handle
+<span class="w">                                           </span>end_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">start_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Characteristic Starting Handle</p>
+</dd>
+<dt class="field-odd">end_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Characteristic Ending Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GATT.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">discover_all_char_descriptors_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">discover_all_char_descriptors</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">start_handle</span><span class="p">,</span> <span class="n">end_handle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Client discover all the characteristic descriptors supported by a characteristic</span>
+
+<span class="sd">    :param      engine:        The engine</span>
+<span class="sd">    :param      conn_handle:   The connection handle</span>
+<span class="sd">    :param      start_handle:  The characteristic starting handle</span>
+<span class="sd">    :param      end_handle:    The characteristic ending handle</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ATTC_FindInfoReq&quot;</span><span class="p">,</span>
+                          <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                          <span class="n">startHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span>
+                          <span class="n">endHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">,</span>
+                          <span class="n">continuing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ok</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GATT_GetCharacteristicDescriptorList&quot;</span><span class="p">,</span>
+                          <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                          <span class="n">characStartingHandle</span><span class="o">=</span><span class="n">start_handle</span><span class="p">,</span>
+                          <span class="n">characEndingHandle</span><span class="o">=</span><span class="n">end_handle</span><span class="p">)</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">ConnHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ConnHandle&quot;</span><span class="p">)</span>
+            <span class="n">ServerDataHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ServerDataHandle&quot;</span><span class="p">),</span>
+            <span class="n">CharactStartingHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CharacStartingHandle&quot;</span><span class="p">)</span>
+            <span class="n">CharacEndingHandle</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CharacEndingHandle&quot;</span><span class="p">)</span>
+            <span class="n">UUIDType</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;UuidType&quot;</span><span class="p">)</span>
+            <span class="n">uuid</span><span class="o">=</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;UUID&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="p">,</span> <span class="n">ServerDataHandle</span><span class="p">,</span> <span class="n">CharactStartingHandle</span><span class="p">,</span> <span class="n">CharacEndingHandle</span><span class="p">,</span> <span class="n">UUIDType</span><span class="p">,</span> <span class="n">uuid</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gap.html" class="btn btn-neutral float-left" title="gap Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hci.html" class="btn btn-neutral float-right" title="hci Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

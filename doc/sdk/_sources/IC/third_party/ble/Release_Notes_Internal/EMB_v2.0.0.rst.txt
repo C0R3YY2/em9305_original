@@ -1,0 +1,43 @@
+Internal EMB Module Release v2.0.0
+==================================
+
+This is an internal document ONLY. Do NOT release in external facing SDK documentation.
+
+Consolidated Change list
+^^^^^^^^^^^^^^^^^^^^^^^^
+This release is targeted for use in the 7198 r.14 release. It uses the Lime release from PacketCraft with select Mango commits applied. While there are no new major features added in Lime that the 7198 will be utilizing heavily, it does include many MISRA related fixes.
+
+We have also refactored the "Small PRAM" stacks and applications. The previously known "7k" and "3k" stacks will now be known as the "production" and "advertising" stacks. The sample applications utilizing these stacks have also been renamed, and moved to be under the emb module. This relocation is NOT reflected in the SDK, the ``spa_app_production`` and ``spa_app_advertising`` applications will still be located in the projects folder of the SDK. This move is to ensure the Small PRAM Applications are kept up to date closely with the stack for development purposes.
+
+See official emb/docs/changelog.rst included in SDK documentation for more details
+
+Development Environment Changes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**New Packetcraft submodule**
+We have converted the ``packetcraft/`` folder of the EMB module to be a submodule of the EMB module. This allows us to more easily take, integrate, and experiment with different PacketCraft release branches. It also allows us to have complete access to the PacketCraft commit history for greater clarity when making changes inside the stack. 
+
+**Deprecation of bool_t**
+With the MISRA changes introduced with the Lime, the previously defined `bool_t` type in the WSF layer of the Packetcraft stack has been deprecated. All instances of `bool_t` have been replaced with the standard `bool` type. Additionally, all instances of the capital values `TRUE` and `FALSE` has been replaced with the correct lowercase `true` and `false`. Since sample applications that use the EMB stack inherent the types defined in the WSF layer, all apps that use EMB have had to replace all `bool_t` instances with `bool` as well. 
+ 
+Detailed Migration Steps
+^^^^^^^^^^^^^^^^^^^^^^^^
+After pulling the top level commit with this new release, simply run `git submodule update --init --recursive`, and the packetcraft/ submodule should automatically clone. The new packetcraft/ submodule is located on Azure DevOps here: https://its-ado.swatchgroup.net/EMMarinProjects/T930x_Libraries/_git/packetcraft
+
+If you need to **revert back to a previous EMB release**, you will have an issue removing the submodule. In the scenario where you checkout a top-level commit of the platform codebase, and run `git submodule update --init --recursive`, git will complain:
+
+```
+error: The following untracked working tree files would be overwritten by checkout:
+    <list of packetcraft files>
+Aborting
+fatal: Unable to checkout
+```
+
+To proceed, delete the entire packetcraft/ folder under libs/third_party/emb. Afterwards, re-run `git submodule update --init --recursive` from the top level directory, and the revert should work.
+
+Test Results
+^^^^^^^^^^^^
+We completed Link Layer Qualification testing on the Jackfruit based PacketCraft controller test harness. We initially passed at 85%, showing a 6% regression in the privacy feature. We retested the failing privacy tests multiple times with better RF isolation, which fixed the regressions.
+
+We completed application testing using the EMB Application Tester, supplemented with manually testing of several apps not covered under the application tester.
+
+Full test results can be found in the EMB_releases repo here: https://its-ado.swatchgroup.net/EMMarinProjects/T930x_Libraries/_git/EMB_releases

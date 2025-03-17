@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update Documentation &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Package Generator" href="FirmwarePackageGenerator.html" />
+    <link rel="prev" title="Firmware Update" href="../FirmwareUpdate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../FirmwareUpdate.html">Firmware Update</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Firmware Update Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">1. Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-organization-in-nvm">1.1 Firmware Organization in NVM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-requirements">1.2 Key Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#considerations">1.3 Considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#firmware-package-generator">2 Firmware Package Generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#firmware-programming">3 Firmware Programming</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-programming-prerequisites">3.1 Firmware Programming Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-key-for-firmware-encryption">3.2 AES Key for Firmware Encryption</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ecdsa-public-key-for-signature-verification">3.3 ECDSA Public Key for Signature Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-update-sequence">3.4 Firmware Update Sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-update-via-spi">3.5 Firmware Update via SPI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-update-via-bluetooth-le">3.6 Firmware Update via Bluetooth LE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwarePackageGenerator.html">Firmware Package Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateStepByStep.html">Firmware Update - A Step by Step process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateService.html">Firmware Update Service - FWUS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateCommands.html">Firmware Update Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../FirmwareUpdate.html">Firmware Update</a></li>
+      <li class="breadcrumb-item active">Firmware Update Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-documentation">
+<h1>Firmware Update Documentation<a class="headerlink" href="#firmware-update-documentation" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This part introduces the Firmware Update (FWU) functionality for the EM9305 Bluetooth LE System on Chip.</p>
+<p>In the context of the Firmware Update feature, the following roles are defined:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Firmware Update Target (FWU Target): The FWU Target is the device to be updated.</p></li>
+<li><p>Firmware Update Provider (FWU Provider): The FWU Provider is the device performing the update of the FWU Target via a supported transport (e.g., Bluetooth or SPI).</p></li>
+</ul>
+</div></blockquote>
+<p>Other elements involved in the firmware update flow such as firmware update storage (or backend) are outside of the scope of the so called Firmware Update feature.</p>
+<p>The figures below depict the high level flow of the firmware update feature, from the generation of a firmware package to its deployment on a FWU Target in the field.</p>
+<p>The updated version of the firmware image is built in a secure environment. This is due to the fact that the image is signed and encrypted. This process uses private keys that must not be pushed outside of this environment.</p>
+<p>When the firmware image has been created, the update process can be done in an insecure environment (the public one). The two pictures below show what is done in each of these two environments.</p>
+<a class="reference internal image-reference" href="../../_images/firmware-update-overview-and-roles-Overview.png"><img alt="Firmware update flow" class="align-center" src="../../_images/firmware-update-overview-and-roles-Overview.png" style="width: 784.5px; height: 458.25px;" /></a>
+<section id="firmware-organization-in-nvm">
+<h3>1.1 Firmware Organization in NVM<a class="headerlink" href="#firmware-organization-in-nvm" title="Link to this heading"></a></h3>
+<p>The FWU Target firmware is organized as follow in the NVM:</p>
+<a class="reference internal image-reference" href="../../_images/firmware-update-overview-and-roles-Memory_Organization.png"><img alt="Firmware update flow" class="align-center" src="../../_images/firmware-update-overview-and-roles-Memory_Organization.png" style="width: 332.34999999999997px; height: 816.85px;" /></a>
+</section>
+<section id="key-requirements">
+<h3>1.2 Key Requirements<a class="headerlink" href="#key-requirements" title="Link to this heading"></a></h3>
+<p>The Firmware Update feature fulfills the following requirements:</p>
+<ol class="arabic simple">
+<li><p>The firmware image build process shall provide the possibility to encrypt the firmware image before it is transmitted to the FWU target. In this case, the following algorithms shall be supported:</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>AES CBC</p></li>
+<li><p>AES ECB</p></li>
+<li><p>AES CTR</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>The firmware image build process shall provide the possibility to sign the firmware image using the ECDSA algorithm.</p></li>
+<li><p>The public keys used to verify the firmware image signature shall be stored in the user area information page of the FWU target.</p></li>
+<li><p>The firmware image build process shall provide a way for the user to enable/disable encryption and/or signature.</p></li>
+<li><p>In case no specific request is done, by default the firmware image shall neither be encrypted nor signed.</p></li>
+<li><p>A firmware image with a wrong signature shall be rejected and discarded.</p></li>
+<li><p>A firmware image encrypted with private keys that do not correspond to the public keys stored in the device shall be rejected and discarded.</p></li>
+<li><p>The system shall recover (failsafe) from an interruption in the middle of an update procedure.</p></li>
+</ol>
+<p>The Firmware Update feature does not address the following topics:</p>
+<ol class="arabic simple">
+<li><p>Mutual authentication at application level</p></li>
+<li><p>Secure signature and encryption of the firmware package. EM Microelectronic provides a tool to generate a firmware package with encryption and signature features. It is up to the customer to use it this tool in a secure way in order not to share private nor secret keys with inappropriate person.</p></li>
+</ol>
+</section>
+<section id="considerations">
+<h3>1.3 Considerations<a class="headerlink" href="#considerations" title="Link to this heading"></a></h3>
+<p>In the current version of the Firmware Update feature, the Firmware Updater embeds its own Bluetooth LE Host and Controller and exposes the Firmware Update GATT based Service.</p>
+<p>The Firmware Update (FWU) functionality includes different parts:</p>
+<ol class="arabic simple">
+<li><p>Generation of the firmware package used in the FWU flow,</p></li>
+<li><p>Firmware Updater sample application</p></li>
+<li><p>Firmware update target sample application</p></li>
+</ol>
+</section>
+</section>
+<section id="firmware-package-generator">
+<h2>2 Firmware Package Generator<a class="headerlink" href="#firmware-package-generator" title="Link to this heading"></a></h2>
+<p>The Firmware Package Generator (FPG) tool is a command line tool that provides the following set of functions:</p>
+<ol class="arabic simple">
+<li><p>Signature Key Generation (set of private and public keys) for ECDSA signature.</p></li>
+<li><p>AES Key Generation (secret key) for firmware encryption and decryption.</p></li>
+<li><p>Firmware package generation</p></li>
+<li><p>Firmware package verification</p></li>
+</ol>
+<p>The generated firmware package is a binary file formatted with protocol buffer. The .proto file is part of the SDK so it can either be modified or used to generate firmware package accessors for the desired platform (e.g., IOS/Android).</p>
+<p>Refer to the <a class="reference external" href="FirmwarePackageGenerator.html">Firmware Package Generator</a> page for additional information on this part.</p>
+</section>
+<section id="firmware-programming">
+<h2>3 Firmware Programming<a class="headerlink" href="#firmware-programming" title="Link to this heading"></a></h2>
+<p>The firmware update feature is transport agnostic. It exposes a number of commands that can be conveyed over multiple transports.</p>
+<section id="firmware-programming-prerequisites">
+<h3>3.1 Firmware Programming Prerequisites<a class="headerlink" href="#firmware-programming-prerequisites" title="Link to this heading"></a></h3>
+<p>In order to use the firmware update with firmware encryption and firmware signature, both AES Secret key and ECDSA Public key (i.e., Point on the Elliptic curve as X and Y coordinates) shall be stored in the FWU target prior to being used.</p>
+</section>
+<section id="aes-key-for-firmware-encryption">
+<h3>3.2 AES Key for Firmware Encryption<a class="headerlink" href="#aes-key-for-firmware-encryption" title="Link to this heading"></a></h3>
+<p>The AES Private key may either be hardcoded in the firmware updater application or stored in dedicated key container.</p>
+<p>The sample application provided in the SDK uses Key Container number 7 for firmware decryption key. BLEngine provides a mechanism to upload a secret key in a key container. In the example below, the key is a test key that shall not be used in production.</p>
+<p>The following command can be used to write a key in a given key container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMxy<span class="w"> </span>run<span class="w"> </span>write_key<span class="w"> </span>--index<span class="o">=</span><span class="m">7</span><span class="w"> </span>--secret_key<span class="o">=</span><span class="s2">&quot;0xdc43496ddc7b4eb046f470054a14cb8d&quot;</span>
+</pre></div>
+</div>
+<p>The following command can be used to invalidate the key:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMxy<span class="w"> </span>run<span class="w"> </span>invalidate_key<span class="w"> </span>--index<span class="o">=</span><span class="m">7</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Once a key has been invalidated, it is not possible to validate it again.</p>
+</div>
+<p>The following command can be used to clear the information page containing the key containers.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMxy<span class="w"> </span>run<span class="w"> </span>clear_key_container
+</pre></div>
+</div>
+</section>
+<section id="ecdsa-public-key-for-signature-verification">
+<h3>3.3 ECDSA Public Key for Signature Verification<a class="headerlink" href="#ecdsa-public-key-for-signature-verification" title="Link to this heading"></a></h3>
+<p>The ECDSA Public Key used for signature verification shall be programmed in Information Page 2 (user area) under “patch key” section.</p>
+<p>The XY coordinates of the public key can be programmed using the BLEngine which is provided in the SDK.</p>
+<p>Step 1: Press the “User” button on the DVK to enter configuration mode. The “Test Mode (TM)” LED should be on.</p>
+<p>Step 2: Read Information Page 2</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">&lt;</span><span class="n">SDK_ROOT</span><span class="o">&gt;</span>\<span class="n">tools</span>\<span class="n">blengine</span>\
+<span class="n">python</span> <span class="n">blengine_cli</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span> <span class="n">COMxy</span> <span class="n">run</span> <span class="n">nvm_read</span> <span class="o">--</span><span class="n">out_file</span> <span class="o">..</span>\<span class="n">fw_update</span>\<span class="n">myP2</span><span class="o">.</span><span class="n">json</span> <span class="o">--</span><span class="n">page</span> <span class="n">user</span>
+</pre></div>
+</div>
+<p>Step 3: Edit the JSON file (located in <code class="docutils literal notranslate"><span class="pre">&lt;SDK_ROOT&gt;\tools\fw_update</span></code>) and add the XY coordinates to the section “Keys” as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="s2">&quot;Keys&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos"> 2</span>      <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos"> 3</span>              <span class="s2">&quot;patch_public_key_x&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos"> 4</span>                   <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;0x2BC75B235B18C989796E6DCA744036C37EB94F49A1B2C74FE4A426FA329D93E0&quot;</span>
+<span class="linenos"> 5</span>                   <span class="p">},</span>
+<span class="linenos"> 6</span>              <span class="s2">&quot;patch_public_key_y&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos"> 7</span>                   <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;0x9352F7EBEF08E699390888C1671D121167FA23DBFFCE9AB4DDBFAD0EADD2A516&quot;</span>
+<span class="linenos"> 8</span>                  <span class="p">}</span>
+<span class="linenos"> 9</span>            <span class="p">}</span>
+<span class="linenos">10</span>      <span class="p">},</span>
+</pre></div>
+</div>
+<p>Step 4: Write Information Page 2</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">&lt;</span><span class="n">SDK_ROOT</span><span class="o">&gt;</span>\<span class="n">tools</span>\<span class="n">blengine</span>\
+<span class="n">python</span> <span class="n">blengine_cli</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span> <span class="n">COMxy</span> <span class="n">run</span> <span class="n">nvm_write</span> <span class="o">--</span><span class="n">in_file</span> <span class="o">..</span>\<span class="n">fw_update</span>\<span class="n">myP2</span><span class="o">.</span><span class="n">json</span> <span class="o">--</span><span class="n">page</span> <span class="n">user</span>
+</pre></div>
+</div>
+<p>The above authentication test public key corresponds to the test key provided in the SDK under <code class="docutils literal notranslate"><span class="pre">ecdsa0_pub.pem</span></code> with its associated private key <code class="docutils literal notranslate"><span class="pre">ecdsa0_pri.pem</span></code>.</p>
+</section>
+<section id="firmware-update-sequence">
+<h3>3.4 Firmware Update Sequence<a class="headerlink" href="#firmware-update-sequence" title="Link to this heading"></a></h3>
+<p>The firmware update sequence is described in the figure below.</p>
+<a class="reference internal image-reference" href="../../_images/firmware-update-overview-and-roles-FWU-Sequence.png"><img alt="Firmware update flow" class="align-center" src="../../_images/firmware-update-overview-and-roles-FWU-Sequence.png" style="width: 678.6px; height: 668.85px;" /></a>
+</section>
+<section id="firmware-update-via-spi">
+<h3>3.5 Firmware Update via SPI<a class="headerlink" href="#firmware-update-via-spi" title="Link to this heading"></a></h3>
+<p>Firmware Update via SPI uses EM System commands that are a subset of the HCI Vendor specific commands as per defined in the Bluetooth Core specification.</p>
+<p>These commands are available in BLEngine.</p>
+</section>
+<section id="firmware-update-via-bluetooth-le">
+<h3>3.6 Firmware Update via Bluetooth LE<a class="headerlink" href="#firmware-update-via-bluetooth-le" title="Link to this heading"></a></h3>
+<p>Firmware Update via Bluetooth LE uses a vendor specific GATT-based service named EM Firmware Update Service (EMFWUS).</p>
+<p>This service is defined in this section: EM Firmware Update Service.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../FirmwareUpdate.html" class="btn btn-neutral float-left" title="Firmware Update" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="FirmwarePackageGenerator.html" class="btn btn-neutral float-right" title="Firmware Package Generator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

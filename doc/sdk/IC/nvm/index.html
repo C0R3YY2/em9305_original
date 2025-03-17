@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NVM driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Security libraries" href="../security/index.html" />
+    <link rel="prev" title="API" href="../API.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">NVM driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../security/index.html">Security libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">NVM driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nvm-driver">
+<h1>NVM driver<a class="headerlink" href="#nvm-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This driver is used to write and erase the EM9305 FLASH memory (NVM).</p>
+<p>The NVM driver is located in ROM. However, some fixes have been added and are mapped
+into NVM since the ROM cannot be modified.</p>
+<p>These fixes address an issue with NVM API call from ISR context with priority
+higher than NVM priority.</p>
+<section id="blocking-mechanism">
+<h3>Blocking mechanism<a class="headerlink" href="#blocking-mechanism" title="Link to this heading"></a></h3>
+<p>The NVM write and erase functions are blocking because concurrent access to NVM is forbidden.
+When the erase or write operation is running, the CPU is put in halt mode and is woken up
+by NVM ISR.</p>
+</section>
+<section id="nvm-api-call-in-isr">
+<h3>NVM API call in ISR<a class="headerlink" href="#nvm-api-call-in-isr" title="Link to this heading"></a></h3>
+<p>The NVM write and erase functions disable all other ISR during operations and wait on
+NVM ISR for completion. In order to work in ISR context, the NVM ISR priority is
+increased to maximum priority during operation and reverted back to previous
+priority when operation is done.</p>
+</section>
+<section id="nvm-driver-in-nvm-and-rom">
+<h3>NVM Driver in NVM and ROM<a class="headerlink" href="#nvm-driver-in-nvm-and-rom" title="Link to this heading"></a></h3>
+<p>Some NVM functions have been updated with new versions mapped in the NVM.
+The NVM driver is split now between ROM and NVM. The functions remaining in ROM
+are defined in rom/bin/vX.X/rom.sym file. All the other API functions are located
+in NVM.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">ROM and NVM functions for NVM driver</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>ROM</p></th>
+<th class="head"><p>NVM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NVM_GetLock</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_SetLock</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_EraseFull</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_EraseMain</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_ErasePage</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_ErasePages_PhysAddr</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_Write_PhysAddr</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_Write</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_GetLockPage</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_LockPage</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_SetTimings</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_SetRedundancyPageMapping</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_GetRedundancyPageMapping</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dc/ddd/group__nvm"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">nvm</span></span></dt>
+<dd><p>Driver for writing or erasing the NVM. </p>
+<p>This module contains all the code required to write or erase the NVM. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_MAIN_START_ADDR">
+<span class="target" id="dc/ddd/group__nvm_1gae16e174ecca84a3bfb91b2563f5b6ca7"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_MAIN_START_ADDR</span></span></span> <span class="pre">((uint32_t)MEMORY_NVM_START)</span><a class="headerlink" href="#c.NVM_MAIN_START_ADDR" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM Start Address. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_MAIN_END_ADDR">
+<span class="target" id="dc/ddd/group__nvm_1ga5f277ee2b948e200d84230927607426d"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_MAIN_END_ADDR</span></span></span> <span class="pre">((uint32_t)MEMORY_NVM_END)</span><a class="headerlink" href="#c.NVM_MAIN_END_ADDR" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM End Address. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_PAGE_SIZE_BYTE">
+<span class="target" id="dc/ddd/group__nvm_1ga8bd4a38a275d8f46ced5533e8e60926d"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_PAGE_SIZE_BYTE</span></span></span> <span class="pre">(8192)</span><a class="headerlink" href="#c.NVM_PAGE_SIZE_BYTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of a page in byte. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_WORD_SIZE">
+<span class="target" id="dc/ddd/group__nvm_1gac3d84476046227f1c10c50c455f228ff"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_WORD_SIZE</span></span></span> <span class="pre">(4U)</span><a class="headerlink" href="#c.NVM_WORD_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of an NVM word in byte. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_PAGE_SIZE_WORD">
+<span class="target" id="dc/ddd/group__nvm_1ga038e72b9f973d03c284ca13f4cf3a5cd"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_PAGE_SIZE_WORD</span></span></span> <span class="pre">(</span><a class="reference internal" href="#dc/ddd/group__nvm_1ga8bd4a38a275d8f46ced5533e8e60926d"><span class="std std-ref"><span class="pre">NVM_PAGE_SIZE_BYTE</span></span></a> <span class="pre">/</span> <a class="reference internal" href="#dc/ddd/group__nvm_1gac3d84476046227f1c10c50c455f228ff"><span class="std std-ref"><span class="pre">NVM_WORD_SIZE</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.NVM_PAGE_SIZE_WORD" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of a page in word. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_ROW_SIZE_BYTE">
+<span class="target" id="dc/ddd/group__nvm_1gae693e7d3651cdba6962e7dc701b31088"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ROW_SIZE_BYTE</span></span></span> <span class="pre">(512)</span><a class="headerlink" href="#c.NVM_ROW_SIZE_BYTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of a row in byte. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_ROW_SIZE_WORD">
+<span class="target" id="dc/ddd/group__nvm_1ga45b416c5a5b84494e650c7edde68cc56"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ROW_SIZE_WORD</span></span></span> <span class="pre">(</span><a class="reference internal" href="#dc/ddd/group__nvm_1gae693e7d3651cdba6962e7dc701b31088"><span class="std std-ref"><span class="pre">NVM_ROW_SIZE_BYTE</span></span></a> <span class="pre">/</span> <a class="reference internal" href="#dc/ddd/group__nvm_1gac3d84476046227f1c10c50c455f228ff"><span class="std std-ref"><span class="pre">NVM_WORD_SIZE</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.NVM_ROW_SIZE_WORD" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of a row in word. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_PAGE_COUNT_MAIN">
+<span class="target" id="dc/ddd/group__nvm_1gac650af8cc885ade8505a8ff5279cb7a7"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_PAGE_COUNT_MAIN</span></span></span> <span class="pre">(64)</span><a class="headerlink" href="#c.NVM_PAGE_COUNT_MAIN" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of pages in the main area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_PAGE_COUNT_INFO">
+<span class="target" id="dc/ddd/group__nvm_1gaa4607d8544ad9c05a505f6229ccf8fed"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_PAGE_COUNT_INFO</span></span></span> <span class="pre">(4)</span><a class="headerlink" href="#c.NVM_PAGE_COUNT_INFO" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of pages in the information area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_SIZE_MAIN_WORD">
+<span class="target" id="dc/ddd/group__nvm_1gac047d745e2f730fe199d10319afec534"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_SIZE_MAIN_WORD</span></span></span> <span class="pre">(</span><a class="reference internal" href="#dc/ddd/group__nvm_1gac650af8cc885ade8505a8ff5279cb7a7"><span class="std std-ref"><span class="pre">NVM_PAGE_COUNT_MAIN</span></span></a> <span class="pre">*</span> <a class="reference internal" href="#dc/ddd/group__nvm_1ga038e72b9f973d03c284ca13f4cf3a5cd"><span class="std std-ref"><span class="pre">NVM_PAGE_SIZE_WORD</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.NVM_SIZE_MAIN_WORD" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of words in the main area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_SIZE_INFO_WORD">
+<span class="target" id="dc/ddd/group__nvm_1ga422af4d37f8fcfbf93247907cf49e513"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_SIZE_INFO_WORD</span></span></span> <span class="pre">(</span><a class="reference internal" href="#dc/ddd/group__nvm_1gaa4607d8544ad9c05a505f6229ccf8fed"><span class="std std-ref"><span class="pre">NVM_PAGE_COUNT_INFO</span></span></a> <span class="pre">*</span> <a class="reference internal" href="#dc/ddd/group__nvm_1ga038e72b9f973d03c284ca13f4cf3a5cd"><span class="std std-ref"><span class="pre">NVM_PAGE_SIZE_WORD</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.NVM_SIZE_INFO_WORD" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of words in the info area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_ERASED_VAL">
+<span class="target" id="dc/ddd/group__nvm_1ga19249af9c562847bf70b8afb3ff96195"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ERASED_VAL</span></span></span> <span class="pre">(0xFFFFFFFF)</span><a class="headerlink" href="#c.NVM_ERASED_VAL" title="Link to this definition"></a><br /></dt>
+<dd><p>Value when the NVM is erased. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AHB_TO_NVM_ADDR_MAIN_AREA">
+<span class="target" id="dc/ddd/group__nvm_1ga0a415e7f906ffc6a88068e469ae03145"></span><span class="sig-name descname"><span class="n"><span class="pre">AHB_TO_NVM_ADDR_MAIN_AREA</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span> &#160;&#160;&#160; <span class="pre">(((x)</span> <span class="pre">-</span> <span class="pre">(uint32_t)MEMORY_NVM_START)</span> <span class="pre">/</span> <span class="pre">sizeof(uint32_t))</span><a class="headerlink" href="#c.AHB_TO_NVM_ADDR_MAIN_AREA" title="Link to this definition"></a><br /></dt>
+<dd><p>AHB address to NVM address conversion for main area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AHB_TO_NVM_ADDR_INFO_AREA">
+<span class="target" id="dc/ddd/group__nvm_1ga89d5e0fa0466c25fc732a5e7f3bf9ffc"></span><span class="sig-name descname"><span class="n"><span class="pre">AHB_TO_NVM_ADDR_INFO_AREA</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span> &#160;&#160;&#160; <span class="pre">(((x)</span> <span class="pre">-</span> <span class="pre">(uint32_t)MEMORY_NVMINFO_START)</span> <span class="pre">/</span> <span class="pre">sizeof(uint32_t))</span><a class="headerlink" href="#c.AHB_TO_NVM_ADDR_INFO_AREA" title="Link to this definition"></a><br /></dt>
+<dd><p>AHB address to NVM address conversion for info area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_TO_AHB_ADDR_MAIN_AREA">
+<span class="target" id="dc/ddd/group__nvm_1gabb5e9de039b445bf689b82b80eeaee2b"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_TO_AHB_ADDR_MAIN_AREA</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span> &#160;&#160;&#160; <span class="pre">((x)</span> <span class="pre">*</span> <span class="pre">sizeof(uint32_t)</span> <span class="pre">+</span> <span class="pre">(uint32_t)MEMORY_NVM_START)</span><a class="headerlink" href="#c.NVM_TO_AHB_ADDR_MAIN_AREA" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM address to AHB address conversion for main area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_TO_AHB_ADDR_INFO_AREA">
+<span class="target" id="dc/ddd/group__nvm_1ga385f81a6696979e85e88904748ccf510"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_TO_AHB_ADDR_INFO_AREA</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">x</span></span><span class="sig-paren">)</span> &#160;&#160;&#160; <span class="pre">((x)</span> <span class="pre">*</span> <span class="pre">sizeof(uint32_t)</span> <span class="pre">+</span> <span class="pre">(uint32_t)MEMORY_NVMINFO_START)</span><a class="headerlink" href="#c.NVM_TO_AHB_ADDR_INFO_AREA" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM address to AHB address conversion for info area. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.GET_NVM_PAGE_ADDRESS">
+<span class="target" id="dc/ddd/group__nvm_1gaeb92371d274e90a73ae0e64ddd6fd7a8"></span><span class="sig-name descname"><span class="n"><span class="pre">GET_NVM_PAGE_ADDRESS</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">address</span></span><span class="sig-paren">)</span> <span class="pre">(((uint32_t)(address))</span> <span class="pre">&amp;</span> <span class="pre">~(</span><a class="reference internal" href="#dc/ddd/group__nvm_1ga8bd4a38a275d8f46ced5533e8e60926d"><span class="std std-ref"><span class="pre">NVM_PAGE_SIZE_BYTE</span></span></a> <span class="pre">-</span> <span class="pre">1u))</span><a class="headerlink" href="#c.GET_NVM_PAGE_ADDRESS" title="Link to this definition"></a><br /></dt>
+<dd><p>Macro to get the start of the NVM page address from an address in NVM. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.GET_NVM_PAGE_OFFSET">
+<span class="target" id="dc/ddd/group__nvm_1gacebd85f16d3e714594383af744a3924b"></span><span class="sig-name descname"><span class="n"><span class="pre">GET_NVM_PAGE_OFFSET</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">address</span></span><span class="sig-paren">)</span> <span class="pre">(((uint32_t)(address))</span> <span class="pre">&amp;</span> <span class="pre">(</span><a class="reference internal" href="#dc/ddd/group__nvm_1ga8bd4a38a275d8f46ced5533e8e60926d"><span class="std std-ref"><span class="pre">NVM_PAGE_SIZE_BYTE</span></span></a> <span class="pre">-</span> <span class="pre">1u))</span><a class="headerlink" href="#c.GET_NVM_PAGE_OFFSET" title="Link to this definition"></a><br /></dt>
+<dd><p>Macro to get the offset in bytes from the start of the NVM page. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv412NVM_Status_t">
+<span id="_CPPv312NVM_Status_t"></span><span id="_CPPv212NVM_Status_t"></span><span class="target" id="dc/ddd/group__nvm_1ga9b2c841bc34744ad47418435c50395dc"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_Status_t</span></span></span><a class="headerlink" href="#_CPPv412NVM_Status_t" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM Status. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12NVM_Status_t11NVM_SUCCESSE">
+<span id="_CPPv3N12NVM_Status_t11NVM_SUCCESSE"></span><span id="_CPPv2N12NVM_Status_t11NVM_SUCCESSE"></span><span class="target" id="dc/ddd/group__nvm_1gga9b2c841bc34744ad47418435c50395dcace2832903e44950d242a356a2b3228ab"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N12NVM_Status_t11NVM_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>Success, the operation was successfull. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12NVM_Status_t15NVM_FAILED_LOCKE">
+<span id="_CPPv3N12NVM_Status_t15NVM_FAILED_LOCKE"></span><span id="_CPPv2N12NVM_Status_t15NVM_FAILED_LOCKE"></span><span class="target" id="dc/ddd/group__nvm_1gga9b2c841bc34744ad47418435c50395dcad9f9d0771dfba2290c4cd15be3e7cae2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_FAILED_LOCK</span></span></span><a class="headerlink" href="#_CPPv4N12NVM_Status_t15NVM_FAILED_LOCKE" title="Link to this definition"></a><br /></dt>
+<dd><p>The operation failed because a region was locked. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12NVM_Status_t19NVM_FAILED_BROWNOUTE">
+<span id="_CPPv3N12NVM_Status_t19NVM_FAILED_BROWNOUTE"></span><span id="_CPPv2N12NVM_Status_t19NVM_FAILED_BROWNOUTE"></span><span class="target" id="dc/ddd/group__nvm_1gga9b2c841bc34744ad47418435c50395dcaf9cc5f753e717c87ca59f1cc10797f1d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_FAILED_BROWNOUT</span></span></span><a class="headerlink" href="#_CPPv4N12NVM_Status_t19NVM_FAILED_BROWNOUTE" title="Link to this definition"></a><br /></dt>
+<dd><p>The operation failed because of a brown out. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12NVM_Status_t20NVM_FAILED_PARAMETERE">
+<span id="_CPPv3N12NVM_Status_t20NVM_FAILED_PARAMETERE"></span><span id="_CPPv2N12NVM_Status_t20NVM_FAILED_PARAMETERE"></span><span class="target" id="dc/ddd/group__nvm_1gga9b2c841bc34744ad47418435c50395dcade0b54cb7fcc97259031c4d049aa2078"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_FAILED_PARAMETER</span></span></span><a class="headerlink" href="#_CPPv4N12NVM_Status_t20NVM_FAILED_PARAMETERE" title="Link to this definition"></a><br /></dt>
+<dd><p>The operation failed because of a wrong parameter. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv414NVM_LockPage_t">
+<span id="_CPPv314NVM_LockPage_t"></span><span id="_CPPv214NVM_LockPage_t"></span><span class="target" id="dc/ddd/group__nvm_1gadf5361202374983874916ce6147172dc"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_LockPage_t</span></span></span><a class="headerlink" href="#_CPPv414NVM_LockPage_t" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM Lock Page type. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14NVM_LockPage_t17NVM_PAGE_UNLOCKEDE">
+<span id="_CPPv3N14NVM_LockPage_t17NVM_PAGE_UNLOCKEDE"></span><span id="_CPPv2N14NVM_LockPage_t17NVM_PAGE_UNLOCKEDE"></span><span class="target" id="dc/ddd/group__nvm_1ggadf5361202374983874916ce6147172dca58d00820f82cbea56935bfbc50c1c66c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_PAGE_UNLOCKED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N14NVM_LockPage_t17NVM_PAGE_UNLOCKEDE" title="Link to this definition"></a><br /></dt>
+<dd><p>The page is unlocked. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14NVM_LockPage_t15NVM_PAGE_LOCKEDE">
+<span id="_CPPv3N14NVM_LockPage_t15NVM_PAGE_LOCKEDE"></span><span id="_CPPv2N14NVM_LockPage_t15NVM_PAGE_LOCKEDE"></span><span class="target" id="dc/ddd/group__nvm_1ggadf5361202374983874916ce6147172dcacb1083765355d818d1b92a512323f96f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_PAGE_LOCKED</span></span></span><a class="headerlink" href="#_CPPv4N14NVM_LockPage_t15NVM_PAGE_LOCKEDE" title="Link to this definition"></a><br /></dt>
+<dd><p>The page is locked. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14NVM_LockPage_t25NVM_PAGE_FAILED_PARAMETERE">
+<span id="_CPPv3N14NVM_LockPage_t25NVM_PAGE_FAILED_PARAMETERE"></span><span id="_CPPv2N14NVM_LockPage_t25NVM_PAGE_FAILED_PARAMETERE"></span><span class="target" id="dc/ddd/group__nvm_1ggadf5361202374983874916ce6147172dca26fb57437e7172917963b168d6a150bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_PAGE_FAILED_PARAMETER</span></span></span><a class="headerlink" href="#_CPPv4N14NVM_LockPage_t25NVM_PAGE_FAILED_PARAMETERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function call parameter error. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv410NVM_Lock_t">
+<span id="_CPPv310NVM_Lock_t"></span><span id="_CPPv210NVM_Lock_t"></span><span class="target" id="dc/ddd/group__nvm_1ga73a716baef5d3d5784aef428141df7e9"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_Lock_t</span></span></span><a class="headerlink" href="#_CPPv410NVM_Lock_t" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM Lock type. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10NVM_Lock_t13NVM_LOCK_NONEE">
+<span id="_CPPv3N10NVM_Lock_t13NVM_LOCK_NONEE"></span><span id="_CPPv2N10NVM_Lock_t13NVM_LOCK_NONEE"></span><span class="target" id="dc/ddd/group__nvm_1gga73a716baef5d3d5784aef428141df7e9a799239020baf5a639997074c649f845f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_LOCK_NONE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N10NVM_Lock_t13NVM_LOCK_NONEE" title="Link to this definition"></a><br /></dt>
+<dd><p>No lock. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_MAINE">
+<span id="_CPPv3N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_MAINE"></span><span id="_CPPv2N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_MAINE"></span><span class="target" id="dc/ddd/group__nvm_1gga73a716baef5d3d5784aef428141df7e9ac1ccfde790f6f1878d2402f1da97bfe8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_LOCK_OPERATION_ERASE_MAIN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">NVM_LOCK_ERASE_MAIN</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_MAINE" title="Link to this definition"></a><br /></dt>
+<dd><p>Lock for Erase main operation. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_FULLE">
+<span id="_CPPv3N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_FULLE"></span><span id="_CPPv2N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_FULLE"></span><span class="target" id="dc/ddd/group__nvm_1gga73a716baef5d3d5784aef428141df7e9ad4b1aed97c96e1014c1e3ea1e44953f8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_LOCK_OPERATION_ERASE_FULL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">NVM_LOCK_ERASE_FULL</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10NVM_Lock_t29NVM_LOCK_OPERATION_ERASE_FULLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Lock for Erase full operation. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10NVM_Lock_t22NVM_LOCK_REDUND_CONFIGE">
+<span id="_CPPv3N10NVM_Lock_t22NVM_LOCK_REDUND_CONFIGE"></span><span id="_CPPv2N10NVM_Lock_t22NVM_LOCK_REDUND_CONFIGE"></span><span class="target" id="dc/ddd/group__nvm_1gga73a716baef5d3d5784aef428141df7e9a861b0845ff5576646e57c0ceed03c933"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_LOCK_REDUND_CONFIG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">NVM_LOCK_REDUND</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10NVM_Lock_t22NVM_LOCK_REDUND_CONFIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Lock for Redundancy pages configuration. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10NVM_Lock_t19NVM_LOCK_MASTER_BITE">
+<span id="_CPPv3N10NVM_Lock_t19NVM_LOCK_MASTER_BITE"></span><span id="_CPPv2N10NVM_Lock_t19NVM_LOCK_MASTER_BITE"></span><span class="target" id="dc/ddd/group__nvm_1gga73a716baef5d3d5784aef428141df7e9a99068ed458970015ea1bc52cee6df318"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_LOCK_MASTER_BIT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">NVM_LOCK_MASTER</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N10NVM_Lock_t19NVM_LOCK_MASTER_BITE" title="Link to this definition"></a><br /></dt>
+<dd><p>Lock for all particular lock bits (Master lock bit). </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv421NVM_AddressLocation_t">
+<span id="_CPPv321NVM_AddressLocation_t"></span><span id="_CPPv221NVM_AddressLocation_t"></span><span class="target" id="dc/ddd/group__nvm_1ga402d433e0f03b8702237f85997fede33"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_AddressLocation_t</span></span></span><a class="headerlink" href="#_CPPv421NVM_AddressLocation_t" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM Address Location type. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21NVM_AddressLocation_t25NVM_ADDR_LOCATION_INVALIDE">
+<span id="_CPPv3N21NVM_AddressLocation_t25NVM_ADDR_LOCATION_INVALIDE"></span><span id="_CPPv2N21NVM_AddressLocation_t25NVM_ADDR_LOCATION_INVALIDE"></span><span class="target" id="dc/ddd/group__nvm_1gga402d433e0f03b8702237f85997fede33ae0bc95f379dce74ee8e0ae885f6c24b8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ADDR_LOCATION_INVALID</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N21NVM_AddressLocation_t25NVM_ADDR_LOCATION_INVALIDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Invalid. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_MAINE">
+<span id="_CPPv3N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_MAINE"></span><span id="_CPPv2N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_MAINE"></span><span class="target" id="dc/ddd/group__nvm_1gga402d433e0f03b8702237f85997fede33a365edfd00defacbf0532ee1c88ed330a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ADDR_LOCATION_MAIN</span></span></span><a class="headerlink" href="#_CPPv4N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_MAINE" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM-Main. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_INFOE">
+<span id="_CPPv3N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_INFOE"></span><span id="_CPPv2N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_INFOE"></span><span class="target" id="dc/ddd/group__nvm_1gga402d433e0f03b8702237f85997fede33afe8ffb240e35b826841c0ffbf3c3e3e5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ADDR_LOCATION_INFO</span></span></span><a class="headerlink" href="#_CPPv4N21NVM_AddressLocation_t22NVM_ADDR_LOCATION_INFOE" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM-Info. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411NVM_GetLockv">
+<span id="_CPPv311NVM_GetLockv"></span><span id="_CPPv211NVM_GetLockv"></span><span id="NVM_GetLock__void"></span><span class="target" id="dc/ddd/group__nvm_1gaa3929427d37546f4318b4b1f5ad4a1cd"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410NVM_Lock_t" title="NVM_Lock_t"><span class="n"><span class="pre">NVM_Lock_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_GetLock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411NVM_GetLockv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the lock of the NVM. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The lock(s). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411NVM_SetLock10NVM_Lock_t">
+<span id="_CPPv311NVM_SetLock10NVM_Lock_t"></span><span id="_CPPv211NVM_SetLock10NVM_Lock_t"></span><span id="NVM_SetLock__NVM_Lock_t"></span><span class="target" id="dc/ddd/group__nvm_1ga04f6b29c7ef85710f85c1d6cd12895b4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_SetLock</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410NVM_Lock_t" title="NVM_Lock_t"><span class="n"><span class="pre">NVM_Lock_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">lock</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411NVM_SetLock10NVM_Lock_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Lock additional NVM operations. </p>
+<p>This function is used to lock following operations:<ul class="simple">
+<li><p>Erase main area <a class="reference internal" href="#dc/ddd/group__nvm_1ga4d2139d56bda3e31dafe86d5b3553aca"><span class="std std-ref">NVM_EraseMain()</span></a>.</p></li>
+<li><p>Erase full (main + information area) <a class="reference internal" href="#dc/ddd/group__nvm_1ga8ce30e4106563ec74735de2ef6567eec"><span class="std std-ref">NVM_EraseFull()</span></a>.</p></li>
+<li><p>NVM redundacy pages mapping.</p></li>
+</ul>
+</p>
+<p>This function is also used to lock all particular lock bits to prevent their further modification.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once a lock is set it cannot be reverted. Only a POR will unlock it. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419NVM_GetAddrLocation8uint32_t">
+<span id="_CPPv319NVM_GetAddrLocation8uint32_t"></span><span id="_CPPv219NVM_GetAddrLocation8uint32_t"></span><span id="NVM_GetAddrLocation__uint32_t"></span><span class="target" id="dc/ddd/group__nvm_1gaed70725a67663d1f1bd49a599979ac1e"></span><a class="reference internal" href="#_CPPv421NVM_AddressLocation_t" title="NVM_AddressLocation_t"><span class="n"><span class="pre">NVM_AddressLocation_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_GetAddrLocation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">addr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419NVM_GetAddrLocation8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Indicate if a NVM address is located in the NVM main area, in the information page area or is invalid. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>addr</strong> – Address to know the location. </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>NVM_ADDR_LOCATION_INVALID</strong> – Invalid address. </p></li>
+<li><p><strong>NVM_ADDR_LOCATION_MAIN</strong> – NVM-Main address. </p></li>
+<li><p><strong>NVM_ADDR_LOCATION_INFO</strong> – NVM-Info address. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413NVM_EraseFullv">
+<span id="_CPPv313NVM_EraseFullv"></span><span id="_CPPv213NVM_EraseFullv"></span><span id="NVM_EraseFull__void"></span><span class="target" id="dc/ddd/group__nvm_1ga8ce30e4106563ec74735de2ef6567eec"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_EraseFull</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413NVM_EraseFullv" title="Link to this definition"></a><br /></dt>
+<dd><p>Erase main and information areas. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The status of the operation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413NVM_EraseMainv">
+<span id="_CPPv313NVM_EraseMainv"></span><span id="_CPPv213NVM_EraseMainv"></span><span id="NVM_EraseMain__void"></span><span class="target" id="dc/ddd/group__nvm_1ga4d2139d56bda3e31dafe86d5b3553aca"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_EraseMain</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413NVM_EraseMainv" title="Link to this definition"></a><br /></dt>
+<dd><p>Erase main area. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The status of the operation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413NVM_ErasePageb7uint8_t">
+<span id="_CPPv313NVM_ErasePageb7uint8_t"></span><span id="_CPPv213NVM_ErasePageb7uint8_t"></span><span id="NVM_ErasePage__b.uint8_t"></span><span class="target" id="dc/ddd/group__nvm_1ga23adc04fc6555998cb1c4932e217ad01"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ErasePage</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">infoArea</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">page</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413NVM_ErasePageb7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Erase a page. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infoArea</strong> – The area where the page to erase is located (0 = main area, 1 = info area). </p></li>
+<li><p><strong>page</strong> – The page to erase. Range is 0 to 63 for main area and 0 to 3 for info area. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status of the operation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423NVM_ErasePages_PhysAddr8uint32_t8uint32_t">
+<span id="_CPPv323NVM_ErasePages_PhysAddr8uint32_t8uint32_t"></span><span id="_CPPv223NVM_ErasePages_PhysAddr8uint32_t8uint32_t"></span><span id="NVM_ErasePages_PhysAddr__uint32_t.uint32_t"></span><span class="target" id="dc/ddd/group__nvm_1gacc470837c494b3762ea58449154f200a"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ErasePages_PhysAddr</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">addr</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423NVM_ErasePages_PhysAddr8uint32_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Erase NVM-Main or NMV-Info page(s) based on a physical address and length. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addr</strong> – Physical address to start. </p></li>
+<li><p><strong>length</strong> – Number of bytes to write, errors if not 4 byte aligned. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status of the operation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418NVM_Write_PhysAddr8uint32_t8uint32_tP8uint32_t">
+<span id="_CPPv318NVM_Write_PhysAddr8uint32_t8uint32_tP8uint32_t"></span><span id="_CPPv218NVM_Write_PhysAddr8uint32_t8uint32_tP8uint32_t"></span><span id="NVM_Write_PhysAddr__uint32_t.uint32_t.uint32_tP"></span><span class="target" id="dc/ddd/group__nvm_1ga4ec3f26a54929cf2b49ab475f9f4ed64"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_Write_PhysAddr</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">addr</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418NVM_Write_PhysAddr8uint32_t8uint32_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Write data to NVM-Main or NMV-Info using only physical address and length. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addr</strong> – Physical address to start (no adj needed, must be 4 byte aligned). </p></li>
+<li><p><strong>length</strong> – Number of bytes to write, errors if not 4 byte aligned. </p></li>
+<li><p><strong>pData</strong> – Pointer to source data. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status of the operation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49NVM_Writeb8uint32_tP8uint32_t8uint32_t">
+<span id="_CPPv39NVM_Writeb8uint32_tP8uint32_t8uint32_t"></span><span id="_CPPv29NVM_Writeb8uint32_tP8uint32_t8uint32_t"></span><span id="NVM_Write__b.uint32_t.uint32_tP.uint32_t"></span><span class="target" id="dc/ddd/group__nvm_1ga1573b49a735b1028a08b88f225fd026c"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_Write</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">infoArea</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">addr</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49NVM_Writeb8uint32_tP8uint32_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Write data to NVM. </p>
+<p>
+Example: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Write</span> <span class="mi">8</span> <span class="n">words</span> <span class="p">(</span><span class="mi">32</span> <span class="nb">bytes</span><span class="p">)</span> <span class="n">to</span> <span class="n">address</span> <span class="mh">0x300400</span> <span class="p">(</span><span class="n">main</span> <span class="n">area</span><span class="p">)</span>
+<span class="n">NVM_Write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">,</span> <span class="p">(</span><span class="n">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+</pre></div>
+</div>
+ </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The address starts at 0x00 and corresponds to 0x300000 for NVM main area and 0x400000 for NVM info area.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The address is in word so a write to 0x100 corresponds to physical address 0x300400 (main area).</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is forbidden to write more than 1 time on the same region (word) if the region is not erased. This function doesn’t check if the region was erased before writing.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infoArea</strong> – The area where the page to write is located (0 = main area, 1 = info area). </p></li>
+<li><p><strong>addr</strong> – The address where the data will be written (addressed in word). </p></li>
+<li><p><strong>pData</strong> – A pointer to the data to write. </p></li>
+<li><p><strong>length</strong> – The length of the data to write in word (32 bits). The max length is 2048. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status of the operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415NVM_GetLockPageb7uint8_t">
+<span id="_CPPv315NVM_GetLockPageb7uint8_t"></span><span id="_CPPv215NVM_GetLockPageb7uint8_t"></span><span id="NVM_GetLockPage__b.uint8_t"></span><span class="target" id="dc/ddd/group__nvm_1ga05eabdeae2265c88e824f00bc40eb0a4"></span><a class="reference internal" href="#_CPPv414NVM_LockPage_t" title="NVM_LockPage_t"><span class="n"><span class="pre">NVM_LockPage_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_GetLockPage</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">infoArea</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">page</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415NVM_GetLockPageb7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the lock of a page. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infoArea</strong> – The area where the page is located (0 = main area, 1 = info area). </p></li>
+<li><p><strong>page</strong> – The page number. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The lock of the page. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420NVM_ArePagesUnlocked8uint32_t8uint32_t">
+<span id="_CPPv320NVM_ArePagesUnlocked8uint32_t8uint32_t"></span><span id="_CPPv220NVM_ArePagesUnlocked8uint32_t8uint32_t"></span><span id="NVM_ArePagesUnlocked__uint32_t.uint32_t"></span><span class="target" id="dc/ddd/group__nvm_1ga932eba7213b7bb8a799f7ad6b9ae780d"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_ArePagesUnlocked</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">startAddr</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420NVM_ArePagesUnlocked8uint32_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Know whether the NVM pages are unlocked for an address range. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startAddr</strong> – The start of the address range. </p></li>
+<li><p><strong>length</strong> – The length of the address range in bytes. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>NVM_SUCCESS</strong> – No pages are locked. </p></li>
+<li><p><strong>NVM_FAILED_LOCK</strong> – At least one page is locked. </p></li>
+<li><p><strong>NVM_FAILED_PARAMETER</strong> – Input address range is wrong. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412NVM_LockPageb7uint8_t">
+<span id="_CPPv312NVM_LockPageb7uint8_t"></span><span id="_CPPv212NVM_LockPageb7uint8_t"></span><span id="NVM_LockPage__b.uint8_t"></span><span class="target" id="dc/ddd/group__nvm_1ga911b804b9968ae1366dda85abeb18ec6"></span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_LockPage</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">infoArea</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">page</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412NVM_LockPageb7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Lock the write/erase operation for a given page. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once lock is set it cannot be reverted. Only a POR will unlock the page. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infoArea</strong> – The area where the page is located (0 = main area, 1 = info area). </p></li>
+<li><p><strong>page</strong> – The page number. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The status of the operation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414NVM_SetTimings7uint8_t7uint8_t">
+<span id="_CPPv314NVM_SetTimings7uint8_t7uint8_t"></span><span id="_CPPv214NVM_SetTimings7uint8_t7uint8_t"></span><span id="NVM_SetTimings__uint8_t.uint8_t"></span><span class="target" id="dc/ddd/group__nvm_1gaee10d668f3370eeaa7a839313fa1f1a4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_SetTimings</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eraseTime</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">writeTime</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414NVM_SetTimings7uint8_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the write and erase timings. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eraseTime</strong> – Erase time from 0 (9.5ms) to 15 (20ms). The default value is 8 (13.5ms). </p></li>
+<li><p><strong>writeTime</strong> – Write time from 0 (8us) to 15 (16us). The default value is 8 (12us). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428NVM_SetRedundancyPageMapping7uint8_t7uint8_tb">
+<span id="_CPPv328NVM_SetRedundancyPageMapping7uint8_t7uint8_tb"></span><span id="_CPPv228NVM_SetRedundancyPageMapping7uint8_t7uint8_tb"></span><span id="NVM_SetRedundancyPageMapping__uint8_t.uint8_t.b"></span><span class="target" id="dc/ddd/group__nvm_1ga21a3b64d19bf29a143aa3c91d288f682"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_SetRedundancyPageMapping</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">redundancyPage</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">page</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428NVM_SetRedundancyPageMapping7uint8_t7uint8_tb" title="Link to this definition"></a><br /></dt>
+<dd><p>Set and enable the redundancy page. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>redundancyPage</strong> – The redundancy page (0 or 1). </p></li>
+<li><p><strong>page</strong> – The page to be replaced by the redundancy page. </p></li>
+<li><p><strong>enable</strong> – Enable the redundancy page. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428NVM_GetRedundancyPageMapping7uint8_t">
+<span id="_CPPv328NVM_GetRedundancyPageMapping7uint8_t"></span><span id="_CPPv228NVM_GetRedundancyPageMapping7uint8_t"></span><span id="NVM_GetRedundancyPageMapping__uint8_t"></span><span class="target" id="dc/ddd/group__nvm_1ga5b7ba5294056093724d5d31de4075d59"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_GetRedundancyPageMapping</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">redundancyPage</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428NVM_GetRedundancyPageMapping7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the page that is replaced by the redundancy page. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>redundancyPage</strong> – The redundancy page (0 or 1). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>page The page that is replaced by the redundancy page. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420NVM_NvmStatusToErrno12NVM_Status_t">
+<span id="_CPPv320NVM_NvmStatusToErrno12NVM_Status_t"></span><span id="_CPPv220NVM_NvmStatusToErrno12NVM_Status_t"></span><span id="NVM_NvmStatusToErrno__NVM_Status_t"></span><span class="target" id="dc/ddd/group__nvm_1gace8720b7f178f8492fb53f43039ddca0"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_NvmStatusToErrno</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412NVM_Status_t" title="NVM_Status_t"><span class="n"><span class="pre">NVM_Status_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">nvmStatus</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420NVM_NvmStatusToErrno12NVM_Status_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert NVM status to errno code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nvmStatus</strong> – NVM status. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>errno status code, see errno.h </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-3-1">
+<h3>Version 0.3.1<a class="headerlink" href="#version-0-3-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>PR 8898: Fix when less than 4 words are given as parameter to the function NVM_ErasePages_PhysAddr()</p></li>
+<li><p>PR 8932, 8963 and 8979 : Allow NVM operations when interrupts are disabled</p></li>
+</ul>
+</section>
+<section id="version-0-3-0">
+<h3>Version 0.3.0<a class="headerlink" href="#version-0-3-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>NVM write and erase operation can be called from ISR context.</p></li>
+<li><p>Added NVM_ErasePages_PhysAddr and NVM_Write_PhysAddr functions.</p></li>
+<li><p>Parts of the NVM driver were moved from ROM to NVM to address the points above.</p></li>
+</ul>
+</section>
+<section id="version-0-2-0">
+<h3>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed unwritable last NVM word issue.</p></li>
+</ul>
+</section>
+<section id="version-0-1-1">
+<h3>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Updated doxygen comments.</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../API.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../security/index.html" class="btn btn-neutral float-right" title="Security libraries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

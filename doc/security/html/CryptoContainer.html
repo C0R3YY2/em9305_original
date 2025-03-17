@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES Crypto Containers &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AES modes and MAC" href="AESModes.html" />
+    <link rel="prev" title="AES (one block)" href="AES.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">AES Crypto Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#concept">Concept</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nvm-structure-reminder">NVM structure (reminder)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#crypto-container-structure">Crypto container structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-properties">Security properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-container-structure">Key container structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-a-key">“Reading a key”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#locks">Locks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#granularity-aspects">Granularity aspects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-know-a-key-was-correctly-written">How do I know a key was correctly written?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-know-a-key-container-is-used">How do I know a key container is used?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-container-0">Key container 0</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#aes-chaining-modes-and-mac">AES chaining modes and MAC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#typical-usages-of-key-containers">Typical usages of key containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-type-enumerations">Key type enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validity-enumerations">Validity enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mode-of-operations">Mode of operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-status">Error status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-key">Set key</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prototype">Prototype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-values">Return values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remarks">Remarks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#aes-processblockkeycontainer">AES_ProcessBlockKeyContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Prototype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#aes-invalidatekeycontainer">AES_InvalidateKeyContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Prototype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#aes-lockkeycontainer">AES_LockKeyContainer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id9">Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">Prototype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">Return values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remark">Remark</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#aes-keycontainerseraselock">AES_KeyContainersEraseLock</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id13">Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">Prototype</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Return values</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">Remark</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#aes-keycontainerswritelock">AES_KeyContainersWriteLock</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id17">Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">Prototype</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Return values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">Remark</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aes-keycontainerslockpage">AES_KeyContainersLockPage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id21">Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prototpe">Prototpe</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id22">Return values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Remark</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>AES Crypto Containers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aes-crypto-containers">
+<span id="aes-crypto-containers-label"></span><h1>AES Crypto Containers<a class="headerlink" href="#aes-crypto-containers" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] FIPS197: Specification for the Advanced Encryption standard(AES)</p>
+<p><a class="reference external" href="http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf">FIPS197</a>: <a class="reference external" href="http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf">http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The purpose of this document is to describe the concept of the AES crypto containers.
+It describes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The structure of the crypto containers</p></li>
+<li><p>The software APIs that ease the usage of the crypto containers.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="concept">
+<h2>Concept<a class="headerlink" href="#concept" title="Permalink to this headline"></a></h2>
+<p>The AES crypto containers aim at <strong>storing securely AES-128 keys</strong> in the Non-Volatile Memory.</p>
+<dl class="simple">
+<dt>The main security principle is that:</dt><dd><ul class="simple">
+<li><p><strong>The CPU can write</strong> inside the key containers</p></li>
+<li><p><strong>The CPU cannot read</strong> the key containers.</p></li>
+<li><p><strong>Only the AES hardware</strong> can execute the keys located in the key containers.</p></li>
+</ul>
+</dd>
+</dl>
+<section id="nvm-structure-reminder">
+<h3>NVM structure (reminder)<a class="headerlink" href="#nvm-structure-reminder" title="Permalink to this headline"></a></h3>
+<dl class="simple">
+<dt>As a reminder, the NVM of EM9305 is composed of:</dt><dd><ul class="simple">
+<li><p>64 pages of 8KBytes in the main area, for a total of 512 KBytes. The main area aims at storing code and data.</p></li>
+<li><p>4 pages of 8KBytes each, referred as Info Pages. Those pages are dedicated for data and especially for the product configuration data.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Next figure shows the general NVM structure.</p>
+<img alt="_images/EM9305_NVMStructure.png" src="_images/EM9305_NVMStructure.png" />
+<p>The Info-Page 0 contains the key containers. Each container is 256 bits long, so that the Info-Page0 contains 256 key containers.</p>
+</section>
+<section id="crypto-container-structure">
+<h3>Crypto container structure<a class="headerlink" href="#crypto-container-structure" title="Permalink to this headline"></a></h3>
+<p>Next figure shows the structure of the InfoPage0 and illustrates that up to 256 AES-128 keys can be stored in the key containers.</p>
+<img alt="_images/EM9305_InfoPage0.png" src="_images/EM9305_InfoPage0.png" />
+</section>
+<section id="security-properties">
+<h3>Security properties<a class="headerlink" href="#security-properties" title="Permalink to this headline"></a></h3>
+<p>The security properties of the key containers InfoPage0 are the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Unless locked against write, the key containers can be written by the CPU.</p></li>
+<li><p>The key containers content can <strong>never be read by the CPU</strong>.</p></li>
+<li><p>The key value and the attributes are directly connected to the hardware AES. Only the hardware AES can fetch data in a key container. The hardware AES can then be executed with the given key.</p></li>
+<li><p>A key stored in a key container can be typed to limit the use of this key to AES encryption or AES decryption.</p></li>
+<li><p>A key stored in a key container can be invalidated.</p></li>
+<li><p>For the 8 first keys (0..7), it is possible to prevent the key container to be written.</p></li>
+<li><p>The full page InfoPage0 can be locked either against write, against erase or against write &amp; erase.</p></li>
+</ul>
+</div></blockquote>
+<p>Next figure displays the general crypto containers architecture.</p>
+<img alt="_images/KeyContainerPrinciple.png" src="_images/KeyContainerPrinciple.png" />
+</section>
+<section id="key-container-structure">
+<h3>Key container structure<a class="headerlink" href="#key-container-structure" title="Permalink to this headline"></a></h3>
+<dl class="simple">
+<dt>Each container is composed of 2 words of 128 bits:</dt><dd><ul class="simple">
+<li><p>A first word stores an AES-128 bits <strong>key value</strong></p></li>
+<li><p>A second word stores the <strong>key attributes</strong></p></li>
+</ul>
+</dd>
+</dl>
+<p>The key attributes are the following ones:</p>
+<blockquote>
+<div><ul>
+<li><p>Type:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The key can be <strong>ENCRYPTION ONLY</strong></p></li>
+<li><p>The key can be <strong>DECRYPTION ONLY</strong></p></li>
+<li><p>The key can be <strong>ENCRYPTION and DECRYPTION</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Validity:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The key can be <strong>Valid</strong>.</p></li>
+<li><p>The key can be <strong>Invalid</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Two words are reserved for further usage.</p></li>
+</ul>
+</div></blockquote>
+<img alt="_images/EM9305_keyContainer.png" src="_images/EM9305_keyContainer.png" />
+<p>If the key is typed ENCRYPTION ONLY, trying to operate AES in decryption mode with this key would be rejected.
+Similarly, if the key is typed DECRYPTION ONLY, trying to operate AES in encryption mode with this key would be rejected.</p>
+<p>Initially, a key should be set as <strong>valid</strong>. Then, in the life cycle of the product, it might be necessary to disable or kill a key. The key should be set as <strong>invalid</strong>. Once the key is invalidated, any trial to execute AES with this key will be rejected.</p>
+</section>
+<section id="reading-a-key">
+<h3>“Reading a key”<a class="headerlink" href="#reading-a-key" title="Permalink to this headline"></a></h3>
+<p>As mentioned above, the InfoPage0 <strong>cannot</strong> be read by the CPU.</p>
+<p>It implies that the key containers (key value, key attributes) cannot be read by the CPU. To execute AES with the key stored in a key container, <strong>the key is referred with key ID</strong>.</p>
+<p>For a given key ID, the hardware AES, which is directly connected to the InfoPage0, fetches the referred key and loads it into core registers. The hardware AES also verifies the attributes and the consistency of the attributes. Note that the key is managed fully by the hardware digital logic.</p>
+</section>
+<section id="locks">
+<h3>Locks<a class="headerlink" href="#locks" title="Permalink to this headline"></a></h3>
+<p>Several locks are implemented:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The entire InfoPage0 can be locked <strong>against write</strong>.</p></li>
+<li><p>The entire InfoPage0 can be locked <strong>against erase</strong>.</p></li>
+<li><p>The entire InfoPage0 can be locked <strong>against write and erase</strong>.</p></li>
+<li><p>The 8 first keys, with ID in range [0..7] can be <strong>individually</strong> locked against <strong>write</strong>.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="granularity-aspects">
+<h3>Granularity aspects<a class="headerlink" href="#granularity-aspects" title="Permalink to this headline"></a></h3>
+<p>InfoPage0 is a NVM page as the other ones. It implies some granularity limitations:</p>
+<blockquote>
+<div><ul>
+<li><p>Unless the page is locked against “erase”, InfoPage0 can be erased. Nevertheless, it is not possible to erase parts of the page. Only the complete page can be erased.</p></li>
+<li><p>Unless the page is locked against “write” (or the specific key container (0..7) is locked), it is possible to write in InfoPage0 32-bit word by 32-bit word. Nevertheless:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A word can be written if and only if its initial content is erased.</p></li>
+<li><dl class="simple">
+<dt>It implies that to update a key container, one needs to:</dt><dd><ul>
+<li><p>Erase the complete InfoPage0</p></li>
+<li><p>Write the new data in the key container.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>validity</strong> field can be written without erasing the page. Indeed, the “<strong>valid</strong>” value is set to the erased state 0xFFFFFFFF. Invalidation of a key is possible.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To update a key container and to avoid losing the content of the other containers, one may want to make a backup of the full InfoPage0 before the complete erasing of the Page0.</p>
+<p>Nonetheless, the InfoPage0 is <strong>never</strong> readable by principle. Therefore, the back-up is impossible.</p>
+</div>
+</section>
+<section id="how-do-i-know-a-key-was-correctly-written">
+<h3>How do I know a key was correctly written?<a class="headerlink" href="#how-do-i-know-a-key-was-correctly-written" title="Permalink to this headline"></a></h3>
+<p>Often, one wants to verify that the key writing was correctly executed. The usual process is to read back the data written in the NVM. Nevertheless, in this case, since the InfoPage0 is <strong>never</strong> readable, the read-back and comparison is impossible.</p>
+<p>If the integrity of the key has to be verified, the recommendation is to implement a KCV (Key Check Value).
+The principle is that:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>One pre-computes the result of the encryption\decryption of a given message, typically the null message.</p></li>
+<li><p>One keeps typically the 2 first bytes of the previous result. We denote by KCV these 2 bytes.</p></li>
+<li><p>When one wants to check that the key has been correctly set up in the key containers, he executes AES with this key and the null message. Then, he compares the first bytes of the result with the reference KCV. A match means that the key has been correctly inserted.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="how-do-i-know-a-key-container-is-used">
+<h3>How do I know a key container is used?<a class="headerlink" href="#how-do-i-know-a-key-container-is-used" title="Permalink to this headline"></a></h3>
+<p>Since the InfoPage0 is not readable, it is not easily possible to know if a key container is used or not.
+There are 2 possible strategies:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The application logs which key container is used.</p></li>
+<li><p>In case of doubt, one can execute the AES with the key indexed by the given ID. If no key is present, the AES execution fails and the API returns an error (see the API chapter).</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="key-container-0">
+<h3>Key container 0<a class="headerlink" href="#key-container-0" title="Permalink to this headline"></a></h3>
+<p>The key container 0 is reserved to store the <em>USER configuration mode authentication key</em>. The USER configuration is performed with a challenge-response protocol with AES as underlying algorithm.
+See the configurations modes documentation for further details.</p>
+</section>
+</section>
+<section id="aes-chaining-modes-and-mac">
+<h2>AES chaining modes and MAC<a class="headerlink" href="#aes-chaining-modes-and-mac" title="Permalink to this headline"></a></h2>
+<p>EM9305 embeds a cryptographic toolbox that includes various AES modes and AES-based MAC computations.</p>
+<dl class="simple">
+<dt>The toolbox includes:</dt><dd><ul class="simple">
+<li><p>AES ECB mode</p></li>
+<li><p>AES CBC mode</p></li>
+<li><p>AES CTR mode</p></li>
+<li><p>AES CMAC</p></li>
+<li><p>AES CCM mode</p></li>
+<li><p>AES GCM mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>All those libs interface the crypto containers. It is possible to execute those modes and MAC algorithms with a key contained in a crypto container as long as the key is an AES-128 long key.</p>
+<dl class="simple">
+<dt>Those libs also permit to provide:</dt><dd><ul class="simple">
+<li><p>an explicit key given by its value</p></li>
+<li><p>an implicit key given by its ID</p></li>
+</ul>
+</dd>
+</dl>
+<p>For further details, please referred to the dedicated documentations. See <a class="reference internal" href="AES_ECB.html#aes-ecb-label"><span class="std std-ref">AES Electronic Code Book mode (ECB)</span></a>, <a class="reference internal" href="AES_CBC.html#aes-cbc-label"><span class="std std-ref">AES Cipher Block Chaining mode (CBC)</span></a>, <a class="reference internal" href="AES_CTR.html#aes-ctr-label"><span class="std std-ref">AES Counter mode(CTR)</span></a>, <a class="reference internal" href="AES_CCM.html#aes-ccm-label"><span class="std std-ref">AES CCM</span></a>, <a class="reference internal" href="AES_GCM.html#aes-gcm-label"><span class="std std-ref">AES GCM</span></a> and <a class="reference internal" href="AES_CMAC.html#aes-cmac-label"><span class="std std-ref">AES CMAC</span></a></p>
+</section>
+<section id="typical-usages-of-key-containers">
+<h2>Typical usages of key containers<a class="headerlink" href="#typical-usages-of-key-containers" title="Permalink to this headline"></a></h2>
+<p>Key containers purpose is to secure the AES keys.</p>
+<p>Nonetheless, because of the difficulty to update a key value, the key containers are mostly devoted to store <strong>permanent or master keys</strong>.</p>
+<dl class="simple">
+<dt><strong>Temporary or session keys</strong> can be stored in the key containers. Nonetheless:</dt><dd><ul class="simple">
+<li><p>Typically those keys are secondary assets and therefore have less value than master keys. They may reside in RAM.</p></li>
+<li><dl class="simple">
+<dt>Due to the update limitation, the session keys cannot be easily updated.</dt><dd><ul>
+<li><p>Either the InfoPage0 is completely erased, in order to update the specific key. One will take care not to lose the other potential keys located in the key containers.</p></li>
+<li><p>Or a cycling mechanism is put in place. The keys are invalidated when obsolete. The new session key is written in the next free key container. When all the key containers are full, the InfoPage0 is erased.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The AES key containers are directly connected to the AES CPU only. It implies that:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Key containers can ONLY store AES-128 keys. Keys of 192 bits or 256 bits are not supported by the key containers.</p></li>
+<li><p>The AES radio (hardware AES-CCM) used for the link layer payload protection cannot access the key containers. Keys for the link layer encryption shall not be stored in the key containers.</p></li>
+<li><p>Other algorithms keys, such ECC keys shall not be stored in the key containers.</p></li>
+</ul>
+</div></blockquote>
+</div>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<section id="key-type-enumerations">
+<span id="aes-cu-label"></span><h3>Key type enumerations<a class="headerlink" href="#key-type-enumerations" title="Permalink to this headline"></a></h3>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv422AES_KeyContainerType_t">
+<span id="_CPPv322AES_KeyContainerType_t"></span><span id="_CPPv222AES_KeyContainerType_t"></span><span class="target" id="group__aes_1ga6b3e09ba6586bec4f99dbe75a320a557"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KeyContainerType_t</span></span></span><a class="headerlink" href="#_CPPv422AES_KeyContainerType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES key container types(enc/dec,enc,dec) </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N22AES_KeyContainerType_t14AES_HW_ENC_DECE">
+<span id="_CPPv3N22AES_KeyContainerType_t14AES_HW_ENC_DECE"></span><span id="_CPPv2N22AES_KeyContainerType_t14AES_HW_ENC_DECE"></span><span class="target" id="group__aes_1gga6b3e09ba6586bec4f99dbe75a320a557ab54502e542997d3faf41e9fadbe63b8d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HW_ENC_DEC</span></span></span><a class="headerlink" href="#_CPPv4N22AES_KeyContainerType_t14AES_HW_ENC_DECE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key type is encryption and decryption. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N22AES_KeyContainerType_t15AES_HW_DEC_ONLYE">
+<span id="_CPPv3N22AES_KeyContainerType_t15AES_HW_DEC_ONLYE"></span><span id="_CPPv2N22AES_KeyContainerType_t15AES_HW_DEC_ONLYE"></span><span class="target" id="group__aes_1gga6b3e09ba6586bec4f99dbe75a320a557afb24ac2f80e627958b916f7e96513663"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HW_DEC_ONLY</span></span></span><a class="headerlink" href="#_CPPv4N22AES_KeyContainerType_t15AES_HW_DEC_ONLYE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key type is only decryption. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N22AES_KeyContainerType_t15AES_HW_ENC_ONLYE">
+<span id="_CPPv3N22AES_KeyContainerType_t15AES_HW_ENC_ONLYE"></span><span id="_CPPv2N22AES_KeyContainerType_t15AES_HW_ENC_ONLYE"></span><span class="target" id="group__aes_1gga6b3e09ba6586bec4f99dbe75a320a557a58f9a56c2202975f5e9a0e904424104f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HW_ENC_ONLY</span></span></span><a class="headerlink" href="#_CPPv4N22AES_KeyContainerType_t15AES_HW_ENC_ONLYE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key type is only encrytion. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="validity-enumerations">
+<h3>Validity enumerations<a class="headerlink" href="#validity-enumerations" title="Permalink to this headline"></a></h3>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv426AES_KeyContainerValidity_t">
+<span id="_CPPv326AES_KeyContainerValidity_t"></span><span id="_CPPv226AES_KeyContainerValidity_t"></span><span class="target" id="group__aes_1ga9206ecc5b53e057beeb756c37a80cc2e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KeyContainerValidity_t</span></span></span><a class="headerlink" href="#_CPPv426AES_KeyContainerValidity_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES key container validity. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N26AES_KeyContainerValidity_t18AES_HW_KEY_INVALIDE">
+<span id="_CPPv3N26AES_KeyContainerValidity_t18AES_HW_KEY_INVALIDE"></span><span id="_CPPv2N26AES_KeyContainerValidity_t18AES_HW_KEY_INVALIDE"></span><span class="target" id="group__aes_1gga9206ecc5b53e057beeb756c37a80cc2ea038b77c01df5dd2287b599916f851a91"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HW_KEY_INVALID</span></span></span><a class="headerlink" href="#_CPPv4N26AES_KeyContainerValidity_t18AES_HW_KEY_INVALIDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key is invalid. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N26AES_KeyContainerValidity_t16AES_HW_KEY_VALIDE">
+<span id="_CPPv3N26AES_KeyContainerValidity_t16AES_HW_KEY_VALIDE"></span><span id="_CPPv2N26AES_KeyContainerValidity_t16AES_HW_KEY_VALIDE"></span><span class="target" id="group__aes_1gga9206ecc5b53e057beeb756c37a80cc2ea632a5551158eb8e84ba4a34d03313a73"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HW_KEY_VALID</span></span></span><a class="headerlink" href="#_CPPv4N26AES_KeyContainerValidity_t16AES_HW_KEY_VALIDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key is valid. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="mode-of-operations">
+<span id="aes-cu-mode-label"></span><h3>Mode of operations<a class="headerlink" href="#mode-of-operations" title="Permalink to this headline"></a></h3>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv410AES_Mode_t">
+<span id="_CPPv310AES_Mode_t"></span><span id="_CPPv210AES_Mode_t"></span><span class="target" id="group__aes_1ga7ef43ac6e3d25887455eb1c28742d329"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_Mode_t</span></span></span><a class="headerlink" href="#_CPPv410AES_Mode_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES modes of operation. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10AES_Mode_t16AES_MODE_ENCRYPTE">
+<span id="_CPPv3N10AES_Mode_t16AES_MODE_ENCRYPTE"></span><span id="_CPPv2N10AES_Mode_t16AES_MODE_ENCRYPTE"></span><span class="target" id="group__aes_1gga7ef43ac6e3d25887455eb1c28742d329a91106c0230464fa17b36924cc1369cc2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_MODE_ENCRYPT</span></span></span><a class="headerlink" href="#_CPPv4N10AES_Mode_t16AES_MODE_ENCRYPTE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Encrypt the given data. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10AES_Mode_t16AES_MODE_DECRYPTE">
+<span id="_CPPv3N10AES_Mode_t16AES_MODE_DECRYPTE"></span><span id="_CPPv2N10AES_Mode_t16AES_MODE_DECRYPTE"></span><span class="target" id="group__aes_1gga7ef43ac6e3d25887455eb1c28742d329a4f0c5ff584a17ac662b0ade753b7ed7e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_MODE_DECRYPT</span></span></span><a class="headerlink" href="#_CPPv4N10AES_Mode_t16AES_MODE_DECRYPTE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Decrypt the given data. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="error-status">
+<h3>Error status<a class="headerlink" href="#error-status" title="Permalink to this headline"></a></h3>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv411AES_Error_t">
+<span id="_CPPv311AES_Error_t"></span><span id="_CPPv211AES_Error_t"></span><span class="target" id="group__aes_1ga0825aa8f79a48fc863753c87b1f1ca27"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_Error_t</span></span></span><a class="headerlink" href="#_CPPv411AES_Error_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES Error status words. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_Error_t18AES_STATUS_SUCCESSE">
+<span id="_CPPv3N11AES_Error_t18AES_STATUS_SUCCESSE"></span><span id="_CPPv2N11AES_Error_t18AES_STATUS_SUCCESSE"></span><span class="target" id="group__aes_1gga0825aa8f79a48fc863753c87b1f1ca27aa8a05ab043cec4065d85e2127dc78324"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_STATUS_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N11AES_Error_t18AES_STATUS_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>No Error- Sucesss. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_Error_t16AES_STATUS_ERRORE">
+<span id="_CPPv3N11AES_Error_t16AES_STATUS_ERRORE"></span><span id="_CPPv2N11AES_Error_t16AES_STATUS_ERRORE"></span><span class="target" id="group__aes_1gga0825aa8f79a48fc863753c87b1f1ca27a019cb96c188c3d43a832c905a604cb03"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_STATUS_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N11AES_Error_t16AES_STATUS_ERRORE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Unknown error. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_Error_t22AES_STATUS_WRONG_PARAME">
+<span id="_CPPv3N11AES_Error_t22AES_STATUS_WRONG_PARAME"></span><span id="_CPPv2N11AES_Error_t22AES_STATUS_WRONG_PARAME"></span><span class="target" id="group__aes_1gga0825aa8f79a48fc863753c87b1f1ca27a0c79f38de636e17eef69eee19ab28abe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_STATUS_WRONG_PARAM</span></span></span><a class="headerlink" href="#_CPPv4N11AES_Error_t22AES_STATUS_WRONG_PARAME" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incorrect conditions. Incorrect parameters. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_Error_t20AES_STATUS_NVM_ERRORE">
+<span id="_CPPv3N11AES_Error_t20AES_STATUS_NVM_ERRORE"></span><span id="_CPPv2N11AES_Error_t20AES_STATUS_NVM_ERRORE"></span><span class="target" id="group__aes_1gga0825aa8f79a48fc863753c87b1f1ca27aa5f0918a98dd850820af81d91d968528"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_STATUS_NVM_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N11AES_Error_t20AES_STATUS_NVM_ERRORE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Error writing in nvm. Key or the page may be locked. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_Error_t23AES_STATUS_NOT_LOCKABLEE">
+<span id="_CPPv3N11AES_Error_t23AES_STATUS_NOT_LOCKABLEE"></span><span id="_CPPv2N11AES_Error_t23AES_STATUS_NOT_LOCKABLEE"></span><span class="target" id="group__aes_1gga0825aa8f79a48fc863753c87b1f1ca27a020225ad9be764fb8160da1fb5899656"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_STATUS_NOT_LOCKABLE</span></span></span><a class="headerlink" href="#_CPPv4N11AES_Error_t23AES_STATUS_NOT_LOCKABLEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key is not lockable. Only key ID in [0..7] can be locked. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_Error_t21AES_STATUS_KEY_LOCKEDE">
+<span id="_CPPv3N11AES_Error_t21AES_STATUS_KEY_LOCKEDE"></span><span id="_CPPv2N11AES_Error_t21AES_STATUS_KEY_LOCKEDE"></span><span class="target" id="group__aes_1gga0825aa8f79a48fc863753c87b1f1ca27a04b30056a55ecf17b77870b6b95a0bab"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_STATUS_KEY_LOCKED</span></span></span><a class="headerlink" href="#_CPPv4N11AES_Error_t21AES_STATUS_KEY_LOCKEDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key is locked. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="set-key">
+<h3>Set key<a class="headerlink" href="#set-key" title="Permalink to this headline"></a></h3>
+<section id="purpose">
+<h4>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline"></a></h4>
+<p>The function AES_SetKeyContainer permits to set the key and its attributes in a key container.</p>
+</section>
+<section id="prototype">
+<h4>Prototype<a class="headerlink" href="#prototype" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419AES_SetKeyContainerA19AES_BLOCK_WORD_SIZE_K8uint32_t7uint8_t22AES_KeyContainerType_t">
+<span id="_CPPv319AES_SetKeyContainerA19AES_BLOCK_WORD_SIZE_K8uint32_t7uint8_t22AES_KeyContainerType_t"></span><span id="_CPPv219AES_SetKeyContainerAAES_BLOCK_WORD_SIZE_K8uint32_t7uint8_t22AES_KeyContainerType_t"></span><span id="AES_SetKeyContainer__uint32_tCA.uint8_t.AES_KeyContainerType_t"></span><span class="target" id="group__aes_1gac5351355ab07508c584668c32905cf4c"></span><a class="reference internal" href="#_CPPv411AES_Error_t" title="AES_Error_t"><span class="n"><span class="pre">AES_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_SetKeyContainer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">AES_BLOCK_WORD_SIZE</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyIndex</span></span>, <a class="reference internal" href="#_CPPv422AES_KeyContainerType_t" title="AES_KeyContainerType_t"><span class="n"><span class="pre">AES_KeyContainerType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419AES_SetKeyContainerA19AES_BLOCK_WORD_SIZE_K8uint32_t7uint8_t22AES_KeyContainerType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Set a 128-bit AES key in a key container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – 16-byte key to set </p></li>
+<li><p><strong>keyIndex</strong> – keyID to store the key [0..255] </p></li>
+<li><p><strong>keyType</strong> – Type of the key. Encryption/decryption, encryption only, or decryption only </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status of the operation </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<p><strong>key</strong> : 16 bytes (4 times 32-bit words) representing the key value.</p>
+<p><strong>keyIndex</strong>: ID of the key container to set.</p>
+<p><strong>keyType</strong>: type of the key among the types  <a class="reference internal" href="#aes-cu-label"><span class="std std-ref">Key type enumerations</span></a></p>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_STATUS_SUCCESS</p></td>
+<td><p>Key container correctly set.</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_WRONG_PARAM</p></td>
+<td><p>Incorrect key type</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_STATUS_KEY_LOCKED</p></td>
+<td><p>The key container is locked</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_NVM_ERROR</p></td>
+<td><p>Error writing in NVM</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="remarks">
+<h4>Remarks<a class="headerlink" href="#remarks" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p>When set, the key is automatically set as valid.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Trying to write a key container that was not previously erased may lead to errors that are not detected.
+Ensure that Info-Page0 was erased before writing any key container.</p>
+</div>
+</section>
+</section>
+<section id="aes-processblockkeycontainer">
+<h3>AES_ProcessBlockKeyContainer<a class="headerlink" href="#aes-processblockkeycontainer" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Purpose<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>The function AES_ProcessBlockKeyContainer computes AES with the given key, with the given data and in the required mode,</p>
+</section>
+<section id="id2">
+<h4>Prototype<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428AES_ProcessBlockKeyContainer7uint8_tPKvPKv10AES_Mode_t">
+<span id="_CPPv328AES_ProcessBlockKeyContainer7uint8_tPKvPKv10AES_Mode_t"></span><span id="_CPPv228AES_ProcessBlockKeyContainer7uint8_tPKvPKv10AES_Mode_t"></span><span id="AES_ProcessBlockKeyContainer__uint8_t.voidCP.voidCP.AES_Mode_t"></span><span class="target" id="group__aes_1ga6032515809194a06f79db09d3fd8681c"></span><a class="reference internal" href="#_CPPv411AES_Error_t" title="AES_Error_t"><span class="n"><span class="pre">AES_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ProcessBlockKeyContainer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyIndex</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pInData</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pOutData</span></span>, <a class="reference internal" href="#_CPPv410AES_Mode_t" title="AES_Mode_t"><span class="n"><span class="pre">AES_Mode_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428AES_ProcessBlockKeyContainer7uint8_tPKvPKv10AES_Mode_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Execute AES-128 with a implicit key given by its ID. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyIndex</strong> – keyID of the key to use </p></li>
+<li><p><strong>pInData</strong> – 16-byte data to encrypt or decrypt </p></li>
+<li><p><strong>pOutData</strong> – 16-byte result data </p></li>
+<li><p><strong>mode</strong> – Encryption or decryption mode </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status of the operation </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<p><strong>keyIndex</strong>: ID of the key container to set.</p>
+<p><strong>pInData</strong> : Data to encrypt or to decrypt</p>
+<p><strong>pOutData</strong>: Result of the operation</p>
+<p><strong>mode</strong>        : Either encrpytion or decryption as defined in  <a class="reference internal" href="#aes-cu-mode-label"><span class="std std-ref">Mode of operations</span></a></p>
+</section>
+<section id="id4">
+<h4>Return values<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_STATUS_SUCCESS</p></td>
+<td><p>Successful computation.</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_WRONG_PARAM</p></td>
+<td><p>Incorrect mode required</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_STATUS_KEY_LOCKED</p></td>
+<td><p>The key container is locked</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_WRONG_PARAM</p></td>
+<td><p>No key present at this ID</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_STATUS_WRONG_PARAM</p></td>
+<td><p>Key is invalidated</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_WRONG_PARAM</p></td>
+<td><p>Key type is not compatible with the required mode</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_STATUS_WRONG_PARAM</p></td>
+<td><p>Key is locked</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_ERROR</p></td>
+<td><p>Error in AES</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-invalidatekeycontainer">
+<h3>AES_InvalidateKeyContainer<a class="headerlink" href="#aes-invalidatekeycontainer" title="Permalink to this headline"></a></h3>
+<section id="id5">
+<h4>Purpose<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
+<p>The function AES_InvalidateKeyContainer invalidates a given key.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The key is invalidated until the InfoPage0 is erased.</p>
+</div>
+</section>
+<section id="id6">
+<h4>Prototype<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426AES_InvalidateKeyContainer7uint8_t">
+<span id="_CPPv326AES_InvalidateKeyContainer7uint8_t"></span><span id="_CPPv226AES_InvalidateKeyContainer7uint8_t"></span><span id="AES_InvalidateKeyContainer__uint8_t"></span><span class="target" id="group__aes_1gad3f6ef42aa739276980359f79eb40b9e"></span><a class="reference internal" href="#_CPPv411AES_Error_t" title="AES_Error_t"><span class="n"><span class="pre">AES_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_InvalidateKeyContainer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426AES_InvalidateKeyContainer7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Invalidate a key container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keyIndex</strong> – keyID of the key to invalidate [0..255] </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>status of the operation </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h4>
+<p><strong>keyIndex</strong>: ID of the key container to invalidate.</p>
+</section>
+<section id="id8">
+<h4>Return values<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_STATUS_SUCCESS</p></td>
+<td><p>Successful key invalidation</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_NVM_ERROR</p></td>
+<td><p>Error in NVM writing</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-lockkeycontainer">
+<h3>AES_LockKeyContainer<a class="headerlink" href="#aes-lockkeycontainer" title="Permalink to this headline"></a></h3>
+<section id="id9">
+<h4>Purpose<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h4>
+<p>The function AES_LockKeyContainer protects the given key against write.</p>
+</section>
+<section id="id10">
+<h4>Prototype<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420AES_LockKeyContainer7uint8_t">
+<span id="_CPPv320AES_LockKeyContainer7uint8_t"></span><span id="_CPPv220AES_LockKeyContainer7uint8_t"></span><span id="AES_LockKeyContainer__uint8_t"></span><span class="target" id="group__aes_1gaaf48eba2d03dd6e783804ed3baef65cd"></span><a class="reference internal" href="#_CPPv411AES_Error_t" title="AES_Error_t"><span class="n"><span class="pre">AES_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_LockKeyContainer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420AES_LockKeyContainer7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Write lock of a given key container. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>keyIndex</strong> – keyID of the key to lock </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h4>
+<p><strong>keyIndex</strong>: ID of the key container to lock. It must be in the range [0..7].</p>
+</section>
+<section id="id12">
+<h4>Return values<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_STATUS_SUCCESS</p></td>
+<td><p>Key successfully locked</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_STATUS_NOT_LOCKABLE</p></td>
+<td><p>Index is not in the correct range</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="remark">
+<h4>Remark<a class="headerlink" href="#remark" title="Permalink to this headline"></a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The lock information is normally stored in 2 different locations:</p>
+<ul class="simple">
+<li><p>In the list of locks located in InfoPage2 and InfoPage3. Thoses locks are loaded into the PML registers at boot time, after a POR.</p></li>
+<li><p>In dedicated PML registers. PML registers are semi-persitent. Their values are not lost when going to sleep or deep sleep mode.</p></li>
+</ul>
+<p>When one tries to execute AES with a given key, only the PML registers are evaluated. The content of the InfoPage2 and InfoPage3 is <strong>not</strong> loaded.</p>
+<p><strong>This function only sets the PML registers</strong>.</p>
+<p>It results that the locking is valid only until the next reset\POR.
+If one wants to permanently lock a key container, he shall configure accordingly the InfoPage2/3.</p>
+</div>
+</section>
+</section>
+<section id="aes-keycontainerseraselock">
+<h3>AES_KeyContainersEraseLock<a class="headerlink" href="#aes-keycontainerseraselock" title="Permalink to this headline"></a></h3>
+<section id="id13">
+<h4>Purpose<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h4>
+<p>The function AES_KeyContainersEraseLock prevents the InfoPage0 to be erased.</p>
+</section>
+<section id="id14">
+<h4>Prototype<a class="headerlink" href="#id14" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426AES_KeyContainersEraseLockv">
+<span id="_CPPv326AES_KeyContainersEraseLockv"></span><span id="_CPPv226AES_KeyContainersEraseLockv"></span><span id="AES_KeyContainersEraseLock__void"></span><span class="target" id="group__aes_1gad2442b0317df5d97f844427758068c42"></span><a class="reference internal" href="#_CPPv411AES_Error_t" title="AES_Error_t"><span class="n"><span class="pre">AES_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KeyContainersEraseLock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426AES_KeyContainersEraseLockv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Lock the key containers page(Info page) 0 against erase. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>status of the operation </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="id15">
+<h3>Return values<a class="headerlink" href="#id15" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_STATUS_SUCCESS</p></td>
+<td><p>InfoPage0 successfully locked against erase</p></td>
+<td><p>OK</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id16">
+<h4>Remark<a class="headerlink" href="#id16" title="Permalink to this headline"></a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The lock information is normally stored in 2 different locations:</p>
+<ul class="simple">
+<li><p>In the list of locks located in InfoPage2 and InfoPage3. Thoses locks are loaded into the PML registers at boot time, after a POR.</p></li>
+<li><p>In dedicated PML registers. PML registers are semi-persitent. Their values are not lost when going to sleep or deep sleep mode.</p></li>
+</ul>
+<p>When one tries to erase the InfoPage0, only the PML registers are evaluated. The content of the InfoPage2 and InfoPage3 is <strong>not</strong> loaded.</p>
+<p><strong>This function only sets the PML registers</strong>.</p>
+<p>It results that the locking is valid only until the next reset\POR.
+If one wants to permanently lock the InfoPage0, he shall configure accordingly the InfoPage2\3.</p>
+</div>
+</section>
+</section>
+<section id="aes-keycontainerswritelock">
+<h3>AES_KeyContainersWriteLock<a class="headerlink" href="#aes-keycontainerswritelock" title="Permalink to this headline"></a></h3>
+<section id="id17">
+<h4>Purpose<a class="headerlink" href="#id17" title="Permalink to this headline"></a></h4>
+<p>The function AES_KeyContainersWriteLock prevents the InfoPage0 to be written.</p>
+</section>
+<section id="id18">
+<h4>Prototype<a class="headerlink" href="#id18" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426AES_KeyContainersWriteLockv">
+<span id="_CPPv326AES_KeyContainersWriteLockv"></span><span id="_CPPv226AES_KeyContainersWriteLockv"></span><span id="AES_KeyContainersWriteLock__void"></span><span class="target" id="group__aes_1gace4999807b7175f99efbb48c6acca7aa"></span><a class="reference internal" href="#_CPPv411AES_Error_t" title="AES_Error_t"><span class="n"><span class="pre">AES_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KeyContainersWriteLock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426AES_KeyContainersWriteLockv" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Lock the key containers page(Info page) 0 against write. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>status of the operation </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="id19">
+<h3>Return values<a class="headerlink" href="#id19" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_STATUS_SUCCESS</p></td>
+<td><p>InfoPage0 successfully locked against write</p></td>
+<td><p>OK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id20">
+<h3>Remark<a class="headerlink" href="#id20" title="Permalink to this headline"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The lock information is normally stored in 2 different locations:</p>
+<ul class="simple">
+<li><p>In the list of locks located in InfoPage2 and InfoPage3. Thoses locks are loaded into the PML registers at boot time, after a POR.</p></li>
+<li><p>In dedicated PML registers. PML registers are semi-persitent. Their values are not lost when going to sleep or deep sleep mode.</p></li>
+</ul>
+<p>When one tries to write the InfoPage0, only the PML registers are evaluated. The content of the InfoPage2 and InfoPage3 is <strong>not</strong> loaded.</p>
+<p><strong>This function only sets the PML registers</strong>.</p>
+<p>It results that the locking is valid only until the next reset\POR.
+If one wants to permanently lock the InfoPage0, he shall configure accordingly the InfoPage2\3.</p>
+</div>
+</section>
+<section id="aes-keycontainerslockpage">
+<h3>AES_KeyContainersLockPage<a class="headerlink" href="#aes-keycontainerslockpage" title="Permalink to this headline"></a></h3>
+<section id="id21">
+<h4>Purpose<a class="headerlink" href="#id21" title="Permalink to this headline"></a></h4>
+<p>The function AES_KeyContainersLockPage prevents the InfoPage0 to be written <strong>and</strong> erased.</p>
+</section>
+<section id="prototpe">
+<h4>Prototpe<a class="headerlink" href="#prototpe" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425AES_KeyContainersLockPagev">
+<span id="_CPPv325AES_KeyContainersLockPagev"></span><span id="_CPPv225AES_KeyContainersLockPagev"></span><span id="AES_KeyContainersLockPage__void"></span><span class="target" id="group__aes_1ga707880e5eac7ac7a700e7d91378dbda6"></span><a class="reference internal" href="#_CPPv411AES_Error_t" title="AES_Error_t"><span class="n"><span class="pre">AES_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KeyContainersLockPage</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425AES_KeyContainersLockPagev" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Lock the key containers page(Info page) 0 against write and erase. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>status of the operation </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="id22">
+<h3>Return values<a class="headerlink" href="#id22" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_STATUS_SUCCESS</p></td>
+<td><p>InfoPage0 successfully locked against write and erase</p></td>
+<td><p>OK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id23">
+<h3>Remark<a class="headerlink" href="#id23" title="Permalink to this headline"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The lock information is normally stored in 2 different locations:</p>
+<ul class="simple">
+<li><p>In the list of locks located in InfoPage2 and InfoPage3. Thoses locks are loaded into the PML registers at boot time, after a POR.</p></li>
+<li><p>In dedicated PML registers. PML registers are semi-persitent. Their values are not lost when going to sleep or deep sleep mode.</p></li>
+</ul>
+<p>When one tries to write or erase the InfoPage0, only the PML registers are evaluated. The content of the InfoPage2 and InfoPage3 is <strong>not</strong> loaded.</p>
+<p><strong>This function only sets the PML registers</strong>.</p>
+<p>It results that the locking is valid only until the next reset\POR.
+If one wants to permanently lock the InfoPage0, he shall configure accordingly the InfoPage2\3.</p>
+</div>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>Next basic example illustrates:</dt><dd><ul class="simple">
+<li><p>how to set keys</p></li>
+<li><p>how to lock them</p></li>
+<li><p>how to invalidate them</p></li>
+<li><p>how to execute AES with those keys</p></li>
+<li><p>how to “type” them</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Example_KeyContainers</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">result</span><span class="p">[</span><span class="n">AES_BLOCK_BYTE_SIZE</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="n">AES_Error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">keyIndex</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key1</span><span class="p">[</span><span class="n">AES_BLOCK_BYTE_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x2b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x15</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xae</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xab</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x15</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3c</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key2</span><span class="p">[</span><span class="n">AES_BLOCK_BYTE_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x7b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x30</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd8</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x80</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5a</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">message1</span><span class="p">[</span><span class="n">AES_BLOCK_BYTE_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x32</span><span class="p">,</span><span class="w"> </span><span class="mh">0x43</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x5a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x30</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x31</span><span class="p">,</span><span class="w"> </span><span class="mh">0x31</span><span class="p">,</span><span class="w"> </span><span class="mh">0x98</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x37</span><span class="p">,</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"> </span><span class="mh">0x34</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">expected1</span><span class="p">[</span><span class="n">AES_BLOCK_BYTE_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x39</span><span class="p">,</span><span class="w"> </span><span class="mh">0x25</span><span class="p">,</span><span class="w"> </span><span class="mh">0x84</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xdc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x85</span><span class="p">,</span><span class="w"> </span><span class="mh">0x97</span><span class="p">,</span><span class="w"> </span><span class="mh">0x19</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x32</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">message2</span><span class="p">[</span><span class="n">AES_BLOCK_BYTE_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x22</span><span class="p">,</span><span class="w"> </span><span class="mh">0x33</span><span class="p">,</span><span class="w"> </span><span class="mh">0x44</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x55</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaa</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">expected2</span><span class="p">[</span><span class="n">AES_BLOCK_BYTE_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x78</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x98</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7f</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x51</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x19</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x72</span><span class="p">,</span><span class="w"> </span><span class="mh">0x83</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//A- Let&#39;s set 2 keys. This operation is typically performed once at the configuration of the product</span>
+
+<span class="c1">//1- Set a key container in range [0..7]</span>
+<span class="c1">//Set the key container #2 with the key value key1. For this key, we allow encryption and decryption.</span>
+<span class="w">	</span><span class="n">keyIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w"> </span><span class="mi">2U</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_SetKeyContainer</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">key1</span><span class="p">,</span><span class="w"> </span><span class="n">keyIndex</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HW_ENC_DEC</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_SUCCESS</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//2-Lock the key container #2 to avoid any corruption. The key #2 is in the range [0..7], so it can be locked individually.</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_LockKeyContainer</span><span class="p">(</span><span class="n">keyIndex</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_SUCCESS</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//3-Set a 2nd key container</span>
+<span class="c1">//Set the key container #19 with the key value key2. For this key, we allow encryption only</span>
+<span class="w">	</span><span class="n">keyIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w"> </span><span class="mi">19U</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_SetKeyContainer</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">key2</span><span class="p">,</span><span class="w"> </span><span class="n">keyIndex</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HW_ENC_ONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_SUCCESS</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="c1">//4-try to lock it but operation should be rejected as the key ID is not in the range [0..7]</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_LockKeyContainer</span><span class="p">(</span><span class="n">keyIndex</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_NOT_LOCKABLE</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//B- Let&#39;s use the keys</span>
+
+<span class="c1">//5-Let&#39;s use the first key in encryption</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ProcessBlockKeyContainer</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w"> </span><span class="mi">2U</span><span class="p">,</span><span class="w"> </span><span class="n">message1</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">AES_MODE_ENCRYPT</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_SUCCESS</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">expected1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">};</span><span class="w"></span>
+
+<span class="c1">//6-Let&#39;s use the first key in decryption</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ProcessBlockKeyContainer</span><span class="p">((</span><span class="kt">uint16_t</span><span class="p">)</span><span class="w"> </span><span class="mi">2U</span><span class="p">,</span><span class="w"> </span><span class="n">expected1</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">AES_MODE_DECRYPT</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_SUCCESS</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">message1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">};</span><span class="w"></span>
+
+<span class="c1">//7-Invalidate the first key</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_InvalidateKeyContainer</span><span class="p">((</span><span class="kt">uint16_t</span><span class="p">)</span><span class="w"> </span><span class="mi">2U</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_SUCCESS</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//8-Let&#39;s try to operate the first key. As the key is invalidated, it should not work anymore.</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ProcessBlockKeyContainer</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w"> </span><span class="mi">2U</span><span class="p">,</span><span class="w"> </span><span class="n">message1</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">AES_MODE_ENCRYPT</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_WRONG_PARAM</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//9-let&#39;s try to use the second key.</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ProcessBlockKeyContainer</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w"> </span><span class="mi">19U</span><span class="p">,</span><span class="w"> </span><span class="n">message2</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">AES_MODE_ENCRYPT</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_SUCCESS</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">expected2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">};</span><span class="w"></span>
+
+<span class="c1">//10-Let&#39;s use the second key in decryption. As the key was typed as encryption only, it should not work</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ProcessBlockKeyContainer</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="w"> </span><span class="mi">19U</span><span class="p">,</span><span class="w"> </span><span class="n">expected2</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">AES_MODE_DECRYPT</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">AES_STATUS_WRONG_PARAM</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sw</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="AES.html" class="btn btn-neutral float-left" title="AES (one block)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="AESModes.html" class="btn btn-neutral float-right" title="AES modes and MAC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

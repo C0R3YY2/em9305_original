@@ -1,0 +1,61 @@
+=========================================================================
+Unit test example
+=========================================================================
+
+
+Overview
+--------
+
+To perform unit tests of your software on the EM9305, we provide a unity library and a python script to execute them.
+
+This example shows how to implement and run basic unit tests.
+
+
+Build
+-----
+
+The build target of this example is: **nvm_unit_test_spi**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_unit_test_spi
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_unit_test\nvm_unit_test_spi.ihex --progress
+
+With YY = the COM port number of your DVK.
+
+
+Run the unit tests
+------------------
+
+Move to ``tools\blengine`` if you are not already there.
+
+You may modify the file config.cfg. This file is the configuration for BLEngine.
+Open the file and modify the COM port of the default_device with the COM port of the DVK.
+
+.. code-block:: python
+
+  [default_device]
+  port = COMYY
+
+
+With YY = the COM port number of your DVK.
+
+You can now run the unit tests with the following script:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py run unity_run_all
+
+It generates a test report in the folder test-reports.

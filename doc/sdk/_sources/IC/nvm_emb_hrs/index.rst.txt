@@ -1,0 +1,109 @@
+=========================================================================
+Heart Rate Service (HRS) example
+=========================================================================
+
+
+Overview
+--------
+
+This sample application sets up the EM9305 as a heart rate monitor that periodically displays a simulated heart rate.
+
+It exposes the following services:
+
+* Heart Rate Service
+* Device Information Service
+* Battery Service
+
+.. warning::
+
+    This application has configurable SMP parameters `smpCfg_t` where `minKeyLen` can be specified. Reducing this value from 16 to 7 (minimum) reduces the entropy of the encryption key making the device less secure.
+
+.. note::
+    The sample application also has added a feature which can be used for power optimization or to have control over exact count of advertisements that will be transmitted.
+    The feature enables an event back from the EM Bleu stack when each individual advertisement has occured. This can be enabled by changing the macro definition EN_ADV_COMPLETE_IND from 0 to 1.
+    The LL_ADV_COMPLETE_IND event gets routed from the stack to the BLE_HciVsEvtCback function.
+    When using the advDuration to set advertising duration, the EMB stack will trigger another wakeup to stop advertising after the advertising duration has expired.
+    Using this new event indication, the application can count specific number of advertisements and stop advertising as soon as the exact count of advertisements matches the total number that will be sent during the advDuration period.
+
+    There are no calls to support BLE security, thus no pairing or bonding. If you would like sample code that does include this, please refer to the nvm_emb_fit project.
+
+Build
+-----
+
+The build target of this example is: **nvm_emb_hrs**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emb_hrs
+
+
+Program
+-------
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emb_hrs\nvm_emb_hrs.ihex --progress
+
+With YY = the COM port number of your DVK (optional if you set it in the file ``<sdk>\tools\blengine\config.cfg``).
+
+
+Test
+----
+
+To connect to the device, you need a smartphone with a BLE app installed. Typically, the LightBlue application is used for
+the rest of this page.
+
+When installed, open the application and start a BLE scan.
+Find your device which name should be 'EM9305_HRS'.
+
+The following picture shows the HRS beacon among many other devices.
+
+.. image:: imgs/LightBlue_scan.jpg
+  :scale: 100 %
+  :alt: HRS - Scan
+  :align: center
+
+Click on the device name. This shows up detailed information on the device.
+
+.. image:: imgs/LightBlue_properties.jpg
+  :scale: 100 %
+  :alt: HRS - Properties
+  :align: center
+
+Click on CONNECT to connect to the device.
+When connected, you can read some device informations and enable the notifications of some services.
+
+.. image:: imgs/LightBlue_connected.jpg
+  :scale: 100 %
+  :alt: HRS - Connected
+  :align: center
+
+Once connected, scroll down until you see the Heart Rate service.
+
+.. image:: imgs/LightBlue_heartrate.jpg
+  :scale: 100 %
+  :alt: HRS - Heartrate service
+  :align: center
+
+Then click on the 'Heart Rate Measurement' menu entry. This will give access to the underneath properties.
+Thus, a 'Subscribe' button is displayed.
+
+.. image:: imgs/LightBlue_subscription.jpg
+  :scale: 100 %
+  :alt: HRS - Subscription to heart rate service
+  :align: center
+
+By clicking on this button, you can instruct the device to send the heart rate value on a periodic basis. The application
+will then display this value each time it is updated.
+
+.. image:: imgs/LightBlue_subscribed.jpg
+  :scale: 100 %
+  :alt: HRS - Receiving heart rate values
+  :align: center
+
+In this application, the sent value is a fake one. It is just a counter that is incremented every second. But it helps showing
+things up and running.

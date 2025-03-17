@@ -1,0 +1,3 @@
+EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E copy ${IN} ${OUT})
+EXECUTE_PROCESS(COMMAND arc-elf32-strip -x -R .arcextmap.* -R .ARC.attributes
+    ${OUT} OUTPUT_QUIET ERROR_QUIET)

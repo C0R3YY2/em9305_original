@@ -1,0 +1,66 @@
+# Getting Started
+
+So after following the [Installation](./Installation.md) procedure corresponding to the installation package, you want to check that everything is working.
+
+This page gives a high-level overview of a fraction of blengine features, please read more about configuration in [Configuration page](./Configuration.md), and more about general usage in [Usage page](./Usage.md).
+
+
+## CLI Usage and installation package
+
+Depending on the way you use BLEngine you'll be able to use the executable or the python module.
+
+### Installation from distribution package
+
+You should be able to call `blengine.exe` from any command prompt, since it is in your PATH.
+
+### Installation from PIP or Git
+
+After installing the package with `pip install -e .`, you should have an up and running blengine available in your environnement.
+
+## Installation Check-up
+
+After connecting a device, with a specified COM port. You can use the `--port` argument to make quick tests without needing a custom configuration file.
+
+The following command gathers some informations about the connected device using the `get_local_device_infos` procedures, which will show all kind of information concerning the device, connected on COM22 in this example.
+
+```
+> blengine --port=COM22 run hci.get_local_device_infos
+
+{'DVK': b'EM9305_DVK',
+ 'DVK_Hardware_Version': None,
+ 'DVK_Serial': 'f500198557f5e3d4aefc050917009027',
+ 'DVK_Software_Version': b'v1.4.0',
+ 'Firmware': 'ROM',
+ 'NPRAM_Used': 6696,
+ 'PRAM_Reserved': 4096,
+ 'PRAM_Used': 416,
+ 'RAM_Pool_Size': 61440}
+
+```
+
+Getting a json-like output with some informations is a very good sign that the communication between blengine and your device is well established.
+
+## Configuration initialization and customization
+
+BLEngine comes with a default configuration living inside the installation or package folder. To customize this configuration to be suitable for your needs, blengine provide a `config` command which will create the files needed. The following command will create configuration files in your current working directory.
+
+```
+> blengine config --init
+
+Copying C:\Users\cborel\AppData\BLEngine\config to current working dir (C:\Users\cborel\Documents\EMToolkit\BLEngine)
+C:\Users\cborel\Documents\EMToolkit\BLEngine\config.cfg
+C:\Users\cborel\Documents\EMToolkit\BLEngine\nvm_infos\EM9305\configurations.json
+C:\Users\cborel\Documents\EMToolkit\BLEngine\nvm_infos\EM9305\nvm_default_data.json
+C:\Users\cborel\Documents\EMToolkit\BLEngine\nvm_infos\EM9305\nvm_descriptions.json
+C:\Users\cborel\Documents\EMToolkit\BLEngine\nvm_infos\EM9305\registers.json
+> creating local config file C:\Users\cborel\Documents\EMToolkit\BLEngine\config_local.cfg for versioning convenience
+
+```
+
+Once the command is executed, a complete set of configuration files is created. This includes the main configuration file along with a local configuration files and a set of nvm_infos files.
+
+
+
+
+
+

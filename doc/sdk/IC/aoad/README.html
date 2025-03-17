@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The AoAD driver enables the configuration of hardware for <em>Angle of Departure</em> (AoD) and <em>Angle of Arrival</em> (AoA) in BLE operations.</p>
+<p>The chapter <em>Direction Finding (AOA/AOD)</em> in the EM9305 datasheet explains how the lookup table (LUT) and GPIOs work together for controlling the antenna switching.
+Please refer to this chapter for more details on LUT mapping with the GPIO matrix.</p>
+</section>
+<section id="configuration-of-aoad">
+<h1>Configuration of AoAD<a class="headerlink" href="#configuration-of-aoad" title="Link to this heading"></a></h1>
+<p>First of all, the AoAD header file shall be included to get access to the AoAD API as shown in the following code snippet.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;aoad.h&quot;</span>
+</pre></div>
+</div>
+<p>The AoAD module shall first be registered in the <cite>NVM_ConfigModules()</cite> function before the GPIOs used for antenna switching can be configured.</p>
+<p>The AoAD configuration relies on a globally defined structure that shall be declared as extern in any application that use this feature.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="n">AOAD_Configuration_t</span><span class="w"> </span><span class="n">gAOAD_Config</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Once done, the AoAD driver can be registered and configured.</p>
+<p>In this example, GPIO 8, 9, 10 and 11 are used for antenna switching.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Bit 0 of LUT (Lookup table) will drive GPIO 8 state.</p></li>
+<li><p>Bit 1 of LUT (Lookup table) will drive GPIO 9 state.</p></li>
+<li><p>Bit 2 of LUT (Lookup table) will drive GPIO 10 state.</p></li>
+<li><p>Bit 3 of LUT (Lookup table) will drive GPIO 11 state.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">AOAD_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Configure GPIOs for AOAD</span>
+<span class="w">    </span><span class="c1">// GPIO 8 - 11 used for AOAD</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_for_aoad</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel8</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 0 of Lut on GPIO 8</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel9</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 1 of Lut on GPIO 9</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 2 of Lut on GPIO 10</span>
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">gpio_sel2</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">gpio_out_sel11</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03</span><span class="p">;</span><span class="w"> </span><span class="c1">// Bit 3 of Lut on GPIO 11</span>
+
+<span class="w">    </span><span class="n">gAOAD_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Once the hardware configuration is complete, the AoA/AoD feature can be used.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

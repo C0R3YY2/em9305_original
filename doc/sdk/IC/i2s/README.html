@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The EM9305 has an I2S peripheral that can be used for audio and other applications where a signal needs to be captured or rendered in real time.</p>
+<p>Similar to the SPI interface, I2S is a synchronous interface that uses a data bus and a clock bus. However, because the data being transmitted is
+typically an audio signal that must be rendered in real time, and typically contains one or more channels, a frame bus is used to add synchronization
+information. The way it is used depends on the protocol. In I2S, the falling edge of the frame signal marks the beginning of channel 0, while the
+rising edge marks the beginning of channel 1. In TDM (Time Division Multiplexing), the frame signal is just a pulse, typically one serial clock,
+indicating the start of channel transmission. When bidirectional audio must be transmitted, two data buses are used, one for each direction.</p>
+<p>The I2S peripheral is also capable of generating a master clock (MCLK), which is sometimes required by audio peripherals that have no internal clock
+generation.</p>
+<p>The driver uses DMA together with the I2S peripheral to avoid using the CPU for buffer transfers from RAM to I2S and I2S to RAM. Before starting the
+driver, the software must first program the I2S transactions that define the memory blocks that will be used to send and receive I2S buffers.
+Once started, the driver runs autonomously on the programmed buffers, thanks to linked DMA operations, meaning that the software doesn’t need to restart
+a transaction after the last one has finished. This mechanism makes the driver less affected by real-time requirements; the software basically has the
+time of a transaction to process the free buffer.</p>
+<p>The driver communicates with the user application using callback functions capable of handling events.</p>
+<section id="protocols">
+<h2>Protocols<a class="headerlink" href="#protocols" title="Link to this heading"></a></h2>
+<p>The I2S peripheral can be configured to work with several protocols, which are :</p>
+<ul class="simple">
+<li><p>I2S</p></li>
+<li><p>TDM</p></li>
+<li><p>Left justified</p></li>
+<li><p>Right justified</p></li>
+<li><p>TDM-I2S</p></li>
+</ul>
+<p>These protocols can be configured at startup using the configuration structure. The driver is designed to give the user maximum flexibility when changing
+the sample rate, sample size, or number of audio channels. However, the driver is designed in such a way that the protocol to be used must be defined in
+the NVM_ConfigModules() function and can’t be changed at runtime.</p>
+</section>
+<section id="i2s-configuration-structure">
+<h2>I2S configuration structure<a class="headerlink" href="#i2s-configuration-structure" title="Link to this heading"></a></h2>
+<p>The I2S module is configured using the gI2S_Config structure. The default configuration is shown below:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Default I2S configuration</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 50.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enabled</p></td>
+<td><p>I2S module enable/disable</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpioSclk</p></td>
+<td><p>Serial clock GPIO</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p>gpioSdataOut</p></td>
+<td><p>Serial data out GPIO</p></td>
+<td><p>9</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpioSdataIn</p></td>
+<td><p>Serial data in GPIO</p></td>
+<td><p>9</p></td>
+</tr>
+<tr class="row-even"><td><p>gpioFsync</p></td>
+<td><p>Frame sync GPIO</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpioMclk</p></td>
+<td><p>Master clock GPIO</p></td>
+<td><p>0xFF (not used)</p></td>
+</tr>
+<tr class="row-even"><td><p>transactionDepth</p></td>
+<td><div class="line-block">
+<div class="line">The size of the transaction</div>
+<div class="line">queue</div>
+</div>
+</td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>autoClk</p></td>
+<td><div class="line-block">
+<div class="line">Let the driver manage the</div>
+<div class="line">clocks automatically</div>
+</div>
+</td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p>config.bits.protocol</p></td>
+<td><p>The protocol</p></td>
+<td><p>I2S_PROTOCOL_I2S</p></td>
+</tr>
+<tr class="row-odd"><td><p>config.bits.mode</p></td>
+<td><p>The mode</p></td>
+<td><p>I2S_MASTER_MODE</p></td>
+</tr>
+<tr class="row-even"><td><p>config.bits.cpha</p></td>
+<td><p>Clock phase of SCLK</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>config.bits.fsyncPolarity</p></td>
+<td><p>Fsync active polarity</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">config.bits.</div>
+<div class="line">phaseLengthMode</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Phase0 length mode</div>
+<div class="line">configuration</div>
+</div>
+</td>
+<td><p>I2S_PHASE0_LENGTH_FSYNC_EDGE</p></td>
+</tr>
+<tr class="row-odd"><td><p>config.bits.lsbitFirst</p></td>
+<td><p>Send least significant bit first</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>config.bits.lsbyteFirst</p></td>
+<td><p>Send least significant byte first</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>config.bits.I2sSignExtendEn</p></td>
+<td><div class="line-block">
+<div class="line">Enable sign extension for 12 and</div>
+<div class="line">20 bits sample sizes</div>
+</div>
+</td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>phase0.bits.delay</p></td>
+<td><div class="line-block">
+<div class="line">Delay between start of phase 0</div>
+<div class="line">and first data bit</div>
+</div>
+</td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>phase0.bits.sampleSize</p></td>
+<td><p>Phase 0 audio sample size</p></td>
+<td><p>I2S_SAMPLE_FORMAT_16BIT</p></td>
+</tr>
+<tr class="row-even"><td><p>phase1.bits.delay</p></td>
+<td><div class="line-block">
+<div class="line">Delay between start of phase 1</div>
+<div class="line">and first data bit</div>
+</div>
+</td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>phase1.bits.sampleSize</p></td>
+<td><p>Phase 1 audio sample size</p></td>
+<td><p>I2S_SAMPLE_FORMAT_16BIT</p></td>
+</tr>
+<tr class="row-even"><td><p>transferMode</p></td>
+<td><p>Transfer mode</p></td>
+<td><p>I2S_TX_RX</p></td>
+</tr>
+<tr class="row-odd"><td><p>phase0TxChannels</p></td>
+<td><p>Phase 0 number of TX channels</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>phase1TxChannels</p></td>
+<td><p>Phase 1 number of TX channels</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>phase0RxChannels</p></td>
+<td><p>Phase 0 number of RX channels</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>phase1RxChannels</p></td>
+<td><p>Phase 1 number of RX channels</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>samplingRate</p></td>
+<td><p>Sampling rate</p></td>
+<td><p>I2S_SAMPLE_RATE_44KHZ</p></td>
+</tr>
+<tr class="row-even"><td><p>serialClockRatio</p></td>
+<td><div class="line-block">
+<div class="line">Serial clock ratio with</div>
+<div class="line">samplingRate</div>
+</div>
+</td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p>masterClockRatio</p></td>
+<td><div class="line-block">
+<div class="line">Master clock ratio with</div>
+<div class="line">samplingRate</div>
+</div>
+</td>
+<td><p>512</p></td>
+</tr>
+<tr class="row-even"><td><p>phase0Length</p></td>
+<td><div class="line-block">
+<div class="line">Phase 0 length when</div>
+<div class="line">configured by software</div>
+</div>
+</td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>fsyncLength</p></td>
+<td><p>Fsync length</p></td>
+<td><p>32</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The I2S configuration structure is in non-persistent memory and is lost during sleep. More on that below.</p>
+</div>
+<p>The default configuration must be changed using the NVM_ConfigModules() function. Since this function is called every time the system wakes up,
+it will be automatically re-configured with the user parameters. Below is an example of how to access it and change some parameters :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;i2s.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+
+<span class="w">    </span><span class="c1">// Register I2S module</span>
+<span class="w">    </span><span class="n">I2S_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable I2S</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// I2S GPIO configuration</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8u</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSdataOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9u</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSdataIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9u</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioFsync</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10u</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioMclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11u</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-examples">
+<h2>Configuration examples<a class="headerlink" href="#configuration-examples" title="Link to this heading"></a></h2>
+<p>Below are some examples of how to configure different protocols and explanations about the parameters.</p>
+<p><strong>I2S Protocol</strong></p>
+<p>The configuration below can be used to achieve the result shown in this image :</p>
+<a class="reference internal image-reference" href="../../_images/i2s.png"><img alt="I2S signals" class="align-center" src="../../_images/i2s.png" style="width: 671.0px; height: 331.5px;" /></a>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register and enable I2S module</span>
+<span class="w">    </span><span class="n">I2S_RegisterModule</span><span class="p">();</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// I2S GPIO configuration</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7u</span><span class="p">;</span><span class="w">     </span><span class="c1">// Serial / bit clock</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSdataOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8u</span><span class="p">;</span><span class="w"> </span><span class="c1">// Data output gpio (not used in input mode)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSdataIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9u</span><span class="p">;</span><span class="w">  </span><span class="c1">// Data input gpio (not used in output mode)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioFsync</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10u</span><span class="p">;</span><span class="w">   </span><span class="c1">// Frame / synchronization signal</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioMclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11u</span><span class="p">;</span><span class="w">    </span><span class="c1">// Master clock signal (0xFF if not used)</span>
+
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_PROTOCOL_I2S</span><span class="p">;</span><span class="w">    </span><span class="c1">// Configure for I2S protocol</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_MASTER_MODE</span><span class="p">;</span><span class="w">         </span><span class="c1">// Our device is the master (it will generate the clocks)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                       </span><span class="c1">// I2S polarity: capture at rising edge</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">fsyncPolarity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">              </span><span class="c1">// I2S polarity: low is channel 0 / left channel</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">phaseLengthMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_PHASE0_LENGTH_FSYNC_EDGE</span><span class="p">;</span><span class="w"> </span><span class="c1">// Phase transition occurs at fsync edge</span>
+
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">transferMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_TX_RX</span><span class="p">;</span><span class="w">   </span><span class="c1">// Configure for bidirectional transfer (output and input gpio are used)</span>
+
+<span class="w">    </span><span class="c1">// Configuration for phase 0</span>
+<span class="w">    </span><span class="c1">// In I2S protocol, phase 0 is used to transmit the channel 0 sample</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// The sample transmission starts one bit clock after the beginning of the phase</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">sampleSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_FORMAT_16BIT</span><span class="p">;</span><span class="w"> </span><span class="c1">// 16 bits sample format</span>
+
+<span class="w">    </span><span class="c1">// Configuration for phase 1</span>
+<span class="w">    </span><span class="c1">// Use the same configuration as for phase 0</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">sampleSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_FORMAT_16BIT</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Configure the number of channels to send and receive for phase 0</span>
+<span class="w">    </span><span class="c1">// For stereo (2 channels) and bidirectional operation, there is one channel by phase and by direction</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0TxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0RxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Configure the number of channels to send and receive for phase 1</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1TxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1RxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Set default sampling rate, this is the frame signal frequency</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">samplingRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_RATE_44KHZ</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// The serial clock frequency is a multiple of the sample rate. This ratio defines how many periods</span>
+<span class="w">    </span><span class="c1">// of the serial clock are contained in one frame period. That is, it is the number of bits transmitted in one frame period.</span>
+<span class="w">    </span><span class="c1">// Therefore, it must be sufficient to transmit all samples from all phases.</span>
+<span class="w">    </span><span class="c1">// This ratio can be calculated as follows:</span>
+<span class="w">    </span><span class="c1">// Maximal number of channels for phase 0 (tx and rx) = 1</span>
+<span class="w">    </span><span class="c1">// Maximal number of channels for phase 1 (tx and rx) = 1</span>
+<span class="w">    </span><span class="c1">// Sample size for phase 0 = 16 bits</span>
+<span class="w">    </span><span class="c1">// Sample size for phase 1 = 16 bits</span>
+<span class="w">    </span><span class="c1">// Number of bits by frame = 1 * 16 + 1 * 16 = 32 bits</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">serialClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// For the master clock, there are three possibilities :</span>
+<span class="w">    </span><span class="c1">// 1. No master clock required, put 0xFF for the pin number and 0 for mclk ratio.</span>
+<span class="w">    </span><span class="c1">// 2. The master clock is used by the peripheral as a system clock and it needs an independent clock running at a given</span>
+<span class="w">    </span><span class="c1">//      frequency. Pass 0 for the masterClockRatio and use the function I2S_SetMclkFrequency(x) to set the required</span>
+<span class="w">    </span><span class="c1">//      master clock frequency.</span>
+<span class="w">    </span><span class="c1">// 3. The master clock must run at a frequency that is a multiple of the fsync and sclk frequencies, therefore it</span>
+<span class="w">    </span><span class="c1">//      must be synchronized with sclk. Use the masterClockRatio to set by how many you want to multiply the fsync</span>
+<span class="w">    </span><span class="c1">//      (sampling rate) frequency. IMPORTANT: the masterClockRatio must be a multiple of the serialClockRatio, it</span>
+<span class="w">    </span><span class="c1">//      means that with a serialClockRatio of 32, possible values will be {32, 64, 96, 128, ...}.</span>
+<span class="w">    </span><span class="c1">// Note: you can retrieve the minimal and maximal frequencies that can be configured for fsync, sclk and mclk using</span>
+<span class="w">    </span><span class="c1">// I2S_GetMinClkFrequency() and I2S_GetMaxClkFrequency(). Always ensure that what you configure is in this range.</span>
+<span class="w">    </span><span class="c1">// Note: The granularity of the produced frequencies is the system clock. When generating high frequencies that aren&#39;t</span>
+<span class="w">    </span><span class="c1">// a divider of the system clock, jitter may occur.</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">masterClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span><span class="w"> </span><span class="c1">// Possibility 3 : 44100 * 512 = 22.5792MHz</span>
+
+<span class="w">    </span><span class="c1">// For I2S protocol, fsync length is the length of one phase, meaning half the total frame and</span>
+<span class="w">    </span><span class="c1">// therefore half the serial clock ratio.</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">fsyncLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// As we configured I2S_PHASE0_LENGTH_FSYNC_EDGE, phase 0 length is automatically equal to fsync active polarity length</span>
+<span class="w">    </span><span class="c1">// Therefore, this field has no effect. But the correct value would be 16 bits.</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0Length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>TDM (Time Division Multiplexing)</strong></p>
+<p>The configuration below can be used to achieve the result shown in this image :</p>
+<a class="reference internal image-reference" href="../../_images/tdm.png"><img alt="TDM signals" class="align-center" src="../../_images/tdm.png" style="width: 653.0px; height: 305.0px;" /></a>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register and enable I2S module</span>
+<span class="w">    </span><span class="n">I2S_RegisterModule</span><span class="p">();</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// I2S GPIO configuration</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7u</span><span class="p">;</span><span class="w">     </span><span class="c1">// Serial / bit clock</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSdataOut</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8u</span><span class="p">;</span><span class="w"> </span><span class="c1">// Data output gpio (not used in input mode)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioSdataIn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9u</span><span class="p">;</span><span class="w">  </span><span class="c1">// Data input gpio (not used in output mode)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioFsync</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10u</span><span class="p">;</span><span class="w">   </span><span class="c1">// Frame / synchronization signal</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioMclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11u</span><span class="p">;</span><span class="w">    </span><span class="c1">// Master clock signal (0xFF if not used)</span>
+
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_PROTOCOL_TDM</span><span class="p">;</span><span class="w">    </span><span class="c1">// Configure for TDM protocol</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_MASTER_MODE</span><span class="p">;</span><span class="w">         </span><span class="c1">// Our device is the master (it will generate the clocks)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                       </span><span class="c1">// TDM polarity: capture at falling edge</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">fsyncPolarity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">              </span><span class="c1">// TDM polarity: pulse (or high state) at start of phase 0</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">phaseLengthMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_PHASE0_LENGTH_SW_VALUE</span><span class="p">;</span><span class="w"> </span><span class="c1">// Phase 0 length is configured by software</span>
+
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">transferMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_TX_RX</span><span class="p">;</span><span class="w">   </span><span class="c1">// Configure for bidirectional transfer (output and input gpio are used)</span>
+
+<span class="w">    </span><span class="c1">// Configuration for phase 0</span>
+<span class="w">    </span><span class="c1">// As showed on the image, there is no data delay configured (first bit of sample is latched at first falling edge of sclk)</span>
+<span class="w">    </span><span class="c1">// The sample size for Phase 0 is twice the sample size for Phase 1. In the image it&#39;s 8 bits and 4 bits.</span>
+<span class="w">    </span><span class="c1">// But we&#39;ll use 16 bits and 8 bits.</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">sampleSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_FORMAT_16BIT</span><span class="p">;</span><span class="w"> </span><span class="c1">// 16 bits sample format for phase 0</span>
+
+<span class="w">    </span><span class="c1">// Configuration for phase 1</span>
+<span class="w">    </span><span class="c1">// This time the sample size is 8 bits</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">delay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">sampleSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_FORMAT_8BIT</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Configure the number of channels to send and receive for phase 0</span>
+<span class="w">    </span><span class="c1">// The image shows two channels for phase 0</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0TxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0RxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Configure the number of channels to send and receive for phase 1</span>
+<span class="w">    </span><span class="c1">// The image shows four channels for phase 1</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1TxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase1RxChannels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Set default sampling rate, this is the frame signal frequency</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">samplingRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_RATE_44KHZ</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// The serial clock frequency is a multiple of the sample rate. This ratio defines how many periods</span>
+<span class="w">    </span><span class="c1">// of the serial clock are contained in one frame period. That is, it is the number of bits transmitted in one frame period.</span>
+<span class="w">    </span><span class="c1">// Therefore, it must be sufficient to transmit all samples from all phases.</span>
+<span class="w">    </span><span class="c1">// This ratio can be calculated as follows:</span>
+<span class="w">    </span><span class="c1">// Maximal number of channels for phase 0 (tx and rx) = 2</span>
+<span class="w">    </span><span class="c1">// Maximal number of channels for phase 1 (tx and rx) = 4</span>
+<span class="w">    </span><span class="c1">// Sample size for phase 0 = 16 bits</span>
+<span class="w">    </span><span class="c1">// Sample size for phase 1 = 8 bits</span>
+<span class="w">    </span><span class="c1">// Number of bits by frame = 2 * 16 + 4 * 8 = 64 bits</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">serialClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// For the master clock, there are three possibilities :</span>
+<span class="w">    </span><span class="c1">// 1. No master clock required, put 0xFF for the pin number and 0 for mclk ratio.</span>
+<span class="w">    </span><span class="c1">// 2. The master clock is used by the peripheral as a system clock and it needs an independent clock running at a given</span>
+<span class="w">    </span><span class="c1">//      frequency. Pass 0 for the masterClockRatio and use the function I2S_SetMclkFrequency(x) to set the required</span>
+<span class="w">    </span><span class="c1">//      master clock frequency.</span>
+<span class="w">    </span><span class="c1">// 3. The master clock must run at a frequency that is a multiple of the fsync and sclk frequencies, therefore it</span>
+<span class="w">    </span><span class="c1">//      must be synchronized with sclk. Use the masterClockRatio to set by how many you want to multiply the fsync</span>
+<span class="w">    </span><span class="c1">//      (sampling rate) frequency. IMPORTANT: the masterClockRatio must be a multiple of the serialClockRatio, it</span>
+<span class="w">    </span><span class="c1">//      means that with a serialClockRatio of 32, possible values will be {32, 64, 96, 128, ...}.</span>
+<span class="w">    </span><span class="c1">// Note: you can retrieve the minimal and maximal frequencies that can be configured for fsync, sclk and mclk using</span>
+<span class="w">    </span><span class="c1">// I2S_GetMinClkFrequency() and I2S_GetMaxClkFrequency(). Always ensure that what you configure is in this range.</span>
+<span class="w">    </span><span class="c1">// Note: The granularity of the produced frequencies is the system clock. When generating high frequencies that aren&#39;t</span>
+<span class="w">    </span><span class="c1">// a divider of the system clock, jitter may occur.</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">masterClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span><span class="w"> </span><span class="c1">// Possibility 3 : 44100 * 512 = 22.5792MHz</span>
+
+<span class="w">    </span><span class="c1">// For TDM protocol, fsync is a pulse of one sclk that occurs at every start of phase 0.</span>
+<span class="w">    </span><span class="c1">// Therefore the length is one.</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">fsyncLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// As we configured I2S_PHASE0_LENGTH_SW_VALUE, phase 0 length is configured by this value.</span>
+<span class="w">    </span><span class="c1">// We can calculate the phase 0 length, which is the number of bits transmitted during phase 0, by</span>
+<span class="w">    </span><span class="c1">// multiplying the number of channels in phase 0 by the sample size. This gives :</span>
+<span class="w">    </span><span class="c1">// phase 0 length = 2 * 16 = 32 bits</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">phase0Length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that the TDM protocol typically uses only one phase (phase 0) to transmit x channels of the same sample size. This example is a
+bit more advanced because we are transmitting different sample sizes. In more basic TDM case we could use a phaseLengthMode of
+I2S_PHASE0_LENGTH_FRAME_PERIOD to indicate to the driver that we’re going to drop phase 1. The configuration related to phase 1 will then
+be discarded and the number of channels (tx and rx) for phase 1 must be set to 0.</p>
+</section>
+<section id="change-the-configuration-at-runtime">
+<h2>Change the configuration at runtime<a class="headerlink" href="#change-the-configuration-at-runtime" title="Link to this heading"></a></h2>
+<p>Depending on application requirements, the devices may need to change sample rate or sample sizes. When communicating with a more advanced
+device, such as a hardware codec, even the number of audio channels may change to properly accommodate a new configuration.</p>
+<p>To achieve this, the driver provides some functions to change the configuration defined at startup. These must be called while the driver is idle.
+The prototypes are listed below:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetClockFrequencies</span><span class="p">(</span><span class="n">I2S_SamplingRate_t</span><span class="w"> </span><span class="n">samplingRate</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sclkRatio</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">mclkRatio</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetMclkFrequency</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">freq</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetPhase0Config</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">delay</span><span class="p">,</span><span class="w"> </span><span class="n">I2S_SampleSize_t</span><span class="w"> </span><span class="n">sampleSize</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rxChannels</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">txChannels</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetPhase1Config</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">delay</span><span class="p">,</span><span class="w"> </span><span class="n">I2S_SampleSize_t</span><span class="w"> </span><span class="n">sampleSize</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rxChannels</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">txChannels</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetPhase0Length</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">phase0Length</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetFsyncLength</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">fsyncLength</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Because the gI2S_Config structure is not stored in persistent memory during sleep, a configuration change made using these functions will inevitably
+be lost on wakeup. It is the user’s responsibility to call these functions again on wakeup to ensure that the configuration is set correctly.</p>
+</div>
+</section>
+<section id="master-slave-mode">
+<h2>Master / slave mode<a class="headerlink" href="#master-slave-mode" title="Link to this heading"></a></h2>
+<p>The driver can be used as either an I2S master or slave. The main difference between these modes is that the master is responsible for generating the clocks,
+while the slave only receives them. As a result, the GPIOs used for the serial clock and the frame clock are configured as output in master mode and as input
+in slave mode.</p>
+</section>
+<section id="transfer-mode-rx-tx-or-rx-tx">
+<h2>Transfer mode (RX, TX or RX+TX)<a class="headerlink" href="#transfer-mode-rx-tx-or-rx-tx" title="Link to this heading"></a></h2>
+<p>The driver can be used to work in one of three modes of operation, which are :</p>
+<ul class="simple">
+<li><p>I2S_TX_ONLY : The driver only sends data on gpioSdataOut, gpioSdataIn is not used.</p></li>
+<li><p>I2S_RX_ONLY : The driver only receives data on gpioSdataIn, gpioSdataOut is not used.</p></li>
+<li><p>I2S_TX_RX : Both direction are used.</p></li>
+</ul>
+<p>Consequently, the driver cannot be started for TX operations if the configured mode is I2S_RX_ONLY, nor for RX operations if configured for TX only. This is also available
+for the functions that add transactions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The transfer mode cannot be changed at runtime, so if a direction change is to be performed dynamically, the driver must first be configured to I2S_TX_RX transfer mode.
+The transfer mode only affects the initialization of the driver, where enabling only the TX side or only the RX side can slightly reduce the memory usage. However, the driver
+can be used for TX only or RX only even if it is configured for RX+TX operation.</p>
+</div>
+</section>
+<section id="configuration-of-the-clocks">
+<h2>Configuration of the clocks<a class="headerlink" href="#configuration-of-the-clocks" title="Link to this heading"></a></h2>
+<p>As explained in the introductory chapter, I2S uses three clocks :</p>
+<ul class="simple">
+<li><p>FSYNC (WS, LRCLK) is the frame signal that runs at the sample rate frequency</p></li>
+<li><p>SCLK (BCLK, SCK) is the bit clock</p></li>
+<li><p>MCLK (MCK) is the master clock, ususally running at a multiple of the FSYNC frequency, or at a fixed, independent frequency, usually used as the system clock by the I2S peripheral</p></li>
+</ul>
+<p>The FSYNC frequency is set once in the NVM_ConfigModules() function using the gI2S_Config.samplingRate parameter. It can then be changed using the
+I2S_SetClockFrequencies(…) function.</p>
+<p><strong>Serial clock (SCLK)</strong></p>
+<p>The serial clock frequency is always configured by setting the serialClockRatio, which defines by how many the sampling frequency is multiplied to create
+the serial clock. It also means it defines how many bits are transmitted during an I2S frame.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">serial</span> <span class="n">clock</span> <span class="o">=</span> <span class="n">sampling</span> <span class="n">rate</span> <span class="o">*</span> <span class="n">sclkRatio</span>
+</pre></div>
+</div>
+<p>There are three ways to configure the master clock, depending on the I2S peripheral you are communicating with.</p>
+<p><strong>Case 1 : MCLK not used</strong></p>
+<p>If the master clock is not needed by the I2S peripheral, you can pass an invalid value for the GPIO number.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioMclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w"> </span><span class="c1">// 0xFF means no gpio is used for master clock</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">masterClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Ensure to pass 0 when not used</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When calling the I2S_SetClockFrequencies(…) function, be sure to always pass 0 for the master clock argument.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetClockFrequencies</span><span class="p">(</span><span class="n">I2S_SAMPLE_RATE_44KHZ</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Case 2 : MCLK is a multiple of FSYNC</strong></p>
+<p>The I2S peripheral requires the master clock to be a multiple of the fsync frequency (integer ratio) and requires
+FSYNC, SCLK and MCLK to be synchronous. This is typical when communicating with a DAC/ADC.</p>
+<p>Since MCLK must be synchronous to SCLK, you must ensure that masterClockRatio / serialClockRatio is also an integer ratio.
+This means that with a serialClockRatio of 32, possible values for masterClockRatio would be {32, 64, 96, 128, …}.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">serial</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sampling</span><span class="w"> </span><span class="n">rate</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sclkRatio</span>
+<span class="n">master</span><span class="w"> </span><span class="n">clock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sampling</span><span class="w"> </span><span class="n">rate</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mclkRatio</span>
+<span class="n">mclkRatio</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">sclkRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c1">// Condition</span>
+</pre></div>
+</div>
+<p>You can specify the serialClockRatio and masterClockRatio in the NVM_ConfigModules() function :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioMclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11u</span><span class="p">;</span><span class="w"> </span><span class="c1">// This time we use it</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">samplingRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_RATE_44KHZ</span><span class="p">;</span><span class="w"> </span><span class="c1">// Set fsync frequency</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">serialClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span><span class="w"> </span><span class="c1">// 44100 * 64 = 2.8224Mhz (64 bits by frame)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">masterClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span><span class="w"> </span><span class="c1">// 44100 * 512 = 22.5792MHz</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can change this configuration by calling the I2S_SetClockFrequencies(…) function. The status returned will tell you
+if the change was handled correctly. See the documentation for more information on the status returned by the functions.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetClockFrequencies</span><span class="p">(</span><span class="n">I2S_SAMPLE_RATE_44KHZ</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">512</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Unlike the I2S_SetClockFrequencies(…) function, which returns an error code if the given ratios are invalid, there is no
+error mechanism for the NVM_ConfigModules() function. This means that if the masterClockRatio or serialClockRatio
+are invalid or result in an unsupported frequency, the system won’t work and it might be difficult to determine the reason.
+Be careful to check that the ratios are valid.</p>
+</div>
+<p><strong>Case 3 : MCLK is used independently</strong></p>
+<p>Some devices, such as advanced codec circuits, don’t require the master clock frequency to be synchronized to FSYNC
+and SCLK. In this case, the I2S_SetMclkFrequency(…) function can be used to set the master clock to a fixed frequency.</p>
+<p>In the NVM_ConfigModules() function, pass 0 for the masterClockRatio :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">gpioMclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11u</span><span class="p">;</span><span class="w"> </span><span class="c1">// This time we use it</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">samplingRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2S_SAMPLE_RATE_44KHZ</span><span class="p">;</span><span class="w"> </span><span class="c1">// Set fsync frequency</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">serialClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span><span class="w"> </span><span class="c1">// 44100 * 64 = 2.8224Mhz (64 bits by frame)</span>
+<span class="w">    </span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">masterClockRatio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// MCLK will be used independently</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, use the I2S_SetMclkFrequency(…) function to set the clock frequency.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">I2S_SetMclkFrequency</span><span class="p">(</span><span class="mi">13000000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Set MCLK to run at 13MHz</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If MCLK is set this way, be sure to always pass 0 for the mclkRatio when calling I2S_SetClockFrequencies(…)
+to avoid overriding the configuration made by I2S_SetMclkFrequency(…).</p>
+</div>
+<p><strong>Automatically manage the clocks</strong></p>
+<p>The driver can manage the clocks itself (this is the default option), i.e. it will automatically start sclk, mclk and fsync when the driver is started, and stop them when the
+driver is stopped. This option can be changed in the configuration structure :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gI2S_Config</span><span class="p">.</span><span class="n">autoClk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>When set to false, it is the user’s responsibility to ensure that the clocks are working when the driver needs them. The clocks can be enabled and disabled with the
+following function :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">I2S_SetClocksState</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">masterClk</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">serialClk</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">fsync</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Typically, it should be called before the startXx() function to enable the clocks, and after the driver has fired the I2S_EVT_FINISHED event to disable them.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using the gI2S_Config.autoClk option, you will typically call the I2S_SetMclkFrequency(…) on each wakeup to set the frequency once.
+The driver will automatically output the clock when running. You could also set the gI2S_Config.autoClk flag to false and use
+the I2S_SetClocksState(…) function to select when to enable the master clock.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>I2S_GetMinClkFrequency() and I2S_GetMaxClkFrequency() can be used to get the minimum and maximum frequencies that can be configured for fsync,
+sclk and mclk. Always make sure that the resulting frequencies are within this range. The maximum frequency is typically half the system clock
+and the minimum frequency is typically the system clock divided by 2^16.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The granularity of the generated frequencies is the system clock.  Generating high frequencies that don’t divide the system clock can cause jitter.</p>
+</div>
+</section>
+<section id="transactions-system">
+<h2>Transactions system<a class="headerlink" href="#transactions-system" title="Link to this heading"></a></h2>
+<p>As mentioned in the Overview chapter, the driver uses DMA to transfer the data buffers between RAM and the I2S FIFO queue without the help of the CPU. The DMA transfers
+are chained together to form a linked list, making the hardware completely autonomous. When a DMA transfer is finished, i.e. new buffers are available to be filled or read,
+the hardware triggers an interrupt which is used by the driver to stay synchronized with the hardware state.</p>
+<p>To make the driver work, the first step is to configure the DMA transfers. This can be done using the I2S_AddXxTransaction(…) function, where a transaction is a structure
+referencing the buffer to be used in the DMA transfer and a user callback. A transaction is always added to the end of the linked list and points to the beginning,
+creating a circular list.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_AddTxTransaction</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pTxBuffer</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">I2S_DriverCallback_t</span><span class="w"> </span><span class="n">pCallback</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pUserData</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_AddRxTransaction</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pRxBuffer</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">I2S_DriverCallback_t</span><span class="w"> </span><span class="n">pCallback</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pUserData</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The callbacks passed as parameters are used to notify the user of an event related to this transaction. Typically, the same callback is used for all transactions because the
+transaction buffer can be retrieved from the event object. However, different designs are possible.</p>
+<p>The maximum number of transactions can be configured using the gI2S_Config.transactionDepth parameter. Typically, you will use two transactions referencing two ping-pong buffers.
+That is, while one buffer is used by the hardware, the other is used by the software, and they are swapped when the transaction is completed.</p>
+<p>The function below can be used to clear the transaction lists. It is particularly useful when a configuration change is required after the driver has been stopped.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_ClearTransactions</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="samples-buffers">
+<h2>Samples buffers<a class="headerlink" href="#samples-buffers" title="Link to this heading"></a></h2>
+<p>The audio signal is represented in the data buffers using PCM modulation, which is a way of digitally representing an audio signal (see <a class="reference external" href="https://en.wikipedia.org/wiki/Pulse-code_modulation">https://en.wikipedia.org/wiki/Pulse-code_modulation</a>).</p>
+<p>The number of bytes per sample depends on the phase configuration. When using 12- or 20-bit samples, the number of bytes is 2 or 3, respectively. If sign extension is enabled (default),
+the four most significant bits take the value of the bit sign.</p>
+<p>Samples from each channel are placed in the buffer in sequence, as shown below for 2 channels and 12-bit samples :</p>
+<a class="reference internal image-reference" href="../../_images/buffer.png"><img alt="samples in buffer" class="align-center" src="../../_images/buffer.png" style="width: 741.0px; height: 164.0px;" /></a>
+<p>This image also shows how the sign extension works when the sample size is not a multiple of 8.</p>
+<p>Since it’s not possible to send or receive incomplete frames, the buffer length must be a multiple of the frame length to ensure that there are always an integer number of frames in a buffer.
+You can easily retrieve the number of bytes per frame according to the current I2S configuration using the functions below :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">I2S_GetBytesPerTxFrame</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">I2S_GetBytesPerRxFrame</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>According to the example in the figure above, these functions would return 4 bytes per frame.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the buffer provided to the I2S_AddXxTransaction(…) function does not have a length that is a multiple of the frame length, the driver will automatically round down the length and discard the extra bytes.</p>
+</div>
+<p>The selected buffer length depends on the application requirements. However, for audio applications, it is common to choose a length that results in a transaction duration of 7.5 or 10ms.
+The buffer length for a given transaction duration can be calculated as shown below :</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>len   : buffer length [byte]
+sr    : sample rate [Hz]
+sb    : sample size [byte]
+ch    : number of channels
+trT   : transaction duration [ms]
+
+len = sr * sb * ch * trT / 1000
+
+Basic example :
+sr  = 48kHz
+sb  = 2 bytes (16 bits sample size)
+ch  = 2 (stereo)
+trT = 10ms
+
+len = 48&#39;000 * 2 * 2 * 10 / 1000 = 1920 bytes
+</pre></div>
+</div>
+<p>Using the example parameters, this means that a transaction will take 10ms and the ping pong buffers will swap at a frequency of 100Hz.</p>
+</section>
+<section id="start-transactions">
+<h2>Start transactions<a class="headerlink" href="#start-transactions" title="Link to this heading"></a></h2>
+<p>Once the transactions are configured, the driver can be started using the following functions:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_StartTx</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">nLoops</span><span class="p">);</span><span class="w"> </span><span class="c1">// Available in TX_ONLY and TX_RX modes</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_StartRx</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">nLoops</span><span class="p">);</span><span class="w"> </span><span class="c1">// Available in RX_ONLY and TX_RX modes</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_StartRxTx</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">nLoops</span><span class="p">);</span><span class="w"> </span><span class="c1">// Available in TX_RX mode</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not forget to start the clocks before if autoClk was set to false.</p>
+</div>
+<p>A number of loops can be configured for each start function. The value 0 can be passed to run indefinitely. A loop is defined as a single iteration through the list of transactions.
+This means that if there are two 10ms transactions in the list, specifying one loop will start the driver for 20ms.</p>
+<p>When started for a certain number of loops, the number of remaining loops can be retrieved using the functions below :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">I2S_GetTxRemainingLoops</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="nf">I2S_GetRxRemainingLoops</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These functions will return 0 in case the driver is stopped or runs indefinitely.</p>
+</div>
+<p>You can check that the driver is working at any time using these functions :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">I2S_IsTxWorking</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">I2S_IsRxWorking</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="stop-transactions">
+<h2>Stop transactions<a class="headerlink" href="#stop-transactions" title="Link to this heading"></a></h2>
+<p>There are two ways to stop the driver. The soft way requests to stop as soon as possible, i.e. the current transaction is completed before the clocks and the module are disabled.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">I2S_StopTx</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">I2S_StopRx</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The hard way stops the hardware directly, ignoring any ongoing transaction and any side effects it might cause.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">I2S_ForceStop</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="driver-callbacks">
+<h2>Driver callbacks<a class="headerlink" href="#driver-callbacks" title="Link to this heading"></a></h2>
+<p>The driver uses callbacks to inform the user application about state and events. A transaction communicates its state using the user-provided callback, if configured. The I2S driver callback prototype is as follows :</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">I2S_Callback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">I2S_Event_t</span><span class="w"> </span><span class="o">*</span><span class="n">event</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pUserData</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The callback takes as argument an I2S_Event_t containing multiple fields :</p>
+<ol class="arabic simple">
+<li><p>The status of the transaction</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>I2S_STATUS_TX: Event is related to a TX transaction</p></li>
+<li><p>I2S_STATUS_RX: Event is related to a RX transaction</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>The type of the transaction</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>I2S_EVT_BUFFER_READY: The transaction buffer is ready for read or write (depending on TX or RX event)</p></li>
+<li><p>I2S_EVT_FINISHED: The driver has finished its operation for RX or TX direction</p></li>
+<li><p>I2S_EVT_SYNC_ERROR: An synchronization error occurred internally</p></li>
+<li><p>I2S_EVT_DMA_ERROR: A DMA error occurred</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>The transaction buffer</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>Available if status is of type I2S_EVT_BUFFER_READY</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>The length of that buffer</p></li>
+</ol>
+<p>The I2S_EVT_BUFFER_READY event is fired at the end of each successful transaction, i.e., at the
+transaction duration interval. If the event is of type TX, the buffer is ready to be filled
+by the application, if of type RX, the buffer is ready to be read by the application.</p>
+<p>The I2S_EVT_FINISHED event can be triggered by two conditions:</p>
+<ul class="simple">
+<li><p>When the driver has been started for a certain number of loops</p></li>
+<li><p>After calling the I2S_StopXx() function</p></li>
+</ul>
+<p>In all cases, it means that the driver has successfully completed its operations and has stopped
+properly for the direction specified by the event type. If the driver is running in both RX and TX
+directions and the gI2S_Config.autoClk flag is true, the clocks will not stop until both directions
+are stopped, that is, when the two I2S_EVT_FINISHED have been fired.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A call to I2S_ForceStop() will stop the driver directly, the user won’t be notified by an event.</p>
+</div>
+<p>The I2S_EVT_SYNC_ERROR event is triggered when the software loses synchronization with the hardware.
+This usually means that the DMA interrupt has been delayed too long by other high priority interrupts.
+Make sure that the application doesn’t spend too much time in other interrupts and check that the
+transaction duration is not too short according to the application timings. It is possible to recover
+from this type of error by restarting the driver.</p>
+<p>The I2S_EVT_DMA_ERROR event is fired on general DMA error and implies the end of driver operations.</p>
+<p>The example below shows a typical callback implementation where the driver is used in
+bidirectional mode and the input buffer is copied to the output buffer (fallback).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">I2S_Callback</span><span class="p">(</span><span class="n">I2S_Event_t</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">*</span><span class="n">event</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Switch on event type</span>
+<span class="w">    </span><span class="k">switch</span><span class="p">(</span><span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">I2S_EVT_DMA_ERROR</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">I2S_EVT_SYNC_ERROR</span><span class="p">:</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Call application error handler</span>
+<span class="w">            </span><span class="n">APP_HandleError</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">I2S_EVT_BUFFER_READY</span><span class="p">:</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Keep reference on TX buffer</span>
+<span class="w">            </span><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">txBuf</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">event</span><span class="o">-&gt;</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">I2S_STATUS_TX</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Save last TX buffer reference</span>
+<span class="w">                </span><span class="n">txBuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">event</span><span class="o">-&gt;</span><span class="n">bufRdyEvt</span><span class="p">.</span><span class="n">buffer</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Copy RX buffer into tx buffer</span>
+<span class="w">                </span><span class="n">memcpy</span><span class="p">(</span><span class="n">txBuf</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="o">-&gt;</span><span class="n">bufRdyEvt</span><span class="p">.</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="o">-&gt;</span><span class="n">bufRdyEvt</span><span class="p">.</span><span class="n">length</span><span class="p">);</span>
+<span class="w">                </span><span class="c1">// This works only if the buffers used for TX and RX transactions</span>
+<span class="w">                </span><span class="c1">// have the same length !</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">I2S_EVT_FINISHED</span><span class="p">:</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Check if TX and RX are finished</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">I2S_IsTxWorking</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">I2S_IsRxWorking</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Operations fully finished</span>
+<span class="w">                </span><span class="c1">// We can post an event to the application to inform and</span>
+<span class="w">                </span><span class="c1">// eventually continue a state machine</span>
+<span class="w">                </span><span class="n">APP_PostEvent</span><span class="p">(</span><span class="n">APP_I2S_FULLY_FINISHED</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="system-sleep">
+<h2>System sleep<a class="headerlink" href="#system-sleep" title="Link to this heading"></a></h2>
+<p>The system can’t go to sleep while the driver is running.
+Since the configuration structure (gI2S_Config) isn’t
+saved during sleep, the driver will always load the configuration provided by the NVM_ConfigModules()
+function on wakeup. As a result, if the configuration has been changed using one of the following function,
+it is needed to call them again to reconfigure the driver properly.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetClockFrequencies</span><span class="p">(</span><span class="n">I2S_SamplingRate_t</span><span class="w"> </span><span class="n">samplingRate</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sclkRatio</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">mclkRatio</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetPhase0Config</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">delay</span><span class="p">,</span><span class="w"> </span><span class="n">I2S_SampleSize_t</span><span class="w"> </span><span class="n">sampleSize</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rxChannels</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">txChannels</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetPhase1Config</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">delay</span><span class="p">,</span><span class="w"> </span><span class="n">I2S_SampleSize_t</span><span class="w"> </span><span class="n">sampleSize</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rxChannels</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">txChannels</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetPhase0Length</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">phase0Length</span><span class="p">);</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">I2S_SetFsyncLength</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">fsyncLength</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In addition, the transactions are also stored in a non persistent memory, meaning the configuration must
+be done again at each wakeup using the I2S_ClearTransactions() followed by the I2S_AddXxTransaction(…)
+functions.</p>
+</section>
+<section id="dma-channels">
+<h2>DMA channels<a class="headerlink" href="#dma-channels" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This chapter only applies if you need to use both I2S driver and DMA drivers in your application.</p>
+</div>
+<p>Since the I2S driver uses the same DMA channels as the UART driver, there may be a conflict if both are
+used together. The correct workaround for this problem is to use the non-DMA version of the UART driver.
+This is preferable to changing the DMA channels because they are assigned and using other channels may
+cause other conflicts and other problems.</p>
+<p>Unfortunately, the UART driver that uses DMA was added in ROM v3. Since the linker takes the symbols
+from the ROM before considering those from the CMakeLists.txt file, the only way to force the use of the
+standard UART driver is to modify the ROM symbols file.</p>
+<p>As a result, you’ll need to remove these symbols from the file located in
+rom/bin/v3.0/rom.sym. The symbols that must be deleted are denoted by a “-” below :</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>...
+IRQHandler_NVM=0x102cb8 0x16
+IRQHandler_SpiSlaveRx=0x102d00 0x22
+IRQHandler_SpiSlaveTx=0x102d24 0xb2
+- IRQHandler_UartRx=0x102dd8 0x22
+- IRQHandler_UartTx=0x102dfc 0xb2
+InitPRNG=0x10a84c 0x11c
+InvMod_binary=0x10859c 0x114
+InvertMSWandLSW=0x1086b0 0x22
+...
+SPIS_SendDataEx=0x1043f0 0xbc
+SPIS_SetConfiguration=0x1044ac 0x2a
+SetPRNGCtx=0x10aa8c 0x12
+- UART_BlockCommunication=0x104620 0xa
+- UART_Enable=0x10465c 0x1a
+- UART_HasPendingData=0x104754 0x26
+- UART_InitBuffers=0x10477c 0x32
+- UART_InitNew=0x1047b0 0x90
+- UART_ReceiveDataEx=0x1048f8 0xde
+- UART_Restart=0x1049d8 0x70
+- UART_Restore=0x104a48 0x90
+- UART_Save=0x104ad8 0x2
+- UART_SendDataEx=0x104adc 0xbc
+- UART_SetBaudRate=0x104b98 0xa6
+- UART_SetBaudRateEx=0x104c40 0x1c
+- UART_SetConfiguration=0x104c5c 0x26
+VoltMon_GetBrownOutCompStat=0x104c94 0x10
+VoltMon_GetVbat1CompStat=0x104ca4 0x10
+VoltMon_GetVccCompStat=0x104cb4 0x10
+...
+gSPIS_Config=0x80ffa8 0x28
+gSPIS_Transport=0x10c3a8 0x24
+gTransport_ActiveTransport=0x801090 0x4
+- gUART_Config=0x80ffd0 0x2c
+gUART_Transport=0x10c3cc 0x24
+gVersionHeader=0x10ffe0 0x20
+gpEMSystemNPRAM=0x801094 0x4
+...
+</pre></div>
+</div>
+<p>You can easily find them by searching “uart” keyword in the file using ctrl+f.</p>
+<p>Then, do not forget to add the “uart” library in the CMakeLists.txt file of your application.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

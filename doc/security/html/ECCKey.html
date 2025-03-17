@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECC Key management &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ECDH - Diffie Hellman key agreement" href="ECDH.html" />
+    <link rel="prev" title="ECC Error Enumeration" href="ECCEnum.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="P256.html">ECC P-256</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCEnum.html">ECC Error Enumeration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ECC Key management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ecc-key-management-utilities">ECC Key management utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ecc-generateprivatekey">ECC_GeneratePrivateKey</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#function">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ecc-computepubkey">ECC_ComputePubKey</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#ecc-ispublickeyvalid">ECC_isPublicKeyValid</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id5">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id6">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id7">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id8">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#general-performances">General Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performances">Performances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ECDH.html">ECDH - Diffie Hellman key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECDSA.html">ECDSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Schnoor.html">ECC Schnorr’s Authentication protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ECC_FUNCTIONS.html">ECC Functions</a> &raquo;</li>
+      <li>ECC Key management</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ecc-key-management">
+<span id="ecc-key-label"></span><h1>ECC Key management<a class="headerlink" href="#ecc-key-management" title="Permalink to this headline"></a></h1>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this document is to describe the <strong>key management functions of the ECC.lib</strong></p>
+<dl class="simple">
+<dt>This document:</dt><dd><ul class="simple">
+<li><p>describes all the supported functions, including the prototypes, the parameters, etc…</p></li>
+<li><p>provides the performances of the functions.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="ecc-key-management-utilities">
+<h2>ECC Key management utilities<a class="headerlink" href="#ecc-key-management-utilities" title="Permalink to this headline"></a></h2>
+<p>The <strong>ECC.lib</strong> provides 3 functions to manage the ECC keys on P-256.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>a function to <strong>generate a private key</strong>.</p></li>
+<li><p>a function to <strong>generate a public key from a private key</strong>.</p></li>
+<li><p>a function to <strong>verify if a public key is valid or not</strong>.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<p>The error status are given here: <a class="reference internal" href="ECCEnum.html#ecc-enumerations-label"><span class="std std-ref">ECC Error Enumeration</span></a></p>
+</section>
+<section id="ecc-generateprivatekey">
+<h3>ECC_GeneratePrivateKey<a class="headerlink" href="#ecc-generateprivatekey" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>This function generates a private key for P-256 curve. The private key is a 32-byte long random value.
+The key is generated securely with the PRNG.lib.</p>
+</section>
+<section id="function">
+<h4>Function<a class="headerlink" href="#function" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422ECC_GeneratePrivateKeyP8uint32_t">
+<span id="_CPPv322ECC_GeneratePrivateKeyP8uint32_t"></span><span id="_CPPv222ECC_GeneratePrivateKeyP8uint32_t"></span><span id="ECC_GeneratePrivateKey__uint32_tP"></span><span class="target" id="group___e_c_c_k_e_y_1ga8f0b69b8424262777bbf11075fbc32ab"></span><a class="reference internal" href="ECCEnum.html#_CPPv411ECC_Error_t" title="ECC_Error_t"><span class="n"><span class="pre">ECC_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECC_GeneratePrivateKey</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PrivateKey</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422ECC_GeneratePrivateKeyP8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Generates an ECC private key. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>PrivateKey</strong> – <strong>[out]</strong> The generated private key, a scalar of the size of the curve (32 -bytes) </p>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – Successful private key generation </p></li>
+<li><p><strong>SW_ECC_RANDOM_ERROR</strong> – Error in random generation </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>PrivateKey</strong> : The generated private key.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SW_ECC_OK</p></td>
+<td><p>The private key generation was successful</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECC_RANDOM_ERROR</p></td>
+<td><p>The private key generation failed. Something wrong happened with the random generation</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ecc-computepubkey">
+<h3>ECC_ComputePubKey<a class="headerlink" href="#ecc-computepubkey" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Goal of the function<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>The function generates a public key from the private key.</p>
+</section>
+<section id="id2">
+<h4>Function<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417ECC_ComputePubKeyP8uint32_tP5POINT">
+<span id="_CPPv317ECC_ComputePubKeyP8uint32_tP5POINT"></span><span id="_CPPv217ECC_ComputePubKeyP8uint32_tP5POINT"></span><span id="ECC_ComputePubKey__uint32_tP.POINTP"></span><span class="target" id="group___e_c_c_k_e_y_1ga7d30f56db016f9726a2f651ab89f68d5"></span><a class="reference internal" href="ECCEnum.html#_CPPv411ECC_Error_t" title="ECC_Error_t"><span class="n"><span class="pre">ECC_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECC_ComputePubKey</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PrivateKey</span></span>, <span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PubKey</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417ECC_ComputePubKeyP8uint32_tP5POINT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Computes the ECC public key associated to a private key. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>PrivateKey</strong> – <strong>[in]</strong> ECC private key (a scalar) </p></li>
+<li><p><strong>PubKey</strong> – <strong>[out]</strong> ECC generated public key (a point in affine coordinates) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – No error occurred </p></li>
+<li><p><strong>SW_ECC_REDUCED_PRIVATE_KEY</strong> – Computation was performed but the private key was reduced modulo N </p></li>
+<li><p><strong>SW_ECC_NULL_PRIVATE_KEY</strong> – The private key is null. No computation performed. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>PrivateKey</strong> : A 32-byte private key.</p></li>
+<li><p><strong>PubKey</strong>: The public key corresponding to the given private key (2*32 bytes).</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id4">
+<h4>Return values<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SW_ECC_OK</p></td>
+<td><p>The public key is successfully generated</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECC_REDUCED_PRIVATE_KEY</p></td>
+<td><p>The public key was generated but as the private key was greater than the modulus N, the priavte key was reduced modulo N</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-even"><td><p>SW_ECC_NULL_PRIVATE_KEY</p></td>
+<td><p>The private key is null modulo N. The public key is not generated</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ecc-ispublickeyvalid">
+<h3>ECC_isPublicKeyValid<a class="headerlink" href="#ecc-ispublickeyvalid" title="Permalink to this headline"></a></h3>
+<section id="id5">
+<h4>Goal of the function<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
+<p>The function verifies if a public key is valid. It checks if the point is on the curve or if the point is the infinity point.</p>
+</section>
+<section id="id6">
+<h4>Function<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ECC_isPublicKeyValidP5POINT">
+<span id="_CPPv320ECC_isPublicKeyValidP5POINT"></span><span id="_CPPv220ECC_isPublicKeyValidP5POINT"></span><span id="ECC_isPublicKeyValid__POINTP"></span><span class="target" id="group___e_c_c___p_u_b_l_i_c___k_e_y_1gafb94a215267d7f47e5d77d5db5294cde"></span><a class="reference internal" href="ECCEnum.html#_CPPv411ECC_Error_t" title="ECC_Error_t"><span class="n"><span class="pre">ECC_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECC_isPublicKeyValid</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PubKey</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ECC_isPublicKeyValidP5POINT" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Verify if the public key is on the curve. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>PubKey</strong> – <strong>[in]</strong> Public key to test </p>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – Point is valid </p></li>
+<li><p><strong>SW_ECC_INVALID_PUBLIC_POINT</strong> – Invalid public point </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>PubKey</strong>: The public key to check.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id8">
+<h4>Return values<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SW_ECC_OK</p></td>
+<td><p>The public key is valid</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECC_INVALID_PUBLIC_POINT</p></td>
+<td><p>The public key is not valid</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="general-performances">
+<h2>General Performances<a class="headerlink" href="#general-performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM. The key management functions are included in the <strong>ECC.lib.</strong></p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5284 bytes in ROM for the complete ECC lib</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No global RAM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Approximately 784 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="performances">
+<h3>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Nb of cycles</p></th>
+<th class="head"><p>Time in ms at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ECC_GeneratePrivateKey</p></td>
+<td><p>See Remark</p></td>
+<td><p>0.2 \ 1.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>ECC_ComputePubKey</p></td>
+<td><p>5108137</p></td>
+<td><p>106</p></td>
+</tr>
+<tr class="row-even"><td><p>ECC_isPublicKeyValid</p></td>
+<td><p>5389</p></td>
+<td><p>0.12</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The time of the private key generation depends on the PRNG setting of cryptographic random numbers generation. It also depends on the choice of the underlying AES (AES hardware or software) for the PRNG. Finally, if the PRNG was never set up since reset, execution time will be higher to allow the seeding of the PRNG. Note that by default the PRNG uses the AES hardware.
+0.2 us corresponds to a PRNG already set up with the AES hardware. Similarly 1.5ms corresponds to the AES software.</p>
+</div>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h3>
+<dl class="simple">
+<dt>The ECC lib depends on :</dt><dd><ul class="simple">
+<li><p>PRNG.lib for the random number generation</p></li>
+<li><p>AES.lib which is used by PRNG.lib</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<p>Next code shows basic examples of:</p>
+<ul class="simple">
+<li><p>private key generation</p></li>
+<li><p>public key computation</p></li>
+<li><p>public key verification</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// File:       ExampleECCKeyManagement.c</span>
+<span class="c1">///</span>
+<span class="c1">/// Goal:	  	Example of use of ECC key functions</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCTypedef.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCStatus.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCkeyManagement.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCVerifyPubKey.h&quot;</span><span class="cp"></span>
+
+<span class="c1">//==============================================================================</span>
+<span class="c1">//						Example</span>
+<span class="c1">//==============================================================================</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">Example_ECC_KeyManagement</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">ECC_Error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">POINT_P256</span><span class="w"> </span><span class="n">PubKey</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Private</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Private_F</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x3f49f6d4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa3c55f38</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x74c9b3e3</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd2103f50</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4aff607b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeb40b799</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5899b8a6</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xcd3c1abd</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">POINT_P256</span><span class="w"> </span><span class="n">ExpectedPublic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x20b003d2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf297be2c</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x5e2c83a7</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe9f9a5b9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeff49111</span><span class="p">,</span><span class="w"> </span><span class="mh">0xacf4fddb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc030148</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x0e359de6</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xdc809c49</span><span class="p">,</span><span class="w"> </span><span class="mh">0x652aeb6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63329abf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5a52155c</span><span class="p">,</span><span class="w"></span>
+<span class="w">					</span><span class="mh">0x766345c2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8fed3024</span><span class="p">,</span><span class="w"> </span><span class="mh">0x741c8ed0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1589d28b</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Example to generate a private key</span>
+<span class="w">	</span><span class="c1">//---------------------------------</span>
+<span class="w">	</span><span class="c1">//A 256 bit(32 bytes) random fills &quot;Private&quot;</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ECC_GeneratePrivateKey</span><span class="p">(</span><span class="n">Private</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SW_ECC_OK</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Compute a public key from the private key</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------</span>
+<span class="w">	</span><span class="c1">//for this example , we take a fix private key, so that we can compare</span>
+<span class="w">	</span><span class="c1">//the computed public key</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ECC_ComputePubKey</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Private_F</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PubKey</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SW_ECC_OK</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">CURVE_SIZE_P256</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PubKey</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedPublic</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PubKey</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedPublic</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Check the public key is valid</span>
+<span class="w">	</span><span class="c1">//------------------------------</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ECC_isPublicKeyValid</span><span class="p">((</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PubKey</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SW_ECC_OK</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//Check that a invalid key is rejected</span>
+<span class="w">	</span><span class="c1">//------------------------------------</span>
+<span class="w">	</span><span class="c1">// for our example we corrupt the public key</span>
+<span class="w">	</span><span class="n">PubKey</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00000000</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//now check that the key is rejected</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ECC_isPublicKeyValid</span><span class="p">((</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PubKey</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SW_ECC_INVALID_PUBLIC_POINT</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//return the test status</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Error</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ECCEnum.html" class="btn btn-neutral float-left" title="ECC Error Enumeration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ECDH.html" class="btn btn-neutral float-right" title="ECDH - Diffie Hellman key agreement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

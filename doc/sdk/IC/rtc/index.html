@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RTC Library &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SPI Master Driver" href="../spi_master/index.html" />
+    <link rel="prev" title="Radio Driver" href="../radio/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">RTC Library</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">RTC Library</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rtc-library">
+<h1>RTC Library<a class="headerlink" href="#rtc-library" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The RTC library provides an API to manage date and time ranging from the 1.1.2000 used as the reference date (origin) to the 31.12.2099.
+The library supports day of the week number and let the user select the first day of the week which can be either Sunday or Monday depending on the countries.</p>
+<p>One standard alarm can be configured to provide a synchronization event based on the elapsed time from the reference time or using a date and time in the future.</p>
+<p>One short alarm can also be configured with a delay ranging from 1 ms to 1 day with a resolution of 1 ms in one shot or on a periodic basis.</p>
+<p>When an alarm is configured, the RTC generates an event after the configured time has been reached. Beyond alarm related events, the RTC can also generate events in the following conditions:</p>
+<ul class="simple">
+<li><p>an RTC ready event when the clock source is ready to be used</p></li>
+<li><p>an End of Day event occurs each day at midnight</p></li>
+</ul>
+<section id="how-does-it-work">
+<h3>How does it work ?<a class="headerlink" href="#how-does-it-work" title="Link to this heading"></a></h3>
+<p>The RTC uses the sleep timer clocked by either LF-RC or LF-XTAL as per the user configuration.
+When an alarm is setup, it configures the sleep timer comparator to generate a sleep timer interruption when the trigger criteria is met (number of elapsed seconds from the reference time or a date/time in the future).</p>
+<p>There are 4 (0 to 3) available channels and one can be configured in the RTC configuration structure. By default and if no channel is explicitely configured, the RTC library uses channel 3.</p>
+<p>When the RTC is clocked by the LF-RC, a calibration is done with HF-XTAL to compute the RTC frequency in order to increase the accuracy.</p>
+<p>Otherwise, the LF-XTAL can be used instead of the LF-RC with or without calibration by configuring appropriately the PML configuration structure.</p>
+<p>The code snippet below shows a typical configuration for both LF-XTAL without calibration (<cite>USE_LF_XTAL</cite> defined whether the calibration is needed or not) and LF-XTAL with calibration (<cite>USE_LF_XTAL_WITH_CALIBRATION</cite> defined for using the calibration).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifdef USE_LF_XTAL</span>
+//<span class="w"> </span>configure<span class="w"> </span>PML<span class="w"> </span><span class="k">for</span><span class="w"> </span>using<span class="w"> </span>LF<span class="w"> </span>XTAL
+//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>without<span class="w"> </span>calibration
+<span class="w">  </span>gPML_Config.lfClkSourceType<span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>uint8_t<span class="o">)</span>PML_LF_CLK_XTAL_EN<span class="p">;</span>
+<span class="w">  </span>gPML_Config.lfClkFreqRatioHf<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">46875</span><span class="p">;</span><span class="w">    </span>//<span class="w"> </span>48MHz<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span><span class="m">32</span>.768kHz
+<span class="w">  </span>gPML_Config.lfClkFreqRatioLf<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">64</span><span class="p">;</span>
+<span class="w">  </span>gPML_Config.lfClkSourceAccuracy<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="p">;</span><span class="w">      </span>//<span class="w"> </span>150ppm
+<span class="w">  </span>gPML_Config.rcCalibSkip<span class="w">         </span><span class="o">=</span><span class="w"> </span>true<span class="p">;</span><span class="w">     </span>//<span class="w"> </span>Disable<span class="w"> </span>calibration
+<span class="c1">#ifdef USE_LF_XTAL_WITH_CALIBRATION</span>
+//<span class="w"> </span>configure<span class="w"> </span>PML<span class="w"> </span><span class="k">for</span><span class="w"> </span>specifically<span class="w"> </span>using<span class="w"> </span>LF<span class="w"> </span>XTAL<span class="w"> </span>with<span class="w"> </span>calibration
+//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>with<span class="w"> </span>calibration
+<span class="w">  </span>gPML_Config.lfClkSourceAccuracy<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">;</span><span class="w">       </span>//<span class="w"> </span>50ppm
+<span class="w">  </span>gPML_Config.rcCalibSkip<span class="w">         </span><span class="o">=</span><span class="w"> </span>false<span class="p">;</span><span class="w">    </span>//<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>skip<span class="w"> </span>calibration
+<span class="w">  </span>gPML_Config.rcCalibHfLimit<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+<span class="w">  </span>gPML_Config.rcCalibLfLimit<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">38</span><span class="p">;</span><span class="w">       </span>//<span class="w"> </span>1200ms<span class="w"> </span>@32<span class="w"> </span>kHz
+<span class="w">  </span>gPML_Config.rcCalibPeriod<span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="m">16384</span><span class="p">;</span><span class="w">    </span>//<span class="w"> </span>500ms<span class="w"> </span>@32kHz
+<span class="w">  </span>gPML_Config.rcCalibCorrection<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span><span class="w">        </span>//<span class="w"> </span>0ppm
+<span class="c1">#endif</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-library-registration">
+<h3>RTC Library registration<a class="headerlink" href="#rtc-library-registration" title="Link to this heading"></a></h3>
+<p>In order to be used, the RTC library shall be registered in <cite>NVM_ConfigModules()</cite> function as shown in the code below. Note that the RTC header file <cite>rtc.h</cite> shall be included first.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;rtc.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">RTC_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-events">
+<h3>RTC Events<a class="headerlink" href="#rtc-events" title="Link to this heading"></a></h3>
+<p>A callback shall be provided to the RTC configuration structure for RTC events notifications.
+This callback provides the source of the RTC event which can be:</p>
+<ul class="simple">
+<li><p>short alarm</p>
+<ul>
+<li><p>one shot</p></li>
+<li><p>periodic</p></li>
+</ul>
+</li>
+<li><p>standard alarm</p>
+<ul>
+<li><p>one shot only</p></li>
+</ul>
+</li>
+<li><p>end of day</p>
+<ul>
+<li><p>event sent each day at midnight</p></li>
+</ul>
+</li>
+<li><p>ready state</p>
+<ul>
+<li><p>sent only once as soon as the RTC is ready to be used when the RTC clock source has been started</p></li>
+</ul>
+</li>
+</ul>
+<p>Before actually using the RTC or setting up an alarm, it is recommended to wait for the <cite>RTC_Ready</cite> event to be triggered.</p>
+<p>To be able to process a notification, the user defined callback shall have the following prototype:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">RTC_Callback_t</span><span class="p">)(</span><span class="n">RTC_CallbackReason_t</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RTC_Callback</span><span class="p">(</span><span class="n">RTC_CallbackReason_t</span><span class="w"> </span><span class="n">reason</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The parameter <cite>reason</cite> is of type <cite>RTC_CallbackReason_t</cite> defined as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC reason a callback was called.</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC Short Alarm event generated</span>
+<span class="w">  </span><span class="n">RTC_SHORT_ALARM</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC Alarm event generated</span>
+<span class="w">  </span><span class="n">RTC_ALARM</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">1u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC End of Day event generated</span>
+<span class="w">  </span><span class="n">RTC_END_OF_DAY</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">2u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC ready to use (including LF clock used in RTC)</span>
+<span class="w">  </span><span class="n">RTC_READY</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">3u</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_CallbackReason_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The following code example shows a typical way of setting up the RTC callback in the RTC configuration structure in the <cite>NVM_ConfigModules()</cite> function. As already mentioned, the sleep timer comparator is also selected and configured.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="p">...</span>
+
+<span class="w">  </span><span class="n">gRTC_Config</span><span class="p">.</span><span class="n">callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTC_Callback</span><span class="p">;</span>
+<span class="w">  </span><span class="n">gRTC_Config</span><span class="p">.</span><span class="n">sleepTimerChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SLEEP_TIMER_CHANNEL_3</span><span class="p">;</span>
+
+<span class="w">  </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-time-structures">
+<h3>RTC Time structures<a class="headerlink" href="#rtc-time-structures" title="Link to this heading"></a></h3>
+<p>The RTC library is able to work with two different representations of the time.
+All RTC functions that deal with time parameters accept parameters of the two representations.</p>
+<p>Internally the RTC works with the elapsed time in second and subsecond based on a reference time of 1.1.2000 00:00:00. Based on that it computes a date &amp; time and the day of the week number (1 to 7 included).
+It is important to note that the day of the week depends on the day that has been configured as the first day of the week, either Sunday or Monday (the default).</p>
+<p>The structure <cite>RTC_RefTimeCounter_t</cite> is a union of two types of variables. The <cite>timeCounter</cite> is a fixed point value containing the elapsed time from the reference time in both seconds and the subseconds. It helps to do math computations like adding or substracting time. The second time variable is a structure that contains two separated fields, the seconds and the subseconds. This is helpful accessing such information individually.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC time counter structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">union</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// timeCounter in fixed point, format 32.8</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">timeCounter</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">/// time bits access</span>
+<span class="w">  </span><span class="k">struct</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">/// Padding, not used</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w">  </span><span class="n">pad</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="mi">24</span><span class="p">;</span>
+<span class="w">      </span><span class="c1">/// RTC time SubSeconds. Allowed range 0 up to 255. One LSB is 1/256sec.</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w">  </span><span class="n">subSeconds</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="w">      </span><span class="c1">/// RTC time Seconds. Allowed range 0..59</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w">  </span><span class="n">seconds</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="n">time</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_RefTimeCounter_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The other way to represent the time is to use a structure for defining the time and another structure for defining the date. These two structures define the following data fields:</p>
+<ul class="simple">
+<li><p>time of the day (hours, minutes, seconds, subseconds)</p></li>
+<li><p>date (year, month, day)</p></li>
+</ul>
+<p>The time structure <cite>RTC_Time_t</cite> is defined as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC time structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC time Hours. Allowed range 0..23</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">hours</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time Minutes. Allowed range 0..59</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">minutes</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time Seconds. Allowed range 0..59</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">seconds</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time SubSeconds. Allowed range 0 up to 255. One LSB is 1/256sec.</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">subSeconds</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_Time_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The date structure <cite>RTC_Date_t</cite> is defined as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC date structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC date Year. Allowed range 2000..2099.</span>
+<span class="w">  </span><span class="kt">uint16_t</span><span class="w">  </span><span class="n">year</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC date Month. Allowed range 1..12</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">month</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC date Day. Allowed range 1..31</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">day</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC date WeekDay. Allowed range 1..7</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">weekDay</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_Date_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>All the above mentioned structures are gathered into one single structure that contains both the date and the time, as shown in the following code snippet:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC time and date structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC date</span>
+<span class="w">  </span><span class="n">RTC_Date_t</span><span class="w"> </span><span class="n">date</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time</span>
+<span class="w">  </span><span class="n">RTC_Time_t</span><span class="w"> </span><span class="n">time</span><span class="p">;</span>
+
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_TimeDate_t</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-subsecond">
+<h3>RTC Subsecond<a class="headerlink" href="#rtc-subsecond" title="Link to this heading"></a></h3>
+<p>The subsecond is a unsigned 8 bits value representing a fraction of one second.
+One LSB is 1 / 256 = 3,906 ms.</p>
+</section>
+<section id="rtc-weekday">
+<h3>RTC Weekday<a class="headerlink" href="#rtc-weekday" title="Link to this heading"></a></h3>
+<p>The RTC is able to manage which day is considered the first day of the week. One RTC function is available to set the first day of the week which can be Monday or Sunday. Depending on this special day, all other days of the week are renumbered as follow:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">First day of the week (day_of_the_week_value)</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Monday</p></th>
+<th class="head"><p>Sunday</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Monday = 1</p></td>
+<td><p>Sunday = 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tuesday = 2</p></td>
+<td><p>Monday = 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Wednesday = 3</p></td>
+<td><p>Tuesday = 3</p></td>
+</tr>
+<tr class="row-odd"><td><p>Thursday = 4</p></td>
+<td><p>Wednesday = 4</p></td>
+</tr>
+<tr class="row-even"><td><p>Friday = 5</p></td>
+<td><p>Thursday = 5</p></td>
+</tr>
+<tr class="row-odd"><td><p>Saturday = 6</p></td>
+<td><p>Friday = 6</p></td>
+</tr>
+<tr class="row-even"><td><p>Sunday = 7</p></td>
+<td><p>Saturday = 7</p></td>
+</tr>
+</tbody>
+</table>
+<p>By default the RTC uses Monday as the first day of the week, but it can be changed to Sunday with <cite>RTC_SetFirstDayOfTheWeek()</cite> API. It takes one single parameter of type <cite>RTC_FirstDayOfTheWeek_t</cite> which is a simple enum type containing Monday and Sunday numerical representation as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC first day of the week.</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC first day of the week Sunday</span>
+<span class="w">  </span><span class="n">RTC_FIRST_DAY_OF_THE_WEEK_SUNDAY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC first day of the week Monday</span>
+<span class="w">  </span><span class="n">RTC_FIRST_DAY_OF_THE_WEEK_MONDAY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5u</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_FirstDayOfTheWeek_t</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief Set the first day of the week which can be Monday or Sunday.</span>
+<span class="cm"> * @param fdotw first day of the week</span>
+<span class="cm"> * @return RTC error code (see errno.h)</span>
+<span class="cm">*/</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">RTC_SetFirstDayOfTheWeek</span><span class="p">(</span><span class="n">RTC_FirstDayOfTheWeek_t</span><span class="w"> </span><span class="n">fdotw</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-api-return-error-codes">
+<h3>RTC API return Error Codes<a class="headerlink" href="#rtc-api-return-error-codes" title="Link to this heading"></a></h3>
+<p>Some RTC API return a signed 32 bits values error code that mimic the status code defined in the well known <cite>errno.h</cite> header file.
+Consequently, the status code is <cite>0</cite> in case of success. Otherwise, a negative error is returned.</p>
+</section>
+<section id="rtc-alarms">
+<h3>RTC Alarms<a class="headerlink" href="#rtc-alarms" title="Link to this heading"></a></h3>
+<p>As mentionned before, the RTC supports two types of alarms:</p>
+<ul class="simple">
+<li><p>the standard alarm with a date &amp; time</p></li>
+<li><p>the short alarm which can be one shot or periodic with a range from 1 ms to 1 day</p></li>
+</ul>
+<p>The RTC library can only manage one alarm of each type at the same time. Two (or more) alarms of the same type cannot be defined. Consequently, if a new standard alarm is set, it will replace the previous one that could have been previously configured. If a new short alarm is set, it will also replace the previously defined one of the same type.</p>
+</section>
+<section id="setting-an-alarm">
+<h3>Setting an Alarm<a class="headerlink" href="#setting-an-alarm" title="Link to this heading"></a></h3>
+<p>An alarm can be set for a date &amp; time in the future. When this moment is reached, the RTC generates the related RTC_ALARM event.</p>
+<p>The following code snippet shows an example on how to configure a one shot alarm that will trigger the 23th of November, 2023 at 11:37:5:00.00.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_TimeDate_t</span><span class="w"> </span><span class="n">timeDate</span><span class="p">;</span>
+
+<span class="n">timeDate</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">day</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">23</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">month</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">year</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">2023</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">hours</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">minutes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">37</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">subSeconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="n">RTC_SetAlarmTimeAndDate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timeDate</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Moreover, an alarm can be set to trigger an event 30 seconds in the future from the current time. The principle is to read the elapsed time from the first of January 2000, add 30 seconds and use this new time to setup the alarm. The following code shows an example on how to configure such alarm:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_RefTimeCounter_t</span><span class="w"> </span><span class="n">refTime</span><span class="p">;</span>
+
+<span class="c1">// Read the elapsed time from the reference time</span>
+<span class="n">RTC_GetTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+<span class="c1">// Add 30 seconds (RTC_RefTimeCounter_t type is useful for time computations)</span>
+<span class="n">refTime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+<span class="c1">// Configure a oneshot alarm this new time</span>
+<span class="n">RTC_SetAlarmTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In case an already configured alarm has been setup and prior to its event being triggered, it can be cancelled by using a dedicated API. In this case the RTC_ALARM event will not be generated.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_DisableAlarm</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>As already mentioned, an already configured alarm can be replaced by configuring a new one of the same type. In the example shown below, an alarm is set to be triggered 30 seconds in the future, and later in the code we increase this delay by 15 seconds. In this case the alarm is not raised when calling the second time RTC_SetAlarmTime(). The alarm event will be set 45 seconds later instead of 30 seconds.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_RefTimeCounter_t</span><span class="w"> </span><span class="n">refTime</span><span class="p">;</span>
+
+<span class="n">RTC_GetTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+<span class="n">refTime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+<span class="n">RTC_SetAlarmTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="n">refTime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
+<span class="n">RTC_SetAlarmTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-a-short-alarm">
+<h3>Setting a Short Alarm<a class="headerlink" href="#setting-a-short-alarm" title="Link to this heading"></a></h3>
+<p>The RTC supports short alarm and can be configured with a delay ranging from 1 ms to maximum 1 day with a precision of 1 ms.</p>
+<p>In the example below, a one short alarm in configured with a delay of 50 ms. The RTC_SHORT_ALARM event then will be generated only once.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_SetShortAlarm</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="n">RTC_SHORT_ALARM_ONE_SHOT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In the example below, a periodic short alarm is configured with a delay of 1 minute. The RTC_SHORT_ALARM
+event will be generated each minute until it is disabled or overriden by an other short alarm.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_SetShortAlarm</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">RTC_SHORT_ALARM_PERIODIC</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Like a standard alarm, a short alarm can be disabled. In the case of one shot, the alarm can be disabled before it has been generated. In case of a periodic alarm, it will stop it immediatly and stops emitting periodic events. This can simply be done by invoking the following function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_DisableShortAlarm</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dd/de8/group__rtc"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">rtc</span></span></dt>
+<dd><p>Driver for the RTC. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.RTC_NORMAL_YEAR_SIZE">
+<span class="target" id="dd/de8/group__rtc_1gaa2bf94e0111d2f133b28ac9ff54ea7e9"></span><span class="sig-name descname"><span class="n"><span class="pre">RTC_NORMAL_YEAR_SIZE</span></span></span> <span class="pre">(365u)</span><a class="headerlink" href="#c.RTC_NORMAL_YEAR_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Year size - normal year. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.RTC_LEAP_YEAR_SIZE">
+<span class="target" id="dd/de8/group__rtc_1gaf538bb0bf36b781a9eb485d446870c5d"></span><span class="sig-name descname"><span class="n"><span class="pre">RTC_LEAP_YEAR_SIZE</span></span></span> <span class="pre">(366u)</span><a class="headerlink" href="#c.RTC_LEAP_YEAR_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Year size - leap year. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.RTC_IS_LEAP_YEAR">
+<span class="target" id="dd/de8/group__rtc_1gaa7c6dad596bd5eb5a7dc46d77769c1b3"></span><span class="sig-name descname"><span class="n"><span class="pre">RTC_IS_LEAP_YEAR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">year</span></span><span class="sig-paren">)</span> <span class="pre">(0</span> <span class="pre">==</span> <span class="pre">((year)</span> <span class="pre">%</span> <span class="pre">4))</span><a class="headerlink" href="#c.RTC_IS_LEAP_YEAR" title="Link to this definition"></a><br /></dt>
+<dd><p>macro to check if year is leap year. Year range: 0..99 corresponding to year 2000..2099 </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.RTC_YEAR_SIZE">
+<span class="target" id="dd/de8/group__rtc_1gaab85b33cfde83aec603c6320c13ebbbd"></span><span class="sig-name descname"><span class="n"><span class="pre">RTC_YEAR_SIZE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">year</span></span><span class="sig-paren">)</span> <span class="pre">(</span><a class="reference internal" href="#dd/de8/group__rtc_1gaa7c6dad596bd5eb5a7dc46d77769c1b3"><span class="std std-ref"><span class="pre">RTC_IS_LEAP_YEAR</span></span></a><span class="pre">(year)</span> <span class="pre">?</span> <a class="reference internal" href="#dd/de8/group__rtc_1gaf538bb0bf36b781a9eb485d446870c5d"><span class="std std-ref"><span class="pre">RTC_LEAP_YEAR_SIZE</span></span></a> <span class="pre">:</span> <a class="reference internal" href="#dd/de8/group__rtc_1gaa2bf94e0111d2f133b28ac9ff54ea7e9"><span class="std std-ref"><span class="pre">RTC_NORMAL_YEAR_SIZE</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.RTC_YEAR_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>macro to return number of days in given year. Year range: 0..99 corresponding to year 2000..2099 </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv414RTC_Callback_t">
+<span id="_CPPv314RTC_Callback_t"></span><span id="_CPPv214RTC_Callback_t"></span><span id="RTC_Callback_t"></span><span class="target" id="dd/de8/group__rtc_1gaf3459f84d307caa62335ee9a898272bd"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">RTC_Callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv420RTC_CallbackReason_t" title="RTC_CallbackReason_t"><span class="n"><span class="pre">RTC_CallbackReason_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv414RTC_Callback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Type for any functions that are called due to a RTC event. If the user wishes to post a QPC event from the RTC callback, special care must be taken. The QACTIVE_POST_ISR macro must be used and all posts must be wrapped by QK_ISR_ENTRY and QK_ISR_EXIT. For example: </p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">RTC_Callback</span><span class="p">(</span><span class="n">RTC_CallbackReason_t</span> <span class="n">reason</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QK_ISR_ENTRY</span><span class="p">();</span>
+
+    <span class="o">//</span> <span class="n">Post</span> <span class="n">an</span> <span class="n">event</span> <span class="n">to</span> <span class="n">the</span> <span class="n">task</span><span class="o">.</span>
+    <span class="n">QEventParams</span><span class="o">*</span> <span class="n">pEvent</span> <span class="o">=</span> <span class="p">(</span><span class="n">QEventParams</span><span class="o">*</span><span class="p">)</span><span class="n">Q_NEW</span><span class="p">(</span><span class="n">QEventParams</span><span class="p">,</span> <span class="n">RTC_EVENT_SIG</span><span class="p">);</span>
+    <span class="n">pEvent</span><span class="o">-&gt;</span><span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">void</span><span class="o">*</span><span class="p">)</span><span class="n">reason</span><span class="p">;</span>
+    <span class="n">QACTIVE_POST</span><span class="p">(</span><span class="o">&amp;</span><span class="n">AO_Task</span><span class="o">.</span><span class="n">super</span><span class="p">,</span> <span class="p">(</span><span class="n">QEvt</span><span class="o">*</span><span class="p">)</span><span class="n">pEvent</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+
+    <span class="n">QK_ISR_EXIT</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+ </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This callback is called in an interrupt context. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Param reason<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The reason this callback was called. See <a class="reference internal" href="#dd/de8/group__rtc_1ga38d5cd54d628c9cea99fc47624097af0"><span class="std std-ref">RTC_CallbackReason_t</span></a> for more information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv420RTC_CallbackReason_t">
+<span id="_CPPv320RTC_CallbackReason_t"></span><span id="_CPPv220RTC_CallbackReason_t"></span><span class="target" id="dd/de8/group__rtc_1ga38d5cd54d628c9cea99fc47624097af0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_CallbackReason_t</span></span></span><a class="headerlink" href="#_CPPv420RTC_CallbackReason_t" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC reason a callback was called. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_CallbackReason_t15RTC_SHORT_ALARME">
+<span id="_CPPv3N20RTC_CallbackReason_t15RTC_SHORT_ALARME"></span><span id="_CPPv2N20RTC_CallbackReason_t15RTC_SHORT_ALARME"></span><span class="target" id="dd/de8/group__rtc_1gga38d5cd54d628c9cea99fc47624097af0ab843054e41cfbaec6b0950473e585e5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SHORT_ALARM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0u</span></span><a class="headerlink" href="#_CPPv4N20RTC_CallbackReason_t15RTC_SHORT_ALARME" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC Short Alarm event generated. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_CallbackReason_t9RTC_ALARME">
+<span id="_CPPv3N20RTC_CallbackReason_t9RTC_ALARME"></span><span id="_CPPv2N20RTC_CallbackReason_t9RTC_ALARME"></span><span class="target" id="dd/de8/group__rtc_1gga38d5cd54d628c9cea99fc47624097af0a9e38d9d64841c52570693213ef05a6ae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_ALARM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1u</span></span><a class="headerlink" href="#_CPPv4N20RTC_CallbackReason_t9RTC_ALARME" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC Alarm event generated. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_CallbackReason_t14RTC_END_OF_DAYE">
+<span id="_CPPv3N20RTC_CallbackReason_t14RTC_END_OF_DAYE"></span><span id="_CPPv2N20RTC_CallbackReason_t14RTC_END_OF_DAYE"></span><span class="target" id="dd/de8/group__rtc_1gga38d5cd54d628c9cea99fc47624097af0af905b4b8ce7a8e24f81db30a96af494a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_END_OF_DAY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2u</span></span><a class="headerlink" href="#_CPPv4N20RTC_CallbackReason_t14RTC_END_OF_DAYE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC End of Day event generated. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_CallbackReason_t9RTC_READYE">
+<span id="_CPPv3N20RTC_CallbackReason_t9RTC_READYE"></span><span id="_CPPv2N20RTC_CallbackReason_t9RTC_READYE"></span><span class="target" id="dd/de8/group__rtc_1gga38d5cd54d628c9cea99fc47624097af0ab725e1dde8db61931a12e236ea3679cd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_READY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3u</span></span><a class="headerlink" href="#_CPPv4N20RTC_CallbackReason_t9RTC_READYE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC ready to use (including LF clock used in RTC) </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv423RTC_SleepTimerChannel_t">
+<span id="_CPPv323RTC_SleepTimerChannel_t"></span><span id="_CPPv223RTC_SleepTimerChannel_t"></span><span class="target" id="dd/de8/group__rtc_1ga2cc1a963e2cca7f955b45a06e14c524d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SleepTimerChannel_t</span></span></span><a class="headerlink" href="#_CPPv423RTC_SleepTimerChannel_t" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC Sleep Timer Channel enumeration. The RTC will use this sleep timer channel for comparison with sleep timer counter. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_1E">
+<span id="_CPPv3N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_1E"></span><span id="_CPPv2N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_1E"></span><span class="target" id="dd/de8/group__rtc_1gga2cc1a963e2cca7f955b45a06e14c524da91aece761593fac2db59c2063bf6ea85"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SLEEP_TIMER_CHANNEL_1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1u</span></span><a class="headerlink" href="#_CPPv4N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Sleep Timer Channel 1. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_2E">
+<span id="_CPPv3N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_2E"></span><span id="_CPPv2N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_2E"></span><span class="target" id="dd/de8/group__rtc_1gga2cc1a963e2cca7f955b45a06e14c524da960ea4024b7b886546187c6c5ef76ae4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SLEEP_TIMER_CHANNEL_2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2u</span></span><a class="headerlink" href="#_CPPv4N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Sleep Timer Channel 2. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_3E">
+<span id="_CPPv3N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_3E"></span><span id="_CPPv2N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_3E"></span><span class="target" id="dd/de8/group__rtc_1gga2cc1a963e2cca7f955b45a06e14c524da71b757803fc2cb164b42e4979868d423"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SLEEP_TIMER_CHANNEL_3</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3u</span></span><a class="headerlink" href="#_CPPv4N23RTC_SleepTimerChannel_t21SLEEP_TIMER_CHANNEL_3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Sleep Timer Channel 3. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv423RTC_FirstDayOfTheWeek_t">
+<span id="_CPPv323RTC_FirstDayOfTheWeek_t"></span><span id="_CPPv223RTC_FirstDayOfTheWeek_t"></span><span class="target" id="dd/de8/group__rtc_1ga96fd428156675f90e4b324a479d80d30"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_FirstDayOfTheWeek_t</span></span></span><a class="headerlink" href="#_CPPv423RTC_FirstDayOfTheWeek_t" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC first day of the week. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_SUNDAYE">
+<span id="_CPPv3N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_SUNDAYE"></span><span id="_CPPv2N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_SUNDAYE"></span><span class="target" id="dd/de8/group__rtc_1gga96fd428156675f90e4b324a479d80d30a010ff1bce555b2ca941ca0a704e66650"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_FIRST_DAY_OF_THE_WEEK_SUNDAY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6u</span></span><a class="headerlink" href="#_CPPv4N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_SUNDAYE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC first day of the week Sunday. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_MONDAYE">
+<span id="_CPPv3N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_MONDAYE"></span><span id="_CPPv2N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_MONDAYE"></span><span class="target" id="dd/de8/group__rtc_1gga96fd428156675f90e4b324a479d80d30ade214f9933144b148e45a09d4e996a2b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_FIRST_DAY_OF_THE_WEEK_MONDAY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5u</span></span><a class="headerlink" href="#_CPPv4N23RTC_FirstDayOfTheWeek_t32RTC_FIRST_DAY_OF_THE_WEEK_MONDAYE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC first day of the week Monday. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv420RTC_ShortAlarmMode_t">
+<span id="_CPPv320RTC_ShortAlarmMode_t"></span><span id="_CPPv220RTC_ShortAlarmMode_t"></span><span class="target" id="dd/de8/group__rtc_1gaebec38cddcacf5788f30ca559fb839f0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_ShortAlarmMode_t</span></span></span><a class="headerlink" href="#_CPPv420RTC_ShortAlarmMode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC reason a callback was called. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_ShortAlarmMode_t23RTC_SHORT_ALARM_DISABLEE">
+<span id="_CPPv3N20RTC_ShortAlarmMode_t23RTC_SHORT_ALARM_DISABLEE"></span><span id="_CPPv2N20RTC_ShortAlarmMode_t23RTC_SHORT_ALARM_DISABLEE"></span><span class="target" id="dd/de8/group__rtc_1ggaebec38cddcacf5788f30ca559fb839f0a3b7877a4d63d4d4f527ddbe793f865cf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SHORT_ALARM_DISABLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0u</span></span><a class="headerlink" href="#_CPPv4N20RTC_ShortAlarmMode_t23RTC_SHORT_ALARM_DISABLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC short alarm disabled. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_ONE_SHOTE">
+<span id="_CPPv3N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_ONE_SHOTE"></span><span id="_CPPv2N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_ONE_SHOTE"></span><span class="target" id="dd/de8/group__rtc_1ggaebec38cddcacf5788f30ca559fb839f0ad26dc957511cc9db8e59dbc5057e973f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SHORT_ALARM_ONE_SHOT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1u</span></span><a class="headerlink" href="#_CPPv4N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_ONE_SHOTE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC short alarm One shot mode. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_PERIODICE">
+<span id="_CPPv3N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_PERIODICE"></span><span id="_CPPv2N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_PERIODICE"></span><span class="target" id="dd/de8/group__rtc_1ggaebec38cddcacf5788f30ca559fb839f0acd0fcfc4f4718d9f6d6b628511e9fca0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SHORT_ALARM_PERIODIC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2u</span></span><a class="headerlink" href="#_CPPv4N20RTC_ShortAlarmMode_t24RTC_SHORT_ALARM_PERIODICE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC short alarm periodic mode. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418RTC_RegisterModulev">
+<span id="_CPPv318RTC_RegisterModulev"></span><span id="_CPPv218RTC_RegisterModulev"></span><span id="RTC_RegisterModule__void"></span><span class="target" id="dd/de8/group__rtc_1ga30e0027e387ac285d5558dc0e4911c35"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418RTC_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the RTC module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410RTC_Enablev">
+<span id="_CPPv310RTC_Enablev"></span><span id="_CPPv210RTC_Enablev"></span><span id="RTC_Enable__void"></span><span class="target" id="dd/de8/group__rtc_1ga1ba3150eae84507ce5095806c9cefb4c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_Enable</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410RTC_Enablev" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable RTC function. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It takes some time to fully initialize it and it is indicated by posting event RTC_READY. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411RTC_Disablev">
+<span id="_CPPv311RTC_Disablev"></span><span id="_CPPv211RTC_Disablev"></span><span id="RTC_Disable__void"></span><span class="target" id="dd/de8/group__rtc_1gae3b583f186728bcd2d21289e52132a30"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_Disable</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411RTC_Disablev" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable RTC. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Alarm &amp; Short Alarm are also disabled and will not occur after calling <a class="reference internal" href="#dd/de8/group__rtc_1ga1ba3150eae84507ce5095806c9cefb4c"><span class="std std-ref">RTC_Enable()</span></a> again. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421RTC_TimeToTimeAndDatePK20RTC_RefTimeCounter_tP14RTC_TimeDate_t">
+<span id="_CPPv321RTC_TimeToTimeAndDatePK20RTC_RefTimeCounter_tP14RTC_TimeDate_t"></span><span id="_CPPv221RTC_TimeToTimeAndDatePK20RTC_RefTimeCounter_tP14RTC_TimeDate_t"></span><span id="RTC_TimeToTimeAndDate__RTC_RefTimeCounter_tCP.RTC_TimeDate_tP"></span><span class="target" id="dd/de8/group__rtc_1ga8b0fd7fd0b5b9008b4c139c5a3611364"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_TimeToTimeAndDate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420RTC_RefTimeCounter_t" title="RTC_RefTimeCounter_t"><span class="n"><span class="pre">RTC_RefTimeCounter_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTime</span></span>, <a class="reference internal" href="#_CPPv414RTC_TimeDate_t" title="RTC_TimeDate_t"><span class="n"><span class="pre">RTC_TimeDate_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTimeDate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421RTC_TimeToTimeAndDatePK20RTC_RefTimeCounter_tP14RTC_TimeDate_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Converts uint32_t to <a class="reference internal" href="#db/d5c/struct_r_t_c___time_date__t"><span class="std std-ref">RTC_TimeDate_t</span></a> structure. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pTime</strong> – Current time expressed as number of seconds from reference point (1.1.2000, 00:00:00). </p></li>
+<li><p><strong>pTimeDate</strong> – Pointer to structure to store local time and date. point. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code (see errno.h) </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421RTC_TimeAndDateToTimePK14RTC_TimeDate_tP20RTC_RefTimeCounter_t">
+<span id="_CPPv321RTC_TimeAndDateToTimePK14RTC_TimeDate_tP20RTC_RefTimeCounter_t"></span><span id="_CPPv221RTC_TimeAndDateToTimePK14RTC_TimeDate_tP20RTC_RefTimeCounter_t"></span><span id="RTC_TimeAndDateToTime__RTC_TimeDate_tCP.RTC_RefTimeCounter_tP"></span><span class="target" id="dd/de8/group__rtc_1gadd3ab2b2bfa23b22fb7453051ad42aeb"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_TimeAndDateToTime</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv414RTC_TimeDate_t" title="RTC_TimeDate_t"><span class="n"><span class="pre">RTC_TimeDate_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTimeDate</span></span>, <a class="reference internal" href="#_CPPv420RTC_RefTimeCounter_t" title="RTC_RefTimeCounter_t"><span class="n"><span class="pre">RTC_RefTimeCounter_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTime</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421RTC_TimeAndDateToTimePK14RTC_TimeDate_tP20RTC_RefTimeCounter_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Converts <a class="reference internal" href="#db/d5c/struct_r_t_c___time_date__t"><span class="std std-ref">RTC_TimeDate_t</span></a> structure to uint32_t. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pTimeDate</strong> – Pointer to <a class="reference internal" href="#db/d5c/struct_r_t_c___time_date__t"><span class="std std-ref">RTC_TimeDate_t</span></a> structure containing time broken into its component. </p></li>
+<li><p><strong>pTime</strong> – Current time expressed as number of seconds from referecnce point (1.1.2000, 00:00:00). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424RTC_SetFirstDayOfTheWeek23RTC_FirstDayOfTheWeek_t">
+<span id="_CPPv324RTC_SetFirstDayOfTheWeek23RTC_FirstDayOfTheWeek_t"></span><span id="_CPPv224RTC_SetFirstDayOfTheWeek23RTC_FirstDayOfTheWeek_t"></span><span id="RTC_SetFirstDayOfTheWeek__RTC_FirstDayOfTheWeek_t"></span><span class="target" id="dd/de8/group__rtc_1gaedf30002454577839fc0d190be37c1f8"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SetFirstDayOfTheWeek</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv423RTC_FirstDayOfTheWeek_t" title="RTC_FirstDayOfTheWeek_t"><span class="n"><span class="pre">RTC_FirstDayOfTheWeek_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">fdotw</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424RTC_SetFirstDayOfTheWeek23RTC_FirstDayOfTheWeek_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the first day of the week which can be Monday or Sunday. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fdotw</strong> – first day of the week </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411RTC_SetTimePK20RTC_RefTimeCounter_t">
+<span id="_CPPv311RTC_SetTimePK20RTC_RefTimeCounter_t"></span><span id="_CPPv211RTC_SetTimePK20RTC_RefTimeCounter_t"></span><span id="RTC_SetTime__RTC_RefTimeCounter_tCP"></span><span class="target" id="dd/de8/group__rtc_1ga96da38a4bfd6e94d3b54acb6f8cef4c5"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SetTime</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420RTC_RefTimeCounter_t" title="RTC_RefTimeCounter_t"><span class="n"><span class="pre">RTC_RefTimeCounter_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTime</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411RTC_SetTimePK20RTC_RefTimeCounter_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set RTC current time. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>RTC time is set to value specified in parameter at the time function is called. Any delay caused by interrupts or other activity is not taken into account and it is not compensated. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pTime</strong> – Current time specified as number of seconds and sub second from reference time point (1.1.2000, 00:00:00). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411RTC_GetTimeP20RTC_RefTimeCounter_t">
+<span id="_CPPv311RTC_GetTimeP20RTC_RefTimeCounter_t"></span><span id="_CPPv211RTC_GetTimeP20RTC_RefTimeCounter_t"></span><span id="RTC_GetTime__RTC_RefTimeCounter_tP"></span><span class="target" id="dd/de8/group__rtc_1ga8684c84d82475b5cde15c9673f5c417b"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_GetTime</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv420RTC_RefTimeCounter_t" title="RTC_RefTimeCounter_t"><span class="n"><span class="pre">RTC_RefTimeCounter_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTime</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411RTC_GetTimeP20RTC_RefTimeCounter_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get RTC current time. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pTime</strong> – Pointer to current time specified as number of seconds and sub second from reference time point (1.1.2000, 00:00:00). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418RTC_SetTimeAndDatePK14RTC_TimeDate_t">
+<span id="_CPPv318RTC_SetTimeAndDatePK14RTC_TimeDate_t"></span><span id="_CPPv218RTC_SetTimeAndDatePK14RTC_TimeDate_t"></span><span id="RTC_SetTimeAndDate__RTC_TimeDate_tCP"></span><span class="target" id="dd/de8/group__rtc_1ga874298f9385a16ea24fa6e07e0496ad4"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SetTimeAndDate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv414RTC_TimeDate_t" title="RTC_TimeDate_t"><span class="n"><span class="pre">RTC_TimeDate_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTimeDate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418RTC_SetTimeAndDatePK14RTC_TimeDate_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set RTC current time and date. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>RTC time is set to value specified in parameter at the time function is called. Any delay caused by interrupts or other activity is not taken into account and it is not compensated. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pTimeDate</strong> – Pointer to structure containing RTC time and date to set.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418RTC_GetTimeAndDateP14RTC_TimeDate_t">
+<span id="_CPPv318RTC_GetTimeAndDateP14RTC_TimeDate_t"></span><span id="_CPPv218RTC_GetTimeAndDateP14RTC_TimeDate_t"></span><span id="RTC_GetTimeAndDate__RTC_TimeDate_tP"></span><span class="target" id="dd/de8/group__rtc_1ga612cf6781a40f772a2f30cc56027bdbf"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_GetTimeAndDate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414RTC_TimeDate_t" title="RTC_TimeDate_t"><span class="n"><span class="pre">RTC_TimeDate_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTimeDate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418RTC_GetTimeAndDateP14RTC_TimeDate_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get RTC current time and date. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pTimeDate</strong> – Pointer to structure to store current RTC time and date. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417RTC_SetShortAlarmK8uint32_tK20RTC_ShortAlarmMode_t">
+<span id="_CPPv317RTC_SetShortAlarmK8uint32_tK20RTC_ShortAlarmMode_t"></span><span id="_CPPv217RTC_SetShortAlarmK8uint32_tK20RTC_ShortAlarmMode_t"></span><span id="RTC_SetShortAlarm__uint32_tC.RTC_ShortAlarmMode_tC"></span><span class="target" id="dd/de8/group__rtc_1ga6ab0a053f8a3c05f565dfe29b23dcb27"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SetShortAlarm</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">period</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420RTC_ShortAlarmMode_t" title="RTC_ShortAlarmMode_t"><span class="n"><span class="pre">RTC_ShortAlarmMode_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417RTC_SetShortAlarmK8uint32_tK20RTC_ShortAlarmMode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set short alarm generated by RTC. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to system latency it might be impossible to reach short period of interrupts. This is even severe in case Sleep mode is used. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>period</strong> – Period of interrupt. Period is in [ms] and can be in range &lt;1; 86400000&gt;. Maximum value corresponds to 1 day (24*3600*100ms). If Period value is out of range command is ignored. </p></li>
+<li><p><strong>mode</strong> – Mode of short alarm operation. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421RTC_DisableShortAlarmv">
+<span id="_CPPv321RTC_DisableShortAlarmv"></span><span id="_CPPv221RTC_DisableShortAlarmv"></span><span id="RTC_DisableShortAlarm__void"></span><span class="target" id="dd/de8/group__rtc_1gaf870435cd0aad39b0315200a38bbef10"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_DisableShortAlarm</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421RTC_DisableShortAlarmv" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable short alarm generated by RTC. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416RTC_SetAlarmTimePK20RTC_RefTimeCounter_t">
+<span id="_CPPv316RTC_SetAlarmTimePK20RTC_RefTimeCounter_t"></span><span id="_CPPv216RTC_SetAlarmTimePK20RTC_RefTimeCounter_t"></span><span id="RTC_SetAlarmTime__RTC_RefTimeCounter_tCP"></span><span class="target" id="dd/de8/group__rtc_1gac886cd09909a422bb0f5ff8edf403a9f"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SetAlarmTime</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420RTC_RefTimeCounter_t" title="RTC_RefTimeCounter_t"><span class="n"><span class="pre">RTC_RefTimeCounter_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTime</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416RTC_SetAlarmTimePK20RTC_RefTimeCounter_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set RTC Alarm for given time. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>RTC alarm is set to value specified in alarmTime. It is not checked whether it is valid time thus user should ensure it is valid. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pTime</strong> – Time of alarm expressed as number of seconds and sub second from reference point (1.1.2000, 00:00:00). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423RTC_SetAlarmTimeAndDatePK14RTC_TimeDate_t">
+<span id="_CPPv323RTC_SetAlarmTimeAndDatePK14RTC_TimeDate_t"></span><span id="_CPPv223RTC_SetAlarmTimeAndDatePK14RTC_TimeDate_t"></span><span id="RTC_SetAlarmTimeAndDate__RTC_TimeDate_tCP"></span><span class="target" id="dd/de8/group__rtc_1ga67c0822b7865feceeaad2096f93d2d1b"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_SetAlarmTimeAndDate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv414RTC_TimeDate_t" title="RTC_TimeDate_t"><span class="n"><span class="pre">RTC_TimeDate_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTimeDate</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423RTC_SetAlarmTimeAndDatePK14RTC_TimeDate_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set RTC Alarm for given time and date. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>RTC alarm is set to value specified in pTimeDate. It is not checked whether it is valid date/time thus user should ensure it is valid. weekDay (part of date structure) is ignored. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pTimeDate</strong> – Pointer to structure containing RTC time and date to be used for alarm setting.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>RTC error code </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416RTC_DisableAlarmv">
+<span id="_CPPv316RTC_DisableAlarmv"></span><span id="_CPPv216RTC_DisableAlarmv"></span><span id="RTC_DisableAlarm__void"></span><span class="target" id="dd/de8/group__rtc_1gafae2a72a45752752234541425cda85a3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_DisableAlarm</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416RTC_DisableAlarmv" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable pending alarm. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv411gRTC_Config">
+<span id="_CPPv311gRTC_Config"></span><span id="_CPPv211gRTC_Config"></span><span id="gRTC_Config__RTC_Configuration_tV"></span><span class="target" id="dd/de8/group__rtc_1ga497e6748241ee5409e130d4059521bb3"></span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419RTC_Configuration_t" title="RTC_Configuration_t"><span class="n"><span class="pre">RTC_Configuration_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gRTC_Config</span></span></span><a class="headerlink" href="#_CPPv411gRTC_Config" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC Configuration. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv419RTC_Configuration_t">
+<span id="_CPPv319RTC_Configuration_t"></span><span id="_CPPv219RTC_Configuration_t"></span><span id="RTC_Configuration_t"></span><span class="target" id="d3/d90/struct_r_t_c___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv419RTC_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;rtc.h&gt;</em></div>
+<p>RTC configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19RTC_Configuration_t12moduleConfigE">
+<span id="_CPPv3N19RTC_Configuration_t12moduleConfigE"></span><span id="_CPPv2N19RTC_Configuration_t12moduleConfigE"></span><span id="RTC_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="d3/d90/struct_r_t_c___configuration__t_1a7bce1f356933ebfde13fc1bd329bbce1"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N19RTC_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19RTC_Configuration_t17sleepTimerChannelE">
+<span id="_CPPv3N19RTC_Configuration_t17sleepTimerChannelE"></span><span id="_CPPv2N19RTC_Configuration_t17sleepTimerChannelE"></span><span id="RTC_Configuration_t::sleepTimerChannel__RTC_SleepTimerChannel_t"></span><span class="target" id="d3/d90/struct_r_t_c___configuration__t_1a3f99a7bebe7cbbfb67a7f59ec947740b"></span><a class="reference internal" href="#_CPPv423RTC_SleepTimerChannel_t" title="RTC_SleepTimerChannel_t"><span class="n"><span class="pre">RTC_SleepTimerChannel_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sleepTimerChannel</span></span></span><a class="headerlink" href="#_CPPv4N19RTC_Configuration_t17sleepTimerChannelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sleep Timer channel used for RTC function (channel 1 to 3) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19RTC_Configuration_t8callbackE">
+<span id="_CPPv3N19RTC_Configuration_t8callbackE"></span><span id="_CPPv2N19RTC_Configuration_t8callbackE"></span><span id="RTC_Configuration_t::callback__RTC_Callback_t"></span><span class="target" id="d3/d90/struct_r_t_c___configuration__t_1adfdb823eacbd2d5e4c6088b19d190251"></span><a class="reference internal" href="#_CPPv414RTC_Callback_t" title="RTC_Callback_t"><span class="n"><span class="pre">RTC_Callback_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">callback</span></span></span><a class="headerlink" href="#_CPPv4N19RTC_Configuration_t8callbackE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC Callback. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19RTC_Configuration_t17calibrationEnableE">
+<span id="_CPPv3N19RTC_Configuration_t17calibrationEnableE"></span><span id="_CPPv2N19RTC_Configuration_t17calibrationEnableE"></span><span id="RTC_Configuration_t::calibrationEnable__b"></span><span class="target" id="d3/d90/struct_r_t_c___configuration__t_1a13bfa3f6ae166461dcc9a0794423be46"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calibrationEnable</span></span></span><a class="headerlink" href="#_CPPv4N19RTC_Configuration_t17calibrationEnableE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC Calibration enable. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv420RTC_RefTimeCounter_t">
+<span id="_CPPv320RTC_RefTimeCounter_t"></span><span id="_CPPv220RTC_RefTimeCounter_t"></span><span class="target" id="d6/d56/union_r_t_c___ref_time_counter__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_RefTimeCounter_t</span></span></span><a class="headerlink" href="#_CPPv420RTC_RefTimeCounter_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;rtc.h&gt;</em></div>
+<p>RTC time counter structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_RefTimeCounter_t11timeCounterE">
+<span id="_CPPv3N20RTC_RefTimeCounter_t11timeCounterE"></span><span id="_CPPv2N20RTC_RefTimeCounter_t11timeCounterE"></span><span id="RTC_RefTimeCounter_t::timeCounter__uint64_t"></span><span class="target" id="d6/d56/union_r_t_c___ref_time_counter__t_1a58bbe03f7d432c726d7934d2830ce11a"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeCounter</span></span></span><a class="headerlink" href="#_CPPv4N20RTC_RefTimeCounter_t11timeCounterE" title="Link to this definition"></a><br /></dt>
+<dd><p>timeCounter in fixed point, format 32.8 </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_RefTimeCounter_t3padE">
+<span id="_CPPv3N20RTC_RefTimeCounter_t3padE"></span><span id="_CPPv2N20RTC_RefTimeCounter_t3padE"></span><span id="RTC_RefTimeCounter_t::pad__uint64_t"></span><span class="target" id="d6/d56/union_r_t_c___ref_time_counter__t_1ac66c8eb4b38faf324cb9d4c6978ba23b"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pad</span></span></span><a class="headerlink" href="#_CPPv4N20RTC_RefTimeCounter_t3padE" title="Link to this definition"></a><br /></dt>
+<dd><p>Padding, not used. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_RefTimeCounter_t10subSecondsE">
+<span id="_CPPv3N20RTC_RefTimeCounter_t10subSecondsE"></span><span id="_CPPv2N20RTC_RefTimeCounter_t10subSecondsE"></span><span id="RTC_RefTimeCounter_t::subSeconds__uint64_t"></span><span class="target" id="d6/d56/union_r_t_c___ref_time_counter__t_1a9973c0d03f6bbf8ac587af05f7e949fa"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">subSeconds</span></span></span><a class="headerlink" href="#_CPPv4N20RTC_RefTimeCounter_t10subSecondsE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC time SubSeconds. Allowed range 0 up to 255. One LSB is 1/256sec. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_RefTimeCounter_t7secondsE">
+<span id="_CPPv3N20RTC_RefTimeCounter_t7secondsE"></span><span id="_CPPv2N20RTC_RefTimeCounter_t7secondsE"></span><span id="RTC_RefTimeCounter_t::seconds__uint64_t"></span><span class="target" id="d6/d56/union_r_t_c___ref_time_counter__t_1ab76a475bdc5ce0aa25520d6d0362d206"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seconds</span></span></span><a class="headerlink" href="#_CPPv4N20RTC_RefTimeCounter_t7secondsE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC time Seconds. Allowed range 0..59. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20RTC_RefTimeCounter_t4timeE">
+<span id="_CPPv3N20RTC_RefTimeCounter_t4timeE"></span><span id="_CPPv2N20RTC_RefTimeCounter_t4timeE"></span><span class="target" id="d6/d56/union_r_t_c___ref_time_counter__t_1a770755c46e25461b587b3d99a3dbb051"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420RTC_RefTimeCounter_t" title="RTC_RefTimeCounter_t"><span class="n"><span class="pre">RTC_RefTimeCounter_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><a class="headerlink" href="#_CPPv4N20RTC_RefTimeCounter_t4timeE" title="Link to this definition"></a><br /></dt>
+<dd><p>time bits access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410RTC_Time_t">
+<span id="_CPPv310RTC_Time_t"></span><span id="_CPPv210RTC_Time_t"></span><span id="RTC_Time_t"></span><span class="target" id="d5/dc8/struct_r_t_c___time__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_Time_t</span></span></span><a class="headerlink" href="#_CPPv410RTC_Time_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;rtc.h&gt;</em></div>
+<p>RTC time structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Time_t5hoursE">
+<span id="_CPPv3N10RTC_Time_t5hoursE"></span><span id="_CPPv2N10RTC_Time_t5hoursE"></span><span id="RTC_Time_t::hours__uint8_t"></span><span class="target" id="d5/dc8/struct_r_t_c___time__t_1a7e42ab5954382145984979fe47ec8a19"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hours</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Time_t5hoursE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC time Hours. Allowed range 0..23. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Time_t7minutesE">
+<span id="_CPPv3N10RTC_Time_t7minutesE"></span><span id="_CPPv2N10RTC_Time_t7minutesE"></span><span id="RTC_Time_t::minutes__uint8_t"></span><span class="target" id="d5/dc8/struct_r_t_c___time__t_1aa557f5d8839f68e79d71219d7be7f346"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">minutes</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Time_t7minutesE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC time Minutes. Allowed range 0..59. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Time_t7secondsE">
+<span id="_CPPv3N10RTC_Time_t7secondsE"></span><span id="_CPPv2N10RTC_Time_t7secondsE"></span><span id="RTC_Time_t::seconds__uint8_t"></span><span class="target" id="d5/dc8/struct_r_t_c___time__t_1a30d1f5c94393759dae215c67aac9b25d"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seconds</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Time_t7secondsE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC time Seconds. Allowed range 0..59. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Time_t10subSecondsE">
+<span id="_CPPv3N10RTC_Time_t10subSecondsE"></span><span id="_CPPv2N10RTC_Time_t10subSecondsE"></span><span id="RTC_Time_t::subSeconds__uint8_t"></span><span class="target" id="d5/dc8/struct_r_t_c___time__t_1a99d990b980ee76b9d67b2925539cec5a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">subSeconds</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Time_t10subSecondsE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC time SubSeconds. Allowed range 0 up to 255. One LSB is 1/256sec. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410RTC_Date_t">
+<span id="_CPPv310RTC_Date_t"></span><span id="_CPPv210RTC_Date_t"></span><span id="RTC_Date_t"></span><span class="target" id="d4/da1/struct_r_t_c___date__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_Date_t</span></span></span><a class="headerlink" href="#_CPPv410RTC_Date_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;rtc.h&gt;</em></div>
+<p>RTC date structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Date_t4yearE">
+<span id="_CPPv3N10RTC_Date_t4yearE"></span><span id="_CPPv2N10RTC_Date_t4yearE"></span><span id="RTC_Date_t::year__uint16_t"></span><span class="target" id="d4/da1/struct_r_t_c___date__t_1a28f565c63f5bcb6ef408c23565fe1283"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">year</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Date_t4yearE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC date Year. Allowed range 2000..2099. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Date_t5monthE">
+<span id="_CPPv3N10RTC_Date_t5monthE"></span><span id="_CPPv2N10RTC_Date_t5monthE"></span><span id="RTC_Date_t::month__uint8_t"></span><span class="target" id="d4/da1/struct_r_t_c___date__t_1a05c3c28c6395e95f07f96e5dfd3e25fa"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">month</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Date_t5monthE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC date Month. Allowed range 1..12. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Date_t3dayE">
+<span id="_CPPv3N10RTC_Date_t3dayE"></span><span id="_CPPv2N10RTC_Date_t3dayE"></span><span id="RTC_Date_t::day__uint8_t"></span><span class="target" id="d4/da1/struct_r_t_c___date__t_1a71559bc95a42025c9be9e21bd994d515"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">day</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Date_t3dayE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC date Day. Allowed range 1..31. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10RTC_Date_t7weekDayE">
+<span id="_CPPv3N10RTC_Date_t7weekDayE"></span><span id="_CPPv2N10RTC_Date_t7weekDayE"></span><span id="RTC_Date_t::weekDay__uint8_t"></span><span class="target" id="d4/da1/struct_r_t_c___date__t_1a0fc8520dc7a81c43e8f8bcfa7d11d279"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">weekDay</span></span></span><a class="headerlink" href="#_CPPv4N10RTC_Date_t7weekDayE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC date WeekDay. Allowed range 1..7. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv414RTC_TimeDate_t">
+<span id="_CPPv314RTC_TimeDate_t"></span><span id="_CPPv214RTC_TimeDate_t"></span><span id="RTC_TimeDate_t"></span><span class="target" id="db/d5c/struct_r_t_c___time_date__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RTC_TimeDate_t</span></span></span><a class="headerlink" href="#_CPPv414RTC_TimeDate_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;rtc.h&gt;</em></div>
+<p>RTC time and date structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14RTC_TimeDate_t4dateE">
+<span id="_CPPv3N14RTC_TimeDate_t4dateE"></span><span id="_CPPv2N14RTC_TimeDate_t4dateE"></span><span id="RTC_TimeDate_t::date__RTC_Date_t"></span><span class="target" id="db/d5c/struct_r_t_c___time_date__t_1a6ff79df1fcdfb655d5d014c0c7bb5aa0"></span><a class="reference internal" href="#_CPPv410RTC_Date_t" title="RTC_Date_t"><span class="n"><span class="pre">RTC_Date_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">date</span></span></span><a class="headerlink" href="#_CPPv4N14RTC_TimeDate_t4dateE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC date. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14RTC_TimeDate_t4timeE">
+<span id="_CPPv3N14RTC_TimeDate_t4timeE"></span><span id="_CPPv2N14RTC_TimeDate_t4timeE"></span><span id="RTC_TimeDate_t::time__RTC_Time_t"></span><span class="target" id="db/d5c/struct_r_t_c___time_date__t_1a08fb2b20a4bd6041268213e6f9033cb7"></span><a class="reference internal" href="#_CPPv410RTC_Time_t" title="RTC_Time_t"><span class="n"><span class="pre">RTC_Time_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><a class="headerlink" href="#_CPPv4N14RTC_TimeDate_t4timeE" title="Link to this definition"></a><br /></dt>
+<dd><p>RTC time. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-1-0">
+<h3>Version 1.1.0<a class="headerlink" href="#version-1-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add gRTC_Config external declaration in public interface (in file <cite>rtc.h</cite>).</p></li>
+</ul>
+</section>
+<section id="version-1-0-0">
+<h3>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+<li><p>Support Alarm and Short Alarm.</p></li>
+<li><p>RTC Event with callback (Ready, Alarm, Short Alarm, End of Day).</p></li>
+<li><p>RTC can be used with LF-RC, LF-XTAL with or without calibration.</p></li>
+<li><p>Two format of time supported, elapsed time from reference time (1st January, 2000) or date &amp; time.</p></li>
+<li><p>RTC compute the day of the number.</p></li>
+<li><p>First day of the week can be configured (Monday or Sunday).</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../radio/index.html" class="btn btn-neutral float-left" title="Radio Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../spi_master/index.html" class="btn btn-neutral float-right" title="SPI Master Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

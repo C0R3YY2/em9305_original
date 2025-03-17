@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPI Master Example &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SPI Slave Example" href="../spi_slave_example/index.html" />
+    <link rel="prev" title="QDEC Example" href="../qdec_example/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Examples.html">Sample Applications</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples/drivers.html">EM9305 Drivers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc_single_example/index.html">ADC in Single mode Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adc_continuous_example/index.html">ADC in Continuous mode using DMA Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s_example/index.html">I2S Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c_example/index.html">I2C with EEPROM Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec_example/index.html">QDEC Example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SPI Master Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run">Run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave_example/index.html">SPI Slave Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc_example/index.html">RTC Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ti_example/index.html">Temperature Indicator (TI) Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer_example/index.html">Timer Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog_example/index.html">Watchdog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/bluetooth.html">Bluetooth Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/firmware_update.html">Firmware Update Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/misc.html">Miscellaneous Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Examples.html">Sample Applications</a></li>
+          <li class="breadcrumb-item"><a href="../examples/drivers.html">EM9305 Drivers</a></li>
+      <li class="breadcrumb-item active">SPI Master Example</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spi-master-example">
+<h1>SPI Master Example<a class="headerlink" href="#spi-master-example" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The purpose of this example is to show how to use the SPI master driver (4-wires mode).</p>
+<p>The <a class="reference external" href="https://reference.digilentinc.com/pmod/pmodacl2/start">PmodACL2</a> module is used to demonstrate the use of the SPI master driver. The PmodACL2 contains an ADXL362 accelerometer.</p>
+<a class="reference internal image-reference" href="../../_images/pmodacl2.png"><img alt="PmodACL2" class="align-center" src="../../_images/pmodacl2.png" style="width: 300.0px; height: 300.0px;" /></a>
+<p>This example prints over UART the values of the 3 axis (x,y and z) of the ADXL362.</p>
+<p>GPIOs used:</p>
+<ul class="simple">
+<li><p>UART TX on GPIO7</p></li>
+<li><p>SPIM CSN on GPIO8</p></li>
+<li><p>SPIM SCK on GPIO 9</p></li>
+<li><p>SPIM MISO on GPIO 10</p></li>
+<li><p>SPIM MOSI on GPIO 11</p></li>
+</ul>
+<p>The output is on GPIO7. You can connect a USB to UART device to GPIO7 and use a terminal (for example docklight) to connect on the COM port of your device.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Double check you connected the jumpers D+(07) and D-(06) on the DVK.
+The GPIO6 and GPIO7 pins are connected by default to the USB connector.</p>
+</div>
+<p>The output of this example on GPIO7 should look like this (ASCII):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>EM9305<span class="w"> </span>SPI<span class="w"> </span>Master<span class="w"> </span>demo.<span class="w"> </span>Starting...
+DeviceID<span class="w"> </span>OK.
+<span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-2,<span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-825,<span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">824</span>
+<span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-829,<span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">828</span>
+<span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span>,<span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-820,<span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">827</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The JTAG can’t be used because the SPI master is on GPIOs 8-11.</p>
+</div>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>The build target of this example is: <strong>spi_master_example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>spi_master_example
+</pre></div>
+</div>
+</section>
+<section id="run">
+<h2>Run<a class="headerlink" href="#run" title="Link to this heading"></a></h2>
+<p>To program and run the example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\s</span>pi_master_example<span class="se">\s</span>pi_master_example.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>With YY = the COM port number of your DVK.</p>
+<p>You should be able to see the messages on your terminal.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../qdec_example/index.html" class="btn btn-neutral float-left" title="QDEC Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../spi_slave_example/index.html" class="btn btn-neutral float-right" title="SPI Slave Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

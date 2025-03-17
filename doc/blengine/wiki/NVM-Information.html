@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NVM Configuration &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="HCI Device API" href="HCI-Device-API.html" />
+    <link rel="prev" title="CLI Usage and options" href="Usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NVM Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nvm-information-structure">NVM Information structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#categories">Categories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registers">Registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#entries-type">Entries type</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">registers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mac">mac</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id">id</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#default-files-structure">Default files structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-behavior-on-loading">Default behavior on loading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">NVM Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nvm-configuration">
+<h1>NVM Configuration<a class="headerlink" href="#nvm-configuration" title="Link to this heading"></a></h1>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>This section describes how the specific Device Configuration are handled with the tools provided along with EM Microelectronic SDK.</p>
+<p>Device configuration such as MAC Address and lock bits as well as trimming data (i.e., specific values that must be written in specific registers during boot sequence) are configured during manufacturing process. However, it is possible to e.g., read and write the Device Configuration data (authentication might be required). The representation of the data stored in NVM Information Page uses JSON format.</p>
+<p>A new entry in the standard BLEngine configuration files defines the folder from which the json files will be loaded. For example, the following config entry will load any json files found in the <code class="docutils literal notranslate"><span class="pre">nvm_infos</span></code> folder, this folder being at the same level than the config.cfg file :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">nvm_infos</span><span class="p">]</span>
+<span class="n">json_folders</span><span class="o">=./</span><span class="n">nvm_infos</span>
+</pre></div>
+</div>
+<p>This entry is the default value for now, and a nvm_infos folder is included with default JSON files.</p>
+</section>
+<section id="nvm-information-structure">
+<h2>NVM Information structure<a class="headerlink" href="#nvm-information-structure" title="Link to this heading"></a></h2>
+<p>NVM information is represented with a tree structure that contains the information category name as top-level.</p>
+<p>Each category contains the device_model as children, then the category specific data :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;&lt;category name&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;&lt;device_model&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="o">...</span> <span class="n">data</span> <span class="o">...</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="categories">
+<h2>Categories<a class="headerlink" href="#categories" title="Link to this heading"></a></h2>
+<section id="description">
+<h3>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>The description category defines the memory pages name, along with page number and a content.</p>
+<p>Each page contains a list of entries with a name, an address, a type and specific data.
+The different types are described below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;descriptions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;EM9305&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;em&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;MAC Address&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0x1C00&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mac&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">null</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;Device ID&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0x1C40&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">null</span>
+                    <span class="p">},</span>
+                 <span class="p">}</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Link to this heading"></a></h3>
+<p>The data information describes memory content and is actually used to read and write in the memory, it contains a list of entries named after the descriptions above or the registers below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;EM9305&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;em&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;MAC Address&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;A4:00:00:00:93:05&quot;</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;Device ID&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;01014e305958333334010101010031303230&quot;</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;Trimming Data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;RegNvmTime&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s2">&quot;NvmEraseTime&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                                <span class="s2">&quot;NvmWriteTime&quot;</span><span class="p">:</span> <span class="mi">8</span>
+                        <span class="p">},</span>
+                 <span class="p">}</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="registers">
+<h3>Registers<a class="headerlink" href="#registers" title="Link to this heading"></a></h3>
+<p>This structure describes registers with a name, a description, an address and a default value, each register contains bitfield description with each entries beine described by a name, a description, a mask and a shift value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;registers&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;EM9305&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;RegNvmTime&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;NVM write/erase operation timing&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0x00F02810&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;0x00000808&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bitfield&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;NvmEraseTime&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Erase time&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;mask&quot;</span><span class="p">:</span> <span class="s2">&quot;0x00000F00&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;shift&quot;</span><span class="p">:</span> <span class="mi">8</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;NvmWriteTime&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Write time&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;mask&quot;</span><span class="p">:</span> <span class="s2">&quot;0x0000000F&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;shift&quot;</span><span class="p">:</span> <span class="mi">0</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
+<p>The configuration information is mainly settings related to a particular device, with general information.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;configurations&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;EM9305&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;nvm_iram_start&quot;</span><span class="p">:</span> <span class="mi">1589248</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_iram_end&quot;</span><span class="p">:</span> <span class="mi">1605632</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_main_start&quot;</span><span class="p">:</span> <span class="mi">3145728</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_main_end&quot;</span><span class="p">:</span> <span class="mi">3670016</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_info_start&quot;</span><span class="p">:</span> <span class="mi">4194304</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_info_end&quot;</span><span class="p">:</span> <span class="mi">4227072</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_info_page3&quot;</span><span class="p">:</span> <span class="mi">4218880</span><span class="p">,</span>
+            <span class="s2">&quot;swape_size_iram&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;swape_size_main&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s2">&quot;swape_size_info&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s2">&quot;packet_size&quot;</span><span class="p">:</span> <span class="mi">248</span><span class="p">,</span>
+            <span class="s2">&quot;file_line_size&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+            <span class="s2">&quot;padding&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_prog&quot;</span><span class="p">:</span> <span class="s2">&quot;8bd1a64e742e59b1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nvm_info_page3_prog&quot;</span><span class="p">:</span> <span class="mi">4226816</span><span class="p">,</span>
+            <span class="s2">&quot;device_info&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;product_info_version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;ic_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;lot_id&quot;</span><span class="p">:</span> <span class="s2">&quot;N0YX334&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;wafer_number&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;x_position&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;y_position&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;markset&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;test_prog_rev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;test_prog_version&quot;</span><span class="p">:</span> <span class="s2">&quot;102&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;package_type&quot;</span><span class="p">:</span> <span class="mi">48</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="entries-type">
+<h2>Entries type<a class="headerlink" href="#entries-type" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>registers<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+</section>
+<section id="mac">
+<h3>mac<a class="headerlink" href="#mac" title="Link to this heading"></a></h3>
+</section>
+<section id="id">
+<h3>id<a class="headerlink" href="#id" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="default-files-structure">
+<h2>Default files structure<a class="headerlink" href="#default-files-structure" title="Link to this heading"></a></h2>
+<p>This describa a recommended file structure, but since the JSON structure is explicit, everything can be in one file.</p>
+<p>The default files for nvm descriptions, configuration, data and registers definitions are each in their own file, separated by products :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./nvm_infos
+├── /&lt;DEVICENAME&gt;
+│       configurations.json
+│       nvm_default_data.json
+│       nvm_descriptions.json
+│       registers.json
+│
+└── /EM9305
+        configurations.json
+        nvm_default_data.json
+        nvm_descriptions.json
+        registers.json
+</pre></div>
+</div>
+</section>
+<section id="default-behavior-on-loading">
+<h2>Default behavior on loading<a class="headerlink" href="#default-behavior-on-loading" title="Link to this heading"></a></h2>
+<p>The device_model level will be automatically loaded for an engine if it match with the device_model from the configuration file.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Usage.html" class="btn btn-neutral float-left" title="CLI Usage and options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HCI-Device-API.html" class="btn btn-neutral float-right" title="HCI Device API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

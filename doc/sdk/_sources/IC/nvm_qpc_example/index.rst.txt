@@ -1,0 +1,53 @@
+=========================================================================
+QPC example
+=========================================================================
+
+
+Overview
+--------
+
+The purpose of this example is to show how to create QPC tasks and send QPC events.
+
+.. note::
+
+  This example uses the protocol timer to trigger signals. This is not recommended and unitimer should be used instead.
+
+
+Build
+-----
+
+The build target of this example is: **nvm_qpc_example_spi**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_qpc_example_spi
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_qpc_example\nvm_qpc_example_spi.ihex --progress
+
+With YY = the COM port number of your DVK.
+
+
+Read the events
+---------------
+
+Events are sent over the transport.
+
+You can connect with your terminal (for example Docklight) to the COM port of your SDK.
+
+Switch to hexadecimal mode.
+
+You should see something like this:
+
+`04 FF 06 FF 01 00 00 00 01`
+
+The 4 last bytes is a counter. It is increased every second.

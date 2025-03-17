@@ -1,0 +1,514 @@
+# Releases Notes
+
+## Version 1.10.0
+
+Date: 2024-12-05
+
+Add Support for 802.15.4 CHCI Commands, Events and Tests !8218 !8347 !8790
+
+Various EMB Support Updates and Fixes (PTS Tests) !8430 !9016 !8409 !8779 !9022 !9044 !9255 !9356
+
+Update default config with TI calibration data !8473
+
+Python 3.12 Support !9204
+
+Various Bug Fixes !9339 !9365 !9303
+
+
+## Version 1.9.0
+Date: 2024-07-09
+
+Add source code of all procedures in the BLEngine documentation.
+
+Add new procedure to read the ROM version of the part. This is used to simplify the IC configuration loading.
+
+Add a mechanism for variable length packets where the total length is dependent on another field (new VariableFragmentList class).
+
+## Version 1.8.1
+
+**Date:** 2024-04-11
+
+### UPF London updates
+
+the following updates, related to the UPF London, are in the same PR !7363
+
+Add support for mutliple connection handles
+
+Add support for periodic advertising
+
+New "decode" command to decode raw data from logs
+
+### Minor Updates
+
+Various EMSHI and EMB Procedure updates and fixes !7331
+
+add support for Temperature Indicator calibration in Info Page 2 and 3 !7424
+
+Fix for SPI Firmware Update !7420
+
+
+
+## Version 1.8
+
+**Date:** 2024-02-26
+
+### Firmware Update
+
+Add support for OTA firmware update via the new `firmware_update` procedure and support for key container management. !7036
+
+### Updates & Support
+
+Update CI/CD pipeline to the new Test Plan !7020
+
+Added "V2" Connection and Advertising packets support !6856 !6954
+
+Update ATT EMB Packets and Events Support !6568 !6808
+
+EMB DM Procedures Update & Refactoring !6567 !6706
+
+Added some Bluetooth 5.4 Commands and Events !6698
+
+Add DVK_Test_PWM Command !6538
+
+Added DM Events packets support with descriptions !6069
+
+### BugFixes
+
+Reset transport properly if DVK is not responding !6775
+
+Unsigned Integer wrong display when negative !6745
+
+Characteristic Read do not return status !6732
+
+Missing last byte on advertising report packets !6704
+
+L2CAP Reject Procedures parameters !6618
+
+## Version 1.7
+
+**Date:** 2023-12-07
+
+### EMB is coming !
+
+First declaration of many ATT and L2CAP packets. (PR5906) 
+
+Some L2CAP Procedures have been implemented (PR 5659, 6136, 6189).
+
+Also support for EMB in existing procedures is under active development.
+
+### Update Examples
+
+The example scripts were fully reviewed and updated with the last blengine features and good practices. (PR 6095)
+
+Many GATT examples were added to keep up with the rapidly-evolving Devices features.
+
+### Other changes
+
+- EMSHI Connection Update Packet is now usable. (PR 6124)
+- Added Support for Hi Res RSSI (2 bytes), new "hirssi" structure. (PR 6248)
+- send-iso-data procedure have been fixed (PR 6251)
+
+### Notes
+
+The MacAddress class is still in development state and is evolving. Please be gentle when reading mac addresses that can be reversed.
+
+## Version 1.6
+
+**Date:** 2023-09-26
+
+This version fixes some features from the 1.5 version and add some new features.
+
+### Breaking Changes
+
+-
+
+
+### JSON-based configurations files
+
+To allow flexibiliy and confidentiality for devices development and distribution of blengine, the NVM informations have been moved to JSON files. 
+
+Thoses files are needed for ihex programming, this requirement should be removed in a futur release.
+They are needed for NVM informations write and read actions.
+
+To limit the change, the blengine distribution and pip package will ship with default NVM informations files, targeting the EM9305.
+
+Please see NVM Infmations page in the BLEngine wiki for more information
+
+see Pull Request !2863
+
+### REPL CLI Mode
+
+Read-Eval-Print-Loop mode is now production ready !
+
+Give it a quick try with `blengine --port=COM22 repl` then ask for `help`
+
+### Dev Ops
+
+New pipeline and new tst_suite with a lot of improvements, much more stable now.
+
+The PIP server now offer latest release by default and beta versions on demand.
+
+### Packets update
+
+- Many fixes concerning packets definitions
+
+
+
+
+
+
+
+## Version 1.5
+
+**Date:** 2023-01-16
+
+This update bring new features and a few bugfixes.
+
+### Better Device and NVM configuration and management
+
+Support JSON-based configurations files support for mapping NVM memory and IHEX files.
+
+Now blengine have product specific and local configurations files for devices, and a general configuration repository for reference. This allow flexibiliy and confidentiality for development of devices and distribution of blengine.
+
+Please see Doc NVM Infmations page in the BLEngine wiki for more information
+
+see Pull Request !2863
+
+### Product LifeCycle support
+
+*New* procedures `restart` and `power_cycle` allow to restart the device to a predifined mode.
+
+see Pull Request !3388
+
+### Firmware header support
+
+A basic firmware header decoding is now available through a simple procedure
+
+You can use this either on a device or on a ihex file, but you need a connectable device.
+
+see Pull Request !3486
+
+### REPL CLI Mode
+
+Still in beta vesion but already usable, this mode provide a Read-Eval-Print-Loop for command-line-like interface, to use multiple commands on the same session. 
+
+### Documentation update
+
+Procedures and Packets sections has been updated with comprehensible hierarchy, notably the packets also have an index page.
+
+new Product Lifecycle and JSON configuration pages.
+
+See Pull Request !3422
+
+### Dev Ops
+
+New pipeline and new tst_suite with a lot of improvements, much more stable now.
+
+The PIP server now offer latest release by default and beta versions on demand.
+
+### Packets update
+
+- New AES Interfaces packets
+- Many fixes concerning packets definitions
+
+### Fixes
+
+- 9304 Write Patch Continue rare transport error
+
+## Version 1.4
+
+**Date:** 2022-11-15
+
+### Bluetooth Low Energy Device API
+
+The HCIDevice class provide standard method to interact with a Bluetooth controller.
+This API is very close to the BLEDevice class used for EM System Host Interface API.
+
+#### HCILocalDevice
+
+* Device Infos available
+* Name, mode and role update
+* Legacy / Extended Scan support (with smart selection !2848)
+* Legacy and Extended Advertising Support !2891 !3131
+* Remote devices list with sorting and filtering capabilities
+  * sort by RSSI
+  * Filter by Name or MacAddress or Service
+  * get nearest device
+ 
+#### HCIRemoteDevice
+
+* Get mean rssi and mean intervals
+* Update Device infos according to events
+
+### Advertisements Packets
+
+* Support for Extended Advertising Data
+
+### Packets Update
+
+* new DVK related packets 
+
+  * Demande de tirage (pull request) 2952: DVK_Set_UART_Baud_Rate
+  * Demande de tirage (pull request) 2924: added i2c fast mode
+  * Demande de tirage (pull request) 1600: [ADD] New DVK command to send RAW data
+
+* Updates concerning LE packets
+
+   * 9421 Add ConnHandle to Notification and Indication Event packetClosed
+   * Demande de tirage (pull request) 2314: Completed list of Events
+   * Demande de tirage (pull request) 2312: [UPDATE] Error Code List Completed
+   * Demande de tirage (pull request) 2311: Support for multiple Antenna IDs
+   * Demande de tirage (pull request) 2598: Fix for some HCI commands and events definitions related to ISO feature
+
+
+* Em System packet upgrades
+
+   * 8315 test_l2capClosed
+   * Demande de tirage (pull request) 1966: SM_ForcePairingMode added to packets
+   * Demande de tirage (pull request) 2754: feat: add support for EMSRC_Start_Adv_Pattern cmd
+   * Demande de tirage (pull request) 2747: Added STM32
+   * Demande de tirage (pull request) 2359: Add Packetcraft OP Mode command
+   * Demande de tirage (pull request) 2353: added EMSG_Set_RSSI_Offset command registation
+
+
+* Em Application Specific Command support with examples (PR !1379)
+
+* ISO Data Packet Support (PR !2891)
+* ACL Packet Data Support (PR !2593)
+
+### CLI improvements
+
+* Human parsing method for input value 
+* REPL mode (beta)
+
+### EM System updates
+
+* Product Information packet !2720
+* NVM Device infos support !2306
+
+### Devops
+
+* Azure BuildId added to SemVer
+* #5343
+* #11505
+
+## Version 1.3.0
+
+**Date:** 2021-12-22
+
+### High Level Bluetooth Device API
+Consult the module page here: `blengine.host.devices`
+`LocalDevice` (Dongle) and `RemoteDevice` (DUT) devices discovery and connection, the following features are supported :
+
+* GATT Support:
+
+        * Services, Characteristics and Descriptor Discovery
+
+        * Services Relationships
+
+        * Registering / Memory Mapping
+
+        * Read / Write
+
+        * Bluetooth Official UUID’s names matching
+
+* GAP Central / Peripheral Commands Support
+
+        * Scan / Observe (filter support)
+
+        * Register
+
+        * Connect
+
+        * set mode, role, name
+
+* Advertisements Packets support
+
+        * Update RemoteDevice attributes
+
+        * Compute RSSI (sliding mean)
+
+        * Compute Packet Interval (sliding median)
+
+### Characteristics Parser
+Consult the module page here: `blengine.host.characteristics`
+
+* Implement custom characteristics parser with ease
+
+* Already implemented for common characteristics and for the following ervices:
+    * Heart Reate Measurement
+
+    * RSC Measurement
+
+    * Temperature measurement
+
+### Advertisments Packets
+* Add new Custom Advertising fields definition with ease (i.e. Manufacturer ata)
+
+* Alrady support the following:
+    * Flags
+
+    * UUID lists
+
+    * Name
+
+    * TX Power
+
+    * Service Data
+
+### Utilities
+* Bluetooth UUID Utility class
+
+* MacAddress class
+
+### New Codecs
+Available to use in the “structure” field of a packet fragment, for easier manipulation and representation:
+
+* `macaddress` Direct manipulation of MacAddress class instance.
+
+* `utf8` for regular string
+
+* `rssi` Computing twos complement values
+
+### Other Improvements
+* Documentation can be splitted between User (minimal content) and Developer Doc (Full)
+
+* Added examples for Devices API usage
+
+* Documentation restructure and content update.
+
+* There is now more than 550 builtin bluetooth commands defined.
+
+* Multi Patch Write capabilities for 9304
+
+* Better handling of bytearray values from the CLI #2728
+
+* Little Endians Errors Mitigation #2729
+
+* Packets Fragments Diplay wrong values #2757
+
+* General BLEngine stability improvements
+
+## Version 1.2.7rc1
+
+**Date:** 2021-06-10
+
+### Features
+
+CLI input for a bytes value now support 0x notation (little-endian), please prefer this one.
+
+### Fixes
+* Core tests duration have been reduced from 10min to 1min
+
+* Fix Example control Script #1994
+
+* Error in certain case when a command complete have a status != 0 #1986
+
+* Fix input of bytes in CLI mode when the data length is undefined #1270 #1876
+
+* Fix emsmm_read_at_address display issue #1875
+
+## Version 1.2.6
+
+**Date:** 2021-04-28
+
+### Breaking Changes
+
+**9305 and 9304 Support**
+
+TL;DR: If you’re developing for 9304, you must add `--model=EM9304` in CLI or `engine.device_model=EM9304` before sending a packet.
+
+Since the EMSystem Host Interface Packets should work with 9305 and 9304, an HCIEngine (default engine in CLI mode) can be used for 9304 and 9305, the default is 9305 mode the 9304 support can be enabled by wither of thw following option:
+
+In a Script, set `engine.device_model=EM9304` just after creation, it’s also an optional constructor argument (`engine(transport, device_model=EM9304)`).
+
+In CLI mode, add the `--model=EM9304` option before a `send` or `run` command.
+
+But what is really doing this flag, you may ask ?
+In case of sending a EmPacket (Host Interface) or an EM9305Command (for Unity support) it change the default encode wrapper to `packets.EMcommands.Public_User_Defined_1` ehich is the complicated one for the 9304. Concerning the events packets, they are all registered for the 9304 or 9305.
+
+\*\* Logger module \*\*
+
+TL;DR:
+You cannot call logger.init() without arguments, you must give a name to the default logger.
+
+The signature of the logger.init() is the following `def init(name, cfg_file=None, screen=True)`. By default `screen` is True which will log WARNING and above level messages to stdout.
+
+If you want to attach the blengine logger to your’s just call init with the same name as your predefined logger.
+
+### Features
+* Added a –port option to the CLI, this bypass any config file and connect with the default serial config (115200,8,0,0). #1212
+
+* Procedures return values are standardized as single boolean or/and a second argument which may be a string message. #1250
+
+* Dynamic change support between 9304 and 9305, also add a CLI flag (see breaking changes). #1301
+
+* NVM Cycling Control new command. #1584
+
+* A procedure can now be registered with the @procedure decorator. #1200
+
+* A DeviceTestEngine class is now available for 9304 testing. #1649
+
+* The logger module have been refactored to be more flexible. #1576
+
+* In CLI mode, a string which begin with 0x is now interpreted as a bytearray. #1270
+
+### Fixes
+* Version number was wrong and throw an exception on startup
+
+## Version 1.2.5
+
+**Date:** 2021-03-02
+
+### Features
+* Fix EM System Write Hex procedure to also allow writing to Info Pages.
+
+* Fix version information in the cli interface
+
+## Version 1.2.4
+
+**Date:** 2021-02-24
+
+### Features
+* Better handling of read and write operation to registers for both, EM9304 and EM9305
+
+### Known Issues
+* HCI Commands partially implemented. Please ask if the one you are looking for is missing.
+
+## Version 1.2.3
+
+**Date:** 2021-02-18
+
+### Features
+* Initial public release
+
+* (This) Documentation generated
+
+* EM9304 Vendor HCI Commands
+
+* EM System HCI Commands (EM9305)
+
+* Legacy HCI Commands
+
+### Known Issues
+* HCI Commands partially implemented. Please ask if the one you are looking for is missing.
+
+## Version 1.2.2
+
+**Date:** 2021-02-17
+
+### Features
+* Initial public release
+
+* (This) Documentation generated
+
+* EM9304 Vendor HCI Commands
+
+* EM System HCI Commands (EM9305)
+
+* Legacy HCI Commands
+
+### Known Issues
+* Regression bug, the CLI is not working at all !
+
+* HCI Commands partially implemented. Please ask if the one you are looking for is missing.

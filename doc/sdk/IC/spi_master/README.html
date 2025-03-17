@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The SPI master driver has 2 modes: 4-wires and 3-wires.</p>
+<p>The clock can be configured from 750kHz up to 24MHz.</p>
+<p>The configuration of the SPI master is not saved during sleep. It needs to be reconfigured after each wake-up.</p>
+<section id="spi-master-configuration-structure">
+<h2>SPI Master configuration structure<a class="headerlink" href="#spi-master-configuration-structure" title="Link to this heading"></a></h2>
+<p>The SPI Master module needs to be registered in order to be used.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Register SPI Master module</span>
+<span class="n">SPIM_RegisterModule</span><span class="p">();</span>
+
+<span class="c1">// Enable SPI master.</span>
+<span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The module needs to be registered in NVM_ConfigModules and to be enabled.</p>
+<p>The default configuration of the SPI master is:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Default SPI master configuration</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 50.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enabled</p></td>
+<td><p>SPI master module enable/disable</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpioSck</p></td>
+<td><p>The SPI clock GPIO</p></td>
+<td><p>GPIO9</p></td>
+</tr>
+<tr class="row-even"><td><p>gpioMiso</p></td>
+<td><p>The SPI MISO GPIO</p></td>
+<td><p>GPIO10 (not used for 3-wires mode)</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpioMosi</p></td>
+<td><p>The SPI MOSI GPIO</p></td>
+<td><p>GPIO11</p></td>
+</tr>
+<tr class="row-even"><td><p>transactionDepth</p></td>
+<td><p>The size of the transaction queue</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>rxPhase</p></td>
+<td><p>Invert the RX phase clock</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>spiMode</p></td>
+<td><p>The SPI mode</p></td>
+<td><p>SPIM_MODE_4WIRES (0)</p></td>
+</tr>
+<tr class="row-odd"><td><p>msbFirst</p></td>
+<td><p>Most significant bit first</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>cpol</p></td>
+<td><p>Clock polarity</p></td>
+<td><p>0 (low when inactive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>cpha</p></td>
+<td><p>Clock phase</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>prescaler</p></td>
+<td><p>The clock prescaler</p></td>
+<td><p>SPIM_PRESCALER_32</p></td>
+</tr>
+</tbody>
+</table>
+<p>The CSN GPIO is set for each transaction.</p>
+<p>The SPI Master configuration structure is located in non-persistent memory and is lost during sleep.
+It needs to be reinitialized at each wake-up (not only after POR).</p>
+<p>The modifications of the default configuration can be done in NVM_ConfigModules in order to be applied during the initialization of the modules.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">SPIM_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+
+<span class="w">    </span><span class="c1">// Enable SPI master.</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// SPI Master config</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">rxPhase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">spiMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_MODE_4_WIRES</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">prescaler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_PRESCALER_3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 48MHz/3 = 16MHz clock</span>
+
+<span class="w">    </span><span class="c1">// SPI Master GPIO configuration.</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">gpioSck</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">gpioMiso</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">gpioMosi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The configuration of the SPI master driver has to be done after each wake-up (not only POR). The configuration is lost during sleep.</p>
+</div>
+</section>
+<section id="spi-master-csn">
+<h2>SPI Master CSN<a class="headerlink" href="#spi-master-csn" title="Link to this heading"></a></h2>
+<p>The SPI master CSN is given as a parameter to the transfer functions. It needs to be configured as a GPIO output.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPI master write using GPIO_SPIM_CSN</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_WriteBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">gWriteBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The second parameter of SPIM_WriteBytes (bool keepChipSelectLow) can be set to true if you want to keep the CSN asserted after the transaction.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPI master write using GPIO_SPIM_CSN, keep GPIO_SPIM_CSN low after the transaction</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_WriteBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">gWriteBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// Schedule a read transaction. GPIO_SPIM_CSN is set high after the transaction.</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_ReadBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">gReadBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It is also possible to set manually the CSN. In this case, the transfer functions have to be called with SPIM_CSN_GPIO_NONE
+(keepChipSelectLow is ignored).</p>
+</section>
+<section id="spim-clock-frequency-selection">
+<h2>SPIM clock frequency selection<a class="headerlink" href="#spim-clock-frequency-selection" title="Link to this heading"></a></h2>
+<p>The clock frequency is defined like this:</p>
+<p>clock freq = 48MHz / prescaler</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">SPI master clock prescaler</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 37.5%" />
+<col style="width: 25.0%" />
+<col style="width: 37.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Enum</p></th>
+<th class="head"><p>Prescaler</p></th>
+<th class="head"><p>Frequency</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPIM_PRESCALER_2</p></td>
+<td><p>2</p></td>
+<td><p>24MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_3</p></td>
+<td><p>3</p></td>
+<td><p>16MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIM_PRESCALER_4</p></td>
+<td><p>4</p></td>
+<td><p>12MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_6</p></td>
+<td><p>6</p></td>
+<td><p>8MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIM_PRESCALER_8</p></td>
+<td><p>8</p></td>
+<td><p>6MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_16</p></td>
+<td><p>16</p></td>
+<td><p>3MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIM_PRESCALER_32</p></td>
+<td><p>32</p></td>
+<td><p>1.5MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_64</p></td>
+<td><p>64</p></td>
+<td><p>750kHz</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For SPIM_PRESCALER_3 , rxPhase cannot be modified and is set to rxPhase = 0 (Sampling Issue)</p>
+</div>
+</section>
+<section id="update-the-configuration-on-the-fly">
+<h2>Update the configuration on the fly<a class="headerlink" href="#update-the-configuration-on-the-fly" title="Link to this heading"></a></h2>
+<p>It is possible to change the configuration on the fly using the function SPIM_SetConfiguration.</p>
+<p>If you are using multiple devices connected to the SPI master GPIOs, in some case you would like to update the configuration
+between transactions.</p>
+<p>The function SPIM_SetConfiguration is done for this purpose. This function sets the configuration for the next transactions. It has no effect on the
+transactions already waiting in the queue.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Init the configuration to apply</span>
+<span class="n">SPIM_Config_t</span><span class="w"> </span><span class="n">conf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">prescaler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_PRESCALER_4</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rxPhase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">spiMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_MODE_3_WIRES</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Apply the configuration for the next transaction</span>
+<span class="n">SPIM_SetConfiguration</span><span class="p">(</span><span class="n">conf</span><span class="p">);</span>
+
+<span class="c1">// SPI master write using the configuration conf</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_WriteBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">gWriteBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The configuration is reset to default after a sleep.</p>
+</section>
+<section id="spi-master-blocking-functions">
+<h2>SPI master blocking functions<a class="headerlink" href="#spi-master-blocking-functions" title="Link to this heading"></a></h2>
+<p>The standard functions (non-blocking) use internally a transaction queue.
+Interrupts are called each time a transaction is done (after maximum 16 bytes).
+This mechanism is very useful when the SPI master frequency is low because the CPU can do something else during the transaction.
+But is adds delays between each transaction.</p>
+<p>When the SPI master clock frequency is high, the delays become important compared to transaction time.</p>
+<p>Blocking functions are available to reduce the delays between the transactions:</p>
+<ul class="simple">
+<li><p>SPIM_WriteBytesBlocking</p></li>
+<li><p>SPIM_ReadBytesBlocking</p></li>
+<li><p>SPIM_TransferBytesBlocking</p></li>
+</ul>
+<p>For a 24MHz clock frequency, a write of 100 bytes is almost 2 times faster with the blocking function (40us instead of 77us).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not mix blocking and non-blocking functions. If a blocking function is called when the transaction queue is not empty,
+it will return false (transaction not started).</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

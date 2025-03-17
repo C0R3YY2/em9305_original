@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>EM Core handle system interruption by itself, but application code can set a callback to be called
+when an ISR occurs.</p>
+<section id="system-interruptions">
+<h2>System interruptions<a class="headerlink" href="#system-interruptions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>SWI - Software Interrupt 0 to 9</p></li>
+<li><p>GPIO</p></li>
+<li><p>Sleep Timer Out Cmp</p></li>
+<li><p>Sleep Timer Full Value</p></li>
+<li><p>Protocol Timer Out Cmp</p></li>
+<li><p>Protocol Timer Sync</p></li>
+<li><p>ARC Timer 0</p></li>
+<li><p>ARC Timer 1</p></li>
+</ul>
+</section>
+<section id="callback-for-user-interruptions">
+<h2>Callback for User interruptions<a class="headerlink" href="#callback-for-user-interruptions" title="Link to this heading"></a></h2>
+<p>A callback can be provided to EM Core for these interruptions.</p>
+<p>You can find in the API section the functions to set the callback for each kind of ISR.</p>
+<p>The callback shall have the following prototypes.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Prototype of SWI User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SWI</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">swi</span><span class="p">);</span>
+
+<span class="c1">// Prototype of GPIO User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_GPIO</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">gpio</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Sleep Timer out cmp User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SleepTimerOutCmp</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">channel</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Sleep Timer full value User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SleepTimerFullValue</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Protocol Timer out cmp User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ProtoTimerOutCmp</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">channel</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Protocol Timer sync User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ProtoTimerSync</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="c1">// Prototype of ARC Timer 0 User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ARCTimer0</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="c1">// Prototype of ARC Timer 1 User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ARCTimer1</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p>Here is an example how to set SWI interrupt call.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// User SWI interrupt callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SWI</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">swi</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// user code</span>
+<span class="p">}</span>
+
+<span class="c1">// Application code to set isr callback</span>
+<span class="n">IRQ_SetIRQUserHandlerSW1</span><span class="p">(</span><span class="n">IRQUserHandler_SWI</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="interrupts-enable">
+<h2>Interrupts enable<a class="headerlink" href="#interrupts-enable" title="Link to this heading"></a></h2>
+<p>Enabling a specific interrupt in an interrupt group means that the corresponding
+status bit is set to 1 when the interrupt occurs. If the interrupt in the
+interrupt group is not enabled, then the corresponding status bit will not be
+changed, even if the interrupt is triggered.</p>
+</section>
+<section id="interrupts-mask">
+<h2>Interrupts mask<a class="headerlink" href="#interrupts-mask" title="Link to this heading"></a></h2>
+<p>If one of the status bits corresponding to the interrupt is 1 and the interrupt
+is unmasked, the interrupt is handled by the CPU. The interrupt is not handled
+by the CPU if it is masked.</p>
+</section>
+<section id="software-interrupt-mask">
+<h2>Software interrupt mask<a class="headerlink" href="#software-interrupt-mask" title="Link to this heading"></a></h2>
+<p>Unlike the other interrupt sources, the software interrupt mask is managed
+differently. In fact, it is not saved and restored when the device wakes from
+sleep, but the software interrupt are always masked when the device wakes from
+sleep. Therefore, it is the user’s responsibility to unmask the software
+interrupt before using it each time the device wakes from sleep.</p>
+</section>
+<section id="critical-sections-and-radio-isr">
+<h2>Critical Sections and Radio ISR<a class="headerlink" href="#critical-sections-and-radio-isr" title="Link to this heading"></a></h2>
+<p>The SDK provides a set of drivers that might execute critical sections
+which must not be interrupted during their execution, mainly to fulfill
+timing constraints and to avoid concurrent access to a single resource.</p>
+<p>This is why interruptions are masked at the beginning of such sections
+and unmasked when completed.</p>
+<p>However, for the sake of keeping any on-going BLE connection and limiting
+the timing impacts on the radio IP, the radio driver has the highest priority
+level compared to other drivers.</p>
+<p>Consequently, a critical section in a driver will mask all interruptions
+except the ones that are of the highest priority level, that is the radio
+driver interruptions.</p>
+<p>EM recommends not to change the radio driver priority level and not to push
+another driver than the radio driver at this higher priority level as well.
+In such a case, EM does not guarantee a nominal behavior of the device.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

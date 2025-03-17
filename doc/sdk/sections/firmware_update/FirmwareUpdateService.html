@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="firmware update service fwus" lang="en" name="keywords" xml:lang="en" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update Service - FWUS &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Update Commands" href="FirmwareUpdateCommands.html" />
+    <link rel="prev" title="Firmware Update - A Step by Step process" href="FirmwareUpdateStepByStep.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../FirmwareUpdate.html">Firmware Update</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateGeneral.html">Firmware Update Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwarePackageGenerator.html">Firmware Package Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateStepByStep.html">Firmware Update - A Step by Step process</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Firmware Update Service - FWUS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">1 Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gatt-based-service-definition">2 GATT Based Service Definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-definition">2.1 Characteristic Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-control-point-characteristic">2.2 FWU Control Point Characteristic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-data-characteristic">2.4 FWU Data Characteristic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateCommands.html">Firmware Update Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../FirmwareUpdate.html">Firmware Update</a></li>
+      <li class="breadcrumb-item active">Firmware Update Service - FWUS</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-service-fwus">
+<h1>Firmware Update Service - FWUS<a class="headerlink" href="#firmware-update-service-fwus" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>1 Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The purpose of the EM Firmware Update Service (EMFWUS) is to provide an interface between the Firmware Updater Device (FWU Device) and the Firmware Update Target (FWU Target) via Bluetooth.</p>
+<p>Refer to the <a class="reference external" href="FirmwareUpdateGeneral.html">main Firmware Update documentation page</a> for a detailed description of the firmware update mechanism.</p>
+</section>
+<section id="gatt-based-service-definition">
+<h2>2 GATT Based Service Definition<a class="headerlink" href="#gatt-based-service-definition" title="Link to this heading"></a></h2>
+<section id="characteristic-definition">
+<h3>2.1 Characteristic Definition<a class="headerlink" href="#characteristic-definition" title="Link to this heading"></a></h3>
+<p>This section defines requirements related to GATT characteristics and descriptors for this service. Only one instance of each characteristic in table below is permitted within this service.</p>
+<p>Where a characteristic can be notified or indicated, a Client Characteristic Configuration descriptor shall be included in that characteristic, as required by the Core Specification [1].</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Characteristic Name</p></th>
+<th class="head"><p>Requirement</p></th>
+<th class="head"><p>Mandatory Properties</p></th>
+<th class="head"><p>Optional Properties</p></th>
+<th class="head"><p>Security Req.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FWU Control Point</p></td>
+<td><p>M</p></td>
+<td><p>Write, Indicate</p></td>
+<td><p>N/A</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p>FWU Control Point CCC Descriptor</p></td>
+<td><p>M</p></td>
+<td><p>Read, Write</p></td>
+<td><p>N/A</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p>FWU Firmware Data</p></td>
+<td><p>O</p></td>
+<td><p>Write without Response</p></td>
+<td><p>N/A</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>M = Mandatory, O = Optional</p></li>
+<li><p>Security permission of “None” meanst that this version of the service does not impose any requirement. However, a profile specification may impose additional security requirements.</p></li>
+</ul>
+</div>
+<section id="bit-uuids">
+<h4>2.1.1 128-bit UUIDs<a class="headerlink" href="#bit-uuids" title="Link to this heading"></a></h4>
+<p>The Vendor specific UUID used in this service are listed in the table below.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Vendor Specific UUID</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>81cfa888-454D-11e8-adc0-fa7ae01bd428</p></td>
+<td><p>FWU Service</p></td>
+</tr>
+<tr class="row-odd"><td><p>81cfa9a0-454D-11e8-adc0-fa7ae01bd428</p></td>
+<td><p>FWU Control Point characterisitic</p></td>
+</tr>
+<tr class="row-even"><td><p>81cfaab8-454D-11e8-adc0-fa7ae01bd428</p></td>
+<td><p>FWU Data characteristic</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="fwu-control-point-characteristic">
+<h3>2.2 FWU Control Point Characteristic<a class="headerlink" href="#fwu-control-point-characteristic" title="Link to this heading"></a></h3>
+<p>The behavior of the FWU Control Point is described in this section.</p>
+<p>The Table below shows the requirements for the FWU Control Point characteristic in the context of this service:</p>
+<a class="reference internal image-reference" href="../../_images/FWU_control_point_characteristic.png"><img alt="../../_images/FWU_control_point_characteristic.png" class="align-center" src="../../_images/FWU_control_point_characteristic.png" style="width: 804.7px; height: 335.40000000000003px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>M = Mandatory, O = Optional</p></li>
+<li><p>The library delivered with this service is distributed with two variant. A light version implements only the mandatory features. It is typically used in the User Application to enable a FWU Device to get useful information on the current firmware versions programmed in the FQWU Target and to trigger a reboot of the system in Firmware Updater Mode.</p></li>
+</ul>
+</div>
+<p>The picture below shows an example usage of the FWU Control Point with the FWU Get Firmware Area Count command.</p>
+<a class="reference internal image-reference" href="../../_images/att_packet_control_point_simplified.png"><img alt="../../_images/att_packet_control_point_simplified.png" class="align-center" src="../../_images/att_packet_control_point_simplified.png" style="width: 1054.3px; height: 1058.2px;" /></a>
+</section>
+<section id="fwu-data-characteristic">
+<h3>2.4 FWU Data Characteristic<a class="headerlink" href="#fwu-data-characteristic" title="Link to this heading"></a></h3>
+<p>The FWU Data characteristic is used to transmit piece of firmware from the FWU Device to the FWU Target.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="FirmwareUpdateStepByStep.html" class="btn btn-neutral float-left" title="Firmware Update - A Step by Step process" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="FirmwareUpdateCommands.html" class="btn btn-neutral float-right" title="Firmware Update Commands" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

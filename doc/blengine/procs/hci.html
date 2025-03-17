@@ -1,0 +1,1256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hci Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="key_container Procedures" href="key_container.html" />
+    <link rel="prev" title="gatt Procedures" href="gatt.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html">authentication Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ble.html">ble Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firmware_update.html">firmware_update Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">gap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">gatt Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">hci Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hci-get-local-device-infos">hci.get_local_device_infos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hci-get-remote-device-infos">hci.get_remote_device_infos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#send-acl-data">send_acl_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#send-iso-data">send_iso_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hci-init">hci_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect">connect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-event-mask">set_event_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scan">scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inquiry">inquiry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-tmp">test_tmp</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">l2cap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sm.html">sm Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">hci Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hci-procedures">
+<h1>hci Procedures<a class="headerlink" href="#hci-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="hci-get-local-device-infos">
+<span id="proc-hci-get-local-device-infos"></span><h2><a class="reference internal" href="#hci-get-local-device-infos">hci.get_local_device_infos</a><a class="headerlink" href="#hci-get-local-device-infos" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Get all saort of devices informations and try to identify which device is connected.</p>
+<p>Also gather informations about an eventual dvk.</p>
+<p>the decision flow chart is as follow (subject to change):</p>
+<p>if there is a DVK (DVK_Get_Product_Name)
+then</p>
+<blockquote>
+<div><p>DVK commands supported
+get dvk informations</p>
+</div></blockquote>
+<p>if it’s a HCI controller ? (<a href="#id1"><span class="problematic" id="id2">Read_local_</span></a>….)
+then</p>
+<blockquote>
+<div><p>if it’s a EM controller (Company_identifier EM or PC)
+then</p>
+<blockquote>
+<div><p>firmware is EM HCI (EMB)
+Some vendor commands are supported (Enter config mode, ….)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else</dt><dd><p>Firmware HCI Generic
+Unknown HCI Controller unknown Vendor commands</p>
+</dd>
+<dt>anyway</dt><dd><p>standard HCI Features detection (LE, ACL, …)</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>else</dt><dd><p>if it’s EMSHI (EMSHI_ARC_VersionBleHost)
+then</p>
+<blockquote>
+<div><p>Firmware EMSHI (EMB or AW)
+detect host stack and version (EMB, AW)
+and other stuff TBD</p>
+</div></blockquote>
+<dl>
+<dt>else if it’s EMCore (EMSG_Get_EMCore_Information)</dt><dd><p>Firmware EMCore
+get EMCore infos (Mac Address, Memory Usage, …)
+And other stuff TBD</p>
+</dd>
+<dt>else if device is in config mode (EMSG_Read_Product_Information)</dt><dd><p>Firmware ROM
+get firmware header and other stuff
+authentication</p>
+</dd>
+<dt>else</dt><dd><p>it’s a SOC Application
+if it’s unity (Unity_init)</p>
+<blockquote>
+<div><p>Firmware Unity, informations TBD</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else</dt><dd><p>Firmware Standalone SOC</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The device infos.</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">get_local_device_infos</span>
+
+<span class="n">get_local_device_infos</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@storage</span><span class="o">.</span><span class="n">procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;HCI.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_local_device_infos</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Get all saort of devices informations and try to identify which device is connected.</span>
+
+<span class="sd">    Also gather informations about an eventual dvk.</span>
+
+<span class="sd">    the decision flow chart is as follow (subject to change):</span>
+
+<span class="sd">    if there is a DVK (DVK_Get_Product_Name)</span>
+<span class="sd">    then</span>
+<span class="sd">          DVK commands supported</span>
+<span class="sd">          get dvk informations</span>
+
+<span class="sd">    if it&#39;s a HCI controller ? (Read_local_....)</span>
+<span class="sd">    then</span>
+<span class="sd">         if it&#39;s a EM controller (Company_identifier EM or PC)</span>
+<span class="sd">         then</span>
+<span class="sd">             firmware is EM HCI (EMB)</span>
+<span class="sd">             Some vendor commands are supported (Enter config mode, ....)</span>
+
+<span class="sd">         else</span>
+<span class="sd">             Firmware HCI Generic</span>
+<span class="sd">             Unknown HCI Controller unknown Vendor commands</span>
+<span class="sd">         anyway</span>
+<span class="sd">             standard HCI Features detection (LE, ACL, ...)</span>
+<span class="sd">    else</span>
+<span class="sd">         if it&#39;s EMSHI (EMSHI_ARC_VersionBleHost)</span>
+<span class="sd">         then</span>
+<span class="sd">             Firmware EMSHI (EMB or AW)</span>
+<span class="sd">             detect host stack and version (EMB, AW)</span>
+<span class="sd">             and other stuff TBD</span>
+<span class="sd">         else if it&#39;s EMCore (EMSG_Get_EMCore_Information)</span>
+<span class="sd">             Firmware EMCore</span>
+<span class="sd">             get EMCore infos (Mac Address, Memory Usage, ...)</span>
+<span class="sd">             And other stuff TBD</span>
+<span class="sd">         else if device is in config mode (EMSG_Read_Product_Information)</span>
+<span class="sd">             Firmware ROM</span>
+<span class="sd">             get firmware header and other stuff</span>
+<span class="sd">             authentication</span>
+<span class="sd">         else</span>
+<span class="sd">             it&#39;s a SOC Application</span>
+<span class="sd">             if it&#39;s unity (Unity_init)</span>
+<span class="sd">                 Firmware Unity, informations TBD</span>
+<span class="sd">             else</span>
+<span class="sd">                 Firmware Standalone SOC</span>
+
+<span class="sd">    :param      engine:  The engine</span>
+
+<span class="sd">    :returns:   The device infos.</span>
+<span class="sd">    :rtype:     dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">infos</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">timeout</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="c1"># CHECK FOR DVK</span>
+
+    <span class="n">pkt_check_dvk</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;DVK_Get_Product_Name&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pkt_check_dvk</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;DVK&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt_check_dvk</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;DVK_Get_Product_Serial_Number&quot;</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;DVK_Serial&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;serial_number&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;DVK_Get_Product_Hardware_Version&quot;</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;DVK_Hardware_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hardware_version&quot;</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;DVK_Get_Product_Software_Version&quot;</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;DVK_Software_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;software_version&quot;</span><span class="p">)</span>
+
+    <span class="c1"># HCI Controller check</span>
+
+    <span class="n">pkt_check_hci</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_BD_ADDR&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pkt_check_hci</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;MAC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pkt_check_hci</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BD_ADDR&quot;</span><span class="p">))</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Local_Version_Information&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;HCI_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HCI_Version&quot;</span><span class="p">)</span>
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;HCI_SubVersion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HCI_SubVersion&quot;</span><span class="p">)</span>
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LMP_Version&quot;</span><span class="p">)</span>
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Company_Id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Company_identifier&quot;</span><span class="p">)</span>
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Subversion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LMP_SubVersion&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Bluetooth_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">HCI_BT_VERSIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">infos</span><span class="p">[</span><span class="s2">&quot;HCI_Version&quot;</span><span class="p">],</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Company&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">COMPANY_IDENTIFIERS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Company_Id&quot;</span><span class="p">],</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Company&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;EM&quot;</span><span class="p">,</span> <span class="s2">&quot;PacketCraft&quot;</span><span class="p">]:</span>
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EM HCI Controller&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Generic HCI Controller&quot;</span>
+
+        <span class="c1"># Standard HCI Features Detection</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Local_Supported_Features&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LMP_Features&quot;</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Supported_Features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bitfield_map</span><span class="p">(</span><span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Features&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span> <span class="n">LMP_FEATURES_SUPPORT</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Local_Extended_Features&quot;</span><span class="p">,</span> <span class="n">Page_Number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Features_Page_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Extended_LMP_Features&quot;</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Local_Extended_Features&quot;</span><span class="p">,</span> <span class="n">Page_Number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Features_Page_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Extended_LMP_Features&quot;</span><span class="p">)</span>
+
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Buffer_Size&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;ACL_Data_Packet_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ACL_Data_Packet_Length&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Synchronous_Data_Packet_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Synchronous_Data_Packet_Length&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Total_Num_ACL_Data_Packets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Total_Num_ACL_Data_Packets&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Total_Num_Synchronous_Data_Packets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Total_Num_Synchronous_Data_Packets&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if LE is supported</span>
+        <span class="k">if</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LMP_Features&quot;</span><span class="p">][</span><span class="mi">38</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Local_Supported_Features&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LE_Features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LE_Features&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LE_Supported_Features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bitfield_map</span><span class="p">(</span><span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LE_Features&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[],</span> <span class="n">LE_FEATURES_SUPPORT_BITS</span><span class="p">)</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Supported_States&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LE_Supported_States&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LE_States&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Buffer_Size_V1&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LE_ACL_Data_Packet_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LE_ACL_Data_Packet_Length&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Total_Num_LE_ACL_Data_Packets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Total_Num_LE_ACL_Data_Packets&quot;</span><span class="p">)</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Buffer_Size_V2&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;LE_ACL_Data_Packet_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LE_ACL_Data_Packet_Length&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Total_Num_LE_ACL_Data_Packets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Total_Num_LE_ACL_Data_Packets&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;ISO_Data_Packet_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ISO_Data_Packet_Length&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Total_Num_ISO_Data_Packets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Total_Num_ISO_Data_Packets&quot;</span><span class="p">)</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Suggested_Default_Data_Length&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Suggested_Max_TX_Octets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Suggested_Max_TX_Octets&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Suggested_Max_TX_Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Suggested_Max_TX_Time&quot;</span><span class="p">)</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Maximum_Data_Length&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Supported_Max_TX_Octets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Suggested_Max_TX_Octets&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">31</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Antenna_Information&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Supported_Switching_Sampling_Rates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Supported_Switching_Sampling_Rates&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Num_Antennae&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Num_Antennae&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Max_Switching_Pattern_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Max_Switching_Pattern_Length&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Max_CTE_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Max_CTE_Length&quot;</span><span class="p">)</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_RF_Path_Compensation&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;RF_TX_Path_Compensation_Value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RF_TX_Path_Compensation_Value&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;RF_RX_Path_Compensation_Value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RF_RX_Path_Compensation_Value&quot;</span><span class="p">)</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Transmit_Power&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Min_TX_Power&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Min_TX_Power&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Max_TX_Power&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Max_TX_Power&quot;</span><span class="p">)</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Number_of_Supported_Advertising_Sets&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Num_Supported_Advertising_Sets&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Num_Supported_Advertising_Sets&quot;</span><span class="p">)</span>
+
+<span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            # If LE Data Packet Length Extension (bit position 5) or LE Coded PHY features (bit position 11), the default data length shall be 251</span>
+
+<span class="sd">            if infos[&quot;LE_Features&quot;][5] == &quot;1&quot; or infos[&quot;LE_Features&quot;][11] == &quot;1&quot;:</span>
+<span class="sd">                engine.send(&quot;LE_Write_Suggested_Default_Data_Length&quot;, Suggested_Max_TX_Octets=251, Suggested_Max_TX_Time = 328, timeout=timeout)</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Advertising_Channel_Tx_Power&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Advertising_TX_Power_Level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TX_Power_Level&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>   <span class="c1"># LE no supported</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Data_Block_Size&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Max_ACL_Data_Packet_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Max_ACL_Data_Packet_Length&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Data_Block_Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Data_Block_Length&quot;</span><span class="p">)</span>
+
+                <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Total_Num_Data_Blocks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Total_Num_Data_Blocks&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># It&#39;s NOT a HCI Controller</span>
+
+        <span class="n">pkt_check_emshi</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_ARC_VersionBleHost&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt_check_emshi</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMSHI&quot;</span>
+
+            <span class="n">v</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Version&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="p">]</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware_Stack&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">HOST_STACK</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Stack&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Stack&quot;</span><span class="p">)</span>
+
+        <span class="c1"># EMCORE Check</span>
+
+        <span class="n">pkt_check_emcore</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSG_Get_EMCore_Information&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt_check_emcore</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;EMCore&quot;</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;EMCore_Flavor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EMCORE_FLAVORS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pkt_check_emcore</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Variant_ID&quot;</span><span class="p">))</span> \
+                                            <span class="ow">or</span> <span class="n">pkt_check_emcore</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Variant_ID&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;EMCore_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt_check_emcore</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Version&quot;</span><span class="p">)</span>
+
+        <span class="c1"># CHECK FOR CONFIG MODE</span>
+
+        <span class="n">firmwares</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># ! This will work almost everytime</span>
+        <span class="n">pkt_check_rom</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSG_Read_Product_Information&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt_check_rom</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Firmware&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ROM&quot;</span>
+
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">pkt_check_rom</span><span class="o">.</span><span class="n">response</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Infos_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Product_Information_Structure_Version&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_IC_Family_ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;IC_Family_ID&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Lot_ID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Lot_ID&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Wafer_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Wafer_Number&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_X_Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;X_Position&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Y_Position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Y_Position&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Maskset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Maskset&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Test_Program_Revision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Test_Program_Revision&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Test_Program_Version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Test_Program_Version&quot;</span><span class="p">)</span>
+
+            <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;Product_Package_Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Package_Type&quot;</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSG_Read_MAC_Address&quot;</span><span class="p">,</span> <span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;MAC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalAddress&quot;</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSG_Get_Memory_Usage&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;RAM_Pool_Size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RAM_Pool_Size&quot;</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;PRAM_Used&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PRAM_Used&quot;</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;NPRAM_Used&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NPRAM_Used&quot;</span><span class="p">)</span>
+
+        <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;PRAM_Reserved&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PRAM_Reserved&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">infos</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="hci-get-remote-device-infos">
+<span id="proc-hci-get-remote-device-infos"></span><h2><a class="reference internal" href="#hci-get-remote-device-infos">hci.get_remote_device_infos</a><a class="headerlink" href="#hci-get-remote-device-infos" title="Link to this heading"></a></h2>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The device infos.</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">get_remote_device_infos</span>
+
+<span class="n">get_remote_device_infos</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>HCI.get_remote_device_infos<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@storage</span><span class="o">.</span><span class="n">procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;HCI.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">remote_infos_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_remote_device_infos</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param      engine:  The engine</span>
+
+<span class="sd">    :returns:   The device infos.</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">infos</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_PHY&quot;</span><span class="p">,</span> <span class="n">Connection_Handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;TX_PHY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TX_PHY&quot;</span><span class="p">)</span>
+
+    <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;RX_PHY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RX_PHY&quot;</span><span class="p">)</span>
+
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">infos</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="send-acl-data">
+<span id="proc-send-acl-data"></span><h2><a class="reference internal" href="#send-acl-data">send_acl_data</a><a class="headerlink" href="#send-acl-data" title="Link to this heading"></a></h2>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The data</p>
+</dd>
+<dt class="field-even">param      flushable<span class="colon">:</span></dt>
+<dd class="field-even"><p>The flushable</p>
+</dd>
+<dt class="field-odd">param      broadcast_flag<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The broadcast flag</p>
+</dd>
+<dt class="field-even">param      max_size<span class="colon">:</span></dt>
+<dd class="field-even"><p>The maximum size</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">send_acl_data</span>
+
+<span class="n">send_acl_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ascii_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">flushable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">broadcast_flag</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">buffered</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>send_acl_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ascii_data<span class="o">]</span><span class="w"> </span><span class="o">[</span>--flushable<span class="o">]</span><span class="w"> </span><span class="o">[</span>--broadcast_flag<span class="o">]</span>
+<span class="w">                      </span><span class="o">[</span>--max_size<span class="w"> </span>MAX_SIZE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--pause<span class="w"> </span>PAUSE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--buffered<span class="o">]</span>
+<span class="w">                      </span>conn_handle<span class="w"> </span>data
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">data<span class="colon">:</span></dt>
+<dd class="field-even"><p>Data</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--ascii_data</span></kbd></dt>
+<dd><p>Do not convert data to bytes</p>
+</dd>
+<dt><kbd><span class="option">--flushable</span></kbd></dt>
+<dd><p>flushable flag</p>
+</dd>
+<dt><kbd><span class="option">--broadcast_flag</span></kbd></dt>
+<dd><p>broadcast flag</p>
+</dd>
+<dt><kbd><span class="option">--max_size <var>MAX_SIZE</var></span></kbd></dt>
+<dd><p>Maximum Chunk Size in bytes</p>
+</dd>
+<dt><kbd><span class="option">--pause <var>PAUSE</var></span></kbd></dt>
+<dd><p>Pause between send ACL, in seconds</p>
+</dd>
+<dt><kbd><span class="option">--buffered</span></kbd></dt>
+<dd><p>Create all the payloads and send all at once</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">send_acl_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ascii_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">flushable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">broadcast_flag</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span> <span class="n">max_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_wait</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">buffered</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param      engine:          The engine</span>
+<span class="sd">    :param      conn_handle:     The connection handle</span>
+<span class="sd">    :param      data:            The data</span>
+<span class="sd">    :param      flushable:       The flushable</span>
+<span class="sd">    :param      broadcast_flag:  The broadcast flag</span>
+<span class="sd">    :param      max_size:        The maximum size</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pflag</span> <span class="o">=</span> <span class="mb">0b00</span>
+
+    <span class="n">device_max_size</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LE_ACL_Data_Packet_Length&quot;</span><span class="p">,</span> <span class="mh">0x000a</span><span class="p">)</span>
+
+    <span class="n">max_size</span> <span class="o">=</span> <span class="n">max_size</span> <span class="ow">or</span> <span class="n">device_max_size</span> <span class="ow">or</span> <span class="mi">24</span>
+
+    <span class="n">timeout</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="k">if</span> <span class="n">ascii_data</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="c1">#    else:</span>
+<span class="c1">#        data = bytes.fromhex(data)</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_size</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">flushable</span><span class="p">:</span>
+            <span class="n">pflag</span> <span class="o">=</span> <span class="mb">0b10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pflag</span> <span class="o">=</span> <span class="mb">0b00</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">max_size</span><span class="p">)</span>
+
+    <span class="n">completed_packets</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">on_packet_complete</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">completed_packets</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Connection_Handles&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">conn_handle</span><span class="p">:</span>
+            <span class="n">completed_packets</span> <span class="o">+=</span> <span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Num_Completed_Packets&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_Number_Of_Completed_Packets&quot;</span><span class="p">,</span> <span class="n">on_packet_complete</span><span class="p">)</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">buffered</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+
+        <span class="n">_bytes</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">max_size</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="n">max_size</span><span class="o">+</span><span class="n">max_size</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_size</span><span class="p">:</span>
+                <span class="n">pflag</span> <span class="o">=</span> <span class="mb">0b01</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;HCI_ACL_DATA&quot;</span><span class="p">,</span>
+                <span class="n">Connection_Handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                <span class="n">Packet_Boundary_Flag</span><span class="o">=</span><span class="n">pflag</span><span class="p">,</span>
+                <span class="n">Broadcast_Flag</span><span class="o">=</span><span class="n">broadcast_flag</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">d</span><span class="p">,</span>
+                <span class="c1">#wait_ack=Falseiterable</span>
+            <span class="p">)</span>
+
+            <span class="n">_bytes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send_raw</span><span class="p">(</span><span class="n">_bytes</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">max_size</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="n">max_size</span><span class="o">+</span><span class="n">max_size</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_size</span><span class="p">:</span>
+                <span class="n">pflag</span> <span class="o">=</span> <span class="mb">0b01</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;HCI_ACL_DATA&quot;</span><span class="p">,</span>
+                <span class="n">Connection_Handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                <span class="n">Packet_Boundary_Flag</span><span class="o">=</span><span class="n">pflag</span><span class="p">,</span>
+                <span class="n">Broadcast_Flag</span><span class="o">=</span><span class="n">broadcast_flag</span><span class="p">,</span>
+                <span class="n">length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">),</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">d</span><span class="p">,</span>
+                <span class="c1">#wait_ack=Falseiterable</span>
+            <span class="p">)</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">pause</span><span class="p">)</span>
+
+    <span class="n">total_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="n">speed_kb</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_time</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ACL&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;sent </span><span class="si">%s</span><span class="s2"> bytes in </span><span class="si">%s</span><span class="s2">s (</span><span class="si">%s</span><span class="s2">kb/s)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">total_time</span><span class="p">,</span> <span class="n">speed_kb</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">no_wait</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">completed_packets</span> <span class="o">==</span> <span class="n">chunks</span><span class="p">:</span>
+                <span class="k">break</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_Number_Of_Completed_Packets&quot;</span><span class="p">,</span> <span class="n">on_packet_complete</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">completed_packets</span> <span class="o">==</span> <span class="n">chunks</span><span class="p">,</span> <span class="s2">&quot;sent </span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2"> packets&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">completed_packets</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="send-iso-data">
+<span id="proc-send-iso-data"></span><h2><a class="reference internal" href="#send-iso-data">send_iso_data</a><a class="headerlink" href="#send-iso-data" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 4, Part E page 1816
+Host Controller Interface Functional Specification
+5.4.5 HCI ISO Data packets</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The data</p>
+</dd>
+<dt class="field-even">param      broadcast<span class="colon">:</span></dt>
+<dd class="field-even"><p>The broadcast</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">send_iso_data</span>
+
+<span class="n">send_iso_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ascii_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ts_flag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interval_ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>send_iso_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ascii_data<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ts_flag<span class="o">]</span>
+<span class="w">                      </span><span class="o">[</span>--max_size<span class="w"> </span>MAX_SIZE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--interval_ms<span class="w"> </span>INTERVAL_MS<span class="o">]</span>
+<span class="w">                      </span>conn_handle<span class="w"> </span>data
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">data<span class="colon">:</span></dt>
+<dd class="field-even"><p>Data</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--ascii_data</span></kbd></dt>
+<dd><p>Do not convert data to bytes</p>
+</dd>
+<dt><kbd><span class="option">--ts_flag</span></kbd></dt>
+<dd><p>TS Flag</p>
+</dd>
+<dt><kbd><span class="option">--max_size <var>MAX_SIZE</var></span></kbd></dt>
+<dd><p>Maximum Chunk Size in bytes</p>
+</dd>
+<dt><kbd><span class="option">--interval_ms <var>INTERVAL_MS</var></span></kbd></dt>
+<dd><p>Throttle interval between ISO_Data commands in
+milliseconds</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">send_iso_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">ascii_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ts_flag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interval_ms</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 4, Part E page 1816</span>
+<span class="sd">    Host Controller Interface Functional Specification</span>
+<span class="sd">    5.4.5 HCI ISO Data packets</span>
+
+<span class="sd">    :param      engine:       The engine</span>
+<span class="sd">    :param      conn_handle:  The connection handle</span>
+<span class="sd">    :param      data:         The data</span>
+<span class="sd">    :param      broadcast:    The broadcast</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pb_flag</span> <span class="o">=</span> <span class="mb">0b10</span> <span class="c1"># default is a complete fragment</span>
+
+    <span class="n">device_max_size</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ISO_Data_Packet_Length&quot;</span><span class="p">,</span> <span class="mh">0x000a</span><span class="p">)</span>
+
+    <span class="n">max_size</span> <span class="o">=</span> <span class="n">max_size</span> <span class="ow">or</span> <span class="n">device_max_size</span>
+
+    <span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">interval_s</span> <span class="o">=</span> <span class="n">interval_ms</span> <span class="o">*</span> <span class="mf">0.001</span>
+
+    <span class="k">if</span> <span class="n">ascii_data</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_size</span><span class="p">):</span>
+        <span class="n">pb_flag</span> <span class="o">=</span> <span class="mb">0b00</span> <span class="c1"># first fragment</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">max_size</span><span class="p">)</span>
+
+    <span class="n">completed_packets</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">on_packet_complete</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">completed_packets</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Connection_Handles&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">conn_handle</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">))</span>
+            <span class="n">completed_packets</span> <span class="o">+=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Num_Completed_Packets&quot;</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_Number_Of_Completed_Packets&quot;</span><span class="p">,</span> <span class="n">on_packet_complete</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Will send </span><span class="si">%s</span><span class="s2"> in </span><span class="si">%s</span><span class="s2"> chunks&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">chunks</span><span class="p">))</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="n">sdu_fragments</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">chunks</span><span class="p">):</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">max_size</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="n">max_size</span><span class="o">+</span><span class="n">max_size</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pb_flag</span> <span class="o">=</span> <span class="mb">0b01</span>  <span class="c1"># continuation</span>
+
+        <span class="k">if</span> <span class="n">chunks</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">==</span> <span class="n">chunks</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">pb_flag</span> <span class="o">=</span> <span class="mb">0b11</span> <span class="c1"># last</span>
+
+        <span class="n">ts_flag</span> <span class="o">=</span> <span class="n">ts_flag</span> <span class="ow">and</span> <span class="n">pb_flag</span> <span class="ow">in</span> <span class="p">[</span><span class="mb">0b00</span><span class="p">,</span> <span class="mb">0b10</span><span class="p">]</span>
+
+        <span class="n">sdu_fragment</span> <span class="o">=</span> <span class="n">ISODataLoad</span><span class="p">()</span>
+        <span class="n">sdu_fragment</span><span class="o">.</span><span class="n">TS_Flag</span> <span class="o">=</span> <span class="n">ts_flag</span>
+        <span class="n">sdu_fragment</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;Packet_Sequence_Number&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sdu_fragment</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;ISO_SDU_Length&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">sdu_fragment</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;ISO_SDU_Fragment&quot;</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">sdu_fragment</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+
+        <span class="n">sdu_fragments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sdu_fragment</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;HCI_ISO_DATA&quot;</span><span class="p">,</span>
+            <span class="n">Connection_Handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+            <span class="n">PB_Flag</span><span class="o">=</span><span class="n">pb_flag</span><span class="p">,</span>
+            <span class="n">TS_Flag</span><span class="o">=</span><span class="n">ts_flag</span><span class="p">,</span>
+            <span class="n">length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">),</span>
+            <span class="n">ISO_Data_Load</span><span class="o">=</span><span class="n">d</span><span class="p">,</span>
+            <span class="n">wait_ack</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="c1"># we need to pause because of possible hardware error</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">interval_s</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">completed_packets</span> <span class="o">==</span> <span class="n">chunks</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_Number_Of_Completed_Packets&quot;</span><span class="p">,</span> <span class="n">on_packet_complete</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">completed_packets</span> <span class="o">==</span> <span class="n">chunks</span><span class="p">,</span> <span class="s2">&quot;sent </span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2"> packets&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">completed_packets</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="hci-init">
+<span id="proc-hci-init"></span><h2><a class="reference internal" href="#hci-init">hci_init</a><a class="headerlink" href="#hci-init" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>init host controller</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">hci_init</span>
+
+<span class="n">hci_init</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>hci_init<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--reset<span class="w"> </span>RESET<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--reset <var>RESET</var></span></kbd></dt>
+<dd><p>Send HCI Reset command</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hci_init</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    init host controller</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># this is a reset</span>
+
+    <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;init procedure&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">reset</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;reset&quot;</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Reset&quot;</span><span class="p">)</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Rand&quot;</span><span class="p">)</span>
+
+    <span class="n">rnd</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span>   <span class="mh">0xc2</span><span class="p">,</span> <span class="mh">0xea</span><span class="p">,</span> <span class="mh">0x6b</span><span class="p">,</span> <span class="mh">0x6e</span><span class="p">,</span> <span class="mh">0x88</span><span class="p">,</span> <span class="mh">0x6a</span><span class="p">,</span> <span class="mh">0xdd</span><span class="p">,</span> <span class="mh">0xf9</span><span class="p">,</span>
+                        <span class="mh">0xc2</span><span class="p">,</span> <span class="mh">0xea</span><span class="p">,</span> <span class="mh">0x6b</span><span class="p">,</span> <span class="mh">0x6e</span><span class="p">,</span> <span class="mh">0x88</span><span class="p">,</span> <span class="mh">0x6a</span><span class="p">,</span> <span class="mh">0xdd</span><span class="p">,</span> <span class="mh">0xf9</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Local_Version_Information&quot;</span><span class="p">))</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;init procedure&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Sending random &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rnd</span><span class="p">))</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Encrypt&quot;</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">rnd</span><span class="p">,</span> <span class="n">Plaintext_Data</span><span class="o">=</span><span class="n">rnd</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Encrypted_Data&quot;</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;init procedure&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Got Encrypted Data&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_Local_Supported_Features&quot;</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Local_Supported_Features&quot;</span><span class="p">))</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Buffer_Size_V1&quot;</span><span class="p">)</span>
+    <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Event_Mask&quot;</span><span class="p">,</span> <span class="n">LE_Event_Mask</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span>
+        <span class="p">[</span><span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">]))</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="connect">
+<span id="proc-connect"></span><h2><a class="reference internal" href="#connect">connect</a><a class="headerlink" href="#connect" title="Link to this heading"></a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>if len(name) &gt; 0:</dt><dd><p>bdAddress = self.myHciEngine.advDevices.getBDAddress(args.name)</p>
+</dd>
+<dt>else:</dt><dd><p>bdAddress = macaddress.MACAddress(args.mac)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">connect</span>
+
+<span class="n">connect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>connect<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--name<span class="w"> </span>NAME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--address<span class="w"> </span>ADDRESS<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--name <var>NAME</var></span></kbd></dt>
+<dd><p>Local Name</p>
+</dd>
+<dt><kbd><span class="option">--address <var>ADDRESS</var></span></kbd></dt>
+<dd><p>MAC Address</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    if len(name) &gt; 0:</span>
+<span class="sd">        bdAddress = self.myHciEngine.advDevices.getBDAddress(args.name)</span>
+<span class="sd">    else:</span>
+<span class="sd">        bdAddress = macaddress.MACAddress(args.mac)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;CONNECT_TO&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+        <span class="c1"># self.myHciEngine.sendHciLeCreateConnection(bdAddress)</span>
+        <span class="c1"># self.connectionHandles.append(0x0001)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Device not found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="set-event-mask">
+<span id="proc-set-event-mask"></span><h2><a class="reference internal" href="#set-event-mask">set_event_mask</a><a class="headerlink" href="#set-event-mask" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>set event mask</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">set_event_mask</span>
+
+<span class="n">set_event_mask</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask_page_2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">LE_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>set_event_mask<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mask<span class="w"> </span>MASK<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mask_page_2<span class="w"> </span>MASK_PAGE_2<span class="o">]</span>
+<span class="w">                       </span><span class="o">[</span>--LE_mask<span class="w"> </span>LE_MASK<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--mask <var>MASK</var></span></kbd></dt>
+<dd><p>Mask</p>
+</dd>
+<dt><kbd><span class="option">--mask_page_2 <var>MASK_PAGE_2</var></span></kbd></dt>
+<dd><p>Mask Page 2</p>
+</dd>
+<dt><kbd><span class="option">--LE_mask <var>LE_MASK</var></span></kbd></dt>
+<dd><p>LE Mask</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_event_mask</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mask_page_2</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">LE_mask</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    set event mask</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Set_Event_Mask&quot;</span><span class="p">,</span> <span class="n">Event_Mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mask_page_2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Set_Event_Mask_Page_2&quot;</span><span class="p">,</span> <span class="n">Event_Mask_Page_2</span><span class="o">=</span><span class="n">mask_page_2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">LE_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Event_Mask&quot;</span><span class="p">,</span> <span class="n">LE_Event_Mask</span><span class="o">=</span><span class="n">LE_mask</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;mask set&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="scan">
+<span id="proc-scan"></span><h2><a class="reference internal" href="#scan">scan</a><a class="headerlink" href="#scan" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>scan</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">scan</span>
+
+<span class="n">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>scan<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--state<span class="w"> </span>STATE<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--state <var>STATE</var></span></kbd></dt>
+<dd><p>Scan state (start/stop)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    scan</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">enable</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+    <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;start&quot;</span><span class="p">:</span>
+        <span class="n">enable</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Scan_Parameters&quot;</span><span class="p">,</span>
+                    <span class="n">LE_Scan_Type</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+                    <span class="n">LE_Scan_Interval</span><span class="o">=</span><span class="mh">0x0030</span><span class="p">,</span>
+                    <span class="n">LE_Scan_Window</span><span class="o">=</span><span class="mh">0x0030</span>
+                    <span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Scan_Enable&quot;</span><span class="p">,</span>
+                <span class="n">LE_Scan_Enable</span><span class="o">=</span><span class="n">enable</span><span class="p">,</span>
+                <span class="n">Filter_Duplicates</span><span class="o">=</span><span class="mh">0x01</span>
+                <span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="inquiry">
+<span id="proc-inquiry"></span><h2><a class="reference internal" href="#inquiry">inquiry</a><a class="headerlink" href="#inquiry" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>inquiry</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">inquiry</span>
+
+<span class="n">inquiry</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">inquiry</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    inquiry</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">adv_devices_mac</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">register_device</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+        <span class="c1"># store mac address as key, it provide uniqueness and sorting</span>
+        <span class="n">adv_devices_mac</span><span class="p">[</span><span class="n">pkt</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Address&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Data&quot;</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_LE_Advertising_Report&quot;</span><span class="p">,</span> <span class="n">register_device</span><span class="p">)</span>
+
+    <span class="n">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;start&quot;</span><span class="p">)</span>
+
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="s2">&quot;stop&quot;</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_LE_Advertising_Report&quot;</span><span class="p">,</span> <span class="n">register_device</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">adv_devices_mac</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="test-tmp">
+<span id="proc-test-tmp"></span><h2><a class="reference internal" href="#test-tmp">test_tmp</a><a class="headerlink" href="#test-tmp" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>test_tmp is used for sanity check</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.hci</span> <span class="kn">import</span> <span class="n">test_tmp</span>
+
+<span class="n">test_tmp</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_tmp</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    test_tmp is used for sanity check</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSMM_Write_Continue_Without_Response&quot;</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSMM_Write_At_Address_Without_Response&quot;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSMM_Write_At_Address_Without_Response&quot;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gatt.html" class="btn btn-neutral float-left" title="gatt Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="key_container.html" class="btn btn-neutral float-right" title="key_container Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

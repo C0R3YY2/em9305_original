@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unitimer Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Watchdog Driver" href="../watchdog/index.html" />
+    <link rel="prev" title="UART Driver" href="../uart/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Unitimer Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Unitimer Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="unitimer-driver">
+<h1>Unitimer Driver<a class="headerlink" href="#unitimer-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The universal timer driver provides functionality to start and stop one-shot, expresso,
+and periodic timers.</p>
+<p>The accuracy of the timer is directly affected by the accuracy of the high frequency clock
+source. However, the universal timer does not explicitly set the clock source. The clock source
+has to be set by the application in the initialization function by calling the <code class="docutils literal notranslate"><span class="pre">PML_SetHfClkSource()</span></code>
+function.</p>
+<p>All timers use an ISR mechanism that implies a user callback definition. This callback is executed
+each time the corresponding timer expired.</p>
+<p>The prototype of this user callback is be the following:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// User defined data structure to be used within the Timer user callback.</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="p">}</span><span class="w"> </span><span class="n">UserDefinedType_t</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Timer_ISR_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// User Code</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">DRIVER_STATUS_OK</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// Cast the data pointer to the user defined data structure.</span>
+<span class="w">      </span><span class="n">UserDefinedType_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">UserDefinedType_t</span><span class="o">*</span><span class="p">)</span><span class="n">pUserData</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// Do any relevant processing here.</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Driver_Status_t</span></code> type is defined in <code class="docutils literal notranslate"><span class="pre">&lt;SDK&gt;\libs\em_hw_api\includes\driver.h</span></code>. If everything is OK,
+the <code class="docutils literal notranslate"><span class="pre">status</span></code> variable shall be equal to <code class="docutils literal notranslate"><span class="pre">DRIVER_STATUS_OK</span></code>. Otherwise, when an error occurred in the
+driver, this variable should then be equal to <code class="docutils literal notranslate"><span class="pre">DRIVER_STATUS_ERROR</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pUserData</span></code> parameter can be a pointer to a memory area that has been passed to the Timer driver at timer
+creation. This memory area shall exist at the time the timer callback function is called.
+Thus, in the user defined timer callback, this pointer can be cast to a user defined data structure (see code above)
+or simply to an integer value that is passed when creating the timer like in the following example:</p>
+<p>Then in the timer callback, the parameter value can be retrieved with the following code snippet:</p>
+<section id="one-shot-timer">
+<h3>One-shot timer<a class="headerlink" href="#one-shot-timer" title="Link to this heading"></a></h3>
+<p>The one-shot timer is a timer that executes a callback function once after a specified amount of time.
+This timer is started immediately and automatically after it has been created. After the callback
+function has been executed, the timer is automatically deleted.</p>
+<p>Example of one-shot timer usage:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start a one-shot timer of 5ms</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_OneshotDelay</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"> </span><span class="c1">// 5ms</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="expresso-timer">
+<h3>Expresso timer<a class="headerlink" href="#expresso-timer" title="Link to this heading"></a></h3>
+<p>The expresso timer is also a timer that executes a callback function after a specified amount of
+time. But unlike the one-shot timer, the expresso timer has to be manually started after it has been created.
+After the callback function has been executed, the expresso timer is not deleted and can be reused at will by calling
+again the <code class="docutils literal notranslate"><span class="pre">Timer_Enable()</span></code> function. When not needed anylonger, the timer can be manually deleted using the
+<code class="docutils literal notranslate"><span class="pre">Timer_UnschedulePolling()</span></code> function.</p>
+<p>Example of expresso timer usage:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start an expresso timer of 5ms</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_ExpressoDelay</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// enable the timer for one execution</span>
+<span class="n">Timer_Enable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+
+<span class="p">...</span><span class="w"> </span><span class="c1">// the timer could be reused several times using the Timer_Enable function</span>
+
+<span class="c1">// Delete the timer once it is not used anymore.</span>
+<span class="n">Timer_UnschedulePolling</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="periodic-timer">
+<h3>Periodic timer<a class="headerlink" href="#periodic-timer" title="Link to this heading"></a></h3>
+<p>The periodic timer is a timer that executes a callback function at a specified frequency on a periodic basis.
+This timer shall also be started manually after its creation since it is not automatically started.
+It can be stopped using the <code class="docutils literal notranslate"><span class="pre">Timer_Disable()</span></code> function and deleted with the <code class="docutils literal notranslate"><span class="pre">Timer_UnschedulePolling()</span></code> function.
+Using this type of timer optimizes the power consumption by synchronising it with other timers running at the same
+frequency.</p>
+<p>Example of periodic timer usage:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start a periodic timer of 5ms (200Hz). It will be started in sync with other already</span>
+<span class="c1">// created timers with the same frequency.</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_SchedulePolling</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// enable the timer</span>
+<span class="n">Timer_Enable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="c1">// disable the timer</span>
+<span class="n">Timer_Disable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+
+<span class="p">...</span><span class="w"> </span><span class="c1">// the timer could be reused several times using the Timer_Enable and Timer_Disable function</span>
+
+<span class="c1">// Delete the timer once it is not used anymore.</span>
+<span class="n">Timer_UnschedulePolling</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It is also possible to create periodic timer that will not be synchronised with other timers running at the same frequency.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">Timer_Enable()</span></code> function is called, the timer is immediately started.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start a periodic timer of 5ms (200Hz)</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_SchedulePollingImmediately</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// enable the timer</span>
+<span class="n">Timer_Enable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="c1">// disable the timer</span>
+<span class="n">Timer_Disable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="p">...</span><span class="w"> </span><span class="c1">// the timer could be reused several times using the Timer_Enable and Timer_Disable function</span>
+
+<span class="c1">// Delete the timer once it is not used anymore.</span>
+<span class="n">Timer_UnschedulePolling</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Contrary to the <code class="docutils literal notranslate"><span class="pre">Timer_SchedulePolling()</span></code> function, The <code class="docutils literal notranslate"><span class="pre">Timer_SchedulePollingImmediately()</span></code> function doesn’t synchronize
+the new timer with other timers running at the same frequency. This leads to a power consumption that will not be optimized.</p>
+</div>
+</section>
+<section id="timers-and-sleep-mode">
+<h3>Timers and sleep mode<a class="headerlink" href="#timers-and-sleep-mode" title="Link to this heading"></a></h3>
+<p>When a periodic timer is used, its activity has to be resumed when waking up from sleep mode, otherwise the timer will not be
+reactivated. This is why the function <code class="docutils literal notranslate"><span class="pre">Timer_Resume()</span></code> shall be called in the <code class="docutils literal notranslate"><span class="pre">NVM_ApplicationEntry()</span></code> function.
+An example of this is shown in the following code snippet.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Register the timer module before actually using it.</span>
+<span class="w">  </span><span class="n">Timer_RegisterModule</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Enable timer usage in persistent memory.</span>
+<span class="w">  </span><span class="n">gTimer_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Do here other first stage initializations</span>
+<span class="p">}</span>
+
+<span class="n">NO_RETURN</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">NVM_ApplicationEntry</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Enable interruptions (seti instruction)</span>
+<span class="w">  </span><span class="n">IRQ_EnableInterrupts</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Resume already created timer(s). It will be effective only when resuming from sleep.</span>
+<span class="w">  </span><span class="n">Timer_Resume</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Do other initializations depending on where does the system come from.</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Do any initialization when resuming from sleep.</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Do any initialization after a POR or SW reset.</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There is no need to test if the system is resuming from sleep or not before calling the <code class="docutils literal notranslate"><span class="pre">Timer_Resume()</span></code> function.
+This check is automatically integrated into this function and in case the system does not resume from sleep, then calling
+this function will have no effect.</p>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dc/d25/group__unitimer"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">unitimer</span></span></dt>
+<dd><p>Driver for the unitimer Timer. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420Timer_RegisterModulev">
+<span id="_CPPv320Timer_RegisterModulev"></span><span id="_CPPv220Timer_RegisterModulev"></span><span id="Timer_RegisterModule__void"></span><span class="target" id="dc/d25/group__unitimer_1ga1c1aa287f07edfc41e2ba2fb91d917e5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420Timer_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the unitimer module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421Timer_SchedulePollingf17Driver_Callback_tPv">
+<span id="_CPPv321Timer_SchedulePollingf17Driver_Callback_tPv"></span><span id="_CPPv221Timer_SchedulePollingf17Driver_Callback_tPv"></span><span id="Timer_SchedulePolling__float.Driver_Callback_t.voidP"></span><span class="target" id="dc/d25/group__unitimer_1gaf0a495bb0bccdae8823b3b8788baae1e"></span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_SchedulePolling</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">frequency</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421Timer_SchedulePollingf17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Schedule a callback function to be executed at a specified frequency. </p>
+<p>The accuracy of the timer is directly affected by the accuracy of the high frequency clock source, and the universal timer does not set the clock source. The clock source can be set by the application in the initialization function by calling the function, PML_SetHfClkSource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – <strong>[in]</strong> Specifies the frequency, in Hz, to run the timer. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call at the specified rate. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> Additional data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timer polling index used to access all other timer functions. Otherwise, returns -1 if timer is unschedulable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv432Timer_SchedulePollingImmediatelyf17Driver_Callback_tPv">
+<span id="_CPPv332Timer_SchedulePollingImmediatelyf17Driver_Callback_tPv"></span><span id="_CPPv232Timer_SchedulePollingImmediatelyf17Driver_Callback_tPv"></span><span id="Timer_SchedulePollingImmediately__float.Driver_Callback_t.voidP"></span><span class="target" id="dc/d25/group__unitimer_1ga90a605c1a33820a152819a8c8fcc6859"></span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_SchedulePollingImmediately</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">frequency</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432Timer_SchedulePollingImmediatelyf17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Schedule a callback function to be executed at a specified frequency. </p>
+<p>This function causes the timer to being counting immediately, and will not coalesce with other timers running at the same or similar frequency. The <a class="reference internal" href="#dc/d25/group__unitimer_1gaf0a495bb0bccdae8823b3b8788baae1e"><span class="std std-ref">Timer_SchedulePolling</span></a> function should be used instead as it allows for lower power consumption.</p>
+<p><div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#dc/d25/group__unitimer_1gaf0a495bb0bccdae8823b3b8788baae1e"><span class="std std-ref">Timer_SchedulePolling</span></a></p>
+</div>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The accuracy of the timer is directly affected by the accuracy of the high frequency clock source. The universal timer does not set the clock source. The clock source can be set by the application in the initialization function by calling the function, PML_SetHfClkSource. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – <strong>[in]</strong> Specifies the frequency, in Hz, to run the timer. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call at the specified rate. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> Additional data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timer polling index used to access all other timer functions. Otherwise returns -1 if timer is unschedulable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418Timer_OneshotDelayf17Driver_Callback_tPv">
+<span id="_CPPv318Timer_OneshotDelayf17Driver_Callback_tPv"></span><span id="_CPPv218Timer_OneshotDelayf17Driver_Callback_tPv"></span><span id="Timer_OneshotDelay__float.Driver_Callback_t.voidP"></span><span class="target" id="dc/d25/group__unitimer_1ga0148c5e362ca84cd93595a68a4c26e21"></span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_OneshotDelay</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">milliseconds</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418Timer_OneshotDelayf17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Execute a callback function after the specified time. </p>
+<p>This function starts immediately the timer without the call of <a class="reference internal" href="#dc/d25/group__unitimer_1ga8f5f1aae52b53578acf009d4f4bd3158"><span class="std std-ref">Timer_Enable</span></a>. The timer is automatically deleted after one execution of the callback function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The callback function is executed only once. </p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will trig a division by 0 exception in case the parameter <code class="docutils literal notranslate"><span class="pre">milliseconds</span></code> is zero. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>milliseconds</strong> – <strong>[in]</strong> Specifies the delay, in ms, to run the timer. This value shall be strictly greater than 0. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the specified time. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to be pased to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timer polling index used to access all other timer functions. Otherwise, returns -1 if timer is unschedulable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419Timer_ExpressoDelayf17Driver_Callback_tPv">
+<span id="_CPPv319Timer_ExpressoDelayf17Driver_Callback_tPv"></span><span id="_CPPv219Timer_ExpressoDelayf17Driver_Callback_tPv"></span><span id="Timer_ExpressoDelay__float.Driver_Callback_t.voidP"></span><span class="target" id="dc/d25/group__unitimer_1gaa8e3a93b1833e8701c4f3d5b1de68cea"></span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_ExpressoDelay</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">milliseconds</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419Timer_ExpressoDelayf17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Execute a callback function after the specified time. </p>
+<p>To start the timer you must call <a class="reference internal" href="#dc/d25/group__unitimer_1ga8f5f1aae52b53578acf009d4f4bd3158"><span class="std std-ref">Timer_Enable</span></a>. The timer is disabled after one execution of the callback function. It is possible to restart the timer by calling <a class="reference internal" href="#dc/d25/group__unitimer_1ga8f5f1aae52b53578acf009d4f4bd3158"><span class="std std-ref">Timer_Enable</span></a> The deletion of the timer is done with the call of <a class="reference internal" href="#dc/d25/group__unitimer_1gaa5a590d5db57b7bc5e9a44ccfa81eb7a"><span class="std std-ref">Timer_UnschedulePolling</span></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will trig a division by 0 exception in case the parameter <code class="docutils literal notranslate"><span class="pre">milliseconds</span></code> is zero. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>milliseconds</strong> – <strong>[in]</strong> Specifies the delay, in ms, to run the timer. This value shall be strictly greater than 0. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the specified time. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to be pased to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timer polling index used to access all other timer functions. Otherwise, returns -1 if timer is unschedulable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423Timer_UnschedulePolling6int8_t">
+<span id="_CPPv323Timer_UnschedulePolling6int8_t"></span><span id="_CPPv223Timer_UnschedulePolling6int8_t"></span><span id="Timer_UnschedulePolling__int8_t"></span><span class="target" id="dc/d25/group__unitimer_1gaa5a590d5db57b7bc5e9a44ccfa81eb7a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_UnschedulePolling</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423Timer_UnschedulePolling6int8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Removes a previously scheduled timer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pollIndex</strong> – <strong>[in]</strong> The timer index returned from the <a class="reference internal" href="#dc/d25/group__unitimer_1gaf0a495bb0bccdae8823b3b8788baae1e"><span class="std std-ref">Timer_SchedulePolling</span></a> function. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419Timer_UpdatePolling6int8_tf">
+<span id="_CPPv319Timer_UpdatePolling6int8_tf"></span><span id="_CPPv219Timer_UpdatePolling6int8_tf"></span><span id="Timer_UpdatePolling__int8_t.float"></span><span class="target" id="dc/d25/group__unitimer_1ga325ff7856c2adc3b617bde042dd5f840"></span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_UpdatePolling</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">frequency</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419Timer_UpdatePolling6int8_tf" title="Link to this definition"></a><br /></dt>
+<dd><p>Modify the poll interval of a timer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frequency</strong> – <strong>[in]</strong> Specifies the frequency, in Hz, to run the timer. </p></li>
+<li><p><strong>pollIndex</strong> – <strong>[in]</strong> The already-scheduled timer index to modify. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timer polling index used to access all other timer functions. Otherwise, returns -1 if timer is unschedulable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416Timer_GetPolling6int8_t">
+<span id="_CPPv316Timer_GetPolling6int8_t"></span><span id="_CPPv216Timer_GetPolling6int8_t"></span><span id="Timer_GetPolling__int8_t"></span><span class="target" id="dc/d25/group__unitimer_1ga403ab3bcdb9800881a6529520077c4ac"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_GetPolling</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416Timer_GetPolling6int8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieve the poll timer interval. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pollIndex</strong> – <strong>[in]</strong> The already-scheduled timer index to read. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The timer polling rate configured, in Hz, or 0 if no timer found. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412Timer_Enable6int8_t">
+<span id="_CPPv312Timer_Enable6int8_t"></span><span id="_CPPv212Timer_Enable6int8_t"></span><span id="Timer_Enable__int8_t"></span><span class="target" id="dc/d25/group__unitimer_1ga8f5f1aae52b53578acf009d4f4bd3158"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_Enable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412Timer_Enable6int8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Begin counting the timer at the specified rate. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pollIndex</strong> – <strong>[in]</strong> The already-scheduled timer index to enable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413Timer_Disable6int8_t">
+<span id="_CPPv313Timer_Disable6int8_t"></span><span id="_CPPv213Timer_Disable6int8_t"></span><span id="Timer_Disable__int8_t"></span><span class="target" id="dc/d25/group__unitimer_1ga5ce4ad4b7b2d70c4810049e7e78e1c93"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_Disable</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413Timer_Disable6int8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Stop the timer from counting. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pollIndex</strong> – <strong>[in]</strong> The already-scheduled timer index to enable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411Timer_Reset6int8_t">
+<span id="_CPPv311Timer_Reset6int8_t"></span><span id="_CPPv211Timer_Reset6int8_t"></span><span id="Timer_Reset__int8_t"></span><span class="target" id="dc/d25/group__unitimer_1ga76d4c20d424690736a1e0c93822973fb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_Reset</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411Timer_Reset6int8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Reset the time remaining on the specified timer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pollIndex</strong> – <strong>[in]</strong> The already-scheduled timer index to reset. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413Timer_Restart6int8_t">
+<span id="_CPPv313Timer_Restart6int8_t"></span><span id="_CPPv213Timer_Restart6int8_t"></span><span id="Timer_Restart__int8_t"></span><span class="target" id="dc/d25/group__unitimer_1ga26b1b4f7a6fa9f5b9b6c65a0eac4ea8d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_Restart</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413Timer_Restart6int8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable, reset, and then enable a timer to start it over. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pollIndex</strong> – <strong>[in]</strong> The already-scheduled timer index to restart. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415Timer_IsEnabled6int8_t">
+<span id="_CPPv315Timer_IsEnabled6int8_t"></span><span id="_CPPv215Timer_IsEnabled6int8_t"></span><span id="Timer_IsEnabled__int8_t"></span><span class="target" id="dc/d25/group__unitimer_1ga3a7c22c64d2425e0ce52a6bb0d79d7dd"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_IsEnabled</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pollIndex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415Timer_IsEnabled6int8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Determines if the timer is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pollIndex</strong> – <strong>[in]</strong> The timer index returned from the <a class="reference internal" href="#dc/d25/group__unitimer_1gaf0a495bb0bccdae8823b3b8788baae1e"><span class="std std-ref">Timer_SchedulePolling</span></a> function. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the timer is enabled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418Timer_EnabledCountv">
+<span id="_CPPv318Timer_EnabledCountv"></span><span id="_CPPv218Timer_EnabledCountv"></span><span id="Timer_EnabledCount__void"></span><span class="target" id="dc/d25/group__unitimer_1gae409940183060597252be4806e53a473"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_EnabledCount</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418Timer_EnabledCountv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the number of enabled timers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of enabled timers. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423Timer_ClocksToNextEventv">
+<span id="_CPPv323Timer_ClocksToNextEventv"></span><span id="_CPPv223Timer_ClocksToNextEventv"></span><span id="Timer_ClocksToNextEvent__void"></span><span class="target" id="dc/d25/group__unitimer_1ga98b34ce9d60dc5f6a1447ab782b5283c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_ClocksToNextEvent</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423Timer_ClocksToNextEventv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the number of system oscillator clock ticks until the next timer event. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of system oscillator clock ticks until the next timer event. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412Timer_Resumev">
+<span id="_CPPv312Timer_Resumev"></span><span id="_CPPv212Timer_Resumev"></span><span id="Timer_Resume__void"></span><span class="target" id="dc/d25/group__unitimer_1gaa235a8f200ac84b7f73859439341a498"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Timer_Resume</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412Timer_Resumev" title="Link to this definition"></a><br /></dt>
+<dd><p>Resumes timer activities. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function shall be called in the NVM_ApplicationEntry() function. It resumes any timer activity that was running before switching to sleep mode so a previously running timer can keep working over sleep periods. Calling this function when starting from POR or SW reset will have no effect. </p>
+</div>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version</p></li>
+<li><p>Support basic functionalities allowing to manage one-shot, expresso and perodic timers</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../uart/index.html" class="btn btn-neutral float-left" title="UART Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../watchdog/index.html" class="btn btn-neutral float-right" title="Watchdog Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

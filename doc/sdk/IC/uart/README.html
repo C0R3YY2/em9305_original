@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>This driver allows to use the UART to communicate with some other peripheral
+using 2 wire (Tx, Rx) or 4 wire (Tx, Rx, CTS, RTS).</p>
+<p>It allows the following features :</p>
+<ul class="simple">
+<li><p>Full duplex communication.</p></li>
+<li><p>1 start bit, 8 data bits, 1 stop bit.</p></li>
+<li><p>Even / odd parity mode or without parity.</p></li>
+<li><p>HW generation and checking of parity.</p></li>
+<li><p>Configurable speed from 9600 to 1’843’200 bauds, other
+“non standard” speeds can be also supported by defining divider value in register.</p>
+<ul>
+<li><p>9600 Bauds</p></li>
+<li><p>14400 Bauds</p></li>
+<li><p>19200 Bauds</p></li>
+<li><p>28800 Bauds</p></li>
+<li><p>38400 Bauds</p></li>
+<li><p>57600 Bauds</p></li>
+<li><p>76800 Bauds</p></li>
+<li><p>115200 Bauds</p></li>
+<li><p>230400 Bauds</p></li>
+<li><p>460800 Bauds</p></li>
+<li><p>921600 Bauds</p></li>
+<li><p>1843200 Bauds</p></li>
+</ul>
+</li>
+<li><p>Configurable divider</p></li>
+<li><p>Configurable oversampling factor in range from 4 to 16</p></li>
+<li><p>Flow control (CTS, RTS signals) enable / disable</p></li>
+<li><p>Separate Tx/Rx enable</p></li>
+<li><p>16 bytes long Rx FIFO for reception and 16 bytes long Tx FIFO for transmission.</p></li>
+<li><p>FIFO status available for CPU</p>
+<ul>
+<li><p>Tx FIFO empty.</p></li>
+<li><p>Tx FIFO limit (less bytes in Tx FIFO than user defined limit).</p></li>
+<li><p>Rx FIFO limit (more bytes in Rx FIFO than user defined limit).</p></li>
+<li><p>Rx FIFO full.</p></li>
+<li><p>Number of bytes in each FIFO.</p></li>
+</ul>
+</li>
+<li><p>FIFO flush to remove all content. Each FIFO independently.</p></li>
+<li><p>Configurable bit order (LSB first or MSB first).</p></li>
+</ul>
+<section id="uart-and-sleep-mode">
+<h2>UART and Sleep mode<a class="headerlink" href="#uart-and-sleep-mode" title="Link to this heading"></a></h2>
+<p>The UART shall be registered in order to be usable after wakeup. This shall be done
+at the time the application calls NVM_ConfigModules() function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">UART_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="c1">// Do not modify the GPIO config after a wake-up from sleep because</span>
+<span class="w">    </span><span class="c1">// the configuration is kept in persistent memory.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Re-initialize the QPC event pool.</span>
+<span class="w">        </span><span class="k">extern</span><span class="w"> </span><span class="kt">uint_fast8_t</span><span class="w"> </span><span class="n">QF_maxPool_</span><span class="p">;</span>
+<span class="w">        </span><span class="n">QF_maxPool_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint_fast8_t</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">MAIN_InitEventPool</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Update the GPIO default configuration</span>
+<span class="w">        </span><span class="c1">// The UART is automatically enabled when the Module is registered</span>
+
+<span class="w">        </span><span class="c1">// Disable all inputs</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInputEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mh">0x000</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Enable outputs on GPIO7 for UART TX, disable output on other pins</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutputEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Disable pull-downs on all pins</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOPdEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mh">0x000</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Enable pull-up on GPIO7 only</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOPuEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Set the UART TX output function on GPIO7</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOOutSel7</span><span class="w"> </span><span class="o">=</span>
+<span class="w">                        </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_FUNC_OUT_UART_TXD</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Disable the UART RX input function</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInpSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOInSelUARTRDX</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_FUNCTION_NOT_MAPPED</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Initialize QPC</span>
+<span class="w">        </span><span class="n">QF_init</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Initialize the QPC event pool.</span>
+<span class="w">        </span><span class="n">MAIN_InitEventPool</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="uart-gpios">
+<h2>UART GPIOs<a class="headerlink" href="#uart-gpios" title="Link to this heading"></a></h2>
+<p>Only some GPIOs can be used for the UART.</p>
+<ul class="simple">
+<li><p>RX 0, 1, 2, 3, 4 and 6</p></li>
+<li><p>TX 0, 1, 2, 3, 7 and 8</p></li>
+<li><p>CTS 1, 2, 3, 4, 8, 9 and 10</p></li>
+<li><p>RTS 0, 1, 2, 3, 7 and 10</p></li>
+</ul>
+</section>
+<section id="uart-configuration">
+<h2>UART Configuration<a class="headerlink" href="#uart-configuration" title="Link to this heading"></a></h2>
+<p>The following configurations for the UART are available, check code block for C code example.</p>
+<ul class="simple">
+<li><p>MSB First    : Set to 1 to send the most significant bits first.</p></li>
+<li><p>Parity Mode  : Set to 1 to enable parity or 0 to disable parity check.</p></li>
+<li><p>Event Parity : Set to 1 to use Even parity or 0 to use Odd parity (only valid if Parity Mode is enabled).</p></li>
+<li><p>Flow Ctrl En : Set to 1 to enable flow control or 0 to disable flow control.</p></li>
+<li><p>Majority dis : Per default each baud shall be decoded using majority over 3 samples.
+Majority voting can be disabled by setting it to 1 (only one sample will be used).</p></li>
+<li><p>Loopback En  : Set to 1 to enable loopback or 0 to disable loopback.</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">UART_Config_t</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>
+
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Enable MSB first</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">parityMode</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Don&#39;t use parity</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">eventParity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Not used when parity is disabled</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">flowCtrlEn</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Disable flow control</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">majorityDis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Oversampling using 3 samples is enabled</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">loopBackEn</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Disable loopback</span>
+
+<span class="n">UART_Enable</span><span class="p">(</span><span class="n">UART_DISABLE</span><span class="p">);</span>
+<span class="n">UART_SetConfiguration</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+<span class="n">UART_SetBaudRate</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<span class="n">UART_BlockCommunication</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+
+<span class="c1">// IRQ is generated when there are 1 byte in FIFO. This will also cause DMA transfer</span>
+<span class="n">UART_SetTxFifoLimit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">UART_Enable</span><span class="p">(</span><span class="n">UART_ENABLE</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="uart-custom-baud-rate-configuration">
+<h2>UART Custom baud rate configuration<a class="headerlink" href="#uart-custom-baud-rate-configuration" title="Link to this heading"></a></h2>
+<p>Specific baud rate can be configured using</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Set the baud rate manually.</span>
+<span class="cm"> * @param clkDivider Clock divider for UART. Valid values: &lt;1, 16383&gt;.</span>
+<span class="cm"> * @param oversampling Oversampling factor. Valid values: &lt;4, 16&gt;.</span>
+<span class="cm"> * @returns UART_OK if the baud rate was set, UART_BUSY otherwise.</span>
+<span class="cm"> * @note The UART baud rate can be set only if UART is not enabled. If UART is</span>
+<span class="cm"> * running, the request is rejected.</span>
+<span class="cm"> */</span>
+<span class="n">UART_Status_t</span><span class="w"> </span><span class="nf">UART_SetBaudRateEx</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">clkDivider</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">oversampling</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>UART speed can be computed using baud_rate = sys_clock_freq (48 MHz) / (clkDivider * oversampling)</p>
+<ul class="simple">
+<li><p>clkDivider is a 14 bits value from 1 to 16383.</p></li>
+<li><p>oversampling is a 5 bits value from 4 to 16.</p></li>
+</ul>
+</section>
+<section id="uart-flow-control">
+<h2>UART Flow control<a class="headerlink" href="#uart-flow-control" title="Link to this heading"></a></h2>
+<p>Hardware flow control can be enabled by setting 1 to the flow control bit.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">flowCtrlEn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Enable flow control</span>
+</pre></div>
+</div>
+<p>In this case, UART will use 4 wires (Tx, Rx, CTS, RTS).</p>
+<ul class="simple">
+<li><p>Tx (transmit data)</p></li>
+<li><p>Rx (receive data)</p></li>
+<li><p>RTS (request to send)</p></li>
+<li><p>CTS (clear to send)</p></li>
+</ul>
+<p>In this case control flow GPIOs shall be configured for CTS and RTS.</p>
+<p>RTS is an output signal and can be configured like that.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_EnablePullDown</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisableInput</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_EnableOutput</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_SetOutputPinFunction</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PIN_FUNC_OUT_UART_RTS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>CTS is an input signal and can be configured like that.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_EnablePullDown</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisableOutput</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_EnableInput</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_SetInputFunctionPin</span><span class="p">(</span><span class="n">GPIO_PIN_FUNC_IN_UART_CTS</span><span class="p">,</span><span class="w"> </span><span class="n">cts_pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Wake up from Sleep mode is started by given edge on selected GPIO pin and it is managed by PML. PML
+ensures that UART pins are driven to inactive value during waking up. Once system is fully woken up and initialized
+(UART is ready to communicate) CPU releases UART pin configuration and UART pins are driven from UART block
+again.
+If flow control is enabled flow control signals are set to value preventing UART communication during waking up and
+they are released once UART communication can start. If flow control is not used chip should indicate finished wake
+up sequence by HCI event.</p>
+</div>
+</section>
+<section id="uart-usage">
+<h2>UART Usage<a class="headerlink" href="#uart-usage" title="Link to this heading"></a></h2>
+<p>The UART can be used with or without using ISR with callback.</p>
+<p>For sending data asynchronously, a callback shall be provided for end of transaction.</p>
+<p>Callback function prototype when using asynchronous sending.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">UART_TxCallback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// When callback is called, it means that all data have been sent by UART</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Code to send data over the UART using a string message.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">msg</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EM Microelectronic&quot;</span><span class="p">;</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">UART_SendDataWithCallback</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="n">msg_len</span><span class="p">,</span><span class="w"> </span><span class="n">UART_TxCallback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Data can also be sent without using a callback:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">msg</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EM Microelectronic&quot;</span><span class="p">;</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">UART_SendData</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="n">msg_len</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

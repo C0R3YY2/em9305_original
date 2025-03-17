@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES CCM &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AES GCM" href="AES_GCM.html" />
+    <link rel="prev" title="AES CMAC" href="AES_CMAC.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="AESModes.html">AES modes and MAC</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html">AES Electronic Code Book mode (ECB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html">AES Cipher Block Chaining mode (CBC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html">AES Counter mode(CTR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html">AES CMAC</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AES CCM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-counter-with-cipher-block-chaining-message-authentication-code-ccm">The Counter with Cipher Block Chaining-Message Authentication Code(CCM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#aes-type">AES Type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#aes-key-size-in-bits">AES Key size in bits</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#explicit-key-or-key-container">Explicit key or key container</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#error-status">Error status</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ccm-initctx">AES_CCM_InitCtx</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#prototype">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ccm-hash-additional-data">AES_CCM_Hash_Additional_Data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ccm-encryptandmac">AES_CCM_EncryptAndMAC</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id5">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id6">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id7">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id8">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ccm-decryptandmac">AES_CCM_DecryptAndMAC</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id9">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id10">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id11">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id12">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ccm-getmac">AES_CCM_GetMAC</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id13">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id14">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id15">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id16">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performances">Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html">AES GCM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="AESModes.html">AES modes and MAC</a> &raquo;</li>
+      <li>AES CCM</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aes-ccm">
+<span id="aes-ccm-label"></span><h1>AES CCM<a class="headerlink" href="#aes-ccm" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] NIST SP 800-38C: Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality</p>
+<p><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38c.pdf">NIST SP800-38C</a>: <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38c.pdf">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38c.pdf</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this chapter is to describe the functionality of the library <strong>AES CCM</strong>.</p>
+<p>This chapter:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>describes the API, including the prototype, the parameters, the error codes etc…</p></li>
+<li><p>provides the performances of the functions.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="the-counter-with-cipher-block-chaining-message-authentication-code-ccm">
+<h2>The Counter with Cipher Block Chaining-Message Authentication Code(CCM)<a class="headerlink" href="#the-counter-with-cipher-block-chaining-message-authentication-code-ccm" title="Permalink to this headline"></a></h2>
+<p>This library implements AES CCM algorithm according to the specification NIST SP 800-38C[1].</p>
+<p>AES CCM is an AEAD algorithm that it is to say an Authenticated Encryption with Additional Data algorithm.
+As the name indicates it, it allows to encrypt a message and compute a MAC on the message which is optionally appended with additional data before the message.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The MAC is computed on the additional data and the following message.</p></li>
+<li><p>Only the message is encrypted.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Fundamentally AES CCM:</dt><dd><ul class="simple">
+<li><p>Encrypt\decrypt data with an AES counter mode.</p></li>
+<li><p>MAC the data with an AES CBC MAC algorithm.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Because the encryption is performed with a counter mode, the decryption is very simillar to encryption. The role of the plaintext and cipher text are just inversed.</p>
+<p>Next figure shows the <strong>Encryption and MAC</strong> mechanism.</p>
+<img alt="_images/AES_CCM_ENC.png" src="_images/AES_CCM_ENC.png" />
+<dl class="simple">
+<dt>It can be seen that:</dt><dd><ul class="simple">
+<li><p>the top of the figure corresponds to the encryption of the plaintext with a AES counter mode.</p></li>
+<li><p>the bottom of the figure shows the MAC generation with a AES CBC MAC.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The initialization of the counter is mainly performed with a nonce. The details are given in [1].
+The initialization of the MAC involves two blocks. First block is composed of the nonce, the length of the plaintext//ciphertext. The second block contains the length of the additional data. If there is still some room in the second block, it is completed with the beginning of the additional data. Details can again be found in [1].</p>
+<p>The MAC process is completed by XORing the encryption of the nonce(S0).</p>
+<p>The decryption and MAC process is similar. Ciphertext and plaintext are just inversed.
+Next figure shows the <strong>Decryption and MAC</strong> mechanism.</p>
+<img alt="_images/AES_CCM_DEC.png" src="_images/AES_CCM_DEC.png" />
+</section>
+<section id="underlying-aes">
+<h2>Underlying AES<a class="headerlink" href="#underlying-aes" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>EM9305 embeds:</dt><dd><ul class="simple">
+<li><p>A software AES that manages the key sizes (128, 192 and 256).</p></li>
+<li><p>A hardware AES that only manages 128-bit key size.</p></li>
+</ul>
+</dd>
+<dt>The hardware AES can be invoked:</dt><dd><ul class="simple">
+<li><p>either with a key given explicitly</p></li>
+<li><p>or with a key stored in a key container. In this case, the ID of the key is provided to the AES.</p></li>
+</ul>
+</dd>
+</dl>
+<p>AES CCM APIs interface both the AES Software and the AES hardware. When AES hardware is used, the APIs allows the use of an explicit key or the use of a key container.</p>
+<p>Next figure shows which AES is executed, according to the various options.</p>
+<blockquote>
+<div><img alt="_images/AES_Select.png" src="_images/AES_Select.png" />
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<section id="aes-type">
+<h4>AES Type<a class="headerlink" href="#aes-type" title="Permalink to this headline"></a></h4>
+<p>The underlying algorithm is chosen with the following macro: <a class="reference internal" href="AES.html#aes-hw-sw-label"><span class="std std-ref">AES type</span></a></p>
+</section>
+<section id="aes-key-size-in-bits">
+<h4>AES Key size in bits<a class="headerlink" href="#aes-key-size-in-bits" title="Permalink to this headline"></a></h4>
+<p>The key size is chosen with the macro defined here: <a class="reference internal" href="AES.html#aes-key-size-bits-label"><span class="std std-ref">AES Key size in bits</span></a></p>
+</section>
+<section id="explicit-key-or-key-container">
+<h4>Explicit key or key container<a class="headerlink" href="#explicit-key-or-key-container" title="Permalink to this headline"></a></h4>
+<p>The choice between a key provided by value or implicitly with a key container ID is given by the following enumeration:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv417AES_CCM_KeyType_t">
+<span id="_CPPv317AES_CCM_KeyType_t"></span><span id="_CPPv217AES_CCM_KeyType_t"></span><span class="target" id="group___a_e_s___c_c_m_1ga3078f8d8cbd5c94b8631d48689236f35"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_KeyType_t</span></span></span><a class="headerlink" href="#_CPPv417AES_CCM_KeyType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Select if the key is passed by value(explicitly) or if the key is contained in a key container. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_CCM_KeyType_t17AES_CCM_KEY_VALUEE">
+<span id="_CPPv3N17AES_CCM_KeyType_t17AES_CCM_KEY_VALUEE"></span><span id="_CPPv2N17AES_CCM_KeyType_t17AES_CCM_KEY_VALUEE"></span><span class="target" id="group___a_e_s___c_c_m_1gga3078f8d8cbd5c94b8631d48689236f35a505f9a78d9c2ff0c43098fcc3e3eba3c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_KEY_VALUE</span></span></span><a class="headerlink" href="#_CPPv4N17AES_CCM_KeyType_t17AES_CCM_KEY_VALUEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provided explicitly by value. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_CCM_KeyType_t14AES_CCM_KEY_IDE">
+<span id="_CPPv3N17AES_CCM_KeyType_t14AES_CCM_KEY_IDE"></span><span id="_CPPv2N17AES_CCM_KeyType_t14AES_CCM_KEY_IDE"></span><span class="target" id="group___a_e_s___c_c_m_1gga3078f8d8cbd5c94b8631d48689236f35ab69f84764a03f9643c67cbe683182e93"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_KEY_ID</span></span></span><a class="headerlink" href="#_CPPv4N17AES_CCM_KeyType_t14AES_CCM_KEY_IDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provided by its ID. The key is in a key container. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="error-status">
+<h4>Error status<a class="headerlink" href="#error-status" title="Permalink to this headline"></a></h4>
+<p>The API error status are given by:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv419AES_CCM_Lib_error_t">
+<span id="_CPPv319AES_CCM_Lib_error_t"></span><span id="_CPPv219AES_CCM_Lib_error_t"></span><span class="target" id="group___a_e_s___c_c_m_1gaec08834a865dd83570b1a0da33b83cb0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv419AES_CCM_Lib_error_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Error status words for AES CCM mode. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t15AES_CCM_SUCCESSE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t15AES_CCM_SUCCESSE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t15AES_CCM_SUCCESSE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0a87c2d75d373e240c063b42e941749e94"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t15AES_CCM_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES CCM computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t30AES_CCM_INCOMPATIBLE_PARAMETERE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t30AES_CCM_INCOMPATIBLE_PARAMETERE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t30AES_CCM_INCOMPATIBLE_PARAMETERE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0a97108f6678c853c8240efab3479d93ac"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_INCOMPATIBLE_PARAMETER</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t30AES_CCM_INCOMPATIBLE_PARAMETERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incompatible key size with key type and AES type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t24AES_CCM_INCORRECT_LENGTHE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t24AES_CCM_INCORRECT_LENGTHE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t24AES_CCM_INCORRECT_LENGTHE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0a29c046955fb0048c7bb68c67468896c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_INCORRECT_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t24AES_CCM_INCORRECT_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incorrect length- Data must be 16 bytes long. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_KEY_LENGTHE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_KEY_LENGTHE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_KEY_LENGTHE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0aaece5aa2001058185565dbe301b0d5ba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_INCORRECT_KEY_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_KEY_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key length is incorrect.It shall be 128,192 or 256. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t32AES_CCM_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t32AES_CCM_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t32AES_CCM_INCORRECT_RESULT_POINTERE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0a6536c96214d0fab6b87ad504a196ea38"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t32AES_CCM_INCORRECT_RESULT_POINTERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t30AES_CCM_INCORRECT_NONCE_LENGTHE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t30AES_CCM_INCORRECT_NONCE_LENGTHE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t30AES_CCM_INCORRECT_NONCE_LENGTHE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0acf01181cb3ad354f0cd52e41d2f58290"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_INCORRECT_NONCE_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t30AES_CCM_INCORRECT_NONCE_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incorrect Nonce length. It shall be in [7..13] range. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_MAC_LENGTHE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_MAC_LENGTHE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_MAC_LENGTHE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0aeb72db05eb2249a68fe64c320385c6bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_INCORRECT_MAC_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t28AES_CCM_INCORRECT_MAC_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incorrect MAC length. It shall be in [4..16] range. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CCM_Lib_error_t40AES_CCM_INCONSISTENT_NONCE_AND_P_LENGTHSE">
+<span id="_CPPv3N19AES_CCM_Lib_error_t40AES_CCM_INCONSISTENT_NONCE_AND_P_LENGTHSE"></span><span id="_CPPv2N19AES_CCM_Lib_error_t40AES_CCM_INCONSISTENT_NONCE_AND_P_LENGTHSE"></span><span class="target" id="group___a_e_s___c_c_m_1ggaec08834a865dd83570b1a0da33b83cb0af2dcecd7c2a374989eb7aa508c06fe35"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_INCONSISTENT_NONCE_AND_P_LENGTHS</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CCM_Lib_error_t40AES_CCM_INCONSISTENT_NONCE_AND_P_LENGTHSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>LenP is not consistent with the nonce. q=number of significant byte in lenP is such that q+lenNonce=15. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="context">
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h3>
+<p>A context that contains the key size, the underlying AES , the key type , the key value \ key ID, the length of the MAC, the length of nonce, the current counter, the total length of message, the total length of the additional data and intermediate data is defined as follows.</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv411AES_CCM_CTX">
+<span id="_CPPv311AES_CCM_CTX"></span><span id="_CPPv211AES_CCM_CTX"></span><span id="AES_CCM_CTX"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_CTX</span></span></span><a class="headerlink" href="#_CPPv411AES_CCM_CTX" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES CCM context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX7keySizeE">
+<span id="_CPPv3N11AES_CCM_CTX7keySizeE"></span><span id="_CPPv2N11AES_CCM_CTX7keySizeE"></span><span id="AES_CCM_CTX::keySize__AES_key_size_bit_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a77e570b6b5e8490a933ea059ae592a1a"></span><a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keySize</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX7keySizeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX7AESTypeE">
+<span id="_CPPv3N11AES_CCM_CTX7AESTypeE"></span><span id="_CPPv2N11AES_CCM_CTX7AESTypeE"></span><span id="AES_CCM_CTX::AESType__AES_Select_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a28f41f522ce905c8552bae315150a3b7"></span><a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AESType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX7AESTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES Type: Either AES_HARDWARE or AES_SOFTWARE. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX7keyTypeE">
+<span id="_CPPv3N11AES_CCM_CTX7keyTypeE"></span><span id="_CPPv2N11AES_CCM_CTX7keyTypeE"></span><span id="AES_CCM_CTX::keyType__AES_CCM_KeyType_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1ac5258a6a9a4a62d12e18972c7947ca49"></span><a class="reference internal" href="#_CPPv417AES_CCM_KeyType_t" title="AES_CCM_KeyType_t"><span class="n"><span class="pre">AES_CCM_KeyType_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keyType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX7keyTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key type. Either KEY_ID or KEY_VALUE </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX3keyE">
+<span id="_CPPv3N11AES_CCM_CTX3keyE"></span><span id="_CPPv2N11AES_CCM_CTX3keyE"></span><span id="AES_CCM_CTX::key__uint8_tA"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a5de5309470d9632923a916bf69c027f6"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX3keyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The key value or the key index </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX2S0E">
+<span id="_CPPv3N11AES_CCM_CTX2S0E"></span><span id="_CPPv2N11AES_CCM_CTX2S0E"></span><span id="AES_CCM_CTX::S0__uint8_tA"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1abc6f85516a5071fa73fbbe30517ea315"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">S0</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX2S0E" title="Permalink to this definition"></a><br /></dt>
+<dd><p>S0 value to finalize the MAC </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX7counterE">
+<span id="_CPPv3N11AES_CCM_CTX7counterE"></span><span id="_CPPv2N11AES_CCM_CTX7counterE"></span><span id="AES_CCM_CTX::counter__uint8_tA"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1afbd06c03a2a60599dd2dca3eafc1184e"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">counter</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX7counterE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Current counter </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX6bufferE">
+<span id="_CPPv3N11AES_CCM_CTX6bufferE"></span><span id="_CPPv2N11AES_CCM_CTX6bufferE"></span><span id="AES_CCM_CTX::buffer__uint8_tA"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a8ca4868bf300bd415ade4bd1cc6d37ff"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">buffer</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX6bufferE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Intermediate buffer for encryption/decryption </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX3MACE">
+<span id="_CPPv3N11AES_CCM_CTX3MACE"></span><span id="_CPPv2N11AES_CCM_CTX3MACE"></span><span id="AES_CCM_CTX::MAC__uint8_tA"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a2e056a79af4f4bd7918e9bb878c378c6"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MAC</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX3MACE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>MAC value </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX6lenMACE">
+<span id="_CPPv3N11AES_CCM_CTX6lenMACE"></span><span id="_CPPv2N11AES_CCM_CTX6lenMACE"></span><span id="AES_CCM_CTX::lenMAC__uint8_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a7da43fb71e13a87977dec8e0a5f26904"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lenMAC</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX6lenMACE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Length of the desired MAC </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX8lenNonceE">
+<span id="_CPPv3N11AES_CCM_CTX8lenNonceE"></span><span id="_CPPv2N11AES_CCM_CTX8lenNonceE"></span><span id="AES_CCM_CTX::lenNonce__uint8_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1abbc7f5002c99d036d6e8e61cb7b168ad"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lenNonce</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX8lenNonceE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Length of the Nonce </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX11nbByteReadyE">
+<span id="_CPPv3N11AES_CCM_CTX11nbByteReadyE"></span><span id="_CPPv2N11AES_CCM_CTX11nbByteReadyE"></span><span id="AES_CCM_CTX::nbByteReady__uint8_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a61de40f82a1d03f760e03f98ed600f21"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nbByteReady</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX11nbByteReadyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Indicate how many bytes in the buffer are available to encrypt/decrypt the message before executing a new AES </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX10nbMacReadyE">
+<span id="_CPPv3N11AES_CCM_CTX10nbMacReadyE"></span><span id="_CPPv2N11AES_CCM_CTX10nbMacReadyE"></span><span id="AES_CCM_CTX::nbMacReady__uint8_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1ad0803eae7ce59edfa0269aace8bd9cd8"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nbMacReady</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX10nbMacReadyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Indicate how many bytes in the MAC buffer are accumulated </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CCM_CTX14AdditionalOverE">
+<span id="_CPPv3N11AES_CCM_CTX14AdditionalOverE"></span><span id="_CPPv2N11AES_CCM_CTX14AdditionalOverE"></span><span id="AES_CCM_CTX::AdditionalOver__uint8_t"></span><span class="target" id="struct_a_e_s___c_c_m___c_t_x_1a3b0e999c4c6908b35e52f16e2f163f11"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AdditionalOver</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CCM_CTX14AdditionalOverE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Indicate if the treatment of additional data is over </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="aes-ccm-initctx">
+<h3>AES_CCM_InitCtx<a class="headerlink" href="#aes-ccm-initctx" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>This function initializes an AES CCM context with the different options: key size, underlying AES and key type. It sets the key and the initial counter value. It also initializes the calculation, computing S0 and the two first blocks od the addtional data.</p>
+</section>
+<section id="prototype">
+<h4>Prototype<a class="headerlink" href="#prototype" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_CCM_InitCtxP11AES_CCM_CTX12AES_Select_t17AES_CCM_KeyType_t18AES_key_size_bit_tP7uint8_t7uint8_t7uint8_tP7uint8_tAL8E_7uint8_tAL8E_7uint8_t">
+<span id="_CPPv315AES_CCM_InitCtxP11AES_CCM_CTX12AES_Select_t17AES_CCM_KeyType_t18AES_key_size_bit_tP7uint8_t7uint8_t7uint8_tP7uint8_tAL8E_7uint8_tAL8E_7uint8_t"></span><span id="_CPPv215AES_CCM_InitCtxP11AES_CCM_CTX12AES_Select_t17AES_CCM_KeyType_t18AES_key_size_bit_tP7uint8_t7uint8_t7uint8_tP7uint8_tA8_7uint8_tA8_7uint8_t"></span><span id="AES_CCM_InitCtx__AES_CCM_CTXP.AES_Select_t.AES_CCM_KeyType_t.AES_key_size_bit_t.uint8_tP.uint8_t.uint8_t.uint8_tP.uint8_tA.uint8_tA"></span><span class="target" id="group___a_e_s___c_c_m_1gad1c44288f2f382126a65f8fa63c194e4"></span><a class="reference internal" href="#_CPPv419AES_CCM_Lib_error_t" title="AES_CCM_Lib_error_t"><span class="n"><span class="pre">AES_CCM_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_InitCtx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CCM_CTX" title="AES_CCM_CTX"><span class="n"><span class="pre">AES_CCM_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <a class="reference internal" href="#_CPPv417AES_CCM_KeyType_t" title="AES_CCM_KeyType_t"><span class="n"><span class="pre">AES_CCM_KeyType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keySize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">key</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lenMAC</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lenNonce</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">nonce</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">totalLenP</span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">totalLenA</span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_CCM_InitCtxP11AES_CCM_CTX12AES_Select_t17AES_CCM_KeyType_t18AES_key_size_bit_tP7uint8_t7uint8_t7uint8_tP7uint8_tAL8E_7uint8_tAL8E_7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initialize an AES CCM context. Choose the underlying AES, the key type and key size. Set the key value. Set the nonce. Set the MAC length, the total length of the message to encrypt or decrypt. Set the total length of the additional data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[out]</strong> AES CCM context to set </p></li>
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> The underlying AES. Either AES_HARDWARE or AES_SOFTWARE </p></li>
+<li><p><strong>keyType</strong> – <strong>[in]</strong> The type of the key: Either KEY_VALUE for explicitly key value or KEY_ID for a key in a key container </p></li>
+<li><p><strong>keySize</strong> – <strong>[in]</strong> The size of the key in bits : AES_KEY_128,AES_KEY_192 or AES_KEY_256 </p></li>
+<li><p><strong>key</strong> – <strong>[in]</strong> The key value(16 to 32 bytes) or the key ID (first byte) </p></li>
+<li><p><strong>lenMAC</strong> – <strong>[in]</strong> Length in bytes of the MAC- It must be even and in range [4..16] </p></li>
+<li><p><strong>lenNonce</strong> – <strong>[in]</strong> Length in bytes of the nonce. It must be in range [7..13] </p></li>
+<li><p><strong>nonce</strong> – <strong>[in]</strong> The nonce value,a buffer of length lenNonce </p></li>
+<li><p><strong>totalLenP</strong> – <strong>[in]</strong> A 8-byte buffer indicating the total length of the plaintext or ciphertext to encrypt or decrypt. If q is the length of the significant size of totalLenP, q+lenNonce must be smaller or equal to 15. </p></li>
+<li><p><strong>totalLenA</strong> – <strong>[in]</strong> A 8-byte buffer indicating the total length of the additional data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CCM_SUCCESS</strong> – Successful initialization </p></li>
+<li><p><strong>AES_CCM_INCORRECT_KEY_LENGTH</strong> – Incorrect key length. It must be 128,192 or 256 </p></li>
+<li><p><strong>AES_CCM_INCOMPATIBLE_PARAMETER</strong> – Hardware/software selection is not compatible with the key length. Key containers are only support with 128-bit keys. </p></li>
+<li><p><strong>AES_CCM_INCORRECT_MAC_LENGTH</strong> – Incorrect MAC length. It must be even and in range [4..16] </p></li>
+<li><p><strong>AES_CCM_INCORRECT_NONCE_LENGTH</strong> – Incorrect nonce length. It must be in range [7..13] </p></li>
+<li><p><strong>AES_CCM_INCONSISTENT_NONCE_AND_P_LENGTHS</strong> – Nonce length and totalLenP are not compatible. Their combined length must be smaller or equal to 15. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CCM context to initialize</p></li>
+<li><p><strong>AESSelect</strong>: Select the AES hardware or the AES software</p></li>
+<li><p><strong>keyType</strong>: Select if the key is given explicitly by value or if it refers by its key container ID.</p></li>
+<li><p><strong>keySize</strong>: Key size in bits</p></li>
+<li><dl class="simple">
+<dt><strong>key</strong>:</dt><dd><ul>
+<li><p>When the key is given explicitly: 16, 24 or 32 bytes representing the key value.</p></li>
+<li><p>When the key is given by its ID: 1 byte with the key ID.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><strong>lenMAC</strong> : length of the MAC, an even value between 4 and 16.</p></li>
+<li><p><strong>lenNonce</strong>: an 8-byte array that indicates the length in bytes of the nonce.</p></li>
+<li><p><strong>Nonce</strong>: Nonce of length indicated by lenNonce. It must be a value between 7 and 13.</p></li>
+<li><p><strong>totalLenP</strong> : an 8-byte array that indicates the total length in bytes of the message to encrypt\decrypt. The significant length of totalLenP=q should be so that q+lenNonce=15 at maximum.</p></li>
+<li><p><strong>totalLenA</strong> : an 8-byte array that indicates the total length in bytes of the additional data.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_SUCCESS</p></td>
+<td><p>Initialization successful</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_INCORRECT_KEY_LENGTH</p></td>
+<td><p>Incorrect key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CCM_INCOMPATIBLE_PARAMETER</p></td>
+<td><p>Hardware AES is not compatible with this key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_INCORRECT_MAC_LENGTH</p></td>
+<td><p>Incorrect MAC length</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CCM_INCORRECT_NONCE_LENGTH</p></td>
+<td><p>Incorrect Nonce length</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_INCONSISTENT_NONCE_AND_P_LENGTHS</p></td>
+<td><p>length of P and length of the nonce are incompatible</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ccm-hash-additional-data">
+<h3>AES_CCM_Hash_Additional_Data<a class="headerlink" href="#aes-ccm-hash-additional-data" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Goal of the function<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>This function accumulates data in intermediate buffer and hash it when the buffer is full.
+It performs the MAC AES computation.</p>
+</section>
+<section id="id2">
+<h4>Prototype<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428AES_CCM_Hash_Additional_DataP11AES_CCM_CTXP7uint8_tP7uint8_t">
+<span id="_CPPv328AES_CCM_Hash_Additional_DataP11AES_CCM_CTXP7uint8_tP7uint8_t"></span><span id="_CPPv228AES_CCM_Hash_Additional_DataP11AES_CCM_CTXP7uint8_tP7uint8_t"></span><span id="AES_CCM_Hash_Additional_Data__AES_CCM_CTXP.uint8_tP.uint8_tP"></span><span class="target" id="group___a_e_s___c_c_m_1gaababe48a987b76b15ad2b59c35bdc01b"></span><a class="reference internal" href="#_CPPv419AES_CCM_Lib_error_t" title="AES_CCM_Lib_error_t"><span class="n"><span class="pre">AES_CCM_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_Hash_Additional_Data</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CCM_CTX" title="AES_CCM_CTX"><span class="n"><span class="pre">AES_CCM_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">lenA</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">A</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428AES_CCM_Hash_Additional_DataP11AES_CCM_CTXP7uint8_tP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Deal with the additional data. Additional data are MACed but not encrypted,. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CCM context to set </p></li>
+<li><p><strong>lenA</strong> – <strong>[in]</strong> The length in bytes of the additional data dealt during this function call. </p></li>
+<li><p><strong>A</strong> – <strong>[in]</strong> Byte buffer of lenA that contains the additional data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><p><strong>AES_CCM_SUCCESS</strong> – Additional data successfully dealt </p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CCM context</p></li>
+<li><p><strong>lenA</strong>: Array representing the length in byte of the data provided during this call. It can be any size from 0 bytes to 0xFFFFFFFFFFFFFFFF bytes.</p></li>
+<li><p><strong>A</strong>: Buffer of lenA bytes with the additional data provided at this call.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl class="simple">
+<dt>This function can:</dt><dd><ul class="simple">
+<li><p>be called once with all the additional data.</p></li>
+<li><p>be called several times consecutively, providing parts of the additional data only. In that case lenA is the size of the data provided during this call.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id4">
+<h4>Return values<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_SUCCESS</p></td>
+<td><p>No error, data accumulated</p></td>
+<td><p>OK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ccm-encryptandmac">
+<h3>AES_CCM_EncryptAndMAC<a class="headerlink" href="#aes-ccm-encryptandmac" title="Permalink to this headline"></a></h3>
+<section id="id5">
+<h4>Goal of the function<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
+<p>This function encrypts the data provided and update the MAC accordingly.</p>
+</section>
+<section id="id6">
+<h4>Prototype<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421AES_CCM_EncryptAndMACP11AES_CCM_CTXAL8E_7uint8_tP7uint8_tP7uint8_t">
+<span id="_CPPv321AES_CCM_EncryptAndMACP11AES_CCM_CTXAL8E_7uint8_tP7uint8_tP7uint8_t"></span><span id="_CPPv221AES_CCM_EncryptAndMACP11AES_CCM_CTXA8_7uint8_tP7uint8_tP7uint8_t"></span><span id="AES_CCM_EncryptAndMAC__AES_CCM_CTXP.uint8_tA.uint8_tP.uint8_tP"></span><span class="target" id="group___a_e_s___c_c_m_1gabf6935ae2b366ecf03885299b83508d3"></span><a class="reference internal" href="#_CPPv419AES_CCM_Lib_error_t" title="AES_CCM_Lib_error_t"><span class="n"><span class="pre">AES_CCM_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_EncryptAndMAC</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CCM_CTX" title="AES_CCM_CTX"><span class="n"><span class="pre">AES_CCM_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lenP</span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421AES_CCM_EncryptAndMACP11AES_CCM_CTXAL8E_7uint8_tP7uint8_tP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Encrpyt the plaintext and update the MAC. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CCM context to set </p></li>
+<li><p><strong>lenP</strong> – <strong>[in]</strong> The length in bytes of the data to encrypt during this function call. </p></li>
+<li><p><strong>plainText</strong> – <strong>[in]</strong> Byte buffer of lenP that contains the data to encrypt </p></li>
+<li><p><strong>cipherText</strong> – <strong>[out]</strong> Byte buffer of lenP that contains the encrypted data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><p><strong>AES_CCM_SUCCESS</strong> – Successful encryption </p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CCM context</p></li>
+<li><p><strong>lenP</strong>: Array representing the length in byte of the plaintext provided during this call. It can be any size from 0 bytes to 0x0000007F FFFFFF00 bytes.</p></li>
+<li><p><strong>plainText</strong>: Buffer of lenP bytes with the plaintext to encrypt this call.</p></li>
+<li><p><strong>cipherText</strong>: Buffer of lenP bytes recieving the encrypted message.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl class="simple">
+<dt>This function can:</dt><dd><ul class="simple">
+<li><p>be called once with the complete plaintext.</p></li>
+<li><p>be called several times consecutively, providing parts of the message only. In that case lenP is the size of the data provided during this call.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id8">
+<h4>Return values<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_SUCCESS</p></td>
+<td><p>Successful encryption</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_INCORRECT_RESULT_POINTER</p></td>
+<td><p>Ciphertext pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ccm-decryptandmac">
+<h3>AES_CCM_DecryptAndMAC<a class="headerlink" href="#aes-ccm-decryptandmac" title="Permalink to this headline"></a></h3>
+<section id="id9">
+<h4>Goal of the function<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h4>
+<p>This function decrypts the data provided and update the MAC accordingly.</p>
+</section>
+<section id="id10">
+<h4>Prototype<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421AES_CCM_DecryptAndMACP11AES_CCM_CTXAL8E_7uint8_tP7uint8_tP7uint8_t">
+<span id="_CPPv321AES_CCM_DecryptAndMACP11AES_CCM_CTXAL8E_7uint8_tP7uint8_tP7uint8_t"></span><span id="_CPPv221AES_CCM_DecryptAndMACP11AES_CCM_CTXA8_7uint8_tP7uint8_tP7uint8_t"></span><span id="AES_CCM_DecryptAndMAC__AES_CCM_CTXP.uint8_tA.uint8_tP.uint8_tP"></span><span class="target" id="group___a_e_s___c_c_m_1gafc185494cdf73178a8dae4b2bf8fb274"></span><a class="reference internal" href="#_CPPv419AES_CCM_Lib_error_t" title="AES_CCM_Lib_error_t"><span class="n"><span class="pre">AES_CCM_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_DecryptAndMAC</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CCM_CTX" title="AES_CCM_CTX"><span class="n"><span class="pre">AES_CCM_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lenC</span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">8</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421AES_CCM_DecryptAndMACP11AES_CCM_CTXAL8E_7uint8_tP7uint8_tP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Decrpyt the cipherText and update the MAC. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CCM context to set </p></li>
+<li><p><strong>lenC</strong> – <strong>[in]</strong> The length in bytes of the data to decrypt during this function call. </p></li>
+<li><p><strong>cipherText</strong> – <strong>[in]</strong> Byte buffer of lenP that contains the data to decrypt </p></li>
+<li><p><strong>plainText</strong> – <strong>[out]</strong> Byte buffer of lenP that contains the decrypted data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><p><strong>AES_CCM_SUCCESS</strong> – Successful encryption </p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CCM context</p></li>
+<li><p><strong>lenC</strong>: Array representing the length in byte of the ciphertext provided during this call. It can be any size.</p></li>
+<li><p><strong>cipherText</strong>: Buffer of lenC bytes with the ciphertext to decrypt this call.</p></li>
+<li><p><strong>plainText</strong>: Buffer of lenC bytes recieving the decrypted message.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<dl class="simple">
+<dt>This function can:</dt><dd><ul class="simple">
+<li><p>be called once with the complete ciphertext.</p></li>
+<li><p>be called several times consecutively, providing parts of the message only. In that case lenC is the size of the data provided during this call.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type <strong>AES_ENC_ONLY(Encryption)</strong>. As the AES is performed in encryption, a key typed <strong>AES_DEC_ONLY(decryption)</strong> would not work. The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id12">
+<h4>Return values<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_SUCCESS</p></td>
+<td><p>Successful decryption</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_INCORRECT_RESULT_POINTER</p></td>
+<td><p>plainText pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ccm-getmac">
+<h3>AES_CCM_GetMAC<a class="headerlink" href="#aes-ccm-getmac" title="Permalink to this headline"></a></h3>
+<section id="id13">
+<h4>Goal of the function<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h4>
+<p>This function completes the MAC computation and returns the final MAC.</p>
+</section>
+<section id="id14">
+<h4>Prototype<a class="headerlink" href="#id14" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414AES_CCM_GetMACP11AES_CCM_CTXP7uint8_t">
+<span id="_CPPv314AES_CCM_GetMACP11AES_CCM_CTXP7uint8_t"></span><span id="_CPPv214AES_CCM_GetMACP11AES_CCM_CTXP7uint8_t"></span><span id="AES_CCM_GetMAC__AES_CCM_CTXP.uint8_tP"></span><span class="target" id="group___a_e_s___c_c_m_1gaf3f6d0b90843035949a75b4bdf11420a"></span><a class="reference internal" href="#_CPPv419AES_CCM_Lib_error_t" title="AES_CCM_Lib_error_t"><span class="n"><span class="pre">AES_CCM_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CCM_GetMAC</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CCM_CTX" title="AES_CCM_CTX"><span class="n"><span class="pre">AES_CCM_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">MAC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414AES_CCM_GetMACP11AES_CCM_CTXP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Finalize the MAC computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CCM context to set </p></li>
+<li><p><strong>MAC</strong> – <strong>[out]</strong> A buffer of the size lenMAC defined previously in the init function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CCM_SUCCESS</strong> – Successful encryption </p></li>
+<li><p><strong>AES_CCM_INCORRECT_RESULT_POINTER</strong> – MAC pointer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id15">
+<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CCM context</p></li>
+<li><p><strong>MAC</strong>: Buffer to receive the MAC value.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type <strong>AES_ENC_ONLY(Encryption)</strong>. As the AES is performed in encryption, a key typed <strong>AES_DEC_ONLY(decryption)</strong> would not work. The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id16">
+<h4>Return values<a class="headerlink" href="#id16" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_SUCCESS</p></td>
+<td><p>No error, data accumulated</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_INCORRECT_RESULT_POINTER</p></td>
+<td><p>MAC pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="performances">
+<h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1300 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No usage of global RAM except the AES_CCM_CTX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Approximately 144 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="execution-time">
+<h3>Execution time<a class="headerlink" href="#execution-time" title="Permalink to this headline"></a></h3>
+<p>The AES_CCM_InitCtx function performs two AESs. Therefore, the time depends on the configuration.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 24%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_InitCtx</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>36</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_InitCtx</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>246</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CCM_InitCtx</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>291</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_InitCtx</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>330</p></td>
+</tr>
+</tbody>
+</table>
+<p>The execution time AES_CCM_Hash_Additional_Data depends on the size of the additional data that are processed during this call.
+Because the AES computation is perfomed on 16 bytes, the operation is performed only every 16 bytes. It induces that the number of AES is rougly the [NbByte16] or[NbByte16]-1.
+Since the MAC computation involves AES, the performances depend on configuration and key size.
+Next table shows the time for 16 bytes.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 24%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_Hash_Additional_Data</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>18</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_Hash_Additional_Data</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>123</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CCM_Hash_Additional_Data</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>144</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_Hash_Additional_Data</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>163</p></td>
+</tr>
+</tbody>
+</table>
+<p>The performance of the function AES_CCM_EncryptAndMAC depends on the size of the plaintext, the underlying AES and also how many bytes were accumulated in the temporary buffer for the MAC computation. It also depends if all the additional data were handled in AES_CCM_Hash_Additional_Data. Globally, two AESs are performed per block of 16 bytes.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 24%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_EncryptAndMAC</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>31</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_EncryptAndMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>241</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CCM_EncryptAndMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>284</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_EncryptAndMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>321</p></td>
+</tr>
+</tbody>
+</table>
+<p>The performance of the function AES_CCM_DecryptAndMAC are the same for the encryption and mainly depend on the data size. For 16 bytes of data to decrypt we have the following figures.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 24%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_DecryptAndMAC</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>31</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_DecryptAndMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>241</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CCM_DecryptAndMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>284</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_DecryptAndMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>321</p></td>
+</tr>
+</tbody>
+</table>
+<p>Finally AES_CCM_GetMAC always involves an AES computation. It may involves a second AES if it was not performed previously in the encrypt\decrypt functions. Below are the figures for the case with one AES.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 24%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CCM_GetMAC</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>14</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_GetMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>119</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CCM_GetMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>138</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CCM_GetMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>156</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<p>AES CCM lib depends on the AES lib.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>Next code shows basic examples:</dt><dd><ul class="simple">
+<li><p>using the AES hardware with an explicit key</p></li>
+<li><p>using the AES hardware with key stored in key containers</p></li>
+<li><p>using the AES software</p></li>
+<li><p>with various size for the additional data</p></li>
+<li><p>with various size of plaintext \ ciphertext</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @file       ExampleAES_CCM.c</span>
+<span class="c1">///</span>
+<span class="c1">/// @project    T9305</span>
+<span class="c1">///</span>
+<span class="c1">/// @author     SAS</span>
+<span class="c1">///</span>
+<span class="c1">/// @brief   	Example of use of AES CCM library</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @copyright Copyright (C) 2022 EM Microelectronic</span>
+<span class="c1">/// @cond</span>
+<span class="c1">///</span>
+<span class="c1">/// All rights reserved.</span>
+<span class="c1">///</span>
+<span class="c1">/// Redistribution and use in source and binary forms, with or without</span>
+<span class="c1">/// modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">/// 1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer.</span>
+<span class="c1">/// 2. Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1">/// and/or other materials provided with the distribution.</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="c1">/// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="c1">/// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="c1">/// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span>
+<span class="c1">/// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span>
+<span class="c1">/// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<span class="c1">/// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<span class="c1">/// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="c1">/// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<span class="c1">/// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="c1">/// POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">/// @endcond</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES_CCM.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;hw_aes.h&quot;</span><span class="cp"></span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">ExampleAES_CCM</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">AES_CCM_CTX</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">AES_CCM_Lib_error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Cipher</span><span class="p">[</span><span class="mh">0x18</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Decipher</span><span class="p">[</span><span class="mh">0x18</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">MAC</span><span class="p">[</span><span class="mh">0x10</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//test vector with a 128-bit key</span>
+<span class="cp">#define TLEN 0x10</span>
+<span class="cp">#define PLEN 0x18</span>
+<span class="cp">#define PLEN1 0x07</span>
+<span class="cp">#define ALEN 0x20</span>
+<span class="cp">#define ALEN1 0x08</span>
+<span class="cp">#define NLEN 0x0D</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Key</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY128</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x43</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd9</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xf4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x50</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x85</span><span class="p">,</span><span class="w"> </span><span class="mh">0xba</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Additional</span><span class="p">[</span><span class="mh">0x20</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x59</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaa</span><span class="p">,</span><span class="w"> </span><span class="mh">0xca</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x41</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x46</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x52</span><span class="p">,</span><span class="w"> </span><span class="mh">0x64</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfa</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x46</span><span class="p">,</span><span class="w"> </span><span class="mh">0x87</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x49</span><span class="p">,</span><span class="w"> </span><span class="mh">0x27</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x32</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x57</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x46</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x82</span><span class="p">,</span><span class="w"> </span><span class="mh">0x24</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthA</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">ALEN</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//total length of A</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthA1</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">ALEN1</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//Size of the first part of A</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthA2</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">ALEN</span><span class="w"></span>
+<span class="w">			</span><span class="o">-</span><span class="w"> </span><span class="n">ALEN1</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//Size of the second part of A</span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Nonce</span><span class="p">[</span><span class="mh">0x0D</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x76</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbe</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x27</span><span class="p">,</span><span class="w"> </span><span class="mh">0xca</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x62</span><span class="p">,</span><span class="w"> </span><span class="mh">0x15</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x27</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthP</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">PLEN</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//total length of P</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthP1</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">PLEN1</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//Size of the first part of P</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthP2</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">PLEN</span><span class="w"></span>
+<span class="w">			</span><span class="o">-</span><span class="w"> </span><span class="n">PLEN1</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//Size of the second part of P</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Plaintext</span><span class="p">[</span><span class="mh">0x18</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xb5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xba</span><span class="p">,</span><span class="w"> </span><span class="mh">0x90</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x47</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xc8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x53</span><span class="p">,</span><span class="w"> </span><span class="mh">0x24</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x76</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaa</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xd4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc3</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf5</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ExpectedCipher</span><span class="p">[</span><span class="n">PLEN</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe5</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x17</span><span class="p">,</span><span class="w"> </span><span class="mh">0x41</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x13</span><span class="p">,</span><span class="w"> </span><span class="mh">0x92</span><span class="p">,</span><span class="w"> </span><span class="mh">0x86</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0x38</span><span class="p">,</span><span class="w"> </span><span class="mh">0xec</span><span class="p">,</span><span class="w"> </span><span class="mh">0x38</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3a</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa9</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x5f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xef</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x42</span><span class="p">,</span><span class="w"> </span><span class="mh">0x55</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdc</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ExpectedMAC</span><span class="p">[</span><span class="n">TLEN</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x2e</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbc</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x37</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x81</span><span class="p">,</span><span class="w"> </span><span class="mh">0xde</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x83</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe4</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">keyId</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//test vector with a 256-bit key</span>
+<span class="cp">#define TLEN256 0x04</span>
+<span class="cp">#define PLEN256 0x18</span>
+<span class="cp">#define ALEN256 0x20</span>
+<span class="cp">#define NLEN256 0x0D</span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Key256</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x90</span><span class="p">,</span><span class="w"> </span><span class="mh">0x74</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb1</span><span class="p">,</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa3</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x34</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe5</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x79</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xf0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x51</span><span class="p">,</span><span class="w"> </span><span class="mh">0x79</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x61</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Plaintext256</span><span class="p">[</span><span class="n">PLEN256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0x90</span><span class="p">,</span><span class="w"> </span><span class="mh">0x29</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x50</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcb</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xd6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7e</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8a</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x56</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xea</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf9</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthA256</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">			</span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">ALEN256</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Additional256</span><span class="p">[</span><span class="n">ALEN256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x3c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x54</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x37</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbd</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xcb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1e</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9d</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x82</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xb0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x34</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb7</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0xda</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xab</span><span class="p">,</span><span class="w"> </span><span class="mh">0x75</span><span class="p">,</span><span class="w"> </span><span class="mh">0x52</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Nonce256</span><span class="p">[</span><span class="n">NLEN256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x2e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x32</span><span class="p">,</span><span class="w"> </span><span class="mh">0x46</span><span class="p">,</span><span class="w"> </span><span class="mh">0x85</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xd4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x47</span><span class="p">,</span><span class="w"> </span><span class="mh">0x86</span><span class="p">,</span><span class="w"> </span><span class="mh">0x25</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">LengthP256</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">			</span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="n">PLEN256</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ExpectedCipher256</span><span class="p">[</span><span class="n">PLEN256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5d</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x27</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfd</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x9f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x81</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0x76</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x83</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfe</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x56</span><span class="p">,</span><span class="w"> </span><span class="mh">0x36</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc8</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe5</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd5</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x74</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ExpectedMAC256</span><span class="p">[</span><span class="n">TLEN256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x3c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaf</span><span class="p">,</span><span class="w"> </span><span class="mh">0xed</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//--------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// First example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// Perform AES CCM in encryption + MAC mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The key is 128-bit, we use the AES hardware without key container.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// MAC length is 16 bytes. Nonce length is 13 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The additional data are 32 bytes. The message to encrypt is 24 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The data are encrypted and MAC in one shot</span>
+<span class="w">	</span><span class="c1">//--------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//Initialization:</span>
+<span class="w">	</span><span class="c1">//-using a 128 bit key</span>
+<span class="w">	</span><span class="c1">//-not using the key container</span>
+<span class="w">	</span><span class="c1">//using AES_HARDWARE</span>
+<span class="w">	</span><span class="c1">//the length of the message and the length of the additional data are the total lengths</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CCM_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="n">TLEN</span><span class="p">,</span><span class="w"> </span><span class="n">NLEN</span><span class="p">,</span><span class="w"> </span><span class="n">Nonce</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Deal with the additional data in one shot</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_Hash_Additional_Data</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA</span><span class="p">,</span><span class="w"> </span><span class="n">Additional</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Encrpyt the message in one shot</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_EncryptAndMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP</span><span class="p">,</span><span class="w"> </span><span class="n">Plaintext</span><span class="p">,</span><span class="w"> </span><span class="n">Cipher</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//get the final MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">MAC</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Check the result is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedCipher</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//Check the MAC is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">MAC</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedMAC</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//--------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Second example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// Perform AES CCM in decryption + MAC mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The key is 128-bit, we use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// MAC length is 16 bytes. Nonce length is 13 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The additional data are 32 bytes. The message to encrypt is 24 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// Both data are encrypted and MAC in several calls.</span>
+<span class="w">	</span><span class="c1">//-------------------------------------------------------------------------- </span>
+
+<span class="w">	</span><span class="c1">//Initialization:</span>
+<span class="w">	</span><span class="c1">//-using a 128 bit key</span>
+<span class="w">	</span><span class="c1">//-not using the key container</span>
+<span class="w">	</span><span class="c1">//using AES_SOFTWARE</span>
+<span class="w">	</span><span class="c1">//the length of the message and the length of the additional data are the total lengths</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CCM_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="n">TLEN</span><span class="p">,</span><span class="w"> </span><span class="n">NLEN</span><span class="p">,</span><span class="w"> </span><span class="n">Nonce</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Introduce the first part of the additional data- LengthA1+LengthA2=LengthA</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_Hash_Additional_Data</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA1</span><span class="p">,</span><span class="w"> </span><span class="n">Additional</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//Introduce the second part of the additional data</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_Hash_Additional_Data</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA2</span><span class="p">,</span><span class="w"> </span><span class="n">Additional</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ALEN1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//decrypt a first part of the cipherLengthP1+LengthP2=LengthP</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_DecryptAndMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP1</span><span class="p">,</span><span class="w"> </span><span class="n">ExpectedCipher</span><span class="p">,</span><span class="w"> </span><span class="n">Decipher</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//decrypt the second part of the cipher</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_DecryptAndMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP2</span><span class="p">,</span><span class="w"> </span><span class="n">ExpectedCipher</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PLEN1</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">Decipher</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PLEN1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//get the final MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">MAC</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Check the result is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Decipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Check the MAC is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">MAC</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedMAC</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//---------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Third example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// Perform AES CCM in encryption + MAC mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The key is 128-bit, we use the AES hardware WITH key container.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// MAC length is 16 bytes. Nonce length is 13 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The additional data are 32 bytes. The message to encrpyt is 24 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The data are encrypted and MAC in one shot</span>
+<span class="w">	</span><span class="c1">//---------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//A priori the key has been written previously in a key container.</span>
+<span class="w">	</span><span class="c1">//Here we write the key in container 0x04</span>
+<span class="w">	</span><span class="n">AES_SetKeyContainer</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HW_ENC_DEC</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">keyId</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Initialization:</span>
+<span class="w">	</span><span class="c1">//-using a 128 bit key</span>
+<span class="w">	</span><span class="c1">//-using the key container</span>
+<span class="w">	</span><span class="c1">//using AES_HARDWARE</span>
+<span class="w">	</span><span class="c1">//the length of the message and the length of the additional data are the total lengths</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CCM_KEY_ID</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">keyId</span><span class="p">,</span><span class="w"></span>
+<span class="w">	</span><span class="n">TLEN</span><span class="p">,</span><span class="w"> </span><span class="n">NLEN</span><span class="p">,</span><span class="w"> </span><span class="n">Nonce</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Deal with the additional data in one shot</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_Hash_Additional_Data</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA</span><span class="p">,</span><span class="w"> </span><span class="n">Additional</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Encrpyt the message in one shot</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_EncryptAndMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP</span><span class="p">,</span><span class="w"> </span><span class="n">Plaintext</span><span class="p">,</span><span class="w"> </span><span class="n">Cipher</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//get the final MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">MAC</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Check the result is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedCipher</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//Check the MAC is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">MAC</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedMAC</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//---------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Fourth example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// Perform AES CCM in encryption + MAC mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The key is 256-bit, we use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// MAC length is 4 bytes. Nonce length is 13 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The additional data are 32 bytes. The message to encrpyt is 24 bytes.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The data are encrypted and MAC in one shot</span>
+<span class="w">	</span><span class="c1">//---------------------------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//Initialization:</span>
+<span class="w">	</span><span class="c1">//-using a 256 bit key</span>
+<span class="w">	</span><span class="c1">//using AES_SOFTWARE</span>
+<span class="w">	</span><span class="c1">//the length of the message and the length of the additional data are the total lengths</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CCM_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_256</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">Key256</span><span class="p">,</span><span class="w"> </span><span class="n">TLEN256</span><span class="p">,</span><span class="w"> </span><span class="n">NLEN256</span><span class="p">,</span><span class="w"> </span><span class="n">Nonce256</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP256</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Deal with the additional data in one shot</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_Hash_Additional_Data</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthA256</span><span class="p">,</span><span class="w"> </span><span class="n">Additional256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Encrpyt the message in one shot</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_EncryptAndMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">LengthP256</span><span class="p">,</span><span class="w"> </span><span class="n">Plaintext256</span><span class="p">,</span><span class="w"> </span><span class="n">Cipher</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//get the final MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CCM_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">MAC</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CCM_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Check the result is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Cipher</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedCipher256</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//Check the MAC is as expected</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TLEN</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">MAC</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedMAC256</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="AES_CMAC.html" class="btn btn-neutral float-left" title="AES CMAC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="AES_GCM.html" class="btn btn-neutral float-right" title="AES GCM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

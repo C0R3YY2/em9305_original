@@ -1,0 +1,1701 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gap Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gatt Procedures" href="gatt.html" />
+    <link rel="prev" title="firmware_update Procedures" href="firmware_update.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html">authentication Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ble.html">ble Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firmware_update.html">firmware_update Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">gap Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gap-get-bd-addr">gap.get_bd_addr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-set-name">gap.set_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-set-appearance">gap.set_appearance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-set-role">gap.set_role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-set-mode">gap.set_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-set-manufacturer-data">gap.set_manufacturer_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-set-ad-type">gap.set_ad_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-start-broadcast">gap.start_broadcast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-stop-broadcast">gap.stop_broadcast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-set-random-address">gap.set_random_address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-enable-address-resolution">gap.enable_address_resolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-add-device-to-resolving-list">gap.add_device_to_resolving_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-connect">gap.connect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-scan">gap.scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#observe">observe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connection-update">connection_update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gap-connect-simple">gap.connect_simple</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">gatt Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci.html">hci Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">l2cap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sm.html">sm Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">gap Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gap-procedures">
+<h1>gap Procedures<a class="headerlink" href="#gap-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="gap-get-bd-addr">
+<span id="proc-gap-get-bd-addr"></span><h2><a class="reference internal" href="#gap-get-bd-addr">gap.get_bd_addr</a><a class="headerlink" href="#gap-get-bd-addr" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>return the MAC Address</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">get_bd_addr</span>
+
+<span class="n">get_bd_addr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.get_bd_addr<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">get_bd_addr_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_bd_addr</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    return the MAC Address</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">conn_handle</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Getting remote BD_ADDR not implemented for EMSHI </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># This command is implemented in EMB emshi to only get the bd addr from</span>
+        <span class="c1"># NVM Info. Therefore, it will always be the public address.</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_GetBdAddr&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalAddress&quot;</span><span class="p">),</span> <span class="n">MACAddressType</span><span class="o">.</span><span class="n">PUBLIC</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">conn_handle</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_GetBdAddr&quot;</span><span class="p">,</span> <span class="n">Conn_Handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_GetLocalBdAddr&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalAddress&quot;</span><span class="p">),</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalAddressType&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-set-name">
+<span id="proc-gap-set-name"></span><h2><a class="reference internal" href="#gap-set-name">gap.set_name</a><a class="headerlink" href="#gap-set-name" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set Bluetooth Device Name.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">set_name</span>
+
+<span class="n">set_name</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">IsWritable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.set_name<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--IsWritable<span class="w"> </span>ISWRITABLE<span class="o">]</span><span class="w"> </span>name
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Device Name</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--IsWritable <var>ISWRITABLE</var></span></kbd></dt>
+<dd><p>Indicate if the device name is writable (True) or not
+(False)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_name_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">IsWritable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set Bluetooth Device Name.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">name_bytes</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="n">advdata_name</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">name_bytes</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_SHORT_NAME&quot;</span><span class="p">]])</span> <span class="o">+</span> <span class="n">name_bytes</span> <span class="c1"># [Length, DM_ADV_TYPE_SHORT_NAME, name]</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvSetData&quot;</span><span class="p">,</span> <span class="n">advHandle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">DM_DATA_LOC_ADV</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">advdata_name</span><span class="p">),</span> <span class="n">Data</span><span class="o">=</span><span class="n">advdata_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;name not set, error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_text</span>
+        <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;name set to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">IsWritable</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetLocalBluetoothDeviceNameEx&quot;</span><span class="p">,</span>
+                              <span class="n">NameLen</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)),</span>
+                              <span class="n">Name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+                              <span class="n">IsWritable</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                              <span class="n">MaximumWritableLen</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetLocalBluetoothDeviceName&quot;</span><span class="p">,</span> <span class="n">NameLen</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)),</span> <span class="n">Name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="n">retry</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;name not set, error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_text</span>
+        <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;name set to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-set-appearance">
+<span id="proc-gap-set-appearance"></span><h2><a class="reference internal" href="#gap-set-appearance">gap.set_appearance</a><a class="headerlink" href="#gap-set-appearance" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set Appearance data type</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">set_appearance</span>
+
+<span class="n">set_appearance</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">appearance</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">IsWritable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.set_appearance<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--name<span class="w"> </span>NAME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--IsWritable<span class="w"> </span>ISWRITABLE<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--name <var>NAME</var></span></kbd></dt>
+<dd><p>Appearance value (from Assigned Numbers). Default:
+0x0001 (Appearance Unknown)</p>
+</dd>
+<dt><kbd><span class="option">--IsWritable <var>ISWRITABLE</var></span></kbd></dt>
+<dd><p>Indicate if the appearance is writable (True) or not
+(False)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_appearance_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_appearance</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">appearance</span><span class="o">=</span><span class="mh">0x0001</span><span class="p">,</span> <span class="n">IsWritable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set Appearance data type</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="c1">#### TO DO: Packetcraft steps ####</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">IsWritable</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetLocalAppearanceEx&quot;</span><span class="p">,</span>
+                              <span class="n">Appearance</span><span class="o">=</span><span class="n">appearance</span><span class="p">,</span>
+                              <span class="n">IsWritable</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetLocalAppearance&quot;</span><span class="p">,</span> <span class="n">Appearance</span><span class="o">=</span><span class="n">appearance</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Appearance not set, error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_text</span>
+        <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Appearance set to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">appearance</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-set-role">
+<span id="proc-gap-set-role"></span><h2><a class="reference internal" href="#gap-set-role">gap.set_role</a><a class="headerlink" href="#gap-set-role" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set Bluetooth Device Role.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">set_role</span>
+
+<span class="n">set_role</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">roles</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.set_role<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>roles
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">roles<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Can be any combination, separated by commas, of the following</dt><dd><p>values: BROADCASTER,OBSERVER,PERIPHERAL,CENTRAL</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_role_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_role</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">roles</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set Bluetooth Device Role.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">roles</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">roles</span> <span class="o">=</span> <span class="n">roles</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">roles</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">roles</span><span class="p">:</span>
+            <span class="n">role</span> <span class="o">+=</span> <span class="n">GAP_ROLES</span><span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="n">roles</span>
+
+    <span class="k">def</span> <span class="nf">general_init</span><span class="p">():</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_Register&quot;</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ConnRegister&quot;</span><span class="p">,</span> <span class="n">clientId</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_DevReset&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">pkt</span><span class="o">=</span><span class="n">general_init</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">role</span><span class="o">==</span><span class="s2">&quot;CENTRAL&quot;</span> <span class="ow">or</span> <span class="n">role</span><span class="o">==</span><span class="mh">0x08</span><span class="p">:</span>
+            <span class="c1">###Central Initialisations</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ScanInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ConnMasterInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_MasterInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPI_Init&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPI_SCInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_HCI_MaxRxAclen&quot;</span><span class="p">)</span>
+            <span class="c1">###Central Initialisations</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ConnSetConnSpec&quot;</span><span class="p">,</span>
+                              <span class="n">connIntervalMin</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">connIntervalMax</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">connLatency</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                              <span class="n">supTimeout</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                              <span class="n">minCeLen</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                              <span class="n">maxCeLen</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">role</span><span class="o">==</span><span class="s2">&quot;PERIPHERAL&quot;</span> <span class="ow">or</span> <span class="n">role</span><span class="o">==</span><span class="mh">0x04</span><span class="p">:</span>
+            <span class="c1">###Peripheral Initialisations</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ConnSlaveInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_SlaveHandlerInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_SlaveInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPR_Init&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPR_SCInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_HCI_MaxRxAclen&quot;</span><span class="p">)</span>
+            <span class="c1">###Peripheral Initialisations</span>
+
+
+        <span class="k">if</span> <span class="n">role</span><span class="o">==</span><span class="s2">&quot;OBSERVER&quot;</span> <span class="ow">or</span> <span class="n">role</span><span class="o">==</span><span class="mh">0x02</span><span class="p">:</span>
+            <span class="c1">###Observer Initialisations</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ScanInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_MasterInit&quot;</span><span class="p">)</span>
+
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_SlaveHandlerInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_SlaveInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPI_Init&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPI_SCInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_HCI_MaxRxAclen&quot;</span><span class="p">)</span>
+            <span class="c1">###Observer Initialisations</span>
+
+        <span class="k">if</span> <span class="n">role</span><span class="o">==</span><span class="s2">&quot;BROADCASTER&quot;</span> <span class="ow">or</span> <span class="n">role</span><span class="o">==</span><span class="mh">0x01</span><span class="p">:</span>
+            <span class="c1">###Broadcaster Initialisations</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_SlaveHandlerInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_SlaveInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPR_Init&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SMPR_SCInit&quot;</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_HCI_MaxRxAclen&quot;</span><span class="p">)</span>
+            <span class="c1">###Broadcaster Initialisations</span>
+
+
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Role set to 0x</span><span class="si">%x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">role</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Cannot set role&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_RegisterDevice&quot;</span><span class="p">,</span> <span class="n">Role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Role set to 0x</span><span class="si">%x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">role</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Cannot set role, error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-set-mode">
+<span id="proc-gap-set-mode"></span><h2><a class="reference internal" href="#gap-set-mode">gap.set_mode</a><a class="headerlink" href="#gap-set-mode" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set Bluetooth Device Mode. (EMSHI only)</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">set_mode</span>
+
+<span class="n">set_mode</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">adv_data_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">addrtype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.set_manufacturer_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--addrtype<span class="w"> </span>ADDRTYPE<span class="o">]</span>
+<span class="w">                                  </span><span class="o">[</span>--adv_data_param<span class="w"> </span>ADV_DATA_PARAM<span class="o">]</span>
+<span class="w">                                  </span>modes<span class="w"> </span>interval<span class="w"> </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">modes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>can be any combination, separated by commas, of the</dt><dd><p>following values: CONNECTABLE_DISCOVERABLE,NOT_CONNECT
+ABLE,CONNECTABLE,DIRECT_CONNECTABLE,NOT_DISCOVERABLE,D
+ISCOVERABLE,LIMITED_DISCOVERABLE,EXTENDED_ADVERTISING,
+PERIODIC_ADVERTISING</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">interval<span class="colon">:</span></dt>
+<dd class="field-even"><p>The discoverable/connectable interval</p>
+</dd>
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Address of the remote device (for directed mode)</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--addrtype <var>ADDRTYPE</var></span></kbd></dt>
+<dd><p>Address Type of the remote device (for directed mode)</p>
+</dd>
+<dt><kbd><span class="option">--adv_data_param <var>ADV_DATA_PARAM</var></span></kbd></dt>
+<dd><p>Advertisement data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_mode_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+             <span class="n">modes</span><span class="p">,</span>
+             <span class="n">adv_data_param</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">addrtype</span><span class="o">=</span><span class="mh">0x00</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set Bluetooth Device Mode. (EMSHI only)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="mh">0x00</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">+=</span> <span class="n">GAP_MODES</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">modes</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="k">global</span> <span class="n">ADVERTISEMENT_DATA_LENGTH</span>
+        <span class="k">global</span> <span class="n">ADVERTISEMENT_DATA</span>
+
+        <span class="k">global</span> <span class="n">SCAN_DATA_LENGTH</span>
+        <span class="k">global</span> <span class="n">SCAN_DATA</span>
+
+        <span class="c1"># Set the ADV Data Flags</span>
+        <span class="n">adv_flags</span> <span class="o">=</span> <span class="n">DM_FLAG_LE_BREDR_NOT_SUP</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x10</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x11</span><span class="p">:</span> <span class="c1"># DISCOVERABLE</span>
+            <span class="n">adv_flags</span> <span class="o">=</span> <span class="n">DM_FLAG_LE_GENERAL_DISC</span> <span class="o">|</span> <span class="n">DM_FLAG_LE_BREDR_NOT_SUP</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x20</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x21</span><span class="p">:</span> <span class="c1"># LIMITED DISCOVERABLE</span>
+            <span class="n">adv_flags</span> <span class="o">=</span> <span class="n">DM_FLAG_LE_LIMITED_DISC</span> <span class="o">|</span> <span class="n">DM_FLAG_LE_BREDR_NOT_SUP</span>
+
+        <span class="c1"># Set the ADV event type</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x00</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x10</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x20</span><span class="p">:</span>
+            <span class="n">adv_type</span> <span class="o">=</span> <span class="n">DM_ADV_NONCONN_UNDIRECT</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mh">0x02</span><span class="p">:</span>
+            <span class="n">adv_type</span> <span class="o">=</span> <span class="n">DM_ADV_CONN_DIRECT</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">adv_type</span> <span class="o">=</span> <span class="n">DM_ADV_CONN_UNDIRECT</span>
+        <span class="k">if</span> <span class="n">ADVERTISEMENT_DATA</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">adv_data_param</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># Not AD type has been set with set_ad_type procedure</span>
+            <span class="c1"># Set advertising data</span>
+            <span class="n">ADVERTISEMENT_DATA</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x02</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_FLAGS&quot;</span><span class="p">],</span> <span class="n">adv_flags</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_TX_POWER&quot;</span><span class="p">],</span> <span class="mh">0x00</span><span class="p">])</span>
+            <span class="n">ADVERTISEMENT_DATA_LENGTH</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ADVERTISEMENT_DATA</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_Advdatacb&quot;</span><span class="p">,</span> <span class="n">dataType</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dataLen</span><span class="o">=</span><span class="n">ADVERTISEMENT_DATA_LENGTH</span><span class="p">,</span> <span class="n">pData</span><span class="o">=</span><span class="n">ADVERTISEMENT_DATA</span><span class="p">)</span>
+
+        <span class="c1"># Set scan data</span>
+        <span class="n">SCAN_DATA</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x03</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_LOCAL_NAME&quot;</span><span class="p">],</span> <span class="mh">0x45</span><span class="p">,</span> <span class="mh">0x4D</span><span class="p">])</span>
+        <span class="n">SCAN_DATA_LENGTH</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SCAN_DATA</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_Advdatacb&quot;</span><span class="p">,</span> <span class="n">dataType</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dataLen</span><span class="o">=</span><span class="n">SCAN_DATA_LENGTH</span><span class="p">,</span> <span class="n">pData</span><span class="o">=</span><span class="n">SCAN_DATA</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvSetData&quot;</span><span class="p">,</span> <span class="n">advHandle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">DM_DATA_LOC_ADV</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="n">ADVERTISEMENT_DATA_LENGTH</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvSetData&quot;</span><span class="p">,</span> <span class="n">advHandle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">DM_DATA_LOC_SCAN</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="n">SCAN_DATA_LENGTH</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvSetInterval&quot;</span><span class="p">,</span> <span class="n">advHandle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">intervalMin</span><span class="o">=</span><span class="n">interval</span><span class="p">,</span> <span class="n">intervalMax</span><span class="o">=</span><span class="n">interval</span><span class="p">)</span>
+
+        <span class="n">peerAddress</span> <span class="o">=</span> <span class="n">address</span> <span class="k">if</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvConfig&quot;</span><span class="p">,</span> <span class="n">advHandle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">adtype</span><span class="o">=</span><span class="n">adv_type</span><span class="p">,</span> <span class="n">peerAddrType</span><span class="o">=</span><span class="n">addrtype</span><span class="p">,</span> <span class="n">PeerAddr</span><span class="o">=</span><span class="n">peerAddress</span><span class="p">)</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvStart&quot;</span><span class="p">,</span> <span class="n">numSets</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">AdvHandles</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Duration</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">MaxEaEvents</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">msg</span> <span class="o">=</span>  <span class="s2">&quot;Mode set to 0x</span><span class="si">%x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mode</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetModeWithIntervalsEx&quot;</span><span class="p">,</span> <span class="n">Mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">AdvertisementInterval</span><span class="o">=</span><span class="n">interval</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">AddrType</span><span class="o">=</span><span class="n">addrtype</span><span class="p">)</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetMode&quot;</span><span class="p">,</span> <span class="n">Mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span>  <span class="s2">&quot;Mode set to 0x</span><span class="si">%x</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mode</span>
+
+    <span class="k">if</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Cannot set mode to </span><span class="si">{}</span><span class="s2"> , Error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-set-manufacturer-data">
+<span id="proc-gap-set-manufacturer-data"></span><h2><a class="reference internal" href="#gap-set-manufacturer-data">gap.set_manufacturer_data</a><a class="headerlink" href="#gap-set-manufacturer-data" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set manufacturer specific data</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">set_manufacturer_data</span>
+
+<span class="n">set_manufacturer_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.set_manufacturer_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--addrtype<span class="w"> </span>ADDRTYPE<span class="o">]</span>
+<span class="w">                                  </span><span class="o">[</span>--adv_data_param<span class="w"> </span>ADV_DATA_PARAM<span class="o">]</span>
+<span class="w">                                  </span>modes<span class="w"> </span>interval<span class="w"> </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">modes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>can be any combination, separated by commas, of the</dt><dd><p>following values: CONNECTABLE_DISCOVERABLE,NOT_CONNECT
+ABLE,CONNECTABLE,DIRECT_CONNECTABLE,NOT_DISCOVERABLE,D
+ISCOVERABLE,LIMITED_DISCOVERABLE,EXTENDED_ADVERTISING,
+PERIODIC_ADVERTISING</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">interval<span class="colon">:</span></dt>
+<dd class="field-even"><p>The discoverable/connectable interval</p>
+</dd>
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Address of the remote device (for directed mode)</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--addrtype <var>ADDRTYPE</var></span></kbd></dt>
+<dd><p>Address Type of the remote device (for directed mode)</p>
+</dd>
+<dt><kbd><span class="option">--adv_data_param <var>ADV_DATA_PARAM</var></span></kbd></dt>
+<dd><p>Advertisement data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_mode_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_manufacturer_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set manufacturer specific data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="c1">#### TO DO: Packetcraft steps ####</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetManufacturerSpecificData&quot;</span><span class="p">,</span> <span class="n">Len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">Value</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1">#assert pkt.response.get(&quot;status&quot;) == 0, &quot;Cannot set manufacturer specific data, error: %s&quot; % pkt.status_text</span>
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-set-ad-type">
+<span id="proc-gap-set-ad-type"></span><h2><a class="reference internal" href="#gap-set-ad-type">gap.set_ad_type</a><a class="headerlink" href="#gap-set-ad-type" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set GAP AD Types for advertising</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">set_ad_type</span>
+
+<span class="n">set_ad_type</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">ad_types</span><span class="p">,</span> <span class="n">ad_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.set_ad_type<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>ad_types<span class="w"> </span>ad_value
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">ad_types<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>AD Type to be set for advertising. Can be any of the following</dt><dd><p>values: GAP_ADV_TYPE_FLAGS,GAP_ADV_TYPE_16_UUID_PART,GAP_ADV_TYP
+E_16_UUID,GAP_ADV_TYPE_32_UUID_PART,GAP_ADV_TYPE_32_UUID,GAP_ADV
+_TYPE_128_UUID_PART,GAP_ADV_TYPE_128_UUID,GAP_ADV_TYPE_SHORT_NAM
+E,GAP_ADV_TYPE_LOCAL_NAME,GAP_ADV_TYPE_TX_POWER,GAP_ADV_TYPE_SM_
+TK_VALUE,GAP_ADV_TYPE_SM_OOB_FLAGS,GAP_ADV_TYPE_CONN_INTERVAL,GA
+P_ADV_TYPE_SIGNED_DATA,GAP_ADV_TYPE_16_SOLICIT,GAP_ADV_TYPE_128_
+SOLICIT,GAP_ADV_TYPE_SERVICE_DATA,GAP_ADV_TYPE_PUBLIC_TARGET,GAP
+_ADV_TYPE_RANDOM_TARGET,GAP_ADV_TYPE_ADV_INTERVAL,GAP_ADV_TYPE_A
+PPEARANCE,GAP_ADV_TYPE_BD_ADDR,GAP_ADV_TYPE_ROLE,GAP_ADV_TYPE_32
+_SOLICIT,GAP_ADV_TYPE_SVC_DATA_32,GAP_ADV_TYPE_SVC_DATA_128,GAP_
+ADV_TYPE_LESC_CONFIRM,GAP_ADV_TYPE_LESC_RANDOM,GAP_ADV_TYPE_URI,
+GAP_ADV_TYPE_INDOOR_POS,GAP_ADV_TYPE_TRANS_DISC,GAP_ADV_TYPE_LE_
+SUP_FEAT,GAP_ADV_TYPE_CH_MAP_UPD_IND,GAP_ADV_TYPE_PB_ADV,GAP_ADV
+_TYPE_MESH_MSG,GAP_ADV_TYPE_MESH_BEACON,GAP_ADV_TYPE_BIG_INFO,GA
+P_ADV_TYPE_BCAST_CODE,GAP_ADV_TYPE_PRSI,GAP_ADV_TYPE_ADV_INTERVA
+L_LG,GAP_ADV_TYPE_BCASTER_NAME,GAP_ADV_TYPE_ENC_ADV_DATA,GAP_ADV
+_TYPE_3D_INFO_DATA,GAP_ADV_TYPE_MANUFACTURER</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">ad_value<span class="colon">:</span></dt>
+<dd class="field-even"><p>Service UUID for ServiceUUID AD type</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_ad_type_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_ad_type</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                <span class="n">ad_types</span><span class="p">,</span>
+                <span class="n">ad_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set GAP AD Types for advertising</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ad_types</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ad_types</span> <span class="o">=</span> <span class="n">ad_types</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ad_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Error: Value to set in AD type not specified in parameters&quot;</span>
+
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">ADVERTISEMENT_DATA_LENGTH</span>
+        <span class="k">global</span> <span class="n">ADVERTISEMENT_DATA</span>
+
+        <span class="k">global</span> <span class="n">SCAN_DATA_LENGTH</span>
+        <span class="k">global</span> <span class="n">SCAN_DATA</span>
+
+        <span class="k">if</span> <span class="n">ADVERTISEMENT_DATA</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">adv_flags</span> <span class="o">=</span> <span class="mh">0x06</span>
+            <span class="n">adv_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x02</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_FLAGS&quot;</span><span class="p">],</span> <span class="n">adv_flags</span><span class="p">])</span>
+            <span class="n">scan_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x0B</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_LOCAL_NAME&quot;</span><span class="p">],</span><span class="mi">69</span><span class="p">,</span><span class="mi">77</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">53</span><span class="p">,</span><span class="mi">95</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">82</span><span class="p">,</span><span class="mi">83</span><span class="p">])</span>
+
+            <span class="n">ADVERTISEMENT_DATA</span> <span class="o">=</span> <span class="n">adv_data</span>
+            <span class="n">ADVERTISEMENT_DATA_LENGTH</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">adv_data</span><span class="p">)</span>
+
+            <span class="n">SCAN_DATA</span> <span class="o">=</span> <span class="n">scan_data</span>
+            <span class="n">SCAN_DATA_LENGTH</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_data</span><span class="p">)</span>
+            <span class="c1"># Set default data</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_Advdatacb&quot;</span><span class="p">,</span> <span class="n">dataType</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pAdvData</span><span class="o">=</span><span class="n">ADVERTISEMENT_DATA</span><span class="p">,</span> <span class="n">advDataLen</span><span class="o">=</span><span class="n">ADVERTISEMENT_DATA_LENGTH</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_Advdatacb&quot;</span><span class="p">,</span> <span class="n">dataType</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pAdvData</span><span class="o">=</span><span class="n">SCAN_DATA</span><span class="p">,</span> <span class="n">advDataLen</span><span class="o">=</span><span class="n">SCAN_DATA_LENGTH</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ad_type</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="n">ad_type_int</span> <span class="o">=</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="n">ad_type</span><span class="p">]</span>
+            <span class="c1"># Set specified adType</span>
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvSetAdValue&quot;</span><span class="p">,</span>
+                        <span class="n">adType</span><span class="o">=</span><span class="n">ad_type_int</span><span class="p">,</span>
+                        <span class="nb">len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">ad_value</span><span class="p">),</span>
+                        <span class="n">advDataBufLen</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                        <span class="n">Value</span><span class="o">=</span><span class="n">ad_value</span><span class="p">)</span>
+
+            <span class="c1"># Updating length value</span>
+            <span class="n">ADVERTISEMENT_DATA_LENGTH</span> <span class="o">=</span> <span class="n">ADVERTISEMENT_DATA_LENGTH</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">ad_value</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span>
+
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="s2">&quot;GAP_ADV_TYPE_16_UUID&quot;</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_Add16BitsServiceUUID&quot;</span><span class="p">,</span> <span class="n">UUID</span><span class="o">=</span><span class="n">ad_value</span><span class="p">)</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;GAP_ADV_TYPE_LOCAL_NAME&quot;</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">set_name</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">ad_value</span><span class="p">,</span> <span class="n">IsWritable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;GAP_ADV_TYPE_FLAGS&quot;</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1"># In AW Stack, flags are set by default</span>
+        <span class="k">elif</span> <span class="s2">&quot;GAP_ADV_TYPE_MANUFACTURER&quot;</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">set_manufacturer_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ad_value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;GAP_ADV_TYPE_TX_POWER&quot;</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetTXPowerLevelADData&quot;</span><span class="p">,</span> <span class="n">txPowerLevelValue</span><span class="o">=</span><span class="n">ad_value</span><span class="p">)</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;GAP_ADV_TYPE_16_UUID&quot;</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="n">ServiceDataValue</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;SetServiceDataValue&#39;</span><span class="p">)</span>
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetServiceDataValue&quot;</span><span class="p">,</span> <span class="n">UUID</span><span class="o">=</span><span class="n">ad_value</span><span class="p">,</span> <span class="n">Len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">ServiceDataValue</span><span class="p">),</span> <span class="n">Value</span><span class="o">=</span><span class="n">ServiceDataValue</span><span class="p">)</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;GAP_ADV_TYPE_APPEARANCE&quot;</span> <span class="ow">in</span> <span class="n">ad_types</span><span class="p">:</span>
+            <span class="n">rsp</span> <span class="o">=</span> <span class="n">set_appearance</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">appearance</span><span class="o">=</span><span class="n">ad_value</span><span class="p">,</span> <span class="n">IsWritable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rsp</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">rsp</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">rsp</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-start-broadcast">
+<span id="proc-gap-start-broadcast"></span><h2><a class="reference internal" href="#gap-start-broadcast">gap.start_broadcast</a><a class="headerlink" href="#gap-start-broadcast" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Start broadcasting from a GAP Broadcaster</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">start_broadcast</span>
+
+<span class="n">start_broadcast</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">broadcast_interval</span><span class="p">,</span> <span class="n">broadcast_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.start_broadcast<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>broadcast_interval<span class="w"> </span>broadcast_data
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">broadcast_interval<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Broadcast Interval</p>
+</dd>
+<dt class="field-even">broadcast_data<span class="colon">:</span></dt>
+<dd class="field-even"><p>Broadcast Data</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">start_broadcast_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start_broadcast</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">broadcast_interval</span><span class="p">,</span> <span class="n">broadcast_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Start broadcasting from a GAP Broadcaster</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">adv_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x02</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_FLAGS&quot;</span><span class="p">],</span><span class="n">DM_NO_FLAG</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">broadcast_data</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">GAP_AD_TYPES</span><span class="p">[</span><span class="s2">&quot;GAP_ADV_TYPE_SERVICE_DATA&quot;</span><span class="p">]])</span> <span class="o">+</span> <span class="n">broadcast_data</span>
+
+        <span class="n">status</span> <span class="o">=</span> <span class="n">set_mode</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="s2">&quot;NOT_CONNECTABLE&quot;</span><span class="p">,</span> <span class="n">adv_data_param</span> <span class="o">=</span> <span class="n">adv_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_StartBroadcastProcedure&quot;</span><span class="p">,</span> <span class="n">broadcastInterval</span><span class="o">=</span><span class="n">broadcast_interval</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">broadcast_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetServiceDataValue&quot;</span><span class="p">,</span> <span class="n">UUID</span><span class="o">=</span><span class="mh">0x0001</span><span class="p">,</span> <span class="n">Len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">broadcast_data</span><span class="p">),</span> <span class="n">Value</span><span class="o">=</span><span class="n">broadcast_data</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_ApplyBroadcastValue&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-stop-broadcast">
+<span id="proc-gap-stop-broadcast"></span><h2><a class="reference internal" href="#gap-stop-broadcast">gap.stop_broadcast</a><a class="headerlink" href="#gap-stop-broadcast" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Stop broadcasting from a GAP Broadcaster</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">stop_broadcast</span>
+
+<span class="n">stop_broadcast</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.stop_broadcast<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">stop_broadcast_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">stop_broadcast</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stop broadcasting from a GAP Broadcaster</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_AdvStop&quot;</span><span class="p">,</span>
+                    <span class="n">numSets</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">AdvHandles</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_StopBroadcastProcedure&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-set-random-address">
+<span id="proc-gap-set-random-address"></span><h2><a class="reference internal" href="#gap-set-random-address">gap.set_random_address</a><a class="headerlink" href="#gap-set-random-address" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set a random address for GAP advertising</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">set_random_address</span>
+
+<span class="n">set_random_address</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">addr_type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">adv_handle</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s1">&#39;44:11:22:33:44:55&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.set_random_address<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--adv_handle<span class="w"> </span>ADV_HANDLE<span class="o">]</span>
+<span class="w">                               </span><span class="o">[</span>--address<span class="w"> </span>ADDRESS<span class="o">]</span>
+<span class="w">                               </span>addr_type
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">addr_type<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>The type of PRIVATE Address that the application wants</dt><dd><p>to generate and set (1 is Random Static, 2 is Random
+Non Resolvable and 3 is Random Resolvable). Not
+required for EMB.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--adv_handle <var>ADV_HANDLE</var></span></kbd></dt>
+<dd><p>Advertising handle. Not required for AW stack</p>
+</dd>
+<dt><kbd><span class="option">--address <var>ADDRESS</var></span></kbd></dt>
+<dd><p>Random device address to be set. Not required for AW
+stack</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_random_address_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_random_address</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">addr_type</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span> <span class="n">adv_handle</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="s2">&quot;44:11:22:33:44:55&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set a random address for GAP advertising</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">addr_type</span><span class="o">==</span><span class="n">RESOLV_PRIV_ADDR</span><span class="p">):</span>
+            <span class="c1"># Resolvable Private address</span>
+            <span class="n">AddrResEnable</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">elif</span><span class="p">(</span><span class="n">addr_type</span><span class="o">==</span><span class="n">NON_RESOLV_PRIV_ADDR</span><span class="p">):</span>
+            <span class="c1"># Non Resolvable Private address</span>
+            <span class="n">AddrResEnable</span><span class="o">=</span><span class="kc">False</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrivSetAddrResEnable&quot;</span><span class="p">,</span><span class="n">enable</span> <span class="o">=</span> <span class="n">AddrResEnable</span><span class="p">)</span>
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_DevPrivStart&quot;</span><span class="p">,</span><span class="n">changeInterval</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_GenerateAndSetRandomAddress&quot;</span><span class="p">,</span> <span class="n">Type</span><span class="o">=</span><span class="n">addr_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-enable-address-resolution">
+<span id="proc-gap-enable-address-resolution"></span><h2><a class="reference internal" href="#gap-enable-address-resolution">gap.enable_address_resolution</a><a class="headerlink" href="#gap-enable-address-resolution" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Enable or disable Address Resolution</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">enable_address_resolution</span>
+
+<span class="n">enable_address_resolution</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">enable</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.enable_address_resolution<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="nb">enable</span>
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">enable<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Enable (1) or disable (0) address resolution in the controller</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">enable_address_resolution_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">enable_address_resolution</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">enable</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enable or disable Address Resolution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrivSetAddrResEnable&quot;</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="n">enable</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_PrivacyConfigureAddressResolution&quot;</span><span class="p">,</span> <span class="n">enableAddressResolution</span><span class="o">=</span><span class="n">enable</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-add-device-to-resolving-list">
+<span id="proc-gap-add-device-to-resolving-list"></span><h2><a class="reference internal" href="#gap-add-device-to-resolving-list">gap.add_device_to_resolving_list</a><a class="headerlink" href="#gap-add-device-to-resolving-list" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Add a device to the Controller Resolving List from GAP level</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">add_device_to_resolving_list</span>
+
+<span class="n">add_device_to_resolving_list</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">addr_type</span><span class="p">,</span> <span class="n">peer_irk</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_irk</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.add_device_to_resolving_list<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--peer_irk<span class="w"> </span>PEER_IRK<span class="o">]</span>
+<span class="w">                                         </span><span class="o">[</span>--local_irk<span class="w"> </span>LOCAL_IRK<span class="o">]</span>
+<span class="w">                                         </span><span class="o">[</span>--enable<span class="w"> </span>ENABLE<span class="o">]</span>
+<span class="w">                                         </span>address<span class="w"> </span>addr_type
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bluetooth device address of the remote device</p>
+</dd>
+<dt class="field-even">addr_type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Bluetooth device address type of the remote device</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--peer_irk <var>PEER_IRK</var></span></kbd></dt>
+<dd><p>The peer’s identity resolving key</p>
+</dd>
+<dt><kbd><span class="option">--local_irk <var>LOCAL_IRK</var></span></kbd></dt>
+<dd><p>The local identity resolving key</p>
+</dd>
+<dt><kbd><span class="option">--enable <var>ENABLE</var></span></kbd></dt>
+<dd><p>Set to TRUE to enable address resolution in LL</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">add_device_to_resolving_list_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_device_to_resolving_list</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">addr_type</span><span class="p">,</span> <span class="n">peer_irk</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_irk</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">enable</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add a device to the Controller Resolving List from GAP level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrivAddDevToResList&quot;</span><span class="p">,</span>
+                          <span class="n">addrType</span><span class="o">=</span><span class="n">addr_type</span><span class="p">,</span>
+                          <span class="n">IdentityAddr</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
+                          <span class="n">PeerIrk</span><span class="o">=</span><span class="n">peer_irk</span><span class="p">,</span>
+                          <span class="n">LocalIrk</span><span class="o">=</span><span class="n">local_irk</span><span class="p">,</span>
+                          <span class="n">enableLlPriv</span><span class="o">=</span><span class="n">enable</span><span class="p">,</span>
+                          <span class="n">param</span><span class="o">=</span><span class="mh">0x0000</span><span class="p">)</span> <span class="c1">#### TO DO: Check meaning and use of param parameter in EMB stack (related to callback?)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_PrivacyAddDeviceInResolvingList&quot;</span><span class="p">,</span>
+                           <span class="n">Addr</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
+                           <span class="n">AddrType</span><span class="o">=</span><span class="n">addr_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-connect">
+<span id="proc-gap-connect"></span><h2><a class="reference internal" href="#gap-connect">gap.connect</a><a class="headerlink" href="#gap-connect" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Connect to a Remote Device - EMSHI</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">connect</span>
+
+<span class="n">connect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">bd_addr</span><span class="p">,</span> <span class="n">addrtype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">conn_interval_ms</span><span class="o">=</span><span class="mf">7.5</span><span class="p">,</span> <span class="n">conn_timeout_ms</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.connect<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--retry<span class="w"> </span>RETRY<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--scan_interval_ms<span class="w"> </span>SCAN_INTERVAL_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--scan_window_ms<span class="w"> </span>SCAN_WINDOW_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--conn_interval_ms<span class="w"> </span>CONN_INTERVAL_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--conn_timeout_ms<span class="w"> </span>CONN_TIMEOUT_MS<span class="o">]</span>
+<span class="w">                    </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Bluetooth Address to connect to, call scan() to get a</dt><dd><p>list</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--retry <var>RETRY</var></span></kbd></dt>
+<dd><p>Number oif times to retry</p>
+</dd>
+<dt><kbd><span class="option">--scan_interval_ms <var>SCAN_INTERVAL_MS</var></span></kbd></dt>
+<dd><p>Scan Interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scan_window_ms <var>SCAN_WINDOW_MS</var></span></kbd></dt>
+<dd><p>Scan Window in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--conn_interval_ms <var>CONN_INTERVAL_MS</var></span></kbd></dt>
+<dd><p>COnnection Interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--conn_timeout_ms <var>CONN_TIMEOUT_MS</var></span></kbd></dt>
+<dd><p>Connection Timeout in milliseconds</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">connect_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">bd_addr</span><span class="p">,</span>
+            <span class="n">addrtype</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">conn_interval_ms</span><span class="o">=</span><span class="mf">7.5</span><span class="p">,</span>
+            <span class="n">conn_timeout_ms</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Connect to a Remote Device - EMSHI</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">device_connected</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+    <span class="n">device_disconnected</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">on_gap_connected</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">status</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">device_connected</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">on_gap_disconnected</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+        <span class="k">nonlocal</span> <span class="n">status</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DisconnectionReason&quot;</span><span class="p">)</span>
+        <span class="n">device_disconnected</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_CONNECTED&quot;</span><span class="p">,</span> <span class="n">on_gap_connected</span><span class="p">)</span>
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_DISCONNECTED&quot;</span><span class="p">,</span> <span class="n">on_gap_disconnected</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>  <span class="s2">&quot;EMSHI_GAP_ConnectWithIntervalsEx&quot;</span><span class="p">,</span>
+                        <span class="n">Addr</span><span class="o">=</span><span class="n">bd_addr</span><span class="p">,</span> <span class="n">AddrType</span><span class="o">=</span><span class="n">addrtype</span><span class="p">,</span>
+                        <span class="n">ScanInterval</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">scan_interval_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">),</span>  <span class="c1"># ratio 1/0.625</span>
+                        <span class="n">ScanWindow</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">scan_window_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">),</span>  <span class="c1"># ratio 1/0.625</span>
+                        <span class="n">ConnectionInterval</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_interval_ms</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">),</span>  <span class="c1"># ratio 1/1.25</span>
+                        <span class="n">ConnectionTimeout</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_timeout_ms</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span>  <span class="c1"># 10ms</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">conn_timeout_ms</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    pkt = engine.send(&quot;EMSHI_GAP_Connect&quot;,</span>
+<span class="sd">                    Addr=bd_addr, AddrType=0x00)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">ok</span> <span class="o">=</span> <span class="n">device_connected</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">+</span> <span class="p">(</span><span class="n">conn_timeout_ms</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">))</span>
+
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_CONNECTED&quot;</span><span class="p">,</span> <span class="n">on_gap_connected</span><span class="p">)</span>
+
+    <span class="n">nok</span> <span class="o">=</span> <span class="n">device_disconnected</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">+</span> <span class="p">(</span><span class="n">conn_interval_ms</span> <span class="o">*</span> <span class="mi">8</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_DISCONNECTED&quot;</span><span class="p">,</span> <span class="n">on_gap_disconnected</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Connected to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mac</span><span class="p">(</span><span class="n">bd_addr</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ok</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Cannot connect to </span><span class="si">%s</span><span class="s2">, status: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mac</span><span class="p">(</span><span class="n">bd_addr</span><span class="p">),</span> <span class="n">status</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">nok</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Connected, then Disconnected from </span><span class="si">%s</span><span class="s2">, status: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mac</span><span class="p">(</span><span class="n">bd_addr</span><span class="p">),</span> <span class="n">status</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span><span class="p">,</span> <span class="n">msg</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-scan">
+<span id="proc-gap-scan"></span><h2><a class="reference internal" href="#gap-scan">gap.scan</a><a class="headerlink" href="#gap-scan" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Scan for devices and return a advertising packets list. (EMSHI only)</p>
+<p>Two callbacks can be provided for the advertising packets and for the scan
+response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      mode<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mode</p>
+</dd>
+<dt class="field-odd">param      duration_ms<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The duration milliseconds</p>
+</dd>
+<dt class="field-even">param      scan_interval_ms<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scan interval milliseconds</p>
+</dd>
+<dt class="field-odd">param      scan_window_ms<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scan window milliseconds</p>
+</dd>
+<dt class="field-even">param      address_filter<span class="colon">:</span></dt>
+<dd class="field-even"><p>The address filter</p>
+</dd>
+<dt class="field-odd">param      name_filter<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name filter</p>
+</dd>
+<dt class="field-even">param      uuid_filter<span class="colon">:</span></dt>
+<dd class="field-even"><p>The uuid filter</p>
+</dd>
+<dt class="field-odd">param      nearest<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The nearest filter</p>
+</dd>
+<dt class="field-even">param      retry<span class="colon">:</span></dt>
+<dd class="field-even"><p>The retry</p>
+</dd>
+<dt class="field-odd">param      on_advertising<span class="colon">:</span></dt>
+<dd class="field-odd"><p>On advertising Callback</p>
+</dd>
+<dt class="field-even">param      on_scan_response<span class="colon">:</span></dt>
+<dd class="field-even"><p>On scan response Callback</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>status and advertising packets</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple(str, list)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">scan</span>
+
+<span class="n">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">scan_Type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">duration_ms</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">address_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uuid_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">on_advertising</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_scan_response</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.scan<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mode<span class="w"> </span>MODE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--scan_Type<span class="w"> </span>SCAN_TYPE<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--duration_ms<span class="w"> </span>DURATION_MS<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--scan_interval_ms<span class="w"> </span>SCAN_INTERVAL_MS<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--scan_window_ms<span class="w"> </span>SCAN_WINDOW_MS<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--address_filter<span class="w"> </span>ADDRESS_FILTER<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--name_filter<span class="w"> </span>NAME_FILTER<span class="o">]</span><span class="w"> </span><span class="o">[</span>--uuid_filter<span class="w"> </span>UUID_FILTER<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--mode <var>MODE</var></span></kbd></dt>
+<dd><p>Connection Mode, 0x01:External, 0x02:General</p>
+</dd>
+<dt><kbd><span class="option">--scan_Type <var>SCAN_TYPE</var></span></kbd></dt>
+<dd><p>Scan Type , 0x00:Passive, 0x01:Active</p>
+</dd>
+<dt><kbd><span class="option">--duration_ms <var>DURATION_MS</var></span></kbd></dt>
+<dd><p>Duration of the scan in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scan_interval_ms <var>SCAN_INTERVAL_MS</var></span></kbd></dt>
+<dd><p>Scan interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scan_window_ms <var>SCAN_WINDOW_MS</var></span></kbd></dt>
+<dd><p>Advertisement Window in ^milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--address_filter <var>ADDRESS_FILTER</var></span></kbd></dt>
+<dd><p>Filter Devices based on this MAC Address</p>
+</dd>
+<dt><kbd><span class="option">--name_filter <var>NAME_FILTER</var></span></kbd></dt>
+<dd><p>Filter Devices which name contain this string</p>
+</dd>
+<dt><kbd><span class="option">--uuid_filter <var>UUID_FILTER</var></span></kbd></dt>
+<dd><p>Filter the devices that advertise the specific uuid</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">scan_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+         <span class="n">mode</span><span class="o">=</span><span class="mh">0x02</span><span class="p">,</span>
+         <span class="n">scan_Type</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+         <span class="n">duration_ms</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+         <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+         <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+         <span class="n">address_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">name_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">uuid_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">retry</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+         <span class="n">on_advertising</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">on_scan_response</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scan for devices and return a advertising packets list. (EMSHI only)</span>
+
+<span class="sd">    Two callbacks can be provided for the advertising packets and for the scan</span>
+<span class="sd">    response.</span>
+
+<span class="sd">    :param      engine:            The engine</span>
+<span class="sd">    :param      mode:              The mode</span>
+<span class="sd">    :param      duration_ms:       The duration milliseconds</span>
+<span class="sd">    :param      scan_interval_ms:  The scan interval milliseconds</span>
+<span class="sd">    :param      scan_window_ms:    The scan window milliseconds</span>
+<span class="sd">    :param      address_filter:    The address filter</span>
+<span class="sd">    :param      name_filter:       The name filter</span>
+<span class="sd">    :param      uuid_filter:       The uuid filter</span>
+<span class="sd">    :param      nearest:           The nearest filter</span>
+<span class="sd">    :param      retry:             The retry</span>
+<span class="sd">    :param      on_advertising:    On advertising Callback</span>
+<span class="sd">    :param      on_scan_response:  On scan response Callback</span>
+
+<span class="sd">    :returns:   status and advertising packets</span>
+<span class="sd">    :rtype:     tuple(str, list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">def</span> <span class="nf">on_scan_report</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+            <span class="k">nonlocal</span> <span class="n">status</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ScanSetInterval&quot;</span><span class="p">,</span> <span class="n">scanPhys</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span> <span class="n">scanInterval_arr</span><span class="o">=</span><span class="n">scan_interval_ms</span><span class="p">,</span> <span class="n">scanWindow_arr</span><span class="o">=</span><span class="n">scan_window_ms</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_DM_SCAN_REPORT_IND&quot;</span><span class="p">,</span> <span class="n">on_scan_report</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ScanStart&quot;</span><span class="p">,</span>
+                    <span class="n">scanPhys</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+                    <span class="n">ScanType</span><span class="o">=</span><span class="n">scan_Type</span><span class="p">,</span>
+                    <span class="n">filterDup</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># Filter duplicates disabled</span>
+                    <span class="n">duration</span><span class="o">=</span><span class="n">duration_ms</span><span class="p">,</span>
+                    <span class="n">period</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>    <span class="c1"># periodic scanning disabled</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ScanStop&quot;</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_DM_SCAN_REPORT_IND&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="n">results</span> <span class="c1">#The status is success only when DM_SCAN_REPORT is generated, which is when scanning take place.</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">uuid_filter</span><span class="p">:</span>
+            <span class="n">uuid_filter</span> <span class="o">=</span> <span class="n">UUID</span><span class="p">(</span><span class="n">uuid_filter</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">added_parsing_time_ms</span> <span class="o">=</span> <span class="mi">100</span>
+
+        <span class="n">scan_complete</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="n">last_rx_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">process_adv_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+            <span class="c1"># if it does not pass the address filter, discard it right away</span>
+            <span class="k">if</span> <span class="n">address_filter</span> <span class="ow">and</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalAddress&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">address_filter</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">gap_ad_storage</span><span class="o">.</span><span class="n">decode_adv_data</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">))</span>
+
+            <span class="c1"># get rid of this packet if it doesn&#39;t pass the filter.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">filter_adv_pkt</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="n">name_filter</span><span class="p">,</span> <span class="n">uuid_filter</span><span class="p">):</span>
+                <span class="k">return</span>
+
+            <span class="c1"># add the Decoded advertising Data to the Packet.</span>
+            <span class="n">pkt</span><span class="o">.</span><span class="n">frag</span><span class="p">(</span><span class="s2">&quot;AdvData&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">def</span> <span class="nf">on_advertising_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Callback method executed when a advertisement event is received</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="k">nonlocal</span> <span class="n">last_rx_time</span>
+            <span class="n">pkt</span><span class="o">.</span><span class="n">is_scan_response</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">process_adv_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">on_advertising</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">on_advertising</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                        <span class="n">scan_complete</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+
+            <span class="n">last_rx_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">on_scan_response_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+            <span class="n">pkt</span><span class="o">.</span><span class="n">is_scan_response</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">process_adv_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">on_scan_response</span><span class="p">):</span>
+                    <span class="n">on_scan_response</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+
+        <span class="n">scan_interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scan_interval_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">)</span>
+        <span class="n">scan_window</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scan_window_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_INQUIRYRESULT&quot;</span><span class="p">,</span> <span class="n">on_advertising_packet</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_INQUIRYRESULT_EXT&quot;</span><span class="p">,</span> <span class="n">on_scan_response_packet</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">on_inquiry_complete</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">scan_complete</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+        <span class="c1"># raise the scan complete flag when inquiry complete packet is received</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_INQUIRYCOMPLETE&quot;</span><span class="p">,</span> <span class="n">on_inquiry_complete</span><span class="p">)</span>
+
+        <span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">duration_ms</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+
+        <span class="n">inquiry_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>  <span class="s2">&quot;EMSHI_GAP_StartInquiryWithIntervals&quot;</span><span class="p">,</span>
+                                    <span class="n">Mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+                                    <span class="n">ScanInterval</span><span class="o">=</span><span class="n">scan_interval</span><span class="p">,</span>
+                                    <span class="n">ScanWindow</span><span class="o">=</span><span class="n">scan_window</span><span class="p">,</span>
+                                    <span class="n">Duration</span><span class="o">=</span><span class="n">duration_ms</span><span class="p">,</span>
+                                    <span class="n">retry</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                    <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                                    <span class="n">wait_ack</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1">#if inquiry_pkt.response.get(&quot;status&quot;) == 0:</span>
+        <span class="c1"># wait for the scan to be complete (device side)</span>
+        <span class="n">scan_complete</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="c1">#logger.get(&quot;scan&quot;).info(inquiry_pkt)</span>
+
+        <span class="c1"># wait for processing time before unbinding events, there can be many events</span>
+        <span class="c1"># and we have to wait on the parser.</span>
+        <span class="c1"># we wait max 500ms but while True is bad ! consider refactoring</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_rx_time</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">&gt;</span> <span class="n">added_parsing_time_ms</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_INQUIRYRESULT&quot;</span><span class="p">,</span> <span class="n">on_advertising_packet</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_INQUIRYRESULT_EXT&quot;</span><span class="p">,</span> <span class="n">on_scan_response</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_INQUIRYCOMPLETE&quot;</span><span class="p">,</span> <span class="n">on_inquiry_complete</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inquiry_pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">results</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="observe">
+<span id="proc-observe"></span><h2><a class="reference internal" href="#observe">observe</a><a class="headerlink" href="#observe" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Scan for devices and return a device list. (EMSHI only)</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">observe</span>
+
+<span class="n">observe</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">whitelist_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_duplicate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">duration_ms</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>observe<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                </span>mode<span class="w"> </span>whitelist_address<span class="w"> </span>filter_duplicate<span class="w"> </span>duration_ms
+<span class="w">                </span>scan_interval_ms<span class="w"> </span>scan_window_ms
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">mode<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Mode, 0x01:External, 0x02:General</p>
+</dd>
+<dt class="field-even">whitelist_address<span class="colon">:</span></dt>
+<dd class="field-even"><p>the mac address to whitelist</p>
+</dd>
+<dt class="field-odd">filter_duplicate<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Filter duplicates</p>
+</dd>
+<dt class="field-even">duration_ms<span class="colon">:</span></dt>
+<dd class="field-even"><p>Duration of the scan in milliseconds</p>
+</dd>
+<dt class="field-odd">scan_interval_ms<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Scan interval in milliseconds</p>
+</dd>
+<dt class="field-even">scan_window_ms<span class="colon">:</span></dt>
+<dd class="field-even"><p>Advertisement Window in ^milliseconds</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">obs_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="mh">0x02</span><span class="p">,</span>
+            <span class="n">whitelist_address</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">filter_duplicate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">duration_ms</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+            <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+            <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scan for devices and return a device list. (EMSHI only)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">added_parsing_time_ms</span> <span class="o">=</span> <span class="mi">500</span>
+
+    <span class="n">observation_complete</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+    <span class="n">response_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">on_obs_response</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Callback method executed when a advertisement event is received</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># if it does not pass the address filter, discard it right away</span>
+        <span class="k">if</span> <span class="n">address_filter</span> <span class="ow">and</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalAddress&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span> <span class="o">!=</span> <span class="n">address_filter</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">gap_ad_storage</span><span class="o">.</span><span class="n">decode_adv_data</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">))</span>
+
+        <span class="c1"># add the Decoded advertising Data to the Packet.</span>
+        <span class="n">pkt</span><span class="o">.</span><span class="n">frag</span><span class="p">(</span><span class="s2">&quot;AdvData&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">pkt</span> <span class="p">)</span>
+        <span class="n">last_rx_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+    <span class="n">scan_interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scan_interval_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">)</span>
+    <span class="n">scan_window</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scan_window_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">whitelist_address</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_WHITELIST_AddDevice&quot;</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">whitelist_address</span><span class="p">,</span> <span class="n">AddrType</span><span class="o">=</span><span class="mh">0x00</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_WHITELIST_SetScanningFilterPolicy&quot;</span><span class="p">,</span> <span class="n">ScanningFilterPolicy</span><span class="o">=</span><span class="mh">0x01</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_OBSERVEMODE_DATA&quot;</span><span class="p">,</span> <span class="n">on_obs_response</span><span class="p">)</span>
+
+    <span class="n">last_rx_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+    <span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">duration_ms</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_StartObserveProcedureWithIntervals&quot;</span><span class="p">,</span> <span class="n">DuplicateFiltering</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">filter_duplicate</span><span class="p">),</span>
+        <span class="n">ScanInterval</span><span class="o">=</span><span class="n">scan_interval</span><span class="p">,</span> <span class="n">ScanWindow</span><span class="o">=</span><span class="n">scan_window</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">Duration</span><span class="o">=</span><span class="n">duration_ms</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># wait for the scan to be complete (device side)</span>
+    <span class="n">observation_complete</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="c1"># wait for processing time before unbinding events, there can be many events and we have to wait on the parser.</span>
+    <span class="c1"># we wait max 500ms but while True is bad ! consider refactoring</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">response_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_rx_time</span> <span class="o">&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">milliseconds</span><span class="o">=</span><span class="n">added_parsing_time_ms</span><span class="p">):</span>
+                <span class="k">break</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_BLEGAP_EVENT_OBSERVEMODE_DATA&quot;</span><span class="p">,</span> <span class="n">on_obs_response</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">whitelist_address</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_WHITELIST_RemoveDevice&quot;</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">whitelist_address</span><span class="p">,</span> <span class="n">AddrType</span><span class="o">=</span><span class="mh">0x00</span><span class="p">)</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_WHITELIST_SetScanningFilterPolicy&quot;</span><span class="p">,</span> <span class="n">ScanningFilterPolicy</span><span class="o">=</span><span class="mh">0x00</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">results</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="connection-update">
+<span id="proc-connection-update"></span><h2><a class="reference internal" href="#connection-update">connection_update</a><a class="headerlink" href="#connection-update" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Perform a GAP Connection Parameter Update procedure to modify connection interval, latency or supervision timeout</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">connection_update</span>
+
+<span class="n">connection_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">interval_min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">interval_max</span><span class="o">=</span><span class="mi">3200</span><span class="p">,</span> <span class="n">latency</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>connection_update<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--interval_min<span class="w"> </span>INTERVAL_MIN<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--interval_max<span class="w"> </span>INTERVAL_MAX<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--latency<span class="w"> </span>LATENCY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--timeout<span class="w"> </span>TIMEOUT<span class="o">]</span>
+<span class="w">                          </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--interval_min <var>INTERVAL_MIN</var></span></kbd></dt>
+<dd><p>Minimum value for the connection interval</p>
+</dd>
+<dt><kbd><span class="option">--interval_max <var>INTERVAL_MAX</var></span></kbd></dt>
+<dd><p>Maximum value for the connection interval</p>
+</dd>
+<dt><kbd><span class="option">--latency <var>LATENCY</var></span></kbd></dt>
+<dd><p>Peripheral latency for the connection in number of
+connection events</p>
+</dd>
+<dt><kbd><span class="option">--timeout <var>TIMEOUT</var></span></kbd></dt>
+<dd><p>Connection timeout</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">connection_update_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">connection_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                      <span class="n">conn_handle</span><span class="p">,</span>
+                      <span class="n">interval_min</span><span class="o">=</span><span class="mh">0x000A</span><span class="p">,</span>
+                      <span class="n">interval_max</span><span class="o">=</span><span class="mh">0x0C80</span><span class="p">,</span>
+                      <span class="n">latency</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">timeout</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform a GAP Connection Parameter Update procedure to modify connection interval, latency or supervision timeout</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ConnUpdate&quot;</span><span class="p">,</span>
+                          <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                          <span class="n">connIntervalMin</span><span class="o">=</span><span class="n">interval_min</span><span class="p">,</span>
+                          <span class="n">connIntervalMax</span><span class="o">=</span><span class="n">interval_max</span><span class="p">,</span>
+                          <span class="n">connLatency</span><span class="o">=</span><span class="n">latency</span><span class="p">,</span>
+                          <span class="n">supTimeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                          <span class="n">minCeLen</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                          <span class="n">maxCeLen</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                          <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_UpdateConnectionIntervalEx&quot;</span><span class="p">,</span>
+                                <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">ConnectionIntervalMin</span><span class="o">=</span><span class="n">interval_min</span><span class="p">,</span>
+                                <span class="n">ConnectionIntervalMax</span><span class="o">=</span><span class="n">interval_max</span><span class="p">,</span>
+                                <span class="n">ConnLatency</span><span class="o">=</span><span class="n">latency</span><span class="p">,</span>
+                                <span class="n">ConnTimeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="gap-connect-simple">
+<span id="proc-gap-connect-simple"></span><h2><a class="reference internal" href="#gap-connect-simple">gap.connect_simple</a><a class="headerlink" href="#gap-connect-simple" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Initiate a GAP connection to a given address</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.gap</span> <span class="kn">import</span> <span class="n">connect_simple</span>
+
+<span class="n">connect_simple</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">addrtype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>GAP.connect_simple<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--addrtype<span class="w"> </span>ADDRTYPE<span class="o">]</span><span class="w"> </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bluetooth Address to connect to</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--addrtype <var>ADDRTYPE</var></span></kbd></dt>
+<dd><p>Address Type of the device to connect to</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;GAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">connect_simple_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">connect_simple</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">addrtype</span><span class="o">=</span><span class="mh">0x00</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Initiate a GAP connection to a given address</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_ConnOpen&quot;</span><span class="p">,</span>
+                    <span class="n">clientId</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">initPhys</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+                    <span class="n">addrType</span><span class="o">=</span><span class="n">addrtype</span><span class="p">,</span>
+                    <span class="n">Addr</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_Connect&quot;</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">AddrType</span><span class="o">=</span><span class="n">addrtype</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_GetConnectionHandle&quot;</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ConnHandle&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="firmware_update.html" class="btn btn-neutral float-left" title="firmware_update Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gatt.html" class="btn btn-neutral float-right" title="gatt Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

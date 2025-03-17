@@ -1,0 +1,151 @@
+=========================================================================
+EM EMB Extended Advertisement Example
+=========================================================================
+
+Overview
+--------
+
+The purpose of this example is to demonstrate how the extended Advertisement works and how to set it up.
+The local device runs the example application software on the EM9305.
+
+This example will configure the device with the peripheral role in which the device will do the following:
+
+#. perform extended advertising, waiting for incoming connections
+#. answer to connection requests
+
+This advertising allows a device acting with the central role to be aware of the peripheral device presence, and then to initiate an incoming connection that the peripheral can accept.
+
+.. warning::
+
+    This application has configurable SMP parameters `smpCfg_t` where `minKeyLen` can be specified. Reducing this value from 16 to 7 (minimum) reduces the entropy of the encryption key making the device less secure.
+
+.. warning::
+
+    While this example does setup the SMP subsystem, it does not support pairing. For an example that supports pairing, please see nvm_emb_fit.
+
+Setup
+-----
+
+In this setup, a central device can scan for EM9305 running the `nvm_emb_ext_adv` example. A connection can be initiated from the central after it scans and finds the peripheral.
+Customer can further develop their application and also add different custom/proprietary or SIG defined profiles and services to the extended advertisements.
+
+Library
+-------
+
+This example uses the `emb_peripheral_advext` library, which allows for the use of advertising extensions in the peripheral role.
+
+Implementation details
+----------------------
+
+The *nvm_main.c* file contains code that creates and starts tasks for the Bluetooth Low Energy and the application.
+
+The *my_app/includes/my_app_signals.h* file contains the signals that are used by the whole application (between tasks and internally).
+
+The *my_app/includes/my_app_task.h* file contains the interface to create, start and post events to the application task.
+
+The *my_app/source/my_app_task.c* file contains the implementation to create, start and post events to the application task.
+
+The *my_app/source/my_app.c* file contains the internal and external event processing for the application task.
+
+The *my_app/source/my_app.h* file contains the protected interface to be used by *my_app_task.c*.
+
+The *ble/includes/ble_task.h* file contains the interface to create, start and post events to the BLE task.
+
+The *ble/source/ble_task.c* file contains the implementation to create, start and post events to the BLE task.
+
+The *ble/source/ble.c* file contains the internal and external event processing for the BLE task.
+
+The *ble/source/ble.h* file contains the protected interface to be used by *ble_task.c*.
+
+Configuring the extended advertising is done by setting all relevant values in the `appExtAdvCfg_t` structure as show below in ble.c file:
+
+.. code-block:: c
+
+  static const appExtAdvCfg_t gcAppExtAdvCfg =
+  {
+      { 0},     // Advertise forever (no time limitation)
+      { 160},   // 100 ms extended advertising period (160 * 0.625 ms)
+      { 0},     // No maximum number of extended adv events before terminating advertising
+      {false},  // Do not use legacy advertising (limited to 31 bytes in size)
+      {160}     // 200 ms of legacy advertising (160 * 1.25 ms) in case it is used
+  };
+
+This structure is used later in the code during the initialization process to configure the extended advertising.
+
+The BLE stack is initialized through a callback passed in `WsfOsRegisterTaskInitCback()` when the BLE Task is started.
+It is inside this function that the above mentioned structure is used to feed the BLE stack with the configuration data it contains.
+This is done by setting a reserved dedicated pointer (`pAppExtAdvCfg`) to the address of this structure, like shown below:
+
+.. code-block:: c
+
+  static void BLE_Init(void)
+  {
+    // Configure extended advertising by initializing the reserved pointer 'pAppExtAdvCfg'.
+    pAppExtAdvCfg = (appExtAdvCfg_t *) &gcAppExtAdvCfg;
+
+    // Other initialization code here
+  }
+
+
+As an example, the following code snippet sets the device local name to `EMB EXT ADV`. It calls the function `AppExtAdvSetAdValue()` passing a structure containing the device name as an argument.
+
+.. code-block:: c
+
+  /* device name */
+  static uint8_t gAdvDevName[] =
+  {
+      'E',
+      'M',
+      'B',
+      ' ',
+      'E',
+      'X',
+      'T',
+      ' ',
+      'A',
+      'D',
+      'V',
+  };
+
+
+  static void BLE_SetupAdv(appMsg_t *pMsg)
+  {
+    // Set the device local name as a data that can be discovered over BLE.
+    AppExtAdvSetData(
+      (uint8_t)DM_ADV_HANDLE_DEFAULT,
+      DM_ADV_TYPE_LOCAL_NAME,
+      sizeof(gAdvDevName), (uint8_t *)gAdvDevName);
+    );
+
+    // Other characteristics initialization follow...
+  }
+
+.. note::
+  Other characteristics can be written at this stage within the `BLE_SetupAdv()` function, but it shall be noted that this is done only once after a device power on reset or after a device manager reset.
+  To use the full available payload length of the extended advertising data, the manufacturing data is filled with raw data in the sample application. The first 2 bytes indicate the vendor ID of the company.
+
+Build
+-----
+
+The build target of this example is: **nvm_emb_ext_adv**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emb_ext_adv
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emb_ext_adv\nvm_emb_ext_adv.ihex --progress
+
+With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).
+
+Then you can connect to the device named `EMB_EXT_ADV` using your preferred smartphone or tablet application.
+

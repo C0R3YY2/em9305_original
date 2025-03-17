@@ -1,0 +1,57 @@
+=========================================================================
+Asset Tag example
+=========================================================================
+
+
+Overview
+--------
+
+This sample application sets up the EM9305 as an Asset Tag that will connect to a Locator/Central and will perform CTE (Constant Tone Extension) exchange for AoA (Angle of Arrival) when enabled from the Central.
+
+It exposes the following services:
+
+* Constant Tone Extension Service
+* Battery Service
+
+.. warning::
+
+    This application has configurable SMP parameters `smpCfg_t` where `minKeyLen` can be specified. Reducing this value from 16 to 7 (minimum) reduces the entropy of the encryption key making the device less secure.
+
+Build
+-----
+
+The build target of this example is: **nvm_emb_assettag**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emb_assettag
+
+
+Program
+-------
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emb_assettag\nvm_emb_assettag.ihex --progress
+
+With YY = the COM port number of your DVK (optional if you set it in the file ``<sdk>\tools\blengine\config.cfg``).
+
+
+Test
+----
+
+To connect to the Asset Tag, you need a Central acting as a Locator which can scan and find for the CTE service advertised by the Asset Tag prior to opening a connection to it.
+
+Once the Asset Tag is found by the Central, and the BLE connection is opened it will need to write the characteristics handles for CTE service to enable the CTE exchange between the Central and the Asset Tag.
+The CTE Minimum Length Characteristic should be written with the minimum value and to enable the CTE exchange the CTE Enable handle should be written.
+
+The following picture shows the handle being written from the Locator to the Asset Tag and the LLCP CTE Exchange started.
+
+.. image:: imgs/LLCP_CTE_Exchange.jpg
+  :scale: 100 %
+  :alt: LLCP CTE Exchange
+  :align: center

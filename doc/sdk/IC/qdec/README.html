@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The Quadrature decoder (QDEC) driver allows to configure the peripheral and
+reads movements from mechanical or optical encoder.</p>
+<p>An incremental encoder has two output signals, A and B, which issue pulses
+when device is moved. Together, the A and B signals indicate both the occurence
+of and direction of movement.</p>
+<p>It does not indicate absolute position, it only reports changes in position and,
+for each reported position change, the direction of the movement.</p>
+<p>Incremental encoders report position changes nearly instantaneously, which allows
+them to monitor the movements of high speed mechanisms in near real-time.
+Because of this, incremental encoders are commonly used in applications that
+require precise measurement and control of position and velocity.</p>
+<p>If the QDEC is used with an optical sensor, the led shall be configured.
+The peripheral allows to set the polarity and led time.</p>
+<p>Each channel (A, B) has separate debouncer, this debouncer has same debounce
+time as sampling time.</p>
+<p>The Led driver for optical sensor is synchronous with sampling period.</p>
+<section id="how-does-it-work">
+<h2>How does it work ?<a class="headerlink" href="#how-does-it-work" title="Link to this heading"></a></h2>
+<p>The two phases have a 90° phase difference and generate square signals.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Phase A &amp; B output signals</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Prev A</p></th>
+<th class="head"><p>Prev B</p></th>
+<th class="head"><p>Curr A</p></th>
+<th class="head"><p>Curr B</p></th>
+<th class="head"><p>Sample</p></th>
+<th class="head"><p>acc</p></th>
+<th class="head"><p>acc_dbl</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="gpios-for-phase-a-b-and-led">
+<h2>GPIOs for Phase A, B and Led<a class="headerlink" href="#gpios-for-phase-a-b-and-led" title="Link to this heading"></a></h2>
+<p>The QDEC peripheral is able to work with any of the GPIOs available.</p>
+<p>The driver allows to enable pullup on phase A and B.</p>
+</section>
+<section id="qdec-clock-source">
+<h2>QDEC Clock source<a class="headerlink" href="#qdec-clock-source" title="Link to this heading"></a></h2>
+<p>QDEC is clocked by LF-RC clock at 500 kHz.</p>
+</section>
+<section id="qdec-sample">
+<h2>QDEC Sample<a class="headerlink" href="#qdec-sample" title="Link to this heading"></a></h2>
+<p>The QDEC peripheral is able to compute the movement from phase A and phase B
+signals. The value stored in the sample can be -1 (movement in negative direction),
+0 (no movement), +1 (movement in positive direction) or 2 (double movement error).</p>
+<p>For each sample, the value is added to the accumulator, if a double movement occurs,
+the value is added to the double movement accumulator.</p>
+<p>The sampling period can be configured from 128 us to 131072 us.</p>
+</section>
+<section id="qdec-with-polling-mechanism">
+<h2>QDEC with polling mechanism<a class="headerlink" href="#qdec-with-polling-mechanism" title="Link to this heading"></a></h2>
+<p>The QDEC driver can be used to read the current accumulator and double movement accumulator
+at any time. This operation just reads the current values from the register without any
+interruption from the hardware.</p>
+</section>
+<section id="qdec-with-hardware-detection-and-interruptions">
+<h2>QDEC with hardware detection and interruptions<a class="headerlink" href="#qdec-with-hardware-detection-and-interruptions" title="Link to this heading"></a></h2>
+<p>The QDEC driver can be used with hardware detection of movements. In case of
+movement detection, the peripheral trigger an ISR. The driver reads the status of the ISR
+and detect if new samples are available, if there is an overflow of the accumulator or
+if a doublement movement error has been detected.</p>
+<p>Then the driver calls the user callback, with the status and the two accumulators values
+as user callback parameter.</p>
+</section>
+<section id="report-period">
+<h2>Report Period<a class="headerlink" href="#report-period" title="Link to this heading"></a></h2>
+<p>When the driver is used with hardware detection of movement, the driver shall be initialized
+with a report period.</p>
+<p>This specifies how many sample reports are generated if one or both conditions occur.</p>
+<p>The two conditions are:
+- movement is not null
+- double movement is detected</p>
+<p>The report period can be configured from 1 sample / report to 320 samples / report.</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Report period configuration</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Report period</p></th>
+<th class="head"><p>Enumeration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 sample / report</p></td>
+<td><p>REPORT_PERIOD_1_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>REPORT_PERIOD_5_SAMPLE</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>REPORT_PERIOD_10_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>REPORT_PERIOD_20_SAMPLE</p></td>
+</tr>
+<tr class="row-even"><td><p>40</p></td>
+<td><p>REPORT_PERIOD_40_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>80</p></td>
+<td><p>REPORT_PERIOD_80_SAMPLE</p></td>
+</tr>
+<tr class="row-even"><td><p>160</p></td>
+<td><p>REPORT_PERIOD_160_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>320</p></td>
+<td><p>REPORT_PERIOD_320_SAMPLE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wake-up-source">
+<h2>Wake up source<a class="headerlink" href="#wake-up-source" title="Link to this heading"></a></h2>
+<p>Different wakeup source can be configured. They are used only when the driver is used with
+hardware detection and interruptions.</p>
+<ul class="simple">
+<li><p>Report Ready (accumulator is available with number of samples configured by report)</p></li>
+<li><p>Overflow (overflow of the accumulator)</p></li>
+<li><p>Double movement (movement error detection)</p></li>
+</ul>
+<p>When the SOC is in sleep mode, the PML and the QDEC are powered. It allows the QDEC
+peripheral to detect a movement and wakeup the system.</p>
+<p>When the system wakes up, it checks the wakeup source and then the QDEC condition
+and generates the corresponding ISR which will call the user callback with the status and
+accumulator values.</p>
+</section>
+<section id="led-driver">
+<h2>LED Driver<a class="headerlink" href="#led-driver" title="Link to this heading"></a></h2>
+<p>The LED driver shall be enabled in case of optical sensor usage. The Led polarity shall be
+set. A polarity of 1 means that the GPIO controlling the LED is set to one for the configured
+duration when the LED shall be ON.</p>
+<p>The Led time shall also be configured. The clock of the QDEC is 500 kHz, meaning that
+each LSB for the led time is equivalent to about 2 us.</p>
+<p>Since the LED active duration value is stored in 16 bits, this duration ranges
+from 2µs to 131070µs with a resolution of 2µs.</p>
+<p>If Led time is set to 0, it means that the Led is always on.</p>
+</section>
+<section id="qdec-driver-registration">
+<h2>QDEC Driver registration<a class="headerlink" href="#qdec-driver-registration" title="Link to this heading"></a></h2>
+<p>QDEC Driver shall be registered in NVM_ConfigModules() function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;qdec.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">QDEC_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qdec-driver-configuration">
+<h2>QDEC Driver configuration<a class="headerlink" href="#qdec-driver-configuration" title="Link to this heading"></a></h2>
+<p>The QDEC driver has a configuration structure that shall be declared as extern.
+Then the configuration structure shall be initialized in NVM_ConfigModules()
+in all conditions of boot because the driver doesn’t use persistent memory.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="n">QDEC_Configuration_t</span><span class="w"> </span><span class="n">gQDEC_Config</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="c1">// Enable QDEC peripheral</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Led is enabled</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Led polarity set to zero.</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led_pol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Phase A &amp; B Debouncer enabled</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">debounce_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Wakeup when report ready is available</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_rpt_rdy_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Wakeup when accumulator overflow occurs</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_ovf_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Wakeup when double movement is detected</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_dbl_mvt_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Phase A input signal connected to GPIO 9</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">pinBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">phase_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Phase B input signal connected to GPIO 11</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">pinBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">phase_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Led output driver connected to GPIO 5</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">pinBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Sampling period set to 512 us</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">periodBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">sample_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">SAMPLING_PERIOD_512_US</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Report period set to 80 samples</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">periodBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">report_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">REPORT_PERIOD_80_SAMPLE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Led time on is set to 16 * 2 us (500 kHz clock)</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">ledTimeBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led_time_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="qdec-usage-with-polling">
+<h2>QDEC usage with polling<a class="headerlink" href="#qdec-usage-with-polling" title="Link to this heading"></a></h2>
+<p>The QDEC accumulator values can be read at any moment by calling QDEC_StartSingleCapture().
+It returns the accumulator value for movement detection and the double movement accumulator
+for error detection.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">acc</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">dbl_acc</span><span class="p">;</span>
+
+<span class="n">QDEC_StartSingleCapture</span><span class="p">(</span><span class="o">&amp;</span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dbl_acc</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In this case wake up condition should be disabled, because there is no need to wakeup the
+system in polling mode.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Wakeup when report ready is available</span>
+<span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_rpt_rdy_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">// Wakeup when accumulator overflow occurs</span>
+<span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_ovf_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">// Wakeup when double movement is detected</span>
+<span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_dbl_mvt_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="qdec-usage-with-hardware-detection-of-movement-and-errors">
+<h2>QDEC usage with hardware detection of movement and errors<a class="headerlink" href="#qdec-usage-with-hardware-detection-of-movement-and-errors" title="Link to this heading"></a></h2>
+<p>The QDEC can be used with interruptions mechanism. It allows the system to enter sleep mode
+when there is no movement detected. The QDEC is powered like the PML during sleep mode and
+is able to detect any movement or error. In this case, it wakes up the system and generates
+an ISR. Then the user callback is called with the status and accumulator values.</p>
+<p>QDEC ISR Callback prototype.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Callback for QDEC driver</span>
+<span class="cm"> * @param status status of the QDEC, report ready, overflow or double movement error</span>
+<span class="cm"> * @param values accumulator values</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">QDEC_ISR_Callback</span><span class="p">(</span><span class="n">QDEC_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">QDEC_Values_t</span><span class="w"> </span><span class="n">values</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">QK_ISR_ENTRY</span><span class="p">();</span>
+
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">acc</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">accumulator</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">dbl_acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">dbl_mvt_accumulator</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">REPORT_READY</span><span class="p">:</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">OVERFLOW_ERROR</span><span class="p">:</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">DOUBLE_MOVEMENT_ERROR</span><span class="p">:</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">QK_ISR_EXIT</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The callback shall be registered first and then capture can be enabled.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">QDEC_RegisterCallback</span><span class="p">(</span><span class="n">QDEC_ISR_Callback</span><span class="p">);</span>
+
+<span class="n">QDEC_StartContinuousCapture</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>When the capture needs to be disabled.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">QDEC_StopContinuousCapture</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

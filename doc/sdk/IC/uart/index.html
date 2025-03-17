@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UART Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Unitimer Driver" href="../unitimer/index.html" />
+    <link rel="prev" title="Temperature Indicator Library" href="../temperature_indicator/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">UART Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">UART Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="uart-driver">
+<h1>UART Driver<a class="headerlink" href="#uart-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This driver allows to use the UART to communicate with some other peripheral
+using 2 wire (Tx, Rx) or 4 wire (Tx, Rx, CTS, RTS).</p>
+<p>It allows the following features :</p>
+<ul class="simple">
+<li><p>Full duplex communication.</p></li>
+<li><p>1 start bit, 8 data bits, 1 stop bit.</p></li>
+<li><p>Even / odd parity mode or without parity.</p></li>
+<li><p>HW generation and checking of parity.</p></li>
+<li><p>Configurable speed from 9600 to 1’843’200 bauds, other
+“non standard” speeds can be also supported by defining divider value in register.</p>
+<ul>
+<li><p>9600 Bauds</p></li>
+<li><p>14400 Bauds</p></li>
+<li><p>19200 Bauds</p></li>
+<li><p>28800 Bauds</p></li>
+<li><p>38400 Bauds</p></li>
+<li><p>57600 Bauds</p></li>
+<li><p>76800 Bauds</p></li>
+<li><p>115200 Bauds</p></li>
+<li><p>230400 Bauds</p></li>
+<li><p>460800 Bauds</p></li>
+<li><p>921600 Bauds</p></li>
+<li><p>1843200 Bauds</p></li>
+</ul>
+</li>
+<li><p>Configurable divider</p></li>
+<li><p>Configurable oversampling factor in range from 4 to 16</p></li>
+<li><p>Flow control (CTS, RTS signals) enable / disable</p></li>
+<li><p>Separate Tx/Rx enable</p></li>
+<li><p>16 bytes long Rx FIFO for reception and 16 bytes long Tx FIFO for transmission.</p></li>
+<li><p>FIFO status available for CPU</p>
+<ul>
+<li><p>Tx FIFO empty.</p></li>
+<li><p>Tx FIFO limit (less bytes in Tx FIFO than user defined limit).</p></li>
+<li><p>Rx FIFO limit (more bytes in Rx FIFO than user defined limit).</p></li>
+<li><p>Rx FIFO full.</p></li>
+<li><p>Number of bytes in each FIFO.</p></li>
+</ul>
+</li>
+<li><p>FIFO flush to remove all content. Each FIFO independently.</p></li>
+<li><p>Configurable bit order (LSB first or MSB first).</p></li>
+</ul>
+<section id="uart-and-sleep-mode">
+<h3>UART and Sleep mode<a class="headerlink" href="#uart-and-sleep-mode" title="Link to this heading"></a></h3>
+<p>The UART shall be registered in order to be usable after wakeup. This shall be done
+at the time the application calls NVM_ConfigModules() function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">UART_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="c1">// Do not modify the GPIO config after a wake-up from sleep because</span>
+<span class="w">    </span><span class="c1">// the configuration is kept in persistent memory.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Re-initialize the QPC event pool.</span>
+<span class="w">        </span><span class="k">extern</span><span class="w"> </span><span class="kt">uint_fast8_t</span><span class="w"> </span><span class="n">QF_maxPool_</span><span class="p">;</span>
+<span class="w">        </span><span class="n">QF_maxPool_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint_fast8_t</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">MAIN_InitEventPool</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Update the GPIO default configuration</span>
+<span class="w">        </span><span class="c1">// The UART is automatically enabled when the Module is registered</span>
+
+<span class="w">        </span><span class="c1">// Disable all inputs</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInputEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mh">0x000</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Enable outputs on GPIO7 for UART TX, disable output on other pins</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutputEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Disable pull-downs on all pins</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOPdEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mh">0x000</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Enable pull-up on GPIO7 only</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOPuEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Set the UART TX output function on GPIO7</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOOutSel7</span><span class="w"> </span><span class="o">=</span>
+<span class="w">                        </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_FUNC_OUT_UART_TXD</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Disable the UART RX input function</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInpSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOInSelUARTRDX</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_FUNCTION_NOT_MAPPED</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Initialize QPC</span>
+<span class="w">        </span><span class="n">QF_init</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Initialize the QPC event pool.</span>
+<span class="w">        </span><span class="n">MAIN_InitEventPool</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="uart-gpios">
+<h3>UART GPIOs<a class="headerlink" href="#uart-gpios" title="Link to this heading"></a></h3>
+<p>Only some GPIOs can be used for the UART.</p>
+<ul class="simple">
+<li><p>RX 0, 1, 2, 3, 4 and 6</p></li>
+<li><p>TX 0, 1, 2, 3, 7 and 8</p></li>
+<li><p>CTS 1, 2, 3, 4, 8, 9 and 10</p></li>
+<li><p>RTS 0, 1, 2, 3, 7 and 10</p></li>
+</ul>
+</section>
+<section id="uart-configuration">
+<h3>UART Configuration<a class="headerlink" href="#uart-configuration" title="Link to this heading"></a></h3>
+<p>The following configurations for the UART are available, check code block for C code example.</p>
+<ul class="simple">
+<li><p>MSB First    : Set to 1 to send the most significant bits first.</p></li>
+<li><p>Parity Mode  : Set to 1 to enable parity or 0 to disable parity check.</p></li>
+<li><p>Event Parity : Set to 1 to use Even parity or 0 to use Odd parity (only valid if Parity Mode is enabled).</p></li>
+<li><p>Flow Ctrl En : Set to 1 to enable flow control or 0 to disable flow control.</p></li>
+<li><p>Majority dis : Per default each baud shall be decoded using majority over 3 samples.
+Majority voting can be disabled by setting it to 1 (only one sample will be used).</p></li>
+<li><p>Loopback En  : Set to 1 to enable loopback or 0 to disable loopback.</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">UART_Config_t</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>
+
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Enable MSB first</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">parityMode</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Don&#39;t use parity</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">eventParity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Not used when parity is disabled</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">flowCtrlEn</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Disable flow control</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">majorityDis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Oversampling using 3 samples is enabled</span>
+<span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">loopBackEn</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Disable loopback</span>
+
+<span class="n">UART_Enable</span><span class="p">(</span><span class="n">UART_DISABLE</span><span class="p">);</span>
+<span class="n">UART_SetConfiguration</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+<span class="n">UART_SetBaudRate</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<span class="n">UART_BlockCommunication</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+
+<span class="c1">// IRQ is generated when there are 1 byte in FIFO. This will also cause DMA transfer</span>
+<span class="n">UART_SetTxFifoLimit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">UART_Enable</span><span class="p">(</span><span class="n">UART_ENABLE</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="uart-custom-baud-rate-configuration">
+<h3>UART Custom baud rate configuration<a class="headerlink" href="#uart-custom-baud-rate-configuration" title="Link to this heading"></a></h3>
+<p>Specific baud rate can be configured using</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Set the baud rate manually.</span>
+<span class="cm"> * @param clkDivider Clock divider for UART. Valid values: &lt;1, 16383&gt;.</span>
+<span class="cm"> * @param oversampling Oversampling factor. Valid values: &lt;4, 16&gt;.</span>
+<span class="cm"> * @returns UART_OK if the baud rate was set, UART_BUSY otherwise.</span>
+<span class="cm"> * @note The UART baud rate can be set only if UART is not enabled. If UART is</span>
+<span class="cm"> * running, the request is rejected.</span>
+<span class="cm"> */</span>
+<span class="n">UART_Status_t</span><span class="w"> </span><span class="nf">UART_SetBaudRateEx</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">clkDivider</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">oversampling</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>UART speed can be computed using baud_rate = sys_clock_freq (48 MHz) / (clkDivider * oversampling)</p>
+<ul class="simple">
+<li><p>clkDivider is a 14 bits value from 1 to 16383.</p></li>
+<li><p>oversampling is a 5 bits value from 4 to 16.</p></li>
+</ul>
+</section>
+<section id="uart-flow-control">
+<h3>UART Flow control<a class="headerlink" href="#uart-flow-control" title="Link to this heading"></a></h3>
+<p>Hardware flow control can be enabled by setting 1 to the flow control bit.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">flowCtrlEn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Enable flow control</span>
+</pre></div>
+</div>
+<p>In this case, UART will use 4 wires (Tx, Rx, CTS, RTS).</p>
+<ul class="simple">
+<li><p>Tx (transmit data)</p></li>
+<li><p>Rx (receive data)</p></li>
+<li><p>RTS (request to send)</p></li>
+<li><p>CTS (clear to send)</p></li>
+</ul>
+<p>In this case control flow GPIOs shall be configured for CTS and RTS.</p>
+<p>RTS is an output signal and can be configured like that.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_EnablePullDown</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisableInput</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_EnableOutput</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">);</span>
+<span class="n">GPIO_SetOutputPinFunction</span><span class="p">(</span><span class="n">rts_pin</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PIN_FUNC_OUT_UART_RTS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>CTS is an input signal and can be configured like that.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">GPIO_EnablePullDown</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_DisableOutput</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_EnableInput</span><span class="p">(</span><span class="n">cts_pin</span><span class="p">);</span>
+<span class="n">GPIO_SetInputFunctionPin</span><span class="p">(</span><span class="n">GPIO_PIN_FUNC_IN_UART_CTS</span><span class="p">,</span><span class="w"> </span><span class="n">cts_pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Wake up from Sleep mode is started by given edge on selected GPIO pin and it is managed by PML. PML
+ensures that UART pins are driven to inactive value during waking up. Once system is fully woken up and initialized
+(UART is ready to communicate) CPU releases UART pin configuration and UART pins are driven from UART block
+again.
+If flow control is enabled flow control signals are set to value preventing UART communication during waking up and
+they are released once UART communication can start. If flow control is not used chip should indicate finished wake
+up sequence by HCI event.</p>
+</div>
+</section>
+<section id="uart-usage">
+<h3>UART Usage<a class="headerlink" href="#uart-usage" title="Link to this heading"></a></h3>
+<p>The UART can be used with or without using ISR with callback.</p>
+<p>For sending data asynchronously, a callback shall be provided for end of transaction.</p>
+<p>Callback function prototype when using asynchronous sending.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">UART_TxCallback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// When callback is called, it means that all data have been sent by UART</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Code to send data over the UART using a string message.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">msg</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EM Microelectronic&quot;</span><span class="p">;</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">UART_SendDataWithCallback</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="n">msg_len</span><span class="p">,</span><span class="w"> </span><span class="n">UART_TxCallback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Data can also be sent without using a callback:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">msg</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;EM Microelectronic&quot;</span><span class="p">;</span>
+
+<span class="kt">uint16_t</span><span class="w"> </span><span class="n">msg_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">UART_SendData</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="n">msg_len</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="db/def/group__uart"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">uart</span></span></dt>
+<dd><p>UART driver. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UART_TX_FIFO_DEPTH">
+<span class="target" id="db/def/group__uart_1ga077adc32075ceac2876567b68ccfea44"></span><span class="sig-name descname"><span class="n"><span class="pre">UART_TX_FIFO_DEPTH</span></span></span> <span class="pre">(16)</span><a class="headerlink" href="#c.UART_TX_FIFO_DEPTH" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the transmit FIFO (in bytes). </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UART_RX_FIFO_DEPTH">
+<span class="target" id="db/def/group__uart_1gaf9bf05f6a98fa3194396b58adc091789"></span><span class="sig-name descname"><span class="n"><span class="pre">UART_RX_FIFO_DEPTH</span></span></span> <span class="pre">(14)</span><a class="headerlink" href="#c.UART_RX_FIFO_DEPTH" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the receive FIFO (in bytes). TODO: Check if 2 byte margin as in original FIFO size is OK. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UART_DISABLE">
+<span class="target" id="db/def/group__uart_1ga4dcc7d0ed182969113c1982b3d74733b"></span><span class="sig-name descname"><span class="n"><span class="pre">UART_DISABLE</span></span></span> <span class="pre">(UART_RX_EN(FALSE)</span> <span class="pre">|</span> <span class="pre">UART_TX_EN(FALSE))</span><a class="headerlink" href="#c.UART_DISABLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable both receiver and transmitter. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UART_ENABLE_RX">
+<span class="target" id="db/def/group__uart_1ga1cffd73e2a3f4a6c8e2dbf2634f042d6"></span><span class="sig-name descname"><span class="n"><span class="pre">UART_ENABLE_RX</span></span></span> <span class="pre">(UART_RX_EN(TRUE))</span><a class="headerlink" href="#c.UART_ENABLE_RX" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable receiver only, transmitter disabled. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UART_ENABLE_TX">
+<span class="target" id="db/def/group__uart_1ga772b9ab618e79c501f5901220be628ee"></span><span class="sig-name descname"><span class="n"><span class="pre">UART_ENABLE_TX</span></span></span> <span class="pre">(UART_TX_EN(TRUE))</span><a class="headerlink" href="#c.UART_ENABLE_TX" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable transmitter only, receiver disabled. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UART_ENABLE">
+<span class="target" id="db/def/group__uart_1gaaaf6c77e3b8fec12ad625225a08c4f28"></span><span class="sig-name descname"><span class="n"><span class="pre">UART_ENABLE</span></span></span> <span class="pre">(UART_RX_EN(TRUE)</span> <span class="pre">|</span> <span class="pre">UART_TX_EN(TRUE))</span><a class="headerlink" href="#c.UART_ENABLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable both receiver and transmitter. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413UART_Enable_t">
+<span id="_CPPv313UART_Enable_t"></span><span id="_CPPv213UART_Enable_t"></span><span id="UART_Enable_t"></span><span class="target" id="db/def/group__uart_1gafb7e9ab18a03f20454cc8fbb8feb0f89"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_Enable_t</span></span></span><a class="headerlink" href="#_CPPv413UART_Enable_t" title="Link to this definition"></a><br /></dt>
+<dd><p>UART enable control. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv413UART_Status_t">
+<span id="_CPPv313UART_Status_t"></span><span id="_CPPv213UART_Status_t"></span><span class="target" id="db/def/group__uart_1gad1c40528fe40044f63df4f7943dbd7b6"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_Status_t</span></span></span><a class="headerlink" href="#_CPPv413UART_Status_t" title="Link to this definition"></a><br /></dt>
+<dd><p>UART status. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Status_t7UART_OKE">
+<span id="_CPPv3N13UART_Status_t7UART_OKE"></span><span id="_CPPv2N13UART_Status_t7UART_OKE"></span><span class="target" id="db/def/group__uart_1ggad1c40528fe40044f63df4f7943dbd7b6a525187963c0aaa465f2a35b30b894d07"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_OK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N13UART_Status_t7UART_OKE" title="Link to this definition"></a><br /></dt>
+<dd><p>Success, responded with expected data. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Status_t9UART_BUSYE">
+<span id="_CPPv3N13UART_Status_t9UART_BUSYE"></span><span id="_CPPv2N13UART_Status_t9UART_BUSYE"></span><span class="target" id="db/def/group__uart_1ggad1c40528fe40044f63df4f7943dbd7b6a108080dd41fe4f3c5e1813a3fc0b33df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_BUSY</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Status_t9UART_BUSYE" title="Link to this definition"></a><br /></dt>
+<dd><p>Cannot perform request due to its busy state. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Status_t8UART_BADE">
+<span id="_CPPv3N13UART_Status_t8UART_BADE"></span><span id="_CPPv2N13UART_Status_t8UART_BADE"></span><span class="target" id="db/def/group__uart_1ggad1c40528fe40044f63df4f7943dbd7b6abb2a812236c48b31228c20c822cf5bfb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_BAD</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Status_t8UART_BADE" title="Link to this definition"></a><br /></dt>
+<dd><p>Cannot perform request due to an error. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412UART_Restartv">
+<span id="_CPPv312UART_Restartv"></span><span id="_CPPv212UART_Restartv"></span><span id="UART_Restart__void"></span><span class="target" id="db/def/group__uart_1ga674735be84213720c41e65fd811a03f7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_Restart</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412UART_Restartv" title="Link to this definition"></a><br /></dt>
+<dd><p>Restart the UART driver. </p>
+<p>
+This will flush the TX and RX FIFO and queues. This will restart the UART block. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the restart was successful, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411UART_Enable13UART_Enable_t">
+<span id="_CPPv311UART_Enable13UART_Enable_t"></span><span id="_CPPv211UART_Enable13UART_Enable_t"></span><span id="UART_Enable__UART_Enable_t"></span><span class="target" id="db/def/group__uart_1gaefc87f78d6d3fdc79117720075d3c771"></span><a class="reference internal" href="#_CPPv413UART_Status_t" title="UART_Status_t"><span class="n"><span class="pre">UART_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_Enable</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413UART_Enable_t" title="UART_Enable_t"><span class="n"><span class="pre">UART_Enable_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411UART_Enable13UART_Enable_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable/disable UART receiver and/or transmitter. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function does not do any configuration. Enabling should normally be done after initialization is done (if not enabled as part of init). If the receiver or transmitter was previously enabled and not re-enabled by this function, it will be disabled after calling this function. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>enable</strong> – Enable/disable for receiver/transmitter. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>UART_OK if the receiver and/or transmitter were successfuly enabled/disabled. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421UART_SetConfiguration13UART_Config_t">
+<span id="_CPPv321UART_SetConfiguration13UART_Config_t"></span><span id="_CPPv221UART_SetConfiguration13UART_Config_t"></span><span id="UART_SetConfiguration__UART_Config_t"></span><span class="target" id="db/def/group__uart_1ga27d346e6c437c3d8f7cee102a18160f7"></span><a class="reference internal" href="#_CPPv413UART_Status_t" title="UART_Status_t"><span class="n"><span class="pre">UART_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_SetConfiguration</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413UART_Config_t" title="UART_Config_t"><span class="n"><span class="pre">UART_Config_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421UART_SetConfiguration13UART_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Change the UART configuration. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>UART configuration can be changed only if UART is not enabled. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – Configuration structure for UART. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>UART_OK if the UART configuration was changed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423UART_BlockCommunicationb">
+<span id="_CPPv323UART_BlockCommunicationb"></span><span id="_CPPv223UART_BlockCommunicationb"></span><span id="UART_BlockCommunication__b"></span><span class="target" id="db/def/group__uart_1gae18d7bfef53a0f3d08e2928a5617a64a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_BlockCommunication</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">blocking</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423UART_BlockCommunicationb" title="Link to this definition"></a><br /></dt>
+<dd><p>Block UART incomming communication by forcing RTS. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blocking</strong> – Enable/disable for blocking incomming communication. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418UART_SetBaudRateEx8uint16_t7uint8_t">
+<span id="_CPPv318UART_SetBaudRateEx8uint16_t7uint8_t"></span><span id="_CPPv218UART_SetBaudRateEx8uint16_t7uint8_t"></span><span id="UART_SetBaudRateEx__uint16_t.uint8_t"></span><span class="target" id="db/def/group__uart_1gaacb11bfca0c5371d295be1cc99eaea7a"></span><a class="reference internal" href="#_CPPv413UART_Status_t" title="UART_Status_t"><span class="n"><span class="pre">UART_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_SetBaudRateEx</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">clkDivider</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">oversampling</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418UART_SetBaudRateEx8uint16_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the baud rate manually. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The UART baud rate can be set only if UART is not enabled. If UART is running, the request is rejected. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clkDivider</strong> – Clock divider for UART. Valid values: &lt;1, 16383&gt;. </p></li>
+<li><p><strong>oversampling</strong> – Oversampling factor. Valid values: &lt;4, 16&gt;. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>UART_OK if the baud rate was set, UART_BUSY otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416UART_SetBaudRate8uint32_t">
+<span id="_CPPv316UART_SetBaudRate8uint32_t"></span><span id="_CPPv216UART_SetBaudRate8uint32_t"></span><span id="UART_SetBaudRate__uint32_t"></span><span class="target" id="db/def/group__uart_1gad8228f697af5846c8256db589d70caed"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_SetBaudRate</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">baud</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416UART_SetBaudRate8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the baud rate. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The UART baud rate can be set only if UART is not enabled. If UART is running, the request is rejected. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>baud</strong> – Desired baud rate. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Calculated baud rate or 0 if the UART is busy or the baud rate is invalid (too high or too low). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416UART_InitBuffersP18UART_Transaction_t8uint16_tP18UART_Transaction_t8uint16_t">
+<span id="_CPPv316UART_InitBuffersP18UART_Transaction_t8uint16_tP18UART_Transaction_t8uint16_t"></span><span id="_CPPv216UART_InitBuffersP18UART_Transaction_t8uint16_tP18UART_Transaction_t8uint16_t"></span><span id="UART_InitBuffers__UART_Transaction_tP.uint16_t.UART_Transaction_tP.uint16_t"></span><span class="target" id="db/def/group__uart_1ga4d2d1ca4fc354861d6d49a89ccb59a5e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_InitBuffers</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv418UART_Transaction_t" title="UART_Transaction_t"><span class="n"><span class="pre">UART_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pRxBuffer</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rxSize</span></span>, <a class="reference internal" href="#_CPPv418UART_Transaction_t" title="UART_Transaction_t"><span class="n"><span class="pre">UART_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTxBuffer</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">txSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416UART_InitBuffersP18UART_Transaction_t8uint16_tP18UART_Transaction_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the UART ring buffers. </p>
+<p>
+This method allows for changing the size of the ring buffer. Simply call this method with a different buffer location and size inside of a patch. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pRxBuffer</strong> – Pointer to the first element in the receive ring buffer. </p></li>
+<li><p><strong>rxSize</strong> – Number of elements in the receive ring buffer. </p></li>
+<li><p><strong>pTxBuffer</strong> – Pointer to the first element in the transmit ring buffer. </p></li>
+<li><p><strong>txSize</strong> – Number of elements in the transmit ring buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415UART_SendDataExPKv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv315UART_SendDataExPKv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv215UART_SendDataExPKv8uint16_t17Driver_Callback_tPv"></span><span id="UART_SendDataEx__voidCP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="db/def/group__uart_1ga624cb22e377ce1d2dfe02596070f5d9c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_SendDataEx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415UART_SendDataExPKv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Send the data across the UART. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The data <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to send across the UART. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to send. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. May be NULL if a callback should not be called. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass along with the event and/or callback. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the data was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418UART_ReceiveDataExPv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv318UART_ReceiveDataExPv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv218UART_ReceiveDataExPv8uint16_t17Driver_Callback_tPv"></span><span id="UART_ReceiveDataEx__voidP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="db/def/group__uart_1ga29f8089b15a49c37b35198b079f56541"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_ReceiveDataEx</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418UART_ReceiveDataExPv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Receive data from the UART. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The destination <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to receive from the UART. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to receive. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. May be NULL if a callback should not be called. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass along with the event and/or callback. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the request was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419UART_HasPendingDatav">
+<span id="_CPPv319UART_HasPendingDatav"></span><span id="_CPPv219UART_HasPendingDatav"></span><span id="UART_HasPendingData__void"></span><span class="target" id="db/def/group__uart_1ga4e4aab6f1364299079a1acf7b4025176"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_HasPendingData</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419UART_HasPendingDatav" title="Link to this definition"></a><br /></dt>
+<dd><p>Check if UART driver has some pending data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if there are some pending data, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419UART_RegisterModulev">
+<span id="_CPPv319UART_RegisterModulev"></span><span id="_CPPv219UART_RegisterModulev"></span><span id="UART_RegisterModule__void"></span><span class="target" id="db/def/group__uart_1gaea19ce8b226918b9a2be04cb66cbec2a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419UART_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the UART module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425UART_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv325UART_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv225UART_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv"></span><span id="UART_SendDataWithCallback__voidCP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="db/def/group__uart_1gad5889d269a84d260b7c985c99aa5a7dc"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_SendDataWithCallback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425UART_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Send the data across the UART. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The data <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to send across the UART. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to send. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass to the callback upon error or completion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the data was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413UART_SendDataPKv8uint16_t">
+<span id="_CPPv313UART_SendDataPKv8uint16_t"></span><span id="_CPPv213UART_SendDataPKv8uint16_t"></span><span id="UART_SendData__voidCP.uint16_t"></span><span class="target" id="db/def/group__uart_1gaa4dc2f3ecbae9aa6a52578041057a82d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_SendData</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413UART_SendDataPKv8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Send the data across the UART. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The data <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to send across the UART. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to send. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the data was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428UART_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv328UART_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv228UART_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv"></span><span id="UART_ReceiveDataWithCallback__voidP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="db/def/group__uart_1gac0b72bf6c565d578237380f078f835a9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_ReceiveDataWithCallback</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428UART_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Receive data from the UART. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The destination <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to receive from the UART. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to receive. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass to the callback upon error or completion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the request was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416UART_ReceiveDataPv8uint16_t">
+<span id="_CPPv316UART_ReceiveDataPv8uint16_t"></span><span id="_CPPv216UART_ReceiveDataPv8uint16_t"></span><span id="UART_ReceiveData__voidP.uint16_t"></span><span class="target" id="db/def/group__uart_1gac647ee066a72d06e713b438637823296"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_ReceiveData</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416UART_ReceiveDataPv8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Receive data from the UART. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The destination <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to receive from the UART. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to receive. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the request was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411UART_IsBusyv">
+<span id="_CPPv311UART_IsBusyv"></span><span id="_CPPv211UART_IsBusyv"></span><span id="UART_IsBusy__void"></span><span class="target" id="db/def/group__uart_1ga0ed9f1e07298a14b8e7d765c94746f03"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_IsBusy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411UART_IsBusyv" title="Link to this definition"></a><br /></dt>
+<dd><p>Check if UART driver is busy. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the UART is busy, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv412gUART_Config">
+<span id="_CPPv312gUART_Config"></span><span id="_CPPv212gUART_Config"></span><span id="gUART_Config__UART_Configuration_tV"></span><span class="target" id="db/def/group__uart_1ga6a15e8bf4289f24e8c9da3c43e31a6f0"></span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420UART_Configuration_t" title="UART_Configuration_t"><span class="n"><span class="pre">UART_Configuration_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gUART_Config</span></span></span><a class="headerlink" href="#_CPPv412gUART_Config" title="Link to this definition"></a><br /></dt>
+<dd><p>UART Configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv415gUART_Transport">
+<span id="_CPPv315gUART_Transport"></span><span id="_CPPv215gUART_Transport"></span><span id="gUART_Transport__Transport_tC"></span><span class="target" id="db/def/group__uart_1ga5c3370ec1975b38c97bd83827c3f8948"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Transport_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gUART_Transport</span></span></span><a class="headerlink" href="#_CPPv415gUART_Transport" title="Link to this definition"></a><br /></dt>
+<dd><p>UART Transport Configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv422gUART_PersistentMemory">
+<span id="_CPPv322gUART_PersistentMemory"></span><span id="_CPPv222gUART_PersistentMemory"></span><span id="gUART_PersistentMemory__cA"></span><span class="target" id="db/def/group__uart_1gae24c3026ed0e45b1d9f3fe4a7e38a289"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gUART_PersistentMemory</span></span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv422gUART_PersistentMemory" title="Link to this definition"></a><br /></dt>
+<dd><p>Reference to the persistent memory for the UART module. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not use this directly. </p>
+</div>
+</dd></dl>
+
+</div>
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv413UART_Config_t">
+<span id="_CPPv313UART_Config_t"></span><span id="_CPPv213UART_Config_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_Config_t</span></span></span><a class="headerlink" href="#_CPPv413UART_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;uart.h&gt;</em></div>
+<p>UART configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t10configByteE">
+<span id="_CPPv3N13UART_Config_t10configByteE"></span><span id="_CPPv2N13UART_Config_t10configByteE"></span><span id="UART_Config_t::configByte__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1afb01bcfbe49b7a4f572933951b5d2a5c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configByte</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t10configByteE" title="Link to this definition"></a><br /></dt>
+<dd><p>UART config byte. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t8msbFirstE">
+<span id="_CPPv3N13UART_Config_t8msbFirstE"></span><span id="_CPPv2N13UART_Config_t8msbFirstE"></span><span id="UART_Config_t::msbFirst__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1adf758697d189a950dd51258a1613dd4b"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">msbFirst</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t8msbFirstE" title="Link to this definition"></a><br /></dt>
+<dd><p>UART MSBit mode. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t10parityModeE">
+<span id="_CPPv3N13UART_Config_t10parityModeE"></span><span id="_CPPv2N13UART_Config_t10parityModeE"></span><span id="UART_Config_t::parityMode__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1a4424fe5d231584f37f65561ad298d4a2"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parityMode</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t10parityModeE" title="Link to this definition"></a><br /></dt>
+<dd><p>UART parity enable. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t10evenParityE">
+<span id="_CPPv3N13UART_Config_t10evenParityE"></span><span id="_CPPv2N13UART_Config_t10evenParityE"></span><span id="UART_Config_t::evenParity__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1a130ecec14bb17057ea93c5f8649f65f9"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evenParity</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t10evenParityE" title="Link to this definition"></a><br /></dt>
+<dd><p>UART even parity. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t10flowCtrlEnE">
+<span id="_CPPv3N13UART_Config_t10flowCtrlEnE"></span><span id="_CPPv2N13UART_Config_t10flowCtrlEnE"></span><span id="UART_Config_t::flowCtrlEn__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1a5db3b93ce3b308509db148b2f402a5f5"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flowCtrlEn</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t10flowCtrlEnE" title="Link to this definition"></a><br /></dt>
+<dd><p>UART flow control enable. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t11majorityDisE">
+<span id="_CPPv3N13UART_Config_t11majorityDisE"></span><span id="_CPPv2N13UART_Config_t11majorityDisE"></span><span id="UART_Config_t::majorityDis__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1a1578022ed035e6d2a5c7e8ee199541f7"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">majorityDis</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t11majorityDisE" title="Link to this definition"></a><br /></dt>
+<dd><p>UART majority vote disable in oversampling mode. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t10loopBackEnE">
+<span id="_CPPv3N13UART_Config_t10loopBackEnE"></span><span id="_CPPv2N13UART_Config_t10loopBackEnE"></span><span id="UART_Config_t::loopBackEn__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1aa29e8e28deeda88d427f420b650f8cf8"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loopBackEn</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t10loopBackEnE" title="Link to this definition"></a><br /></dt>
+<dd><p>UART loop back enable. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t8reservedE">
+<span id="_CPPv3N13UART_Config_t8reservedE"></span><span id="_CPPv2N13UART_Config_t8reservedE"></span><span id="UART_Config_t::reserved__uint8_t"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1af1b6882fe41f7b259c1d8f605a21db03"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Padding bits. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13UART_Config_t4bitsE">
+<span id="_CPPv3N13UART_Config_t4bitsE"></span><span id="_CPPv2N13UART_Config_t4bitsE"></span><span class="target" id="d5/d63/union_u_a_r_t___config__t_1a885f8370d208c60da3061e68566752cf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413UART_Config_t" title="UART_Config_t"><span class="n"><span class="pre">UART_Config_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N13UART_Config_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv418UART_Transaction_t">
+<span id="_CPPv318UART_Transaction_t"></span><span id="_CPPv218UART_Transaction_t"></span><span id="UART_Transaction_t"></span><span class="target" id="d0/d17/struct_u_a_r_t___transaction__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_Transaction_t</span></span></span><a class="headerlink" href="#_CPPv418UART_Transaction_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;uart.h&gt;</em></div>
+<p>Data structure holding the information needed for a UART transaction. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18UART_Transaction_t5pDataE">
+<span id="_CPPv3N18UART_Transaction_t5pDataE"></span><span id="_CPPv2N18UART_Transaction_t5pDataE"></span><span id="UART_Transaction_t::pData__uint8_tP"></span><span class="target" id="d0/d17/struct_u_a_r_t___transaction__t_1a7ebff8618c926dd8c4b49052acd8d8c1"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pData</span></span></span><a class="headerlink" href="#_CPPv4N18UART_Transaction_t5pDataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to the next byte of the data to be sent or received. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18UART_Transaction_t9pUserDataE">
+<span id="_CPPv3N18UART_Transaction_t9pUserDataE"></span><span id="_CPPv2N18UART_Transaction_t9pUserDataE"></span><span id="UART_Transaction_t::pUserData__voidP"></span><span class="target" id="d0/d17/struct_u_a_r_t___transaction__t_1aecdf27369c937d29e5edf07e2f7285b1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pUserData</span></span></span><a class="headerlink" href="#_CPPv4N18UART_Transaction_t9pUserDataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to user defined data to provide to the callback. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18UART_Transaction_t9pCallbackE">
+<span id="_CPPv3N18UART_Transaction_t9pCallbackE"></span><span id="_CPPv2N18UART_Transaction_t9pCallbackE"></span><span id="UART_Transaction_t::pCallback__Driver_Callback_t"></span><span class="target" id="d0/d17/struct_u_a_r_t___transaction__t_1a168388cd85b60b2965714eee23002e5b"></span><span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pCallback</span></span></span><a class="headerlink" href="#_CPPv4N18UART_Transaction_t9pCallbackE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to call inside the UART ISR on an event. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18UART_Transaction_t10dataLengthE">
+<span id="_CPPv3N18UART_Transaction_t10dataLengthE"></span><span id="_CPPv2N18UART_Transaction_t10dataLengthE"></span><span id="UART_Transaction_t::dataLength__uint16_t"></span><span class="target" id="d0/d17/struct_u_a_r_t___transaction__t_1a30ec382e3524da94d8f57008b268521c"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dataLength</span></span></span><a class="headerlink" href="#_CPPv4N18UART_Transaction_t10dataLengthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of bytes remaining to be sent/received for this transaction. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18UART_Transaction_t8reservedE">
+<span id="_CPPv3N18UART_Transaction_t8reservedE"></span><span id="_CPPv2N18UART_Transaction_t8reservedE"></span><span id="UART_Transaction_t::reserved__uint8_tA"></span><span class="target" id="d0/d17/struct_u_a_r_t___transaction__t_1aec53aa456f134ba22bcb3d0b4436f41d"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N18UART_Transaction_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reserved for future use. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv420UART_Configuration_t">
+<span id="_CPPv320UART_Configuration_t"></span><span id="_CPPv220UART_Configuration_t"></span><span id="UART_Configuration_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UART_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv420UART_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;uart.h&gt;</em></div>
+<p>UART configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t12moduleConfigE">
+<span id="_CPPv3N20UART_Configuration_t12moduleConfigE"></span><span id="_CPPv2N20UART_Configuration_t12moduleConfigE"></span><span id="UART_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a17be64f2f89b445ee96185bc3d91375d"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t8baudRateE">
+<span id="_CPPv3N20UART_Configuration_t8baudRateE"></span><span id="_CPPv2N20UART_Configuration_t8baudRateE"></span><span id="UART_Configuration_t::baudRate__uint32_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a7aca44700b0de444ddcc6c5f9c05cfe4"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">baudRate</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t8baudRateE" title="Link to this definition"></a><br /></dt>
+<dd><p>Baud rate to set the UART to. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t9pRxBufferE">
+<span id="_CPPv3N20UART_Configuration_t9pRxBufferE"></span><span id="_CPPv2N20UART_Configuration_t9pRxBufferE"></span><span id="UART_Configuration_t::pRxBuffer__UART_Transaction_tP"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1aa8a4de3b18a928aed5860754153ac79c"></span><a class="reference internal" href="#_CPPv418UART_Transaction_t" title="UART_Transaction_t"><span class="n"><span class="pre">UART_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pRxBuffer</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t9pRxBufferE" title="Link to this definition"></a><br /></dt>
+<dd><p>RX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t9pTxBufferE">
+<span id="_CPPv3N20UART_Configuration_t9pTxBufferE"></span><span id="_CPPv2N20UART_Configuration_t9pTxBufferE"></span><span id="UART_Configuration_t::pTxBuffer__UART_Transaction_tP"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a2c4d60b1b9e41764464a1c98ae2c6be3"></span><a class="reference internal" href="#_CPPv418UART_Transaction_t" title="UART_Transaction_t"><span class="n"><span class="pre">UART_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pTxBuffer</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t9pTxBufferE" title="Link to this definition"></a><br /></dt>
+<dd><p>TX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t12rxBufferSizeE">
+<span id="_CPPv3N20UART_Configuration_t12rxBufferSizeE"></span><span id="_CPPv2N20UART_Configuration_t12rxBufferSizeE"></span><span id="UART_Configuration_t::rxBufferSize__uint16_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a92cd604696d17d2948d936e924289a9c"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rxBufferSize</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t12rxBufferSizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the RX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t12txBufferSizeE">
+<span id="_CPPv3N20UART_Configuration_t12txBufferSizeE"></span><span id="_CPPv2N20UART_Configuration_t12txBufferSizeE"></span><span id="UART_Configuration_t::txBufferSize__uint16_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a3697652334e81544d2c538f359546481"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">txBufferSize</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t12txBufferSizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the RX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t10configBitsE">
+<span id="_CPPv3N20UART_Configuration_t10configBitsE"></span><span id="_CPPv2N20UART_Configuration_t10configBitsE"></span><span id="UART_Configuration_t::configBits__UART_Config_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a7387b4167ce54150d4be25b742a0cbec"></span><a class="reference internal" href="#_CPPv413UART_Config_t" title="UART_Config_t"><span class="n"><span class="pre">UART_Config_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configBits</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t10configBitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Default configuration bits for the UART. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t7enabledE">
+<span id="_CPPv3N20UART_Configuration_t7enabledE"></span><span id="_CPPv2N20UART_Configuration_t7enabledE"></span><span id="UART_Configuration_t::enabled__UART_Enable_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1aacf137de3e854e03bd671a7a49bfb4f5"></span><a class="reference internal" href="#_CPPv413UART_Enable_t" title="UART_Enable_t"><span class="n"><span class="pre">UART_Enable_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t7enabledE" title="Link to this definition"></a><br /></dt>
+<dd><p>If the UART module is enabled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t10wakeUpGpioE">
+<span id="_CPPv3N20UART_Configuration_t10wakeUpGpioE"></span><span id="_CPPv2N20UART_Configuration_t10wakeUpGpioE"></span><span id="UART_Configuration_t::wakeUpGpio__uint8_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a4a3023bbfb93461e203420239de93f77"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wakeUpGpio</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t10wakeUpGpioE" title="Link to this definition"></a><br /></dt>
+<dd><p>Wake-up GPIO for the UART transport. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t14wakeUpPolarityE">
+<span id="_CPPv3N20UART_Configuration_t14wakeUpPolarityE"></span><span id="_CPPv2N20UART_Configuration_t14wakeUpPolarityE"></span><span id="UART_Configuration_t::wakeUpPolarity__uint8_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1ac465f815e904f0aefdc46ddb1ed93fbe"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wakeUpPolarity</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t14wakeUpPolarityE" title="Link to this definition"></a><br /></dt>
+<dd><p>Polarity of the wake-up GPIO. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t12dmaChannelTxE">
+<span id="_CPPv3N20UART_Configuration_t12dmaChannelTxE"></span><span id="_CPPv2N20UART_Configuration_t12dmaChannelTxE"></span><span id="UART_Configuration_t::dmaChannelTx__uint8_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1ad3f13b672a4a5e573de0580ca641db7c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dmaChannelTx</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t12dmaChannelTxE" title="Link to this definition"></a><br /></dt>
+<dd><p>DMA channel for TX operation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20UART_Configuration_t12dmaChannelRxE">
+<span id="_CPPv3N20UART_Configuration_t12dmaChannelRxE"></span><span id="_CPPv2N20UART_Configuration_t12dmaChannelRxE"></span><span id="UART_Configuration_t::dmaChannelRx__uint8_t"></span><span class="target" id="d8/d63/struct_u_a_r_t___configuration__t_1a592edc5fe4371bf432792fdf912a6efe"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dmaChannelRx</span></span></span><a class="headerlink" href="#_CPPv4N20UART_Configuration_t12dmaChannelRxE" title="Link to this definition"></a><br /></dt>
+<dd><p>DMA channel for RX operation. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0-0">
+<h3>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>PR 9277: Removed constant keyword in pointer parameter for following functions in <cite>UART_GetRxData()</cite> internal function.</p></li>
+</ul>
+</section>
+<section id="version-0-2-3">
+<h3>Version 0.2.3<a class="headerlink" href="#version-0-2-3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Critical Section allow execution of radio driver ISR with maximum priority.</p></li>
+</ul>
+</section>
+<section id="version-0-2-2">
+<h3>Version 0.2.2<a class="headerlink" href="#version-0-2-2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Improvement in the DMA version. The DMA channels (for TX and RX operations) can be set dynamically.</p></li>
+</ul>
+</section>
+<section id="version-0-2-1">
+<h3>Version 0.2.1<a class="headerlink" href="#version-0-2-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed a bug in the DMA version. The DMA could run twice for a same transaction if a new one is added from the callback.</p></li>
+</ul>
+</section>
+<section id="version-0-2-0">
+<h3>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed a bug in the DMA version. It was not possible to start a new transaction from the callback of a previous transaction (TX+TX or RX+RX only).</p></li>
+<li><p>Simplified the management of the transaction queue in the RX and TX interrupts.</p></li>
+<li><p>Added a parameter check to avoid starting a transaction of size 0.</p></li>
+</ul>
+</section>
+<section id="version-0-1-2">
+<h3>Version 0.1.2<a class="headerlink" href="#version-0-1-2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Removed unused functions related to FIFO in the DMA version of the driver.</p></li>
+</ul>
+</section>
+<section id="version-0-1-1">
+<h3>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Updated sphinx doc.</p></li>
+<li><p>Cleaned doxygen comments.</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../temperature_indicator/index.html" class="btn btn-neutral float-left" title="Temperature Indicator Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../unitimer/index.html" class="btn btn-neutral float-right" title="Unitimer Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

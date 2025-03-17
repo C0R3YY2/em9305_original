@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interrupt management &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="GPIO Driver" href="../gpio/index.html" />
+    <link rel="prev" title="DMA Driver" href="../dma/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Interrupt management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Interrupt management</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="interrupt-management">
+<h1>Interrupt management<a class="headerlink" href="#interrupt-management" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>EM Core handle system interruption by itself, but application code can set a callback to be called
+when an ISR occurs.</p>
+<section id="system-interruptions">
+<h3>System interruptions<a class="headerlink" href="#system-interruptions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>SWI - Software Interrupt 0 to 9</p></li>
+<li><p>GPIO</p></li>
+<li><p>Sleep Timer Out Cmp</p></li>
+<li><p>Sleep Timer Full Value</p></li>
+<li><p>Protocol Timer Out Cmp</p></li>
+<li><p>Protocol Timer Sync</p></li>
+<li><p>ARC Timer 0</p></li>
+<li><p>ARC Timer 1</p></li>
+</ul>
+</section>
+<section id="callback-for-user-interruptions">
+<h3>Callback for User interruptions<a class="headerlink" href="#callback-for-user-interruptions" title="Link to this heading"></a></h3>
+<p>A callback can be provided to EM Core for these interruptions.</p>
+<p>You can find in the API section the functions to set the callback for each kind of ISR.</p>
+<p>The callback shall have the following prototypes.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Prototype of SWI User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SWI</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">swi</span><span class="p">);</span>
+
+<span class="c1">// Prototype of GPIO User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_GPIO</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">gpio</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Sleep Timer out cmp User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SleepTimerOutCmp</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">channel</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Sleep Timer full value User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SleepTimerFullValue</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Protocol Timer out cmp User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ProtoTimerOutCmp</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">channel</span><span class="p">);</span>
+
+<span class="c1">// Prototype of Protocol Timer sync User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ProtoTimerSync</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="c1">// Prototype of ARC Timer 0 User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ARCTimer0</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="c1">// Prototype of ARC Timer 1 User callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_ARCTimer1</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<p>Here is an example how to set SWI interrupt call.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// User SWI interrupt callback</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_SWI</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">swi</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// user code</span>
+<span class="p">}</span>
+
+<span class="c1">// Application code to set isr callback</span>
+<span class="n">IRQ_SetIRQUserHandlerSW1</span><span class="p">(</span><span class="n">IRQUserHandler_SWI</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="interrupts-enable">
+<h3>Interrupts enable<a class="headerlink" href="#interrupts-enable" title="Link to this heading"></a></h3>
+<p>Enabling a specific interrupt in an interrupt group means that the corresponding
+status bit is set to 1 when the interrupt occurs. If the interrupt in the
+interrupt group is not enabled, then the corresponding status bit will not be
+changed, even if the interrupt is triggered.</p>
+</section>
+<section id="interrupts-mask">
+<h3>Interrupts mask<a class="headerlink" href="#interrupts-mask" title="Link to this heading"></a></h3>
+<p>If one of the status bits corresponding to the interrupt is 1 and the interrupt
+is unmasked, the interrupt is handled by the CPU. The interrupt is not handled
+by the CPU if it is masked.</p>
+</section>
+<section id="software-interrupt-mask">
+<h3>Software interrupt mask<a class="headerlink" href="#software-interrupt-mask" title="Link to this heading"></a></h3>
+<p>Unlike the other interrupt sources, the software interrupt mask is managed
+differently. In fact, it is not saved and restored when the device wakes from
+sleep, but the software interrupt are always masked when the device wakes from
+sleep. Therefore, it is the user’s responsibility to unmask the software
+interrupt before using it each time the device wakes from sleep.</p>
+</section>
+<section id="critical-sections-and-radio-isr">
+<h3>Critical Sections and Radio ISR<a class="headerlink" href="#critical-sections-and-radio-isr" title="Link to this heading"></a></h3>
+<p>The SDK provides a set of drivers that might execute critical sections
+which must not be interrupted during their execution, mainly to fulfill
+timing constraints and to avoid concurrent access to a single resource.</p>
+<p>This is why interruptions are masked at the beginning of such sections
+and unmasked when completed.</p>
+<p>However, for the sake of keeping any on-going BLE connection and limiting
+the timing impacts on the radio IP, the radio driver has the highest priority
+level compared to other drivers.</p>
+<p>Consequently, a critical section in a driver will mask all interruptions
+except the ones that are of the highest priority level, that is the radio
+driver interruptions.</p>
+<p>EM recommends not to change the radio driver priority level and not to push
+another driver than the radio driver at this higher priority level as well.
+In such a case, EM does not guarantee a nominal behavior of the device.</p>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d6/d4e/group__em__hw__api__irq"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">em_hw_api_irq</span></span></dt>
+<dd><p>IRQ management with user callback. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424IRQ_SetIRQUserHandlerSW1Pv">
+<span id="_CPPv324IRQ_SetIRQUserHandlerSW1Pv"></span><span id="_CPPv224IRQ_SetIRQUserHandlerSW1Pv"></span><span id="IRQ_SetIRQUserHandlerSW1__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1ga73004a67e4650cb427d260591e37635d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerSW1</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandlerSW1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424IRQ_SetIRQUserHandlerSW1Pv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ SW1 Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandlerSW1</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425IRQ_SetIRQUserHandlerGPIOPv">
+<span id="_CPPv325IRQ_SetIRQUserHandlerGPIOPv"></span><span id="_CPPv225IRQ_SetIRQUserHandlerGPIOPv"></span><span id="IRQ_SetIRQUserHandlerGPIO__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1ga78baa1e66f6ad16211f8cfe288eb6648"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerGPIO</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandlerGPIO</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425IRQ_SetIRQUserHandlerGPIOPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ GPIO Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandlerGPIO</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437IRQ_SetIRQUserHandlerSleepTimerOutCmpPv">
+<span id="_CPPv337IRQ_SetIRQUserHandlerSleepTimerOutCmpPv"></span><span id="_CPPv237IRQ_SetIRQUserHandlerSleepTimerOutCmpPv"></span><span id="IRQ_SetIRQUserHandlerSleepTimerOutCmp__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1gade4997d8b146bf1001efbb58698dd900"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerSleepTimerOutCmp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437IRQ_SetIRQUserHandlerSleepTimerOutCmpPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ Sleep Timer Out Cmp Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandler</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv440IRQ_SetIRQUserHandlerSleepTimerFullValuePv">
+<span id="_CPPv340IRQ_SetIRQUserHandlerSleepTimerFullValuePv"></span><span id="_CPPv240IRQ_SetIRQUserHandlerSleepTimerFullValuePv"></span><span id="IRQ_SetIRQUserHandlerSleepTimerFullValue__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1ga7c3306feb7bc6433e97598ad3c1ca848"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerSleepTimerFullValue</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv440IRQ_SetIRQUserHandlerSleepTimerFullValuePv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ Sleep Timer Full Value Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandler</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437IRQ_SetIRQUserHandlerProtoTimerOutCmpPv">
+<span id="_CPPv337IRQ_SetIRQUserHandlerProtoTimerOutCmpPv"></span><span id="_CPPv237IRQ_SetIRQUserHandlerProtoTimerOutCmpPv"></span><span id="IRQ_SetIRQUserHandlerProtoTimerOutCmp__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1gae16ed0de00f66c0d88cc1da629dcb5e5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerProtoTimerOutCmp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437IRQ_SetIRQUserHandlerProtoTimerOutCmpPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ Proto Timer Out Cmp Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandler</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv435IRQ_SetIRQUserHandlerProtoTimerSyncPv">
+<span id="_CPPv335IRQ_SetIRQUserHandlerProtoTimerSyncPv"></span><span id="_CPPv235IRQ_SetIRQUserHandlerProtoTimerSyncPv"></span><span id="IRQ_SetIRQUserHandlerProtoTimerSync__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1gacbd109e48f6cbf3be4e4e5fd32b421ff"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerProtoTimerSync</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv435IRQ_SetIRQUserHandlerProtoTimerSyncPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ Proto Timer Sync Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandler</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430IRQ_SetIRQUserHandlerARCTimer0Pv">
+<span id="_CPPv330IRQ_SetIRQUserHandlerARCTimer0Pv"></span><span id="_CPPv230IRQ_SetIRQUserHandlerARCTimer0Pv"></span><span id="IRQ_SetIRQUserHandlerARCTimer0__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1ga5add04b5d06672385bb686cac287aea7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerARCTimer0</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430IRQ_SetIRQUserHandlerARCTimer0Pv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ ARC Timer 0 Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandler</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430IRQ_SetIRQUserHandlerARCTimer1Pv">
+<span id="_CPPv330IRQ_SetIRQUserHandlerARCTimer1Pv"></span><span id="_CPPv230IRQ_SetIRQUserHandlerARCTimer1Pv"></span><span id="IRQ_SetIRQUserHandlerARCTimer1__voidP"></span><span class="target" id="d6/d4e/group__em__hw__api__irq_1gaf6ffce54fcd005a9b5e7df00eaef4a71"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRQ_SetIRQUserHandlerARCTimer1</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIRQUserHandler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430IRQ_SetIRQUserHandlerARCTimer1Pv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the User IRQ ARC Timer 1 Handler function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pIRQUserHandler</strong> – function pointer of the user callback </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0-1">
+<h3>Version 1.0.1<a class="headerlink" href="#version-1-0-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>PR 9277: Removed constant keyword in pointer parameter for following functions in <cite>FIFO_GetRxData()</cite> function.</p></li>
+</ul>
+</section>
+<section id="version-1-0-0">
+<h3>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>PR 8804 and 8802: Removed <cite>IRQ_MaskAndSave()</cite> function</p></li>
+</ul>
+</section>
+<section id="version-0-2-0">
+<h3>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Improve the documentation of the management of the software interrupt mask register</p></li>
+<li><p>T33096: Enabling division by zero exception during the boot process</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../dma/index.html" class="btn btn-neutral float-left" title="DMA Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../gpio/index.html" class="btn btn-neutral float-right" title="GPIO Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

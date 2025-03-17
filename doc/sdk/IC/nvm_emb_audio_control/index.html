@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LE Audio Control example &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Update Sample Applications" href="../examples/firmware_update.html" />
+    <link rel="prev" title="Heart Rate Service EMB Lite Sample Application" href="../nvm_emb_lite_hrs/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Examples.html">Sample Applications</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples/drivers.html">EM9305 Drivers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../examples/bluetooth.html">Bluetooth Sample Applications</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_controller/index.html">Bluetooth controller example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_datatransfer_server/index.html">EM EMB Data Transfer Server service Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_datatransfer_client/index.html">EM EMB Data Transfer Service Client Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_fit/index.html">FIT example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_hrs/index.html">Heart Rate Service (HRS) example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_rpa/index.html">Resolvable Private Address (RPA) example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_tag/index.html">TagConnected example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_assettag/index.html">Asset Tag example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_ancs_client/index.html">ANCS Client Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_power_control/index.html">Tx Power Control Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_ext_adv/index.html">EM EMB Extended Advertisement Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emb_lite_hrs/index.html">Heart Rate Service EMB Lite Sample Application</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">LE Audio Control example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#program">Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test">Test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/firmware_update.html">Firmware Update Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/misc.html">Miscellaneous Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Examples.html">Sample Applications</a></li>
+          <li class="breadcrumb-item"><a href="../examples/bluetooth.html">Bluetooth Sample Applications</a></li>
+      <li class="breadcrumb-item active">LE Audio Control example</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="le-audio-control-example">
+<h1>LE Audio Control example<a class="headerlink" href="#le-audio-control-example" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This sample application sets up the EM9305 device to act as an server device that will allow the Central to discover the services and connect to the TMAP (Telephony and Media Audio Profile), CCP (Call Control Profile), MCP (Media Control Profile) profiles.</p>
+<p>It exposes the following profiles and services:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Generic Access</p></li>
+<li><p>Generic Attribute</p></li>
+<li><p>Device Information</p></li>
+<li><p>Microphone Control</p></li>
+<li><p>Volume Control</p></li>
+<li><p>Audio Stream Control Service</p></li>
+<li><p>Published Audio Capabilities Service</p></li>
+<li><p>Coordinated Set Identification Service</p></li>
+<li><p>TMAS Service (Call Control Profile discovered through this)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>The build target of this example is: <strong>nvm_emb_audio_control</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>nvm_emb_audio_control
+</pre></div>
+</div>
+<p>To test the example with PTS (Profile Tuning Suite) the build target to be built is: <strong>nvm_emb_audio_control_pts_tester</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>nvm_emb_audio_control_pts_tester
+</pre></div>
+</div>
+</section>
+<section id="program">
+<h2>Program<a class="headerlink" href="#program" title="Link to this heading"></a></h2>
+<p>To program and run the example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\n</span>vm_emb_audio_control<span class="se">\n</span>vm_emb_audio_control.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\n</span>vm_emb_audio_control<span class="se">\n</span>vm_emb_audio_control_pts_tester.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>With YY = the COM port number of your DVK (optional if you set it in the file <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\tools\blengine\config.cfg</span></code>), and
+XX = the design iteration identifier.</p>
+</section>
+<section id="test">
+<h2>Test<a class="headerlink" href="#test" title="Link to this heading"></a></h2>
+<p>Currently the sample application can only be tested using Profile Tuning Suite (PTS) provided by the Bluetooth SIG.</p>
+<p>The nvm_emb_audio_control_pts_tester sample application needs to have a change for using the PTS LE Dongle bluetooth address that the customer has in the application and then it needs to be built and flashed on the device.</p>
+<p>The code to change the bluetooth address can be found in the my_app.c file. The code snippet to change the address of the PTS Dongle the user has is:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">bdAddr_t</span><span class="w"> </span><span class="n">gPTSDongleAddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe8</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"> </span><span class="mh">0xC0</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>The PTS LE Dongle address to be entered in the code is in Little Endian format.</p>
+<p>Get the PTS software and the PTS Dongle Firmware Upgrade Software download from here and complete the installation: <a class="reference external" href="https://pts.bluetooth.com/download">https://pts.bluetooth.com/download</a></p>
+<p>Once the dongle firmware is upgraded the PTS software will be able to find it as the dongle opens a COM port on your PC.</p>
+<p>Click on the button that the below screenshot red arrow points to. This will initiate the connection to the dongle.</p>
+<img alt="PTS Connection" class="align-center" src="../../_images/PTS_Dongle_Connection.png" />
+<p>Next Step is to either open an existing workspace or create new workspace.</p>
+<p>Click on ‘New Workspace’ in the Start tab on the left.
+It will open a new window which will start the scan process to find the LE Devices around.</p>
+<img alt="PTS Scan" class="align-center" src="../../_images/PTS_Scan_Devices.png" />
+<p>The Major Device Class and Service Class can also be selected to narrow the search.</p>
+<p>If the Device under Test (DUT) is found you can click on the device and click on ‘Next &gt;’</p>
+<p>If you do not see the DUT then you can also manually enter the address in the ‘IUT Device Address’ in the box.</p>
+<p>Give a name to your project and also provide the location you want to store it at.</p>
+<p>At this point you can also import any ICS file that you have (received from EM Microelectronic or downloaded from the BT Qualification site) which will enable all the test cases that can be run for this sample application.
+The alternate option is to click on ‘Next’ and then manually selecting all the profiles and test cases you want to select and run based on your application. An ICS file can be created using those. Example Screenshots below.</p>
+<img alt="PTS Workspace" class="align-center" src="../../_images/PTS_New_Workspace.png" />
+<a class="reference internal image-reference" href="../../_images/PTS_Test_Suites.png"><img alt="PTS Test Suites" class="align-center" src="../../_images/PTS_Test_Suites.png" style="width: 633.0px; height: 587.0px;" /></a>
+<p>Once the project workspace is open (with imported ICS file), the test cases can be run which are not marked by Lock sign.</p>
+<img alt="PTS Locked and Unlocked Tests" class="align-center" src="../../_images/PTS_CCP_Locked_Tests.jpg" />
+<p>To run the test case you can either simply double click on an individual test case or you can right click on top of the group names and click on ‘Run’. This will run all the tests under that group. (Run (Debug Logs) will provide debug logs for debugging the test case issue with DUT).</p>
+<img alt="PTS Test Run" class="align-center" src="../../_images/PTS_Test_Run.png" />
+<p>Once the test starts running it will ask for some steps to be done which are either inputs to the DUT or requires the DUT to connect to the PTS dongle.</p>
+<img alt="PTS Test User Action" class="align-center" src="../../_images/PTS_Testing_Action.png" />
+<p>Once the test runs it will end with ‘Pass’, ‘Fail’ or ‘Inconc’ (Inconclusive) verdict. Logs can be seen under the Log window in the PTS software.</p>
+<img alt="PTS CCP Test Results" class="align-center" src="../../_images/PTS_CCP_Tests.jpg" />
+<p>For CCP Testing, there is a Command Line Interface that is provided using UART.
+The UART TX pin is set to GPIO 1 and UART RX pin is set to GPIO 2.
+A FTDI cable can be used to connect to the 9305 DVK on the GPIO header along with Ground and a Windows application like Putty can be used to input the data.
+On Putty the FTDI cables COM port needs to be identified and the 115200 baud rate should be used for communication.</p>
+<img alt="EM9305 DVK FTDI Connection and PTS Dongle" class="align-center" src="../../_images/DVK_FTDI_Connection_and_PTS_Dongle.jpg" />
+<p>Once UART and Putty are setup and PTS test is run, the test will ask for DUT to initiate the connection to the dongle. Click on the reset button on the DVK.
+This will initiate the connection to the dongle from the DUT and will run through the service and characteristics discovery process.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This step requires the bluetooth address code change from the steps above.</p>
+</div>
+<img alt="CCP Test Start Run" class="align-center" src="../../_images/CCP_Test_Start.jpg" />
+<p>Once the test goes through all the discoveries and requires an input, it will wait with a pop-up window like in the image below:</p>
+<img alt="CCP Test PTS waiting on Input from CLI" class="align-center" src="../../_images/CCP_Test_PTS_Input.jpg" />
+<p>At this point, the CLI can be used to enter an input character to select the CCP test by pressing ‘C’.
+The Menu for all the commands is below which can be accessed by pressing ‘M’ after selecting the CCP Test by pressing ‘C’:</p>
+<img alt="Sample App Menu to Input from CLI for CCP Testing" class="align-center" src="../../_images/Sample_App_CCP_Test_Menu.jpg" />
+<p>Enter 2nd character to select the Write or Read operation from the menu as required by the test.
+The test will wait to enter the 3rd character (0 or 1) to enter the correct service ID based on if GTBS (Generic Telephony Bearer Service id 0) or TBS (Telephony Bearer Service id 1) CCP tests are run.
+Once the required characters are input the test will pass as shown in the screenshot below:</p>
+<img alt="CCP Test Accept Call Pass" class="align-center" src="../../_images/CCP_Test_Accept_Call.jpg" />
+<p>All the other tests can be run similarly in the PTS based on the above steps.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../nvm_emb_lite_hrs/index.html" class="btn btn-neutral float-left" title="Heart Rate Service EMB Lite Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/firmware_update.html" class="btn btn-neutral float-right" title="Firmware Update Sample Applications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMB Database &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="EM Bleu - Vendor specific GATT based services" href="../emb_vs_fwu/index.html" />
+    <link rel="prev" title="Firmware Update Core" href="../fwu_core/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm_op_sched/index.html">NVM operation scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../firmware_header/index.html">Firmware Header Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_core/index.html">Firmware Update Core</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">EMB Database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-usage">Example Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-storage-locations">Changing Storage Locations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_crypto/index.html">Firmware Update Cryptographic Toolbox Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_spi/index.html">Firmware Update Library for SPI Transport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">EMB Database</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="emb-database">
+<h1>EMB Database<a class="headerlink" href="#emb-database" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The EMB Database provides a way to persistently store BLE key material exchanged during pairing. The keys are stored in NVM Info Page 1 by default and persist across power cycles. It is designed to securely store keys when the devices resets for any reason including thermal shutdown.</p>
+</section>
+<section id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The EMB Database is not designed to be used with the Packetcraft Application Framework profile (AF). The AF has a RAM database that stores similar device records which do not persist across power cycles.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This example is not to a complete application. It is only meant to point the user in the right direction to use this library.</p>
+</div>
+<p>The user application is responsible for handling receiving keys from the stack in the app and passing them to the EMB Database API. The user must initialize the record first, before handling key info from the DM event, storing into the record, before passing to the EMB Database API.</p>
+<p>From a high-level perspective, this code snippet does the following:</p>
+<ul class="simple">
+<li><p>Creates <cite>EMBDB_Record_t</cite> (pairing info) in RAM and populates various key fields during pairing.</p></li>
+<li><p>Stores pairing info in NVM after pairing completes successfully.</p></li>
+<li><p>Loads pairing info from NVM when the BLE stack initializes.</p></li>
+<li><p>Accepts encryption requests from the peer device if that peer has previously paired.</p></li>
+<li><p>Pairing info persists after power on resets.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Depending on the user application’s security needs, it may be necessary to perform additional security checks on the peer device before accepting LTK requests.</p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;emb_database_api.h&quot;</span>
+
+<span class="c1">// Database record in RAM to be stored in NVM after pairing completes.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="n">pairingInfo</span><span class="p">;</span>
+<span class="c1">// Connection ID to be stored when a connection is established.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">dmConnId_t</span><span class="w">     </span><span class="n">connId</span><span class="p">;</span>
+<span class="c1">// Storage backend for EMB Database to use. In this example, NVM Info P1 is used.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_StorageBackend_t</span><span class="w"> </span><span class="n">storageBackend</span><span class="p">;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">getReceivedKeys</span><span class="p">(</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="n">pDmEvt</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// The emb_database has fields for each type of BLE key exchanged during</span>
+<span class="w">    </span><span class="c1">// pairing (LTK, IRK, and CSRK).</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">type</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_LOCAL_LTK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">ltk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkSecLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">secLevel</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_PEER_LTK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerLtk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">ltk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerLtkSecLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">secLevel</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerLtkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_IRK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerIrk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">irk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">BdaCpy</span><span class="p">(</span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerIrk</span><span class="p">.</span><span class="n">bdAddr</span><span class="p">,</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">irk</span><span class="p">.</span><span class="n">bdAddr</span><span class="p">);</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerIrkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_CSRK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerCsrk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">csrk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerCsrkSecLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">secLevel</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerCsrkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// This function is called by the user application&#39;s message handler when a</span>
+<span class="c1">// Device Manager (DM) event has been received. The DM communicates back to</span>
+<span class="c1">// the user application by sending various events. In the emb_fit example,</span>
+<span class="c1">// the application&#39;s message handler is APP_FitHandler.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">userDMEventHandler</span><span class="p">(</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="n">pDmEvt</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">event</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_RESET_CMPL_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="c1">// Initialize the EMB Database to use NVM Info P1 backend (default).</span>
+<span class="w">          </span><span class="c1">// By default EMBDB_LoadNVMInfoP1Backend sets the maxRecords to 8,</span>
+<span class="w">          </span><span class="c1">// but this can be changed to a maximum of 69 records if desired.</span>
+<span class="w">          </span><span class="c1">// storageBackend.maxRecords = 69;</span>
+<span class="w">          </span><span class="n">EMBDB_LoadNVMInfoP1Backend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">storageBackend</span><span class="p">);</span>
+<span class="w">          </span><span class="n">EMBDB_RegisterBackend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">storageBackend</span><span class="p">);</span>
+<span class="w">          </span><span class="c1">// Load the stored pairing info if it exists, otherwise create empty record.</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">EMB_DB_GET_RECORD_SUCCESS</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EMBDB_GetLastRecordStored</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pairingInfo</span><span class="p">))</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="c1">// Could setup device filtering and IRK resolution here.</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">else</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="n">EMBDB_InitializeRecord</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pairingInfo</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_CONN_OPEN_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="n">connId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">dmConnId_t</span><span class="p">)</span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">param</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_SEC_KEY_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="n">getReceivedKeys</span><span class="p">(</span><span class="n">pDmEvt</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_SEC_PAIR_CMPL_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="n">EMBDB_StoreRecord</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pairingInfo</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// This example showcases using the stored LTK for encrypting the connection.</span>
+<span class="w">      </span><span class="c1">// A similar process is applied for the other BLE keys.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_SEC_LTK_REQ_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkValid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="c1">// Key has already been exchanged and stored.</span>
+<span class="w">              </span><span class="n">DmSecLtkRsp</span><span class="p">(</span><span class="n">connId</span><span class="p">,</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkSecLevel</span><span class="p">,</span><span class="w"> </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtk</span><span class="p">.</span><span class="n">key</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">else</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="c1">// Key not found.</span>
+<span class="w">              </span><span class="n">DmSecLtkRsp</span><span class="p">(</span><span class="n">connId</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">default</span><span class="o">:</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><cite>recordCrc</cite> must be the last field in the EMBDB_Record_t structure.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is forbidden to store an empty record. <cite>EMBDB_StoreRecord</cite> will return a failure status if attempted.</p>
+</div>
+</section>
+<section id="changing-storage-locations">
+<h2>Changing Storage Locations<a class="headerlink" href="#changing-storage-locations" title="Link to this heading"></a></h2>
+<p>The location in which the database records are stored is configurable by changing
+the read/write backend of the database. This can be done using the <cite>EMBDB_RegisterBackend</cite>
+API. in the example above, records are stored in NVM Info page 1, but can be changed to store
+in different locations.</p>
+<p>Below is an example of how to tell the EMB Database to store records in DRAM.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;emb_database_api.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;errno.h&quot;</span>
+
+<span class="c1">// We are 8 using storage records here, but this can be configured with respect</span>
+<span class="c1">// to available space in the storage backend. If using NVM, the maximum is</span>
+<span class="c1">// 69 records using database v1.0 as this is the number of records that will</span>
+<span class="c1">// fit in an 8kB page.</span>
+<span class="cp">#define EMB_DB_MAX_RECORDS 8U</span>
+
+<span class="c1">// DRAM storage implemented using an array.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="n">databaseDRAM</span><span class="p">[</span><span class="n">EMB_DB_MAX_RECORDS</span><span class="p">];</span>
+<span class="c1">// Storage backend for EMB Database to use. In this example, DRAM is used.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_StorageBackend_t</span><span class="w"> </span><span class="n">backendDRAM</span><span class="p">;</span>
+
+<span class="c1">// Function to erase the data. Data is only erased when requested by the user.</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">eraseDbDRAM</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00U</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Function to invalidate records.</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">invalidateRecordAtAddressDRAM</span><span class="p">(</span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="o">*</span><span class="n">address</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">address</span><span class="o">-&gt;</span><span class="n">metadata</span><span class="p">.</span><span class="n">recordValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EMB_DB_RECORD_INVALID</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Function to write records into the DRAM array.</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">writeRecordAtAddressDRAM</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="o">*</span><span class="n">record</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">storeAddress</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="o">*</span><span class="n">pRecord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">databaseDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w">         </span><span class="n">status</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">ENOSPC</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0U</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EMB_DB_MAX_RECORDS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">storeAddress</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pRecord</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">databaseDRAM</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">record</span><span class="p">;</span>
+<span class="w">            </span><span class="n">status</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">pRecord</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// In user function where database is to be initialized...</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">userInitializeBondingDatabase</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00U</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">storageStartAddress</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">databaseDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">databaseSize</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="n">EMB_DB_MAX_RECORDS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">EMBDB_Record_t</span><span class="p">);</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">writeRecordAtAddress</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">writeRecordAtAddressDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">invalidateRecordAtAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">invalidateRecordAtAddressDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">eraseDatabase</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">eraseDbDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">erasedValue</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00000000</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">maxRecords</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="n">EMB_DB_MAX_RECORDS</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Check the registerStatus is 0 to ensure backendDRAM structure is setup</span>
+<span class="w">    </span><span class="c1">// correctly and the read/write location is suitable for the EMB Database.</span>
+<span class="w">    </span><span class="c1">// This function may return -ENXIO if the storage location is unknown to</span>
+<span class="w">    </span><span class="c1">// the SoC, but the backend may still work.</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">validationStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EMBDB_ValidateBackend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backendDRAM</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// If this status is 0, one of the function pointers are NULL.</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">registerStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EMBDB_RegisterBackend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backendDRAM</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dd/dbe/group__emb__database"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">emb_database</span></span></dt>
+<dd><p>Libary for persistantly storing BLE keys in NVM. </p>
+<p>This module contains all the code required to load and store BLE keys as well as some information about the peer device exchanged during pairing. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.EMB_DB_RECORD_SIZE">
+<span class="target" id="dd/dbe/group__emb__database_1ga707fd691dd8b4daf52933168a3f94160"></span><span class="sig-name descname"><span class="n"><span class="pre">EMB_DB_RECORD_SIZE</span></span></span> <span class="pre">(sizeof(</span><a class="reference internal" href="#d5/d05/struct_e_m_b_d_b___record__t"><span class="std std-ref"><span class="pre">EMBDB_Record_t</span></span></a><span class="pre">))</span><a class="headerlink" href="#c.EMB_DB_RECORD_SIZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv428EMBDB_WriteRecordAtAddress_t">
+<span id="_CPPv328EMBDB_WriteRecordAtAddress_t"></span><span id="_CPPv228EMBDB_WriteRecordAtAddress_t"></span><span id="EMBDB_WriteRecordAtAddress_t"></span><span class="target" id="dd/dbe/group__emb__database_1ga0c2ebc0e6e0616176acb42855987ee6a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_WriteRecordAtAddress_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv414EMBDB_Record_t" title="EMBDB_Record_t"><span class="n"><span class="pre">EMBDB_Record_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">storeAddress</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv428EMBDB_WriteRecordAtAddress_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to write a record to a memory address. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv433EMBDB_InvalidateRecordAtAddress_t">
+<span id="_CPPv333EMBDB_InvalidateRecordAtAddress_t"></span><span id="_CPPv233EMBDB_InvalidateRecordAtAddress_t"></span><span id="EMBDB_InvalidateRecordAtAddress_t"></span><span class="target" id="dd/dbe/group__emb__database_1ga8fb02d92ef6e1b49465a60f1d50d8cb8"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_InvalidateRecordAtAddress_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv414EMBDB_Record_t" title="EMBDB_Record_t"><span class="n"><span class="pre">EMBDB_Record_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv433EMBDB_InvalidateRecordAtAddress_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to invalidate a record given a memory address. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv415EMBDB_EraseDB_t">
+<span id="_CPPv315EMBDB_EraseDB_t"></span><span id="_CPPv215EMBDB_EraseDB_t"></span><span id="EMBDB_EraseDB_t"></span><span class="target" id="dd/dbe/group__emb__database_1ga6df359fd41e421c537600ecfe2db8d81"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_EraseDB_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv415EMBDB_EraseDB_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to erase database memory. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv423EMBDB_GetRecordResult_t">
+<span id="_CPPv323EMBDB_GetRecordResult_t"></span><span id="_CPPv223EMBDB_GetRecordResult_t"></span><span id="EMBDB_GetRecordResult_t"></span><span class="target" id="dd/dbe/group__emb__database_1ga815ebee7c2dac4eb4833f92551813377"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_GetRecordResult_t</span></span></span><a class="headerlink" href="#_CPPv423EMBDB_GetRecordResult_t" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv423EMBDB_GetRecordResult_e">
+<span id="_CPPv323EMBDB_GetRecordResult_e"></span><span id="_CPPv223EMBDB_GetRecordResult_e"></span><span class="target" id="dd/dbe/group__emb__database_1ga2c4f7947f2d03d6ff0ac3553fd6d1e90"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_GetRecordResult_e</span></span></span><a class="headerlink" href="#_CPPv423EMBDB_GetRecordResult_e" title="Link to this definition"></a><br /></dt>
+<dd><p>Record retrieval status codes. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23EMBDB_GetRecordResult_e25EMB_DB_GET_RECORD_SUCCESSE">
+<span id="_CPPv3N23EMBDB_GetRecordResult_e25EMB_DB_GET_RECORD_SUCCESSE"></span><span id="_CPPv2N23EMBDB_GetRecordResult_e25EMB_DB_GET_RECORD_SUCCESSE"></span><span class="target" id="dd/dbe/group__emb__database_1gga2c4f7947f2d03d6ff0ac3553fd6d1e90a7a9d9154570418282767317512ae43bb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMB_DB_GET_RECORD_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0U</span></span><a class="headerlink" href="#_CPPv4N23EMBDB_GetRecordResult_e25EMB_DB_GET_RECORD_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>Record retrieved successfully. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23EMBDB_GetRecordResult_e27EMB_DB_GET_RECORD_NOT_FOUNDE">
+<span id="_CPPv3N23EMBDB_GetRecordResult_e27EMB_DB_GET_RECORD_NOT_FOUNDE"></span><span id="_CPPv2N23EMBDB_GetRecordResult_e27EMB_DB_GET_RECORD_NOT_FOUNDE"></span><span class="target" id="dd/dbe/group__emb__database_1gga2c4f7947f2d03d6ff0ac3553fd6d1e90a26e7b272e3a2dcbba510c218fdd69dd4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMB_DB_GET_RECORD_NOT_FOUND</span></span></span><a class="headerlink" href="#_CPPv4N23EMBDB_GetRecordResult_e27EMB_DB_GET_RECORD_NOT_FOUNDE" title="Link to this definition"></a><br /></dt>
+<dd><p>No valid record was found. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23EMBDB_GetRecordResult_e31EMB_DB_GET_RECORD_CHECKSUM_FAILE">
+<span id="_CPPv3N23EMBDB_GetRecordResult_e31EMB_DB_GET_RECORD_CHECKSUM_FAILE"></span><span id="_CPPv2N23EMBDB_GetRecordResult_e31EMB_DB_GET_RECORD_CHECKSUM_FAILE"></span><span class="target" id="dd/dbe/group__emb__database_1gga2c4f7947f2d03d6ff0ac3553fd6d1e90af8b015a6a537d151bc1f45e7ba00e21f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMB_DB_GET_RECORD_CHECKSUM_FAIL</span></span></span><a class="headerlink" href="#_CPPv4N23EMBDB_GetRecordResult_e31EMB_DB_GET_RECORD_CHECKSUM_FAILE" title="Link to this definition"></a><br /></dt>
+<dd><p>Record was found, but failed the CRC32 checksum . </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23EMBDB_GetRecordResult_e32EMB_DB_GET_RECORD_RECORD_CORRUPTE">
+<span id="_CPPv3N23EMBDB_GetRecordResult_e32EMB_DB_GET_RECORD_RECORD_CORRUPTE"></span><span id="_CPPv2N23EMBDB_GetRecordResult_e32EMB_DB_GET_RECORD_RECORD_CORRUPTE"></span><span class="target" id="dd/dbe/group__emb__database_1gga2c4f7947f2d03d6ff0ac3553fd6d1e90a2eb81cc697b443ae790d4cf67f036b83"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMB_DB_GET_RECORD_RECORD_CORRUPT</span></span></span><a class="headerlink" href="#_CPPv4N23EMBDB_GetRecordResult_e32EMB_DB_GET_RECORD_RECORD_CORRUPTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Record was found, but corrupted in NVM. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23EMBDB_GetRecordResult_e28EMB_DB_NO_REGISTERED_BACKENDE">
+<span id="_CPPv3N23EMBDB_GetRecordResult_e28EMB_DB_NO_REGISTERED_BACKENDE"></span><span id="_CPPv2N23EMBDB_GetRecordResult_e28EMB_DB_NO_REGISTERED_BACKENDE"></span><span class="target" id="dd/dbe/group__emb__database_1gga2c4f7947f2d03d6ff0ac3553fd6d1e90a29187d95bce4102a3b1aecfe77cbdbb9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMB_DB_NO_REGISTERED_BACKEND</span></span></span><a class="headerlink" href="#_CPPv4N23EMBDB_GetRecordResult_e28EMB_DB_NO_REGISTERED_BACKENDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Operation could not be performed because no storage backend was registered. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421EMBDB_ValidateBackendP22EMBDB_StorageBackend_t">
+<span id="_CPPv321EMBDB_ValidateBackendP22EMBDB_StorageBackend_t"></span><span id="_CPPv221EMBDB_ValidateBackendP22EMBDB_StorageBackend_t"></span><span id="EMBDB_ValidateBackend__EMBDB_StorageBackend_tP"></span><span class="target" id="dd/dbe/group__emb__database_1gab16a43c92b4d6d85447184323f17b380"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_ValidateBackend</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv422EMBDB_StorageBackend_t" title="EMBDB_StorageBackend_t"><span class="n"><span class="pre">EMBDB_StorageBackend_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pStorageBackend</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421EMBDB_ValidateBackendP22EMBDB_StorageBackend_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Validate an embDb_storageBackend_t to be registered in the database. Returns 0 if the backend is useable for the EMB database. Note: if a storage device other than DRAM, NVM Info, or NVM Main is to be validated, this function will return -ENXIO status. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pStorageBackend</strong> – read/write backend to use for storage.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error code errno.h. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421EMBDB_RegisterBackendP22EMBDB_StorageBackend_t">
+<span id="_CPPv321EMBDB_RegisterBackendP22EMBDB_StorageBackend_t"></span><span id="_CPPv221EMBDB_RegisterBackendP22EMBDB_StorageBackend_t"></span><span id="EMBDB_RegisterBackend__EMBDB_StorageBackend_tP"></span><span class="target" id="dd/dbe/group__emb__database_1ga0df25d0b0a75616ada4f0a4ae8c06d2e"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_RegisterBackend</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv422EMBDB_StorageBackend_t" title="EMBDB_StorageBackend_t"><span class="n"><span class="pre">EMBDB_StorageBackend_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pStorageBackend</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421EMBDB_RegisterBackendP22EMBDB_StorageBackend_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Register a storage backend with EMB database. This is used to change the read/write location of the database. This can be changed from the default location of NVM Info page 1 to DRAM, or anywhere in NVM Main. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pStorageBackend</strong> – read/write backend to use for storage.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error code errno.h. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426EMBDB_LoadNVMInfoP1BackendP22EMBDB_StorageBackend_t">
+<span id="_CPPv326EMBDB_LoadNVMInfoP1BackendP22EMBDB_StorageBackend_t"></span><span id="_CPPv226EMBDB_LoadNVMInfoP1BackendP22EMBDB_StorageBackend_t"></span><span id="EMBDB_LoadNVMInfoP1Backend__EMBDB_StorageBackend_tP"></span><span class="target" id="dd/dbe/group__emb__database_1ga6ad6e7e268baf78e69695897f04c2970"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_LoadNVMInfoP1Backend</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv422EMBDB_StorageBackend_t" title="EMBDB_StorageBackend_t"><span class="n"><span class="pre">EMBDB_StorageBackend_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pStorageBackend</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426EMBDB_LoadNVMInfoP1BackendP22EMBDB_StorageBackend_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize pStorageBackend with functionality to use NVM Info P1 as a storage location for database records. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pStorageBackend</strong> – read/write backend to use for storage. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417EMBDB_StoreRecordP14EMBDB_Record_t">
+<span id="_CPPv317EMBDB_StoreRecordP14EMBDB_Record_t"></span><span id="_CPPv217EMBDB_StoreRecordP14EMBDB_Record_t"></span><span id="EMBDB_StoreRecord__EMBDB_Record_tP"></span><span class="target" id="dd/dbe/group__emb__database_1ga1c496c1538eb2d963cd1fc60d6f47394"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_StoreRecord</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414EMBDB_Record_t" title="EMBDB_Record_t"><span class="n"><span class="pre">EMBDB_Record_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">record</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417EMBDB_StoreRecordP14EMBDB_Record_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Store given record into the database. Invalidates all existing records with matching peer address. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>record</strong> – pointer to the record to store</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error code errno.h. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv441EMBDB_InvalidateAllRecordsWithPeerAddress8bdAddr_t">
+<span id="_CPPv341EMBDB_InvalidateAllRecordsWithPeerAddress8bdAddr_t"></span><span id="_CPPv241EMBDB_InvalidateAllRecordsWithPeerAddress8bdAddr_t"></span><span id="EMBDB_InvalidateAllRecordsWithPeerAddress__bdAddr_t"></span><span class="target" id="dd/dbe/group__emb__database_1gab0dce6b162bb812503fe9d68eca9a5bc"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_InvalidateAllRecordsWithPeerAddress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">bdAddr_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">peerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv441EMBDB_InvalidateAllRecordsWithPeerAddress8bdAddr_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Invalidate all records found with the given peer address. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is only supported on devices without ECC flash.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>peerAddress</strong> – BD_ADDR to match.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of records invalidated. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424EMBDB_GetNumberOfRecordsv">
+<span id="_CPPv324EMBDB_GetNumberOfRecordsv"></span><span id="_CPPv224EMBDB_GetNumberOfRecordsv"></span><span id="EMBDB_GetNumberOfRecords"></span><span class="target" id="dd/dbe/group__emb__database_1ga8e5c1913b1cd7da0624f967432381508"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_GetNumberOfRecords</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424EMBDB_GetNumberOfRecordsv" title="Link to this definition"></a><br /></dt>
+<dd><p>Read database and return how many records are found, includes both valid and invalid records. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of records found </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv429EMBDB_GetNumberOfValidRecordsv">
+<span id="_CPPv329EMBDB_GetNumberOfValidRecordsv"></span><span id="_CPPv229EMBDB_GetNumberOfValidRecordsv"></span><span id="EMBDB_GetNumberOfValidRecords"></span><span class="target" id="dd/dbe/group__emb__database_1ga60a147f984d9c969b12299f8e4bdd049"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_GetNumberOfValidRecords</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429EMBDB_GetNumberOfValidRecordsv" title="Link to this definition"></a><br /></dt>
+<dd><p>Read database and return how many records marked as valid are found. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of records found </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425EMBDB_GetLastRecordStoredP14EMBDB_Record_t">
+<span id="_CPPv325EMBDB_GetLastRecordStoredP14EMBDB_Record_t"></span><span id="_CPPv225EMBDB_GetLastRecordStoredP14EMBDB_Record_t"></span><span id="EMBDB_GetLastRecordStored__EMBDB_Record_tP"></span><span class="target" id="dd/dbe/group__emb__database_1gadc2504d73c9c21c46f0e953c8873b77d"></span><a class="reference internal" href="#_CPPv423EMBDB_GetRecordResult_t" title="EMBDB_GetRecordResult_t"><span class="n"><span class="pre">EMBDB_GetRecordResult_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_GetLastRecordStored</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414EMBDB_Record_t" title="EMBDB_Record_t"><span class="n"><span class="pre">EMBDB_Record_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">returnRecord</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425EMBDB_GetLastRecordStoredP14EMBDB_Record_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Searches database for the last record added, returns via passed in record pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>returnRecord</strong> – Pointer to a record structure instance to copy the found record into </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Enum signifying the result of the search </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424EMBDB_GetRecordByAddress8bdAddr_tP14EMBDB_Record_t">
+<span id="_CPPv324EMBDB_GetRecordByAddress8bdAddr_tP14EMBDB_Record_t"></span><span id="_CPPv224EMBDB_GetRecordByAddress8bdAddr_tP14EMBDB_Record_t"></span><span id="EMBDB_GetRecordByAddress__bdAddr_t.EMBDB_Record_tP"></span><span class="target" id="dd/dbe/group__emb__database_1ga051d37cd3a6dd2fe2a31229fafc1af84"></span><a class="reference internal" href="#_CPPv423EMBDB_GetRecordResult_t" title="EMBDB_GetRecordResult_t"><span class="n"><span class="pre">EMBDB_GetRecordResult_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_GetRecordByAddress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">bdAddr_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">peerAddress</span></span>, <a class="reference internal" href="#_CPPv414EMBDB_Record_t" title="EMBDB_Record_t"><span class="n"><span class="pre">EMBDB_Record_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">returnRecord</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424EMBDB_GetRecordByAddress8bdAddr_tP14EMBDB_Record_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Searches database for a record with a given peerAddress. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peerAddress</strong> – Peer Address to search with. </p></li>
+<li><p><strong>returnRecord</strong> – Pointer to a record structure instance to copy the found record into. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Enum signifying the result of the search. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422EMBDB_InitializeRecordP14EMBDB_Record_t">
+<span id="_CPPv322EMBDB_InitializeRecordP14EMBDB_Record_t"></span><span id="_CPPv222EMBDB_InitializeRecordP14EMBDB_Record_t"></span><span id="EMBDB_InitializeRecord__EMBDB_Record_tP"></span><span class="target" id="dd/dbe/group__emb__database_1ga42fb174f5def4093a21d40d33ccc5eaa"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_InitializeRecord</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414EMBDB_Record_t" title="EMBDB_Record_t"><span class="n"><span class="pre">EMBDB_Record_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">record</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422EMBDB_InitializeRecordP14EMBDB_Record_t" title="Link to this definition"></a><br /></dt>
+<dd><p>memsets the record passed in to 0. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>record</strong> – Record to initialize. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420EMBDB_IsDatabaseFullv">
+<span id="_CPPv320EMBDB_IsDatabaseFullv"></span><span id="_CPPv220EMBDB_IsDatabaseFullv"></span><span id="EMBDB_IsDatabaseFull__void"></span><span class="target" id="dd/dbe/group__emb__database_1ga31a1a12df75c7215068e5525ec59b564"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_IsDatabaseFull</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420EMBDB_IsDatabaseFullv" title="Link to this definition"></a><br /></dt>
+<dd><p>Determines if the database is full. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if database is full or no backend has been registered, False otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425EMBDB_EraseDatabaseMemoryv">
+<span id="_CPPv325EMBDB_EraseDatabaseMemoryv"></span><span id="_CPPv225EMBDB_EraseDatabaseMemoryv"></span><span id="EMBDB_EraseDatabaseMemory__void"></span><span class="target" id="dd/dbe/group__emb__database_1ga016815949a8433f7f0aad3a3c35afdce"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_EraseDatabaseMemory</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425EMBDB_EraseDatabaseMemoryv" title="Link to this definition"></a><br /></dt>
+<dd><p>Executes a page erase operation on the memory location containing the database. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error code errno.h. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426EMBDB_InvalidateAllRecordsv">
+<span id="_CPPv326EMBDB_InvalidateAllRecordsv"></span><span id="_CPPv226EMBDB_InvalidateAllRecordsv"></span><span id="EMBDB_InvalidateAllRecords__void"></span><span class="target" id="dd/dbe/group__emb__database_1ga858afcb77e265a4f9b0170835134b724"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_InvalidateAllRecords</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426EMBDB_InvalidateAllRecordsv" title="Link to this definition"></a><br /></dt>
+<dd><p>Invalidates all records in the database. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is only supported on devices without ECC flash.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of records invalidated </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv422EMBDB_RecordMetadata_t">
+<span id="_CPPv322EMBDB_RecordMetadata_t"></span><span id="_CPPv222EMBDB_RecordMetadata_t"></span><span id="EMBDB_RecordMetadata_t"></span><span class="target" id="d5/d19/struct_e_m_b_d_b___record_metadata__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_RecordMetadata_t</span></span></span><a class="headerlink" href="#_CPPv422EMBDB_RecordMetadata_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;emb_database_api.h&gt;</em></div>
+<p>Metadata structure for discovery and compatability in NVM. Do not change. </p>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv414EMBDB_Record_t">
+<span id="_CPPv314EMBDB_Record_t"></span><span id="_CPPv214EMBDB_Record_t"></span><span id="EMBDB_Record_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_Record_t</span></span></span><a class="headerlink" href="#_CPPv414EMBDB_Record_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;emb_database_api.h&gt;</em></div>
+<p>Record of peer device pairing information to be stored in NVM. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t8metadataE">
+<span id="_CPPv3N14EMBDB_Record_t8metadataE"></span><span id="_CPPv2N14EMBDB_Record_t8metadataE"></span><span id="EMBDB_Record_t::metadata__EMBDB_RecordMetadata_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1af7885baf2ead65f8497b0425545c173b"></span><a class="reference internal" href="#_CPPv422EMBDB_RecordMetadata_t" title="EMBDB_RecordMetadata_t"><span class="n"><span class="pre">EMBDB_RecordMetadata_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">metadata</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t8metadataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal metadata for record. Not to be manipulated by the user. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t11peerAddressE">
+<span id="_CPPv3N14EMBDB_Record_t11peerAddressE"></span><span id="_CPPv2N14EMBDB_Record_t11peerAddressE"></span><span id="EMBDB_Record_t::peerAddress__bdAddr_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a827415a93bd148421720d53fb64f6111"></span><span class="n"><span class="pre">bdAddr_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerAddress</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t11peerAddressE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peer’s Bluetooth Address (BD_ADDR) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t15peerAddressTypeE">
+<span id="_CPPv3N14EMBDB_Record_t15peerAddressTypeE"></span><span id="_CPPv2N14EMBDB_Record_t15peerAddressTypeE"></span><span id="EMBDB_Record_t::peerAddressType__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1aa37d15b699f402110358730b68e725a5"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerAddressType</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t15peerAddressTypeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peer’s Bluetooth Address Type </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t8localLtkE">
+<span id="_CPPv3N14EMBDB_Record_t8localLtkE"></span><span id="_CPPv2N14EMBDB_Record_t8localLtkE"></span><span id="EMBDB_Record_t::localLtk__dmSecLtk_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a7a92a3031c4095fbd6518a3a560c85cc"></span><span class="n"><span class="pre">dmSecLtk_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">localLtk</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t8localLtkE" title="Link to this definition"></a><br /></dt>
+<dd><p>Local Device LTK (Long term key) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t16localLtkSecLevelE">
+<span id="_CPPv3N14EMBDB_Record_t16localLtkSecLevelE"></span><span id="_CPPv2N14EMBDB_Record_t16localLtkSecLevelE"></span><span id="EMBDB_Record_t::localLtkSecLevel__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a4e9ad79346d882781eacbc8a6e5a70fb"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">localLtkSecLevel</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t16localLtkSecLevelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Local Device LTK security level </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t7peerLtkE">
+<span id="_CPPv3N14EMBDB_Record_t7peerLtkE"></span><span id="_CPPv2N14EMBDB_Record_t7peerLtkE"></span><span id="EMBDB_Record_t::peerLtk__dmSecLtk_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a08b085fb0376f681b3b872dfeb7c2c66"></span><span class="n"><span class="pre">dmSecLtk_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerLtk</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t7peerLtkE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peer Device LTK (Long term key) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t15peerLtkSecLevelE">
+<span id="_CPPv3N14EMBDB_Record_t15peerLtkSecLevelE"></span><span id="_CPPv2N14EMBDB_Record_t15peerLtkSecLevelE"></span><span id="EMBDB_Record_t::peerLtkSecLevel__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a93e831f5c4b5b91e61311c7cf1ff20cc"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerLtkSecLevel</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t15peerLtkSecLevelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peer Device LTK security level </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t7peerIrkE">
+<span id="_CPPv3N14EMBDB_Record_t7peerIrkE"></span><span id="_CPPv2N14EMBDB_Record_t7peerIrkE"></span><span id="EMBDB_Record_t::peerIrk__dmSecIrk_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a59a6fd26c25d9dbf108ca52bd61027ec"></span><span class="n"><span class="pre">dmSecIrk_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerIrk</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t7peerIrkE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peer’s IRK (Identity Resolving Key) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t8peerCsrkE">
+<span id="_CPPv3N14EMBDB_Record_t8peerCsrkE"></span><span id="_CPPv2N14EMBDB_Record_t8peerCsrkE"></span><span id="EMBDB_Record_t::peerCsrk__dmSecCsrk_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a05305fb560a4bdc637dae8bf848f28b6"></span><span class="n"><span class="pre">dmSecCsrk_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerCsrk</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t8peerCsrkE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peer’s CSRK (Connection Signature Resolving Key) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t16peerCsrkSecLevelE">
+<span id="_CPPv3N14EMBDB_Record_t16peerCsrkSecLevelE"></span><span id="_CPPv2N14EMBDB_Record_t16peerCsrkSecLevelE"></span><span id="EMBDB_Record_t::peerCsrkSecLevel__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a78f5794c25cdc4755ba02d38be341ff6"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerCsrkSecLevel</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t16peerCsrkSecLevelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peer’s CSRK security level </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t12keyValidMaskE">
+<span id="_CPPv3N14EMBDB_Record_t12keyValidMaskE"></span><span id="_CPPv2N14EMBDB_Record_t12keyValidMaskE"></span><span id="EMBDB_Record_t::keyValidMask__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1ae7c9f5fd40295e0e1ebcd0f22c42e820"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keyValidMask</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t12keyValidMaskE" title="Link to this definition"></a><br /></dt>
+<dd><p>Union of bit flags signally key validity </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t13localLtkValidE">
+<span id="_CPPv3N14EMBDB_Record_t13localLtkValidE"></span><span id="_CPPv2N14EMBDB_Record_t13localLtkValidE"></span><span id="EMBDB_Record_t::localLtkValid__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a571ff9d79f61a340d22788b015ffe2e0"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">localLtkValid</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t13localLtkValidE" title="Link to this definition"></a><br /></dt>
+<dd><p>1 if the local LTK (Long-term Key) is valid for this record </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t12peerLtkValidE">
+<span id="_CPPv3N14EMBDB_Record_t12peerLtkValidE"></span><span id="_CPPv2N14EMBDB_Record_t12peerLtkValidE"></span><span id="EMBDB_Record_t::peerLtkValid__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a120cceb22347c0e302d1adf1d37d480c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerLtkValid</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t12peerLtkValidE" title="Link to this definition"></a><br /></dt>
+<dd><p>1 if the peer LTK (Long-term Key) is valid for this record </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t12peerIrkValidE">
+<span id="_CPPv3N14EMBDB_Record_t12peerIrkValidE"></span><span id="_CPPv2N14EMBDB_Record_t12peerIrkValidE"></span><span id="EMBDB_Record_t::peerIrkValid__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1ab4834db0d15a6a9deff1c851d078e5ef"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerIrkValid</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t12peerIrkValidE" title="Link to this definition"></a><br /></dt>
+<dd><p>1 if the peer IRK (Identity Resolving Key) is valid for this record </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t13peerCsrkValidE">
+<span id="_CPPv3N14EMBDB_Record_t13peerCsrkValidE"></span><span id="_CPPv2N14EMBDB_Record_t13peerCsrkValidE"></span><span id="EMBDB_Record_t::peerCsrkValid__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1afd1d3e5b7592e9a9f8b8f7dcd5a53b19"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peerCsrkValid</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t13peerCsrkValidE" title="Link to this definition"></a><br /></dt>
+<dd><p>1 if the peer CSRK (Connection Signature Resolving Key) is valid for this record </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t3rfuE">
+<span id="_CPPv3N14EMBDB_Record_t3rfuE"></span><span id="_CPPv2N14EMBDB_Record_t3rfuE"></span><span id="EMBDB_Record_t::rfu__uint8_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1ace09967e33235a5cfd698e9102ef3f52"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rfu</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t3rfuE" title="Link to this definition"></a><br /></dt>
+<dd><p>Field reserved for future use. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14EMBDB_Record_t9recordCrcE">
+<span id="_CPPv3N14EMBDB_Record_t9recordCrcE"></span><span id="_CPPv2N14EMBDB_Record_t9recordCrcE"></span><span id="EMBDB_Record_t::recordCrc__uint32_t"></span><span class="target" id="d5/d05/struct_e_m_b_d_b___record__t_1a81d1eabb776db360462a4a49a6eedbd7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">recordCrc</span></span></span><a class="headerlink" href="#_CPPv4N14EMBDB_Record_t9recordCrcE" title="Link to this definition"></a><br /></dt>
+<dd><p>CRC32 for full record + metadata </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv422EMBDB_StorageBackend_t">
+<span id="_CPPv322EMBDB_StorageBackend_t"></span><span id="_CPPv222EMBDB_StorageBackend_t"></span><span id="EMBDB_StorageBackend_t"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBDB_StorageBackend_t</span></span></span><a class="headerlink" href="#_CPPv422EMBDB_StorageBackend_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;emb_database_api.h&gt;</em></div>
+<p>Storage backend to be used by the database library. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N22EMBDB_StorageBackend_t13eraseDatabaseE">
+<span id="_CPPv3N22EMBDB_StorageBackend_t13eraseDatabaseE"></span><span id="_CPPv2N22EMBDB_StorageBackend_t13eraseDatabaseE"></span><span id="EMBDB_StorageBackend_t::eraseDatabase__EMBDB_EraseDB_t"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t_1a447bcc279f2e83c3b2367d87634f4c34"></span><a class="reference internal" href="#_CPPv415EMBDB_EraseDB_t" title="EMBDB_EraseDB_t"><span class="n"><span class="pre">EMBDB_EraseDB_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">eraseDatabase</span></span></span><a class="headerlink" href="#_CPPv4N22EMBDB_StorageBackend_t13eraseDatabaseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to erase database memory. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N22EMBDB_StorageBackend_t25invalidateRecordAtAddressE">
+<span id="_CPPv3N22EMBDB_StorageBackend_t25invalidateRecordAtAddressE"></span><span id="_CPPv2N22EMBDB_StorageBackend_t25invalidateRecordAtAddressE"></span><span id="EMBDB_StorageBackend_t::invalidateRecordAtAddress__EMBDB_InvalidateRecordAtAddress_t"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t_1a0e596faefc70a706aee42e57743b5c6d"></span><a class="reference internal" href="#_CPPv433EMBDB_InvalidateRecordAtAddress_t" title="EMBDB_InvalidateRecordAtAddress_t"><span class="n"><span class="pre">EMBDB_InvalidateRecordAtAddress_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">invalidateRecordAtAddress</span></span></span><a class="headerlink" href="#_CPPv4N22EMBDB_StorageBackend_t25invalidateRecordAtAddressE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to invalidate a record given a memory address. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N22EMBDB_StorageBackend_t20writeRecordAtAddressE">
+<span id="_CPPv3N22EMBDB_StorageBackend_t20writeRecordAtAddressE"></span><span id="_CPPv2N22EMBDB_StorageBackend_t20writeRecordAtAddressE"></span><span id="EMBDB_StorageBackend_t::writeRecordAtAddress__EMBDB_WriteRecordAtAddress_t"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t_1a3b48d6b02f44cc9e8c3c35fc530ea214"></span><a class="reference internal" href="#_CPPv428EMBDB_WriteRecordAtAddress_t" title="EMBDB_WriteRecordAtAddress_t"><span class="n"><span class="pre">EMBDB_WriteRecordAtAddress_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">writeRecordAtAddress</span></span></span><a class="headerlink" href="#_CPPv4N22EMBDB_StorageBackend_t20writeRecordAtAddressE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to write a record to a memory address. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N22EMBDB_StorageBackend_t11erasedValueE">
+<span id="_CPPv3N22EMBDB_StorageBackend_t11erasedValueE"></span><span id="_CPPv2N22EMBDB_StorageBackend_t11erasedValueE"></span><span id="EMBDB_StorageBackend_t::erasedValue__uint32_t"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t_1a4e566e9a2e12c1eaf2ac7e909fb861c3"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">erasedValue</span></span></span><a class="headerlink" href="#_CPPv4N22EMBDB_StorageBackend_t11erasedValueE" title="Link to this definition"></a><br /></dt>
+<dd><p>Erased value of storage medium. 0xFF for NVM, or 0x00 for DRAM. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N22EMBDB_StorageBackend_t19storageStartAddressE">
+<span id="_CPPv3N22EMBDB_StorageBackend_t19storageStartAddressE"></span><span id="_CPPv2N22EMBDB_StorageBackend_t19storageStartAddressE"></span><span id="EMBDB_StorageBackend_t::storageStartAddress__voidP"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t_1aaa92f1e08b3b939cc54451d9342ecdfc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">storageStartAddress</span></span></span><a class="headerlink" href="#_CPPv4N22EMBDB_StorageBackend_t19storageStartAddressE" title="Link to this definition"></a><br /></dt>
+<dd><p>Starting address of desired storage location. Should be page aligned for NVM locations. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N22EMBDB_StorageBackend_t12databaseSizeE">
+<span id="_CPPv3N22EMBDB_StorageBackend_t12databaseSizeE"></span><span id="_CPPv2N22EMBDB_StorageBackend_t12databaseSizeE"></span><span id="EMBDB_StorageBackend_t::databaseSize__uint32_t"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t_1a0917b7f0ff61ede789ec8c6769953c2e"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">databaseSize</span></span></span><a class="headerlink" href="#_CPPv4N22EMBDB_StorageBackend_t12databaseSizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Desired size of the database in bytes. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N22EMBDB_StorageBackend_t10maxRecordsE">
+<span id="_CPPv3N22EMBDB_StorageBackend_t10maxRecordsE"></span><span id="_CPPv2N22EMBDB_StorageBackend_t10maxRecordsE"></span><span id="EMBDB_StorageBackend_t::maxRecords__uint8_t"></span><span class="target" id="d6/d16/struct_e_m_b_d_b___storage_backend__t_1a739aa21173f5aa38dfcaff47a3c0fd2a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxRecords</span></span></span><a class="headerlink" href="#_CPPv4N22EMBDB_StorageBackend_t10maxRecordsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum number of records that can be stored in the database. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0-0">
+<h3>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../fwu_core/index.html" class="btn btn-neutral float-left" title="Firmware Update Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../emb_vs_fwu/index.html" class="btn btn-neutral float-right" title="EM Bleu - Vendor specific GATT based services" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

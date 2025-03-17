@@ -1,0 +1,168 @@
+########################
+MetaWare IDE Integration
+########################
+
+Setup MetaWare IDE
+^^^^^^^^^^^^^^^^^^
+
+First, make sure you did the initialization of the SDK with the init.bat script.
+
+.cproject and .project files are generated in the root of the SDK.
+
+Then edit ``<sdk>\tools\blengine\config.cfg`` and modify the COM port to match the COM port of your DVK.
+
+Open MIDE MetaWare Development Toolkit.
+
+Select a folder for your workspace.
+
+.. warning::
+
+  Your workspace folder should not be the SDK root. In this case, the SDK and subprojects will not be imported correctly.
+
+.. warning::
+
+  If you move the SDK folder, run again the script init.bat to update the paths.
+
+You should see this:
+
+.. image:: ../imgs/MIDE_welcome.png
+  :scale: 50 %
+  :alt: MIDE Welcome
+  :align: center
+
+You can close the Welcome page.
+
+Go to File->import
+
+In General, Select "Existing Projects into Workspace" and click on the button "next".
+
+.. image:: ../imgs/MIDE_import.png
+  :scale: 70 %
+  :alt: MIDE Import
+  :align: center
+
+Click on "Browse" and select the root directory of the SDK.
+
+.. image:: ../imgs/MIDE_import2.png
+  :scale: 70 %
+  :alt: MIDE Import
+  :align: center
+
+Click on "Finish".
+
+
+We will now import the launcher configuration.
+
+Again File->import
+
+.. image:: ../imgs/MIDE_launcher_import.png
+  :scale: 70 %
+  :alt: MIDE Launcher Import
+  :align: center
+
+Click "Next"
+
+Browse to ``<sdk>\tools\ide`` and click "OK"
+
+Check the ide folder (on the left) and 6 launchers should be displayed and checked.
+
+.. image:: ../imgs/MIDE_launcher_import2.png
+  :scale: 70 %
+  :alt: MIDE Launcher Import
+  :align: center
+
+Click "Finish"
+
+Build
+^^^^^
+
+At this point you should see this:
+
+.. image:: ../imgs/MIDE_project.png
+  :scale: 50 %
+  :alt: MIDE Project
+  :align: center
+
+There is a virtual folder called "[Targets]" in the Project Explorer.
+
+Select (click) printf_example_diXX ([exe] printf_example_diXX).
+
+.. note::
+
+  Each time you wand to build, program or debug, you should first select the target in Targets (for example [exe] printf_example_diXX).
+
+.. image:: ../imgs/MIDE_build.png
+  :scale: 50 %
+  :alt: MIDE Project
+  :align: center
+
+Then, click on the little arrow of the Run button to open the list of launchers.
+
+Click on "Build"
+
+.. image:: ../imgs/MIDE_build2.png
+  :scale: 50 %
+  :alt: MIDE Project
+  :align: center
+
+The printf_example_diXX should build and you should see this in the Console:
+
+.. code-block:: bash
+
+  [ 50%] Building C object projects/printf_example/CMakeFiles/printf_example_diXX.dir/nvm_main.c.obj
+  [100%] Linking C executable printf_example_diXX.elf
+  Generating printf_example_diXX.ihex
+  Generating printf_example_diXX.asm
+  Memory usage for printf_example_diXX.elf
+  IROM: size=65536, used=0, free=65536
+  NVM: size=524288, used=12322, free=511966
+  NVMINFO: size=32768, used=0, free=32768
+  PRAM: size=45056, used=1732, free=43324
+  POOL: size=61440, used=50168, free=11272
+  NPRAM: size=16384, used=5112, free=11272
+  [100%] Built target printf_example_diXX
+
+Program the DVK
+^^^^^^^^^^^^^^^
+
+The printf_example_diXX is built. We can program it on the DVK.
+
+Make sure "[exe] printf_example_diXX" is still selected.
+
+Make sure your DVK is connected and the COM port was previously configured in ``<sdk>\tools\blengine\config.cfg``.
+
+.. image:: ../imgs/MIDE_program.png
+  :scale: 50 %
+  :alt: MIDE Program
+  :align: center
+
+The DVK should now be programmed and the selected target should be running on the DVK.
+
+
+Start the Debugger
+^^^^^^^^^^^^^^^^^^
+
+The printf_example_diXX is built, programmed and running on the DVK.
+
+.. note::
+
+  Not every examples are debuggable as is. To be able to debug, the CPU can't go into sleep mode and the JTAG need to be enabled.
+
+Make sure "[exe] printf_example_diXX" is still selected.
+
+Click on the little arrow of the bug logo and click on Debug.
+
+.. image:: ../imgs/MIDE_debug.png
+  :scale: 50 %
+  :alt: MIDE Debug
+  :align: center
+
+The MetaWare debugger is starting. Click on "OK".
+
+The printf_example_diXX is now ready to be debugged.
+
+.. image:: ../imgs/MW_debugger.png
+  :scale: 50 %
+  :alt: MetaWare Debugger
+  :align: center
+

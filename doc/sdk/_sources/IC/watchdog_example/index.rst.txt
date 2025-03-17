@@ -1,0 +1,90 @@
+================================================================================
+Watchdog Example
+================================================================================
+
+
+Overview
+--------
+
+The purpose of this example is to show how to use the watchdog driver.
+
+The watchdog timer is configured with a period of 5 seconds and started in the
+function *NVM_ConfigModules*. A timer is configured to print a counter value
+every second over UART. After 10 seconds, this example simulates a software
+issue with an infinite loop.
+
+When the watchdog timer times out, it reset the device and the application
+restarts. The application detects if the reset was due to the watchdog timer and
+changes the start-up message printed over UART accordingly.
+
+.. note::
+
+  The watchdog timer is reset in the function *QK_onIdleExt* in case the device
+  cannot go to sleep mode or if the automatic sleep mode is disabled.
+
+The UART output is on GPIO7. You can connect a USB to UART device to GPIO7 and
+use a terminal to connect on the COM port of your device. The output of this
+example should be:
+
+.. code-block:: bash
+
+  *****************************
+  * EM9305 - Watchdog example *
+  *****************************
+
+  Counter: 1
+  Counter: 2
+  Counter: 3
+  Counter: 4
+  Counter: 5
+  Counter: 6
+  Counter: 7
+  Counter: 8
+  Counter: 9
+  Counter: 10
+
+  !!! RESET BY WATCHDOG !!!
+
+  Counter: 1
+  Counter: 2
+  Counter: 3
+  Counter: 4
+  Counter: 5
+  Counter: 6
+  Counter: 7
+  Counter: 8
+  Counter: 9
+  Counter: 10
+
+  !!! RESET BY WATCHDOG !!!
+
+  Counter: 1
+  Counter: 2
+  Counter: 3
+  Counter: 4
+  Counter: 5
+  [...]
+
+
+Build
+-----
+
+The build target of this example is **watchdog_example**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target watchdog_example
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\watchdog_example\watchdog_example.ihex --progress
+
+With YY = the COM port number of your DVK.

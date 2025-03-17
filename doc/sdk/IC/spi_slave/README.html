@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The SPI slave driver allows to use the SPI Slave with some other peripherals
+using 4 wire SPI interface (SCK, CSN, MISO, MOSI) with flow control (RDY signal).</p>
+<p>The SPI slave interface can be configured in half-duplex mode or in full-duplex mode.</p>
+<p>Half-duplex mode is the default one for HCI communication.
+In this mode, the SPI flow control is available.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Full-duplex mode is not intended for HCI, as HCI requires flow control (RDY)</p>
+</div>
+<section id="spi-slave-and-sleep-mode">
+<h2>SPI Slave and Sleep mode<a class="headerlink" href="#spi-slave-and-sleep-mode" title="Link to this heading"></a></h2>
+<p>The SPI Slave shall be registered in order to be usable after wakeup.
+This shall be done at the time the application calls NVM_ConfigModules() function.
+Note that the configuration of this module is saved in the persistent memory.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules</span>
+<span class="w">    </span><span class="n">UART_RegisterModule</span><span class="p">();</span>
+<span class="w">    </span><span class="n">SPIS_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable UART.</span>
+<span class="w">    </span><span class="n">gUART_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Enable SPIS</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// SPI Slave config</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIS_MODE_FULL</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Check if it wakes up from sleep.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Re-initialize the QPC event pool.</span>
+<span class="w">        </span><span class="k">extern</span><span class="w"> </span><span class="kt">uint_fast8_t</span><span class="w"> </span><span class="n">QF_maxPool_</span><span class="p">;</span>
+<span class="w">        </span><span class="n">QF_maxPool_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint_fast8_t</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Initialize QPC</span>
+<span class="w">        </span><span class="n">QF_init</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Initialize the QPC event pool.</span>
+<span class="w">    </span><span class="n">Main_InitEventPool</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Disable sleep mode if JTAG debug is used.</span>
+<span class="w">    </span><span class="c1">// gPML_Config.sleepModeForbiden = true;</span>
+
+<span class="w">    </span><span class="c1">// Enable JTAG.</span>
+<span class="w">    </span><span class="c1">// GPIO_EnableJtag4Wires();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When in half duplex mode, the communication is blocked by the driver when the system comes from the sleep mode. So the application shall restart the communication when ready to communicate.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">NO_RETURN</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">NVM_ApplicationEntry</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Initialize the board support package.</span>
+<span class="w">    </span><span class="n">BSP_Init</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable interrupts (threshold set during IRQ module initialization).</span>
+<span class="w">    </span><span class="n">IRQ_EnableInterrupts</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Check if it is wake-up from sleep.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Post an event to the application task that we woke up from sleep.</span>
+<span class="w">        </span><span class="n">MyAppTask_PostEvent</span><span class="p">(</span><span class="n">BOOT_FROM_SLEEP_SIG</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Resume QPC</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">QF_resume</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Setup GPIOs.</span>
+<span class="w">        </span><span class="n">Main_SetupUartGpio</span><span class="p">();</span>
+<span class="w">        </span><span class="n">Main_SetupSpiGpio</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Configure wake up.</span>
+<span class="w">        </span><span class="n">Main_SetupWakeUpByGpio</span><span class="p">(</span><span class="n">GPIO_SPIS_CSN</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Create and start the application task.</span>
+<span class="w">        </span><span class="n">MyAppTask_Create</span><span class="p">();</span>
+<span class="w">        </span><span class="n">MyAppTask_Start</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Run QPC</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">QF_run</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Initialization failed!</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">HaltCPU</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In order to support the sleep mode, the chip select pin shall be configured to be able to wakeup
+the system.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">MyApp_PrepareNewSpiTransaction</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">SPIS_ReceiveDataEx</span><span class="p">(</span><span class="n">gInputBuffer</span><span class="p">,</span>
+<span class="w">                            </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">MyApp_Callback</span><span class="p">,</span>
+<span class="w">                            </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">SPIS_DATA_SIG</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Main_SetupWakeUpByGpio</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">gpio</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PML_ConfigWakeUpByGpio</span><span class="p">(</span><span class="n">gpio</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">    </span><span class="n">PML_RegisterWakeUpAction</span><span class="p">(</span><span class="n">PML_WAKEUP_ACTION_RUN_PROT_TIM</span><span class="p">,</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">SET_BOOT_ACTION_FLAGS_GPIO</span><span class="p">(</span><span class="mi">1u</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">gpio</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">    </span><span class="n">PML_EnableWakeUpFlags</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="spis-configuration">
+<h2>SPIS Configuration<a class="headerlink" href="#spis-configuration" title="Link to this heading"></a></h2>
+<p>The following configurations for the SPIS are available, check code block for C code example.</p>
+<ul class="simple">
+<li><p>MSB First      : Set to 1 to send the most significant bits first.</p></li>
+<li><p>Clock polarity : Set to 1 for clock inactive high or 0 for clock inactive low</p></li>
+<li><p>Clock Phase    : Set to 1 for data is valid on clock falling edge or 0 for data valid on clock rising edge</p></li>
+<li><p>Duplex Mode    : Set to 1 to use full-duplex mode or 0 to use half-duplex mode</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">SPIS_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable SPIS</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// SPI Slave config</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Enable MSB first</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">     </span><span class="c1">// Clock inactive low</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">     </span><span class="c1">// Data valid on clock rising edge</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIS_MODE_HALF</span><span class="p">;</span><span class="w"> </span><span class="c1">// Half-duplex mode</span>
+</pre></div>
+</div>
+</section>
+<section id="spis-flow-control-management-on-rdy-signal">
+<h2>SPIS Flow control management on RDY signal<a class="headerlink" href="#spis-flow-control-management-on-rdy-signal" title="Link to this heading"></a></h2>
+<p>In half-duplex mode, SPI flow control over the RDY signal shall be managed.</p>
+<p>As described in the chapter on “SPI slave and sleep mode”, the flow control is there
+to address the control transition from Sleep mode to Active mode.
+Generally, the flow control can be used to notify the external Host that it must wait
+until EM9305 is ready for communication. Use the following code to force the RDY signal to 0:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">SPIS_BlockCommunication</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"> </span><span class="c1">// force the RDY signal to 0</span>
+</pre></div>
+</div>
+</section>
+<section id="spi-slave-usage">
+<h2>SPI Slave Usage<a class="headerlink" href="#spi-slave-usage" title="Link to this heading"></a></h2>
+<p>The SPIS can be used with or without using ISR with callback.</p>
+<p>When a callback is provided, the driver calls it at the end of each transaction.</p>
+<p>The callback function shall be defined with the following prototype:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">SPIS_TxCallback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// When callback is called, it means that all data have been sent by SPIS</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In order to send data over the SPIS, the following code could be used:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Use random data for SPI transcation</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">gRandom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">SPIS_SendDataWithCallback</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">,</span><span class="w"> </span><span class="n">SPIS_TxCallback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Data can also be sent without using a callback. In this case, there is no acknowledgement that data has been actually sent or not:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Use random data for SPI transaction</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">gRandom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">SPIS_SendData</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

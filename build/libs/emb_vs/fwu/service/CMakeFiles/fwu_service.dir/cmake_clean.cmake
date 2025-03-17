@@ -1,0 +1,11 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/fwu_service.dir/source/fwu_svc.c.obj"
+  "CMakeFiles/fwu_service.dir/source/fwu_svc.c.obj.d"
+  "lib_fwu_service.a"
+  "lib_fwu_service.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C)
+  include(CMakeFiles/fwu_service.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

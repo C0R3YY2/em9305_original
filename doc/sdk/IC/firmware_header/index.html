@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Header Utilities &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Update Core" href="../fwu_core/index.html" />
+    <link rel="prev" title="NVM operation scheduler" href="../nvm_op_sched/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm_op_sched/index.html">NVM operation scheduler</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Firmware Header Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scanning-the-nvm-example">Scanning the NVM example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_core/index.html">Firmware Update Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_database/index.html">EMB Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_crypto/index.html">Firmware Update Cryptographic Toolbox Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_spi/index.html">Firmware Update Library for SPI Transport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Firmware Header Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-header-utilities">
+<h1>Firmware Header Utilities<a class="headerlink" href="#firmware-header-utilities" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The firmware header library provides a set of helper functions to manipulate the firmware image headers from
+the end user application.
+Most of these functions are getters to read various header fields releasing the end user from knowing the exact
+header structure.
+These functions are provided for several purposes which can be:</p>
+<ul class="simple">
+<li><p>implement a firmware update process</p></li>
+<li><p>monitor content of the NVM for data corruption</p></li>
+<li><p>identify content of the NVM</p></li>
+</ul>
+<p>All these above mentionned functionalities can be done because the firmware image header has been introduced
+with relevant information inside.</p>
+</section>
+<section id="scanning-the-nvm-example">
+<h2>Scanning the NVM example<a class="headerlink" href="#scanning-the-nvm-example" title="Link to this heading"></a></h2>
+<p>Here is an example of code that could be used to scan the NVM for any valid firmware images.
+In this snippet, once a valid image has been found, it is counted.
+Other actions could be done like searching for the customer application by reading the section code field for
+example.</p>
+<p>This example is given to illustrate how to use some of the provided functions.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;header_access.h&gt;</span>
+
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NVM_START_ADDRESS</span><span class="p">;</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">found</span><span class="p">;</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// Loop until no more valid header is found. We start from the beginning of the NVM (0x300000).</span>
+<span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getNvmHdr_FindHdr</span><span class="p">(</span><span class="n">address</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">HEADER_ADDRESS_ERROR</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// A valid header has been found at address ’found’.</span>
+
+<span class="w">    </span><span class="c1">// Check for firmware image integrity.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">getEmHdr_VerifyPayload</span><span class="p">(</span><span class="n">found</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CRC_PASSED</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// The checked image is ok!</span>
+<span class="w">        </span><span class="c1">// Count this image.</span>
+<span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Image is corrupted.</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Go after current firmware image including the header size.</span>
+<span class="w">    </span><span class="n">address</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">getEmHdr_HdrVersionSize</span><span class="p">(</span><span class="n">found</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">getEmHdr_FirmwareSize</span><span class="p">(</span><span class="n">found</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Then search for the next firmware image (next loop iteration).</span>
+<span class="p">}</span>
+
+<span class="c1">// After this loop, the ’count’ variable contains the number of valid firmware images found in NVM.</span>
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d3/d5b/group__firmware__header"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">firmware_header</span></span></dt>
+<dd><p>Toolkit function to manipulate firmware headers. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_START_ADDR">
+<span class="target" id="d3/d5b/group__firmware__header_1gad8332af3b81b2db99f0333cdbb45d20f"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_START_ADDR</span></span></span> <span class="pre">0x300000U</span><a class="headerlink" href="#c.NVM_START_ADDR" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM start address definition. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_END_ADDR">
+<span class="target" id="d3/d5b/group__firmware__header_1gafba4572c3cef14a1a3b108335354247d"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_END_ADDR</span></span></span> <a class="reference internal" href="#d3/d5b/group__firmware__header_1gad8332af3b81b2db99f0333cdbb45d20f"><span class="std std-ref"><span class="pre">NVM_START_ADDR</span></span></a> <span class="pre">+</span> <span class="pre">(</span><a class="reference internal" href="../nvm/index.html#dc/ddd/group__nvm_1gac650af8cc885ade8505a8ff5279cb7a7"><span class="std std-ref"><span class="pre">NVM_PAGE_COUNT_MAIN</span></span></a> <span class="pre">*</span> <a class="reference internal" href="../nvm/index.html#dc/ddd/group__nvm_1ga8bd4a38a275d8f46ced5533e8e60926d"><span class="std std-ref"><span class="pre">NVM_PAGE_SIZE_BYTE</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.NVM_END_ADDR" title="Link to this definition"></a><br /></dt>
+<dd><p>NVM end address definition. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.HEADER_ADDRESS_ERROR">
+<span class="target" id="d3/d5b/group__firmware__header_1gae0497717518365f49200f97a1256c713"></span><span class="sig-name descname"><span class="n"><span class="pre">HEADER_ADDRESS_ERROR</span></span></span> <span class="pre">0xFFFFFFFFU</span><a class="headerlink" href="#c.HEADER_ADDRESS_ERROR" title="Link to this definition"></a><br /></dt>
+<dd><p>Error code definition for the <a class="reference internal" href="#d3/d5b/group__firmware__header_1ga74103e435b069e5ec9ce901dbc7d1378"><span class="std std-ref">getEmHdr_FindHdr()</span></a> if it reaches the end of the NVM without having found any valid header. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.CRC_PASSED">
+<span class="target" id="d3/d5b/group__firmware__header_1gaa41b233712d95bf88fcb876e8391d50d"></span><span class="sig-name descname"><span class="n"><span class="pre">CRC_PASSED</span></span></span> <span class="pre">0U</span><a class="headerlink" href="#c.CRC_PASSED" title="Link to this definition"></a><br /></dt>
+<dd><p>Error code returned when a requested CRC check on a firmware image is successful. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.CRC_FAILURE">
+<span class="target" id="d3/d5b/group__firmware__header_1ga83643ed5a2e98867f6b2fc51364c8b65"></span><span class="sig-name descname"><span class="n"><span class="pre">CRC_FAILURE</span></span></span> <span class="pre">1U</span><a class="headerlink" href="#c.CRC_FAILURE" title="Link to this definition"></a><br /></dt>
+<dd><p>Error code returned when a requested CRC check on a firmware image fails. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425getEmHdr_SupportedVersionv">
+<span id="_CPPv325getEmHdr_SupportedVersionv"></span><span id="_CPPv225getEmHdr_SupportedVersionv"></span><span id="getEmHdr_SupportedVersion__void"></span><span class="target" id="d3/d5b/group__firmware__header_1ga21d3229e77212b8e5c99d0fd5711e0ab"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_SupportedVersion</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425getEmHdr_SupportedVersionv" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the highest version of the firmware header that this code supports. If a new firmware header’s version number is greater than the returned SupportedHdrVersion then incompatibility issues may occur. See EM Support for compatibility. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return values<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>version</strong> – highest supported version </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416getEmHdr_FindHdr8uint32_t">
+<span id="_CPPv316getEmHdr_FindHdr8uint32_t"></span><span id="_CPPv216getEmHdr_FindHdr8uint32_t"></span><span id="getEmHdr_FindHdr__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1ga74103e435b069e5ec9ce901dbc7d1378"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_FindHdr</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">searchForHeader</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416getEmHdr_FindHdr8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Find the first valid header. This function scans the NVM starting from the provided address until it finds a valid firmware image header or if the end of the NVM it reached. It stops and returns as soon as one of these two conditions is met. The returned address is the actual start address of the header for this firmware block, or 0xFFFFFFFF (not found indicator) when the end of the NVM has been reached without finding any valid header. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>searchForHeader</strong> – this is the address from which the function will start searching for valid header in the NVM. </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>address</strong> – the address of the first valid header found, otherwise returns 0xFFFFFFFF in case the end of the NVM has been reached without having found any valid header. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423getEmHdr_HdrVersionSize8uint32_t">
+<span id="_CPPv323getEmHdr_HdrVersionSize8uint32_t"></span><span id="_CPPv223getEmHdr_HdrVersionSize8uint32_t"></span><span id="getEmHdr_HdrVersionSize__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1ga8f36cf156e86431cf389ace3629210ad"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_HdrVersionSize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423getEmHdr_HdrVersionSize8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the size of the header found at the specified address, knowing this size depends on the header version. When calculating the full size of this complete firmware block (header + image), the firmware header size must be added to the firmware image size. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the beginning of the firmware header (obtained by calling getEmHdr_FindHdr). </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>size</strong> – the size of the header found at specified address. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419getEmHdr_HdrVersion8uint32_t">
+<span id="_CPPv319getEmHdr_HdrVersion8uint32_t"></span><span id="_CPPv219getEmHdr_HdrVersion8uint32_t"></span><span id="getEmHdr_HdrVersion__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1ga56281fb561cf6f4af7bf74bd7640cd21"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_HdrVersion</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419getEmHdr_HdrVersion8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the version of the header. It can be used to verify that the found header is known and is supported by the code which attempt to manipulate it (see getEmHdr_SupportedVersion). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the start of the firmware header (obtained by calling getEmHdr_FindHdr). </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>version</strong> – the version of the header </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420getEmHdr_SectionCode8uint32_t">
+<span id="_CPPv320getEmHdr_SectionCode8uint32_t"></span><span id="_CPPv220getEmHdr_SectionCode8uint32_t"></span><span id="getEmHdr_SectionCode__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1gad3a9357ddae634fa17882d665ea32d02"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_SectionCode</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420getEmHdr_SectionCode8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function reports the firmware block type. If returned block type is not the expected one, then a new search shall be started again with the header address + 4 as parameter. The headerAddress and sectionCode should be kept by the user for quick look-up. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the start of the firmware header (obtained by calling getEmHdr_FindHdr). </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>section_code</strong> – the section code value (1: EM-Core app, 3: user app, 4: user bootloader, other values: reserved for future use) </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424getEmHdr_FirmwareVersion8uint32_t">
+<span id="_CPPv324getEmHdr_FirmwareVersion8uint32_t"></span><span id="_CPPv224getEmHdr_FirmwareVersion8uint32_t"></span><span id="getEmHdr_FirmwareVersion__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1ga6c73984472dc608f34377d6b4d82db7f"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_FirmwareVersion</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424getEmHdr_FirmwareVersion8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the firmwareVersion number (set by the user). This can be used to verify if a new firmware block (e.g. customer’s application) is the same as an existing firmware block. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the start of the firmware header (obtained by calling getEmHdr_FindHdr). </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>version</strong> – the version of the firmware image identified by the header found at the specified address. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430getEmHdr_VerifyFirmwarePayload8uint32_t">
+<span id="_CPPv330getEmHdr_VerifyFirmwarePayload8uint32_t"></span><span id="_CPPv230getEmHdr_VerifyFirmwarePayload8uint32_t"></span><span id="getEmHdr_VerifyFirmwarePayload__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1gafaca29d127df1fd6e0e5d55c7c3cb0bb"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_VerifyFirmwarePayload</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430getEmHdr_VerifyFirmwarePayload8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function does a CRC check of the firmware image attached to the found header. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the firmware image header for which the CRC check is requested. </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>status</strong> – the returned status is 0 in case of success, otherwise the function returns 1 in case of CRC failure. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419getEmHdr_ExeAddress8uint32_t">
+<span id="_CPPv319getEmHdr_ExeAddress8uint32_t"></span><span id="_CPPv219getEmHdr_ExeAddress8uint32_t"></span><span id="getEmHdr_ExeAddress__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1ga8fec093953402413895a299adbf7e3d9"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_ExeAddress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419getEmHdr_ExeAddress8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the executable starging address within this firmware block. BootLoaders can use this address to start code execution by jumping to it. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the start of the firmware header (obtained by calling getEmHdr_FindHdr). </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>address</strong> – the address of the entry point of the firmware image. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418getEmHdr_EMCoreCRC8uint32_t">
+<span id="_CPPv318getEmHdr_EMCoreCRC8uint32_t"></span><span id="_CPPv218getEmHdr_EMCoreCRC8uint32_t"></span><span id="getEmHdr_EMCoreCRC__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1gaeb3b3dcefe2abe06c0af01d0aa945e83"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_EMCoreCRC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418getEmHdr_EMCoreCRC8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the CRC of the EM Core that this firmware block is associated with. This may be 0xFFFFFFFF if this firmware block does not have an EM Core that is was built against. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – the address of a valid firmware image header </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>crc</strong> – the CRC of the EM-Core version that is compatible with the current application software, or 0xFFFFFFFF if EM-Core compatibility is not relevant. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421getEmHdr_FirmwareSize8uint32_t">
+<span id="_CPPv321getEmHdr_FirmwareSize8uint32_t"></span><span id="_CPPv221getEmHdr_FirmwareSize8uint32_t"></span><span id="getEmHdr_FirmwareSize__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1gaddf25fd53d03e917a1616ce881ae9fe4"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_FirmwareSize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421getEmHdr_FirmwareSize8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the size of the firmware image so the user can compute the location of the next block after the current firmware. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the start of the firmware header (obtained by calling getEmHdr_FindHdr). </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>size</strong> – the firmware image size in bytes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424getEmHdr_FirmwareOptions8uint32_t">
+<span id="_CPPv324getEmHdr_FirmwareOptions8uint32_t"></span><span id="_CPPv224getEmHdr_FirmwareOptions8uint32_t"></span><span id="getEmHdr_FirmwareOptions__uint32_t"></span><span class="target" id="d3/d5b/group__firmware__header_1gad1b555bc1792d643d45ad7df3f7bae5e"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmHdr_FirmwareOptions</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">headerAddress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424getEmHdr_FirmwareOptions8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>This function returns the firmware options so the user can verify any relevant compatibility with the programmed image. (if the value is 0xFFFFFFFF then this may not be currently supported, TBD). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The provided address shall be relevant to a valid header otherwise the returned information might not be reliable. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>headerAddress</strong> – this is the address of the start of the firmware header (obtained by calling getEmHdr_FindHdr). </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>option</strong> – this returned word contains the description of the firmware image. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../nvm_op_sched/index.html" class="btn btn-neutral float-left" title="NVM operation scheduler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../fwu_core/index.html" class="btn btn-neutral float-right" title="Firmware Update Core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

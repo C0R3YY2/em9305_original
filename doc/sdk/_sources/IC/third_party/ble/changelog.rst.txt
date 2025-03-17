@@ -1,0 +1,197 @@
+Change Log
+----------
+
+Porting version (EM versioning).
+
+Version history
+---------------
+
+Version 2.2.0
+^^^^^^^^^^^^^
+* Updating to Packetcraft "Mango" stack release.
+* Correct issue with Minimum Number of Used Channels LLCP for both the Central and Peripheral GAP roles.
+* New Constant Tone Extension Transmitter feature for Connection-Oriented and Connectionless modes.
+* Radio optimizations to improve timing for Periodic Advertising, PAwR, BIS and CIS use-cases.
+* New Constant Tone Extension Transmitter stack library and nvm_emb_assettag sample application added to SDK.
+* Bluetooth LE Qualification corrections for Constant Tone Extension feature and new qualification test-cases.
+* MISRA C Coding Style modifications to improve stack robustness.
+
+Version 2.1.0
+^^^^^^^^^^^^^
+* New EMB extension for a vendor-specific LL_ADV_COMPLETE_IND event (Legacy Advertising ONLY).
+* Modified the Wireless Software Framework (WSF) QPC implementation to allow customer use of the QF_onIdleExt() callbacks.
+* Removed the Preferred Periodicity check with Invalid Anchor Offset on a Connection Parameter update request (Apple Interoperability).
+* New EMB Lite API for legacy (BLE version 4.x) applications.
+
+Version 2.0.0
+^^^^^^^^^^^^^
+* Update to "Margarita" based stack (Packetcraft Lime release + Select commits from Packetcraft Mango release)
+* Deprecated the `bool_t` type, replaced with standard `bool` type
+* Add new EMB extension for retrieving slave anchor time
+* Fixed a 1 second periodic wake-up caused by a routine in the LEPC feature
+* Various API changes for power related functions
+* Updated threshold range for LEPC feature
+
+Version 1.5.2
+^^^^^^^^^^^^^
+* Isochronous qualification bugfixes (LL/CIS/CEN/BV-44, LL/CIS/PER/BV-28, LL/CIS/PER/BV-26, HCI/CIS/BV-14)
+* Internal test improvements (!7938, !6018, !7901, !8022)
+* Internal audio configuration library
+* EMSRC_SetRfPower fix range to -127 to 20
+* Enable the Conn Event Counter getter in the 7k stack
+* Added section for creating the new library with the new config in libs.cmake to HowToCreateNewLibraries doc
+* Removed extra call to LlExtAdvSlaveInit
+* Disable PTO for ISO broadcast
+* EMB LDRA static configuration
+* Allow to register a callback when WSF task starts.
+* Make NUM_WSF_TASK_EVENTS accessible to better size QPC event pool.
+* Added new Transmit Power Service to BLE Profile and Services.
+* Added EMB extension initialization for adding function pointer table for any extension APIs.
+* Removed addition of dm_pc.h and changes that were added to support the EMB Manual Power control API to dm_pc.c. Moved them to the emb extension file.
+
+Version 1.5.1
+^^^^^^^^^^^^^
+* Preserve packet processor CTE configuration in AOAD
+* Added API to enable the power management flag if the Set Transmit power with Enhanced Power Control disabled
+* Turn on PAL transmit power mgmt for Transmit and Receive test modes
+* Initialize prand module in PalCryptoInit
+
+Version 1.5.0
+^^^^^^^^^^^^^
+
+  * Added Bluetooth LE 4.2 legacy library version
+  * Added EMB peripheral legacy Bluetooth configuration
+  * Enable HCI support for HCI_LE_Request_Peer_SCA command
+  * Remove HCI local supported Codec-related commands
+  * Provide run-time configuration (enable/disable) for the BLE v5.2 Enhanced Power Control feature (By default, the feature is disabled)
+  * Fixed bytes to bytes compatibility issues between host and controller structures
+  * Improved sanity checks
+  * Fixed bug regarding a divide by zero exception in the Power Control Module
+  * Updates to configs
+  * Re-enabling the SCA feature
+  * Bug fixes for failing Harmony ISO tests
+  * Code refactored for MISRA compliance
+  * Added function to allow user changing dynamically Tx power in different modes when enhanced power control (LEPC feature) is disabled
+
+
+Version 1.4.1
+^^^^^^^^^^^^^
+* EMB database: add conditional compilation for CRC32 API change
+
+Version 1.4.0
+^^^^^^^^^^^^^
+
+* EMSRC_TransmitterTest - correct parameter validation checking
+* Add new radio test commands: EMSRC_ReceiverTestV2, EMSRC_ReceiverTestV3, EMSRC_TransmitterTestV2, and EMSRC_TransmitterTestV3
+
+Version 1.3.0
+^^^^^^^^^^^^^
+
+* EM System commands: adding support for EM vendor commands
+* Adding support for 4 connections
+* Applying the RNG SW workaround only for di01
+* Adding support for sleep mode
+* Fixing sleep clock accuracy value set with the value in the PML configuration
+* Qualification fix: converting keys to LSO format for EM crypto library
+* Correcting RF transmit ramp-up and path delay values in the PAL
+* Fixing pairing and radio gap issues
+* Fixing wrong TX output power and allow +6dBm
+* Updating copyright headers
+* Adapting to new CMake version
+* Correcting RX path delay for 2Mbits and Coded PHYs
+* Adding PAL baseband CTE support
+* Adding dynamic memory allocation in EM transport and EM system
+* Fixing PacketCraft update for HCI_LE_RECEIVE/TRANSMIT tests
+* Reordering field BbTimerBoundaryUsec
+* Fixing TXLen for CTE calculation
+* Changing Coded PHY delay value from 15us to 52us
+* Bringing up CTE Rx
+* Optimizing heap allocation
+* Adding fixes on mandatory features for BLE 5.3 qualification
+* Adding WSF IdleReady trigger for key generation
+* Refactoring function ’palCfgLoadBdAddress’
+* Adding support for buttons and LEDs
+* Integrating a new PacketCraft PAL library
+* Adding memory manager support for heap memory allocation
+* Removing uECC library from PacketCraft source
+* Remove LL transport resume after sleep if not initialized
+* Fixing MISRA sanity check failures
+* Splitting PacketCraft build system into core, ae, iso and CTE
+* Fixing controller core connection issue
+* Generating a peripheral & broadcaster LL library to reduce NVM usage for FIT application
+* Changing BB_MAX_SWITCH_LEN (CTE) to 8
+* Adding HF XTAL clock activation in PAL initialization
+* Fixing packet interval calculation in DTM
+* Changing company ID from PacketCraft to EM in LL
+* Fixing broken links into PacketCraft documentation
+* Adding EMSRC_TransmitterTest and EMSRC_TransmitterTestEnd commands
+* Adding EMSRC_ReceiverTest and EMSRC_ReceiverTestEnd commands
+* Fixing missing SyncWord initializers for standard HCI DTM commands
+* Changing RX timeout from 2us to 3us on receive window
+* Reducing scanning stop delay when in shutdown state
+* Adding support for QP/C task creation and tast activation in WSF
+* Creating PRAM optimized advertizer
+* Applying SDK 1.0 bug fixes
+* Including support for +10dBm transmit output power
+* Adding scan report indicator event
+* Adding scan indication to 3K advertiser
+* Removing redundant call to RF_InitHW function in PAL layer
+* Completing documentation and standard libraries definition
+* Removing tags for DI specific HW libraries
+
+Version 1.1.0
+^^^^^^^^^^^^^
+
+* Add command ``Set_Rf_Power`` to the list of EMB commands.
+
+Version 1.0.8
+^^^^^^^^^^^^^
+
+* Update QPC version to v3.7.0
+
+Version 1.0.7
+^^^^^^^^^^^^^
+
+* Add BLE build config that disables the automatic transmit power control feature.
+
+Version 1.0.6
+^^^^^^^^^^^^^
+
+* Readded EMS Set Public Address command to the 7198 commands list and PC Command Parser
+
+Version 1.0.5
+^^^^^^^^^^^^^
+
+* Fix race condition related to starting and stopping scanning where events would get lost causing application freezes.
+* Disable BLE Transmit Power Control from all BLE Stacks.
+
+Version 1.0.4
+^^^^^^^^^^^^^
+
+* Updated the ``lhciCmdVsExtInterfaceEM`` implementation to allow registering of NULL callbacks, as some EM commands do not have a callback. The previous implementation would allow for arbitrary call of
+   the saved callback of the previous EM command.
+
+Version 1.0.3
+^^^^^^^^^^^^^
+
+* Updated the PoC version of the BLE stack to add support for peripheral device supporting connections, pairing, security and a custom sensor service,
+  consuming 7k of PRAM.
+
+Version 1.0.2
+^^^^^^^^^^^^^
+
+#. Packetcraft updated to version 22.10
+
+#. Added a cut-down (or proof of concept) version of the BLE stack that supports only BLE advertisement using 3kB of PRAM.
+
+#. Add support for +10 dBm transmit output power.
+
+Version 1.0.1
+^^^^^^^^^^^^^
+
+* Packetcraft updated to version 22.06
+
+Version 1.0.0
+^^^^^^^^^^^^^
+
+* Baseline of all drivers for 7198 at 1.0.0.

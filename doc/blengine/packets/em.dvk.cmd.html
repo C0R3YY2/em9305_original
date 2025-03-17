@@ -1,0 +1,3125 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>em.dvk.cmd &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="em.event.unity" href="em.event.unity.html" />
+    <link rel="prev" title="em.bridge.cmd" href="em.bridge.cmd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../packets.html">HCI Packets List</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aci.em.hci.html">aci.em.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.9304.system.cmd.html">em.9304.system.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.bridge.cmd.html">em.bridge.cmd</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">em.dvk.cmd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-get-product-name">DVK_Get_Product_Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-get-product-serial-number">DVK_Get_Product_Serial_Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-get-product-hardware-version">DVK_Get_Product_Hardware_Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-get-product-software-version">DVK_Get_Product_Software_Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-target-hard-reset">DVK_Target_Hard_Reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-power-configuration">DVK_Set_Power_Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-power-supplies">DVK_Set_Power_Supplies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-target-enable">DVK_Set_Target_Enable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-target-config-clock-enable">DVK_Set_Target_Config_Clock_Enable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-power-mode">DVK_Set_Power_Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-level-shifters-enable">DVK_Set_Level_Shifters_Enable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-spi-bus-enable">DVK_Set_SPI_Bus_Enable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-current-range">DVK_Set_Current_Range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-connect-power-dut">DVK_Connect_Power_DUT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-execute-current-calibration">DVK_Execute_Current_Calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-measure-current">DVK_Measure_Current</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-send-raw-data">DVK_Send_RAW_Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-select-transport">DVK_Select_Transport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-uart-baud-rate">DVK_Set_UART_Baud_Rate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-simulated-pressure">DVK_Set_Simulated_Pressure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-set-simulated-temperature">DVK_Set_Simulated_Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-stress-test">DVK_Stress_Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-send-emsg-disable-timeout">DVK_Send_EMSG_Disable_Timeout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-test-pwm">DVK_Test_PWM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dvk-measure-current-stats">DVK_Measure_Current_Stats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="em.event.unity.html">em.event.unity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.em.html">em.system.em</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.fwu.html">em.system.fwu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.general.html">em.system.general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.arc.html">em.system.hi.cmd.arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.att.html">em.system.hi.cmd.att</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.attc.html">em.system.hi.cmd.attc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.atts.html">em.system.hi.cmd.atts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.dm.html">em.system.hi.cmd.dm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gap.html">em.system.hi.cmd.gap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gatt.html">em.system.hi.cmd.gatt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gpio.html">em.system.hi.cmd.gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.hci.html">em.system.hi.cmd.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.l2cap.html">em.system.hi.cmd.l2cap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.rtc.html">em.system.hi.cmd.rtc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.sm.html">em.system.hi.cmd.sm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smp.html">em.system.hi.cmd.smp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpi.html">em.system.hi.cmd.smpi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpr.html">em.system.hi.cmd.smpr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.whitelist.html">em.system.hi.cmd.whitelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.event.html">em.system.hi.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.mm.html">em.system.mm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pc.html">em.system.pc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pm.html">em.system.pm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rc.html">em.system.rc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rm.html">em.system.rm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.security.html">em.system.security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.ut.html">em.system.ut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.wt.html">em.system.wt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.html">hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.cmd.html">hci.aci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.event.html">hci.aci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.hci.event.html">hci.aci.hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.acl.html">hci.acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.ble.event.html">hci.ble.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd.html">hci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd_802_15_4.html">hci.cmd_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.data_802_15_4.html">hci.data_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.html">hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.vs.html">hci.event.vs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event_802_15_4.html">hci.event_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.iso.html">hci.iso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">HCI Packets Index by ID</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../packets.html">HCI Packets List</a></li>
+      <li class="breadcrumb-item active">em.dvk.cmd</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="em-dvk-cmd">
+<h1>em.dvk.cmd<a class="headerlink" href="#em-dvk-cmd" title="Link to this heading"></a></h1>
+<nav class="contents local" id="index">
+<p class="topic-title">Index</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#dvk-get-product-name" id="id51">DVK_Get_Product_Name</a></p></li>
+<li><p><a class="reference internal" href="#dvk-get-product-serial-number" id="id52">DVK_Get_Product_Serial_Number</a></p></li>
+<li><p><a class="reference internal" href="#dvk-get-product-hardware-version" id="id53">DVK_Get_Product_Hardware_Version</a></p></li>
+<li><p><a class="reference internal" href="#dvk-get-product-software-version" id="id54">DVK_Get_Product_Software_Version</a></p></li>
+<li><p><a class="reference internal" href="#dvk-target-hard-reset" id="id55">DVK_Target_Hard_Reset</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-power-configuration" id="id56">DVK_Set_Power_Configuration</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-power-supplies" id="id57">DVK_Set_Power_Supplies</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-target-enable" id="id58">DVK_Set_Target_Enable</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-target-config-clock-enable" id="id59">DVK_Set_Target_Config_Clock_Enable</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-power-mode" id="id60">DVK_Set_Power_Mode</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-level-shifters-enable" id="id61">DVK_Set_Level_Shifters_Enable</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-spi-bus-enable" id="id62">DVK_Set_SPI_Bus_Enable</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-current-range" id="id63">DVK_Set_Current_Range</a></p></li>
+<li><p><a class="reference internal" href="#dvk-connect-power-dut" id="id64">DVK_Connect_Power_DUT</a></p></li>
+<li><p><a class="reference internal" href="#dvk-execute-current-calibration" id="id65">DVK_Execute_Current_Calibration</a></p></li>
+<li><p><a class="reference internal" href="#dvk-measure-current" id="id66">DVK_Measure_Current</a></p></li>
+<li><p><a class="reference internal" href="#dvk-send-raw-data" id="id67">DVK_Send_RAW_Data</a></p></li>
+<li><p><a class="reference internal" href="#dvk-select-transport" id="id68">DVK_Select_Transport</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-uart-baud-rate" id="id69">DVK_Set_UART_Baud_Rate</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-simulated-pressure" id="id70">DVK_Set_Simulated_Pressure</a></p></li>
+<li><p><a class="reference internal" href="#dvk-set-simulated-temperature" id="id71">DVK_Set_Simulated_Temperature</a></p></li>
+<li><p><a class="reference internal" href="#dvk-stress-test" id="id72">DVK_Stress_Test</a></p></li>
+<li><p><a class="reference internal" href="#dvk-send-emsg-disable-timeout" id="id73">DVK_Send_EMSG_Disable_Timeout</a></p></li>
+<li><p><a class="reference internal" href="#dvk-test-pwm" id="id74">DVK_Test_PWM</a></p></li>
+<li><p><a class="reference internal" href="#dvk-measure-current-stats" id="id75">DVK_Measure_Current_Stats</a></p></li>
+</ul>
+</nav>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div>
+<div id="count">25 Packets</div><section id="dvk-get-product-name">
+<span id="pkt-dvk-get-product-name"></span><h2><a class="reference internal" href="#dvk-get-product-name">DVK_Get_Product_Name</a><a class="headerlink" href="#dvk-get-product-name" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Get_Product_Name&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Get_Product_Name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0001</p>
+</dd>
+</dl>
+<p>DVK - Get Product Name.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x01</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>name</strong></p></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Product name.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-get-product-serial-number">
+<span id="pkt-dvk-get-product-serial-number"></span><h2><a class="reference internal" href="#dvk-get-product-serial-number">DVK_Get_Product_Serial_Number</a><a class="headerlink" href="#dvk-get-product-serial-number" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Get_Product_Serial_Number&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Get_Product_Serial_Number</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0002</p>
+</dd>
+</dl>
+<p>DVK - Get Product Serial Number.</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x02</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>serial_number</strong></p></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Product serial number.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-get-product-hardware-version">
+<span id="pkt-dvk-get-product-hardware-version"></span><h2><a class="reference internal" href="#dvk-get-product-hardware-version">DVK_Get_Product_Hardware_Version</a><a class="headerlink" href="#dvk-get-product-hardware-version" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Get_Product_Hardware_Version&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Get_Product_Hardware_Version</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0003</p>
+</dd>
+</dl>
+<p>DVK - Get Product Hardware Version.</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x03</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id6" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>hardware_version</strong></p></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Product hardware version.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-get-product-software-version">
+<span id="pkt-dvk-get-product-software-version"></span><h2><a class="reference internal" href="#dvk-get-product-software-version">DVK_Get_Product_Software_Version</a><a class="headerlink" href="#dvk-get-product-software-version" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Get_Product_Software_Version&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Get_Product_Software_Version</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0004</p>
+</dd>
+</dl>
+<p>DVK - Get Product Software Version.</p>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x04</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>software_version</strong></p></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Product software version.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-target-hard-reset">
+<span id="pkt-dvk-target-hard-reset"></span><h2><a class="reference internal" href="#dvk-target-hard-reset">DVK_Target_Hard_Reset</a><a class="headerlink" href="#dvk-target-hard-reset" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Target_Hard_Reset&quot;,</span> <span class="pre">mode=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Target_Hard_Reset</span> <span class="pre">--mode=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0401</p>
+</dd>
+</dl>
+<p>DVK - Target Hard Reset.</p>
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0104</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>mode</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Target hard reset mode.</div>
+<div class="line">0x00 = Active Mode</div>
+<div class="line">0x01 = Configuration Mode</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id10" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-power-configuration">
+<span id="pkt-dvk-set-power-configuration"></span><h2><a class="reference internal" href="#dvk-set-power-configuration">DVK_Set_Power_Configuration</a><a class="headerlink" href="#dvk-set-power-configuration" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Power_Configuration&quot;,</span> <span class="pre">vio=0xXx,vbat2=0xXx,power_mode=0xXx,reset_mode=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Power_Configuration</span> <span class="pre">--vio=0xXx</span> <span class="pre">--vbat2=0xXx</span> <span class="pre">--power_mode=0xXx</span> <span class="pre">--reset_mode=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0402</p>
+</dd>
+</dl>
+<p>DVK - Set Power Configuration.</p>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0204</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>vio</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">VIO level [mV] (0 - 4095).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>vbat2</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">VBAT2 level [mV] (0 - 4095).</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>power_mode</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Power mode.</div>
+<div class="line">0x00 = Automatic</div>
+<div class="line">0x01 = Step Down</div>
+<div class="line">0x02 = Step Up</div>
+<div class="line">0x03 = USB</div>
+<div class="line">0x04 = External Up</div>
+<div class="line">0x05 = No DCDC</div>
+<div class="line">0x06  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>reset_mode</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Reset mode.</div>
+<div class="line">0x00 = Active Mode</div>
+<div class="line">0x01 = Configuration Mode</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-power-supplies">
+<span id="pkt-dvk-set-power-supplies"></span><h2><a class="reference internal" href="#dvk-set-power-supplies">DVK_Set_Power_Supplies</a><a class="headerlink" href="#dvk-set-power-supplies" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Power_Supplies&quot;,</span> <span class="pre">vio=0xXx,vbat2=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Power_Supplies</span> <span class="pre">--vio=0xXx</span> <span class="pre">--vbat2=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0403</p>
+</dd>
+</dl>
+<p>DVK - Set Power Supplies.</p>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0304</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>vio</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">VIO level [mV] (0 - 4095).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>vbat2</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">VBAT2 level [mV] (0 - 4095).</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id14" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-target-enable">
+<span id="pkt-dvk-set-target-enable"></span><h2><a class="reference internal" href="#dvk-set-target-enable">DVK_Set_Target_Enable</a><a class="headerlink" href="#dvk-set-target-enable" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Target_Enable&quot;,</span> <span class="pre">enable=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Target_Enable</span> <span class="pre">--enable=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0404</p>
+</dd>
+</dl>
+<p>DVK - Set Target Enable.</p>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0404</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>enable</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Enable state.</div>
+<div class="line">0x00 = Disabled</div>
+<div class="line">0x01 = Enabled</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-target-config-clock-enable">
+<span id="pkt-dvk-set-target-config-clock-enable"></span><h2><a class="reference internal" href="#dvk-set-target-config-clock-enable">DVK_Set_Target_Config_Clock_Enable</a><a class="headerlink" href="#dvk-set-target-config-clock-enable" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Target_Config_Clock_Enable&quot;,</span> <span class="pre">enable=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Target_Config_Clock_Enable</span> <span class="pre">--enable=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0405</p>
+</dd>
+</dl>
+<p>DVK - Set Target Config Clock Enable.</p>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id17" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0504</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>enable</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Enable state.</div>
+<div class="line">0x00 = Disabled</div>
+<div class="line">0x01 = Enabled</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-power-mode">
+<span id="pkt-dvk-set-power-mode"></span><h2><a class="reference internal" href="#dvk-set-power-mode">DVK_Set_Power_Mode</a><a class="headerlink" href="#dvk-set-power-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Power_Mode&quot;,</span> <span class="pre">power_mode=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Power_Mode</span> <span class="pre">--power_mode=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0406</p>
+</dd>
+</dl>
+<p>DVK - Set Power Mode.</p>
+<table class="docutils align-default" id="id19">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id19" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0604</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>power_mode</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Power mode.</div>
+<div class="line">0x00 = Automatic</div>
+<div class="line">0x01 = Step Down</div>
+<div class="line">0x02 = Step Up</div>
+<div class="line">0x03 = USB</div>
+<div class="line">0x04 = External Up</div>
+<div class="line">0x05 = No DCDC</div>
+<div class="line">0x06  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id20">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id20" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-level-shifters-enable">
+<span id="pkt-dvk-set-level-shifters-enable"></span><h2><a class="reference internal" href="#dvk-set-level-shifters-enable">DVK_Set_Level_Shifters_Enable</a><a class="headerlink" href="#dvk-set-level-shifters-enable" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Level_Shifters_Enable&quot;,</span> <span class="pre">enable=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Level_Shifters_Enable</span> <span class="pre">--enable=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0407</p>
+</dd>
+</dl>
+<p>DVK - Set Level Shifters Enable.</p>
+<table class="docutils align-default" id="id21">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id21" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0704</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>enable</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Enable state.</div>
+<div class="line">0x00 = Disabled</div>
+<div class="line">0x01 = Enabled</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id22">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id22" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-spi-bus-enable">
+<span id="pkt-dvk-set-spi-bus-enable"></span><h2><a class="reference internal" href="#dvk-set-spi-bus-enable">DVK_Set_SPI_Bus_Enable</a><a class="headerlink" href="#dvk-set-spi-bus-enable" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_SPI_Bus_Enable&quot;,</span> <span class="pre">enable=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_SPI_Bus_Enable</span> <span class="pre">--enable=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0408</p>
+</dd>
+</dl>
+<p>DVK - Set SPI Bus Enable.</p>
+<table class="docutils align-default" id="id23">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id23" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0804</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>enable</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Enable state.</div>
+<div class="line">0x00 = Disabled</div>
+<div class="line">0x01 = Enabled</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id24">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id24" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-current-range">
+<span id="pkt-dvk-set-current-range"></span><h2><a class="reference internal" href="#dvk-set-current-range">DVK_Set_Current_Range</a><a class="headerlink" href="#dvk-set-current-range" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Current_Range&quot;,</span> <span class="pre">range=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Current_Range</span> <span class="pre">--range=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0409</p>
+</dd>
+</dl>
+<p>DVK - Set Current Range.</p>
+<table class="docutils align-default" id="id25">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id25" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0904</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>range</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Current range.</div>
+<div class="line">0x00 = Bypass</div>
+<div class="line">0x01  0x02  Reserved</div>
+<div class="line">0x03 = Measure (range 3 - high)</div>
+<div class="line">0x04  0x05  Reserved</div>
+<div class="line">0x06 = Offset calibration (range 3 - high)</div>
+<div class="line">0x07  0x08  Reserved</div>
+<div class="line">0x09 = Trim calibration (range 3 - high)</div>
+<div class="line">0x0A  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id26">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id26" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-connect-power-dut">
+<span id="pkt-dvk-connect-power-dut"></span><h2><a class="reference internal" href="#dvk-connect-power-dut">DVK_Connect_Power_DUT</a><a class="headerlink" href="#dvk-connect-power-dut" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Connect_Power_DUT&quot;,</span> <span class="pre">state=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Connect_Power_DUT</span> <span class="pre">--state=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff040a</p>
+</dd>
+</dl>
+<p>DVK - Connect Power DUT.</p>
+<table class="docutils align-default" id="id27">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id27" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0a04</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>state</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">DUT power connection state.</div>
+<div class="line">0x00 = Disconnected</div>
+<div class="line">0x01 = Connected</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id28">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id28" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-execute-current-calibration">
+<span id="pkt-dvk-execute-current-calibration"></span><h2><a class="reference internal" href="#dvk-execute-current-calibration">DVK_Execute_Current_Calibration</a><a class="headerlink" href="#dvk-execute-current-calibration" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Execute_Current_Calibration&quot;,</span> <span class="pre">mode=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Execute_Current_Calibration</span> <span class="pre">--mode=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff040b</p>
+</dd>
+</dl>
+<p>DVK - Execute Current Calibration.</p>
+<table class="docutils align-default" id="id29">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id29" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0b04</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>mode</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Calibration mode.</div>
+<div class="line">0x00 = None   (clear all calibration data)</div>
+<div class="line">0x01 = Simple (offset calibration only)</div>
+<div class="line">0x02 = Full   (offset and trim calibrations)</div>
+<div class="line">0x03  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id30">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id30" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>offset_1</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Offset calibration value of range 1.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>offset_2</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Offset calibration value of range 2.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>offset_3</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Offset calibration value of range 3.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>trim_1</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Trim calibration value of range 1.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>trim_2</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Trim calibration value of range 2.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>trim_3</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Trim calibration value of range 3.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-measure-current">
+<span id="pkt-dvk-measure-current"></span><h2><a class="reference internal" href="#dvk-measure-current">DVK_Measure_Current</a><a class="headerlink" href="#dvk-measure-current" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Measure_Current&quot;,</span> <span class="pre">samples=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Measure_Current</span> <span class="pre">--samples=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff040c</p>
+</dd>
+</dl>
+<p>DVK - Measure Current.</p>
+<table class="docutils align-default" id="id31">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id31" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0c04</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>samples</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of current samples to average (1 - 50).</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id32">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id32" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>current</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Averaged current [uA]</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-send-raw-data">
+<span id="pkt-dvk-send-raw-data"></span><h2><a class="reference internal" href="#dvk-send-raw-data">DVK_Send_RAW_Data</a><a class="headerlink" href="#dvk-send-raw-data" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Send_RAW_Data&quot;,</span> <span class="pre">data=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Send_RAW_Data</span> <span class="pre">--data=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff040d</p>
+</dd>
+</dl>
+<p>DVK - Send RAW data.</p>
+<table class="docutils align-default" id="id33">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id33" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0d04</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>data</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">RAW data.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id34">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id34" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-select-transport">
+<span id="pkt-dvk-select-transport"></span><h2><a class="reference internal" href="#dvk-select-transport">DVK_Select_Transport</a><a class="headerlink" href="#dvk-select-transport" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Select_Transport&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Select_Transport</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff040e</p>
+</dd>
+</dl>
+<p>DVK - Select Transport.</p>
+<table class="docutils align-default" id="id35">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id35" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0e04</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>bus</strong></p></td>
+<td><p>0x01</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Bus.</div>
+<div class="line">0x00 = Disabled</div>
+<div class="line">0x01 = SPI</div>
+<div class="line">0x02 = UART</div>
+<div class="line">0x03 = I2C</div>
+<div class="line">0x04 - 0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>mode</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Mode.</div>
+<div class="line">0x00 = Default</div>
+<div class="line">0x01 = Standard (only I2C)</div>
+<div class="line">0x02 = Fast (only I2C)</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id36">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id36" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-uart-baud-rate">
+<span id="pkt-dvk-set-uart-baud-rate"></span><h2><a class="reference internal" href="#dvk-set-uart-baud-rate">DVK_Set_UART_Baud_Rate</a><a class="headerlink" href="#dvk-set-uart-baud-rate" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_UART_Baud_Rate&quot;,</span> <span class="pre">Baud_Rate=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_UART_Baud_Rate</span> <span class="pre">--Baud_Rate=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff040f</p>
+</dd>
+</dl>
+<p>Set the UART baud rate to the specified value.</p>
+<table class="docutils align-default" id="id37">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id37" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x0f04</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Baud_Rate</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Baud rate selection.</div>
+<div class="line">0x00 =    1200 Baud</div>
+<div class="line">0x01 =    2400 Baud</div>
+<div class="line">0x02 =    4800 Baud</div>
+<div class="line">0x03 =    9600 Baud</div>
+<div class="line">0x04 =   14400 Baud</div>
+<div class="line">0x05 =   19200 Baud</div>
+<div class="line">0x06 =   28800 Baud</div>
+<div class="line">0x07 =   38400 Baud</div>
+<div class="line">0x08 =   57600 Baud</div>
+<div class="line">0x09 =   76800 Baud</div>
+<div class="line">0x0A =  115200 Baud</div>
+<div class="line">0x0B =  230400 Baud</div>
+<div class="line">0x0C =  460800 Baud</div>
+<div class="line">0x0D =  921600 Baud</div>
+<div class="line">0x0E = 1843200 Baud</div>
+<div class="line">0x0F - 0xFF = Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id38">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id38" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-simulated-pressure">
+<span id="pkt-dvk-set-simulated-pressure"></span><h2><a class="reference internal" href="#dvk-set-simulated-pressure">DVK_Set_Simulated_Pressure</a><a class="headerlink" href="#dvk-set-simulated-pressure" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Simulated_Pressure&quot;,</span> <span class="pre">pressure=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Simulated_Pressure</span> <span class="pre">--pressure=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0410</p>
+</dd>
+</dl>
+<p>DVK - Set pressure simulation circuit to value.</p>
+<table class="docutils align-default" id="id39">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id39" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x1004</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>pressure</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Pressure value calibrated on DVK</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id40">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id40" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-set-simulated-temperature">
+<span id="pkt-dvk-set-simulated-temperature"></span><h2><a class="reference internal" href="#dvk-set-simulated-temperature">DVK_Set_Simulated_Temperature</a><a class="headerlink" href="#dvk-set-simulated-temperature" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Set_Simulated_Temperature&quot;,</span> <span class="pre">temperature=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Set_Simulated_Temperature</span> <span class="pre">--temperature=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0411</p>
+</dd>
+</dl>
+<p>DVK - Set temperature simulation circuit to value.</p>
+<table class="docutils align-default" id="id41">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id41" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x1104</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>temperature</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Temperature value calibrated on DVK</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id42">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id42" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-stress-test">
+<span id="pkt-dvk-stress-test"></span><h2><a class="reference internal" href="#dvk-stress-test">DVK_Stress_Test</a><a class="headerlink" href="#dvk-stress-test" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Stress_Test&quot;,</span> <span class="pre">enable=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Stress_Test</span> <span class="pre">--enable=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0412</p>
+</dd>
+</dl>
+<p>DVK - Run a stress test with the currently selected transport. NOTE: This stress test requires the HCI controller on the DUT</p>
+<table class="docutils align-default" id="id43">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id43" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x1204</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>enable</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Enable state.</div>
+<div class="line">0x00 = Disabled</div>
+<div class="line">0x01 = Enabled</div>
+<div class="line">0x02  0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id44">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id44" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-send-emsg-disable-timeout">
+<span id="pkt-dvk-send-emsg-disable-timeout"></span><h2><a class="reference internal" href="#dvk-send-emsg-disable-timeout">DVK_Send_EMSG_Disable_Timeout</a><a class="headerlink" href="#dvk-send-emsg-disable-timeout" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Send_EMSG_Disable_Timeout&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Send_EMSG_Disable_Timeout</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0413</p>
+</dd>
+</dl>
+<p>DVK - Send Command EMSG_Disable_Timeout at the end of configuration mode.</p>
+<table class="docutils align-default" id="id45">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id45" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x1304</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Enable</strong></p></td>
+<td><p>0x01</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">0x00 =    Disable</div>
+<div class="line">0x01 =    Enable</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id46">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id46" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-test-pwm">
+<span id="pkt-dvk-test-pwm"></span><h2><a class="reference internal" href="#dvk-test-pwm">DVK_Test_PWM</a><a class="headerlink" href="#dvk-test-pwm" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Test_PWM&quot;,</span> <span class="pre">Period=0xXx,Duty_Cycle=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Test_PWM</span> <span class="pre">--Period=0xXx</span> <span class="pre">--Duty_Cycle=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0414</p>
+</dd>
+</dl>
+<p>DVK - Test PWM.</p>
+<table class="docutils align-default" id="id47">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id47" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x1404</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Period</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Period (Ton + Toff)</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Duty_Cycle</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Duty cycle %</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id48">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id48" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dvk-measure-current-stats">
+<span id="pkt-dvk-measure-current-stats"></span><h2><a class="reference internal" href="#dvk-measure-current-stats">DVK_Measure_Current_Stats</a><a class="headerlink" href="#dvk-measure-current-stats" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;DVK_Measure_Current_Stats&quot;,</span> <span class="pre">n_samples=0xXx,range=0xXx,mov_avg=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">DVK_Measure_Current_Stats</span> <span class="pre">--n_samples=0xXx</span> <span class="pre">--range=0xXx</span> <span class="pre">--mov_avg=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xffff0415</p>
+</dd>
+</dl>
+<p>DVK - Measure Current Statistics. This is currently implemented on the 9305 pro DVK</p>
+<table class="docutils align-default" id="id49">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id49" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xffff</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>meta_opcode</strong></p></td>
+<td><p>0x1504</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>n_samples</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Total number of current samples to collect. n_samples / mov_avg must be less than 255 and less than 0xffff / 2.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>range</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">1 = low range, 2 = medium range, 3 = high range</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>mov_avg</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of samples to use for moving average window (1 - 255).</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id50">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id50" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command_meta_opcode</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Meta-Command OpCode.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>average</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Averaged current [A]</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>sampleRate</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">sample rate [HZ]</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>max</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Max current after moving average [A]</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>min</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Min current after moving average [A]</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>stdev</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;f</p></td>
+<td><div class="line-block">
+<div class="line">Standard deviation on moving average [A]</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="em.bridge.cmd.html" class="btn btn-neutral float-left" title="em.bridge.cmd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="em.event.unity.html" class="btn btn-neutral float-right" title="em.event.unity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The RTC library provides an API to manage date and time ranging from the 1.1.2000 used as the reference date (origin) to the 31.12.2099.
+The library supports day of the week number and let the user select the first day of the week which can be either Sunday or Monday depending on the countries.</p>
+<p>One standard alarm can be configured to provide a synchronization event based on the elapsed time from the reference time or using a date and time in the future.</p>
+<p>One short alarm can also be configured with a delay ranging from 1 ms to 1 day with a resolution of 1 ms in one shot or on a periodic basis.</p>
+<p>When an alarm is configured, the RTC generates an event after the configured time has been reached. Beyond alarm related events, the RTC can also generate events in the following conditions:</p>
+<ul class="simple">
+<li><p>an RTC ready event when the clock source is ready to be used</p></li>
+<li><p>an End of Day event occurs each day at midnight</p></li>
+</ul>
+<section id="how-does-it-work">
+<h2>How does it work ?<a class="headerlink" href="#how-does-it-work" title="Link to this heading"></a></h2>
+<p>The RTC uses the sleep timer clocked by either LF-RC or LF-XTAL as per the user configuration.
+When an alarm is setup, it configures the sleep timer comparator to generate a sleep timer interruption when the trigger criteria is met (number of elapsed seconds from the reference time or a date/time in the future).</p>
+<p>There are 4 (0 to 3) available channels and one can be configured in the RTC configuration structure. By default and if no channel is explicitely configured, the RTC library uses channel 3.</p>
+<p>When the RTC is clocked by the LF-RC, a calibration is done with HF-XTAL to compute the RTC frequency in order to increase the accuracy.</p>
+<p>Otherwise, the LF-XTAL can be used instead of the LF-RC with or without calibration by configuring appropriately the PML configuration structure.</p>
+<p>The code snippet below shows a typical configuration for both LF-XTAL without calibration (<cite>USE_LF_XTAL</cite> defined whether the calibration is needed or not) and LF-XTAL with calibration (<cite>USE_LF_XTAL_WITH_CALIBRATION</cite> defined for using the calibration).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifdef USE_LF_XTAL</span>
+//<span class="w"> </span>configure<span class="w"> </span>PML<span class="w"> </span><span class="k">for</span><span class="w"> </span>using<span class="w"> </span>LF<span class="w"> </span>XTAL
+//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>without<span class="w"> </span>calibration
+<span class="w">  </span>gPML_Config.lfClkSourceType<span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>uint8_t<span class="o">)</span>PML_LF_CLK_XTAL_EN<span class="p">;</span>
+<span class="w">  </span>gPML_Config.lfClkFreqRatioHf<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">46875</span><span class="p">;</span><span class="w">    </span>//<span class="w"> </span>48MHz<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span><span class="m">32</span>.768kHz
+<span class="w">  </span>gPML_Config.lfClkFreqRatioLf<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">64</span><span class="p">;</span>
+<span class="w">  </span>gPML_Config.lfClkSourceAccuracy<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="p">;</span><span class="w">      </span>//<span class="w"> </span>150ppm
+<span class="w">  </span>gPML_Config.rcCalibSkip<span class="w">         </span><span class="o">=</span><span class="w"> </span>true<span class="p">;</span><span class="w">     </span>//<span class="w"> </span>Disable<span class="w"> </span>calibration
+<span class="c1">#ifdef USE_LF_XTAL_WITH_CALIBRATION</span>
+//<span class="w"> </span>configure<span class="w"> </span>PML<span class="w"> </span><span class="k">for</span><span class="w"> </span>specifically<span class="w"> </span>using<span class="w"> </span>LF<span class="w"> </span>XTAL<span class="w"> </span>with<span class="w"> </span>calibration
+//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>with<span class="w"> </span>calibration
+<span class="w">  </span>gPML_Config.lfClkSourceAccuracy<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">;</span><span class="w">       </span>//<span class="w"> </span>50ppm
+<span class="w">  </span>gPML_Config.rcCalibSkip<span class="w">         </span><span class="o">=</span><span class="w"> </span>false<span class="p">;</span><span class="w">    </span>//<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>skip<span class="w"> </span>calibration
+<span class="w">  </span>gPML_Config.rcCalibHfLimit<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+<span class="w">  </span>gPML_Config.rcCalibLfLimit<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">38</span><span class="p">;</span><span class="w">       </span>//<span class="w"> </span>1200ms<span class="w"> </span>@32<span class="w"> </span>kHz
+<span class="w">  </span>gPML_Config.rcCalibPeriod<span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="m">16384</span><span class="p">;</span><span class="w">    </span>//<span class="w"> </span>500ms<span class="w"> </span>@32kHz
+<span class="w">  </span>gPML_Config.rcCalibCorrection<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span><span class="w">        </span>//<span class="w"> </span>0ppm
+<span class="c1">#endif</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-library-registration">
+<h2>RTC Library registration<a class="headerlink" href="#rtc-library-registration" title="Link to this heading"></a></h2>
+<p>In order to be used, the RTC library shall be registered in <cite>NVM_ConfigModules()</cite> function as shown in the code below. Note that the RTC header file <cite>rtc.h</cite> shall be included first.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;rtc.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">RTC_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-events">
+<h2>RTC Events<a class="headerlink" href="#rtc-events" title="Link to this heading"></a></h2>
+<p>A callback shall be provided to the RTC configuration structure for RTC events notifications.
+This callback provides the source of the RTC event which can be:</p>
+<ul class="simple">
+<li><p>short alarm</p>
+<ul>
+<li><p>one shot</p></li>
+<li><p>periodic</p></li>
+</ul>
+</li>
+<li><p>standard alarm</p>
+<ul>
+<li><p>one shot only</p></li>
+</ul>
+</li>
+<li><p>end of day</p>
+<ul>
+<li><p>event sent each day at midnight</p></li>
+</ul>
+</li>
+<li><p>ready state</p>
+<ul>
+<li><p>sent only once as soon as the RTC is ready to be used when the RTC clock source has been started</p></li>
+</ul>
+</li>
+</ul>
+<p>Before actually using the RTC or setting up an alarm, it is recommended to wait for the <cite>RTC_Ready</cite> event to be triggered.</p>
+<p>To be able to process a notification, the user defined callback shall have the following prototype:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">RTC_Callback_t</span><span class="p">)(</span><span class="n">RTC_CallbackReason_t</span><span class="w"> </span><span class="n">reason</span><span class="p">);</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">RTC_Callback</span><span class="p">(</span><span class="n">RTC_CallbackReason_t</span><span class="w"> </span><span class="n">reason</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The parameter <cite>reason</cite> is of type <cite>RTC_CallbackReason_t</cite> defined as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC reason a callback was called.</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC Short Alarm event generated</span>
+<span class="w">  </span><span class="n">RTC_SHORT_ALARM</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">0u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC Alarm event generated</span>
+<span class="w">  </span><span class="n">RTC_ALARM</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">1u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC End of Day event generated</span>
+<span class="w">  </span><span class="n">RTC_END_OF_DAY</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">2u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC ready to use (including LF clock used in RTC)</span>
+<span class="w">  </span><span class="n">RTC_READY</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="mi">3u</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_CallbackReason_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The following code example shows a typical way of setting up the RTC callback in the RTC configuration structure in the <cite>NVM_ConfigModules()</cite> function. As already mentioned, the sleep timer comparator is also selected and configured.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="p">...</span>
+
+<span class="w">  </span><span class="n">gRTC_Config</span><span class="p">.</span><span class="n">callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTC_Callback</span><span class="p">;</span>
+<span class="w">  </span><span class="n">gRTC_Config</span><span class="p">.</span><span class="n">sleepTimerChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SLEEP_TIMER_CHANNEL_3</span><span class="p">;</span>
+
+<span class="w">  </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-time-structures">
+<h2>RTC Time structures<a class="headerlink" href="#rtc-time-structures" title="Link to this heading"></a></h2>
+<p>The RTC library is able to work with two different representations of the time.
+All RTC functions that deal with time parameters accept parameters of the two representations.</p>
+<p>Internally the RTC works with the elapsed time in second and subsecond based on a reference time of 1.1.2000 00:00:00. Based on that it computes a date &amp; time and the day of the week number (1 to 7 included).
+It is important to note that the day of the week depends on the day that has been configured as the first day of the week, either Sunday or Monday (the default).</p>
+<p>The structure <cite>RTC_RefTimeCounter_t</cite> is a union of two types of variables. The <cite>timeCounter</cite> is a fixed point value containing the elapsed time from the reference time in both seconds and the subseconds. It helps to do math computations like adding or substracting time. The second time variable is a structure that contains two separated fields, the seconds and the subseconds. This is helpful accessing such information individually.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC time counter structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">union</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// timeCounter in fixed point, format 32.8</span>
+<span class="w">  </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">timeCounter</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">/// time bits access</span>
+<span class="w">  </span><span class="k">struct</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">/// Padding, not used</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w">  </span><span class="n">pad</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="mi">24</span><span class="p">;</span>
+<span class="w">      </span><span class="c1">/// RTC time SubSeconds. Allowed range 0 up to 255. One LSB is 1/256sec.</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w">  </span><span class="n">subSeconds</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="w">      </span><span class="c1">/// RTC time Seconds. Allowed range 0..59</span>
+<span class="w">      </span><span class="kt">uint64_t</span><span class="w">  </span><span class="n">seconds</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="n">time</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_RefTimeCounter_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The other way to represent the time is to use a structure for defining the time and another structure for defining the date. These two structures define the following data fields:</p>
+<ul class="simple">
+<li><p>time of the day (hours, minutes, seconds, subseconds)</p></li>
+<li><p>date (year, month, day)</p></li>
+</ul>
+<p>The time structure <cite>RTC_Time_t</cite> is defined as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC time structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC time Hours. Allowed range 0..23</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">hours</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time Minutes. Allowed range 0..59</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">minutes</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time Seconds. Allowed range 0..59</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">seconds</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time SubSeconds. Allowed range 0 up to 255. One LSB is 1/256sec.</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">subSeconds</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_Time_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The date structure <cite>RTC_Date_t</cite> is defined as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC date structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC date Year. Allowed range 2000..2099.</span>
+<span class="w">  </span><span class="kt">uint16_t</span><span class="w">  </span><span class="n">year</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC date Month. Allowed range 1..12</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">month</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC date Day. Allowed range 1..31</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">day</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC date WeekDay. Allowed range 1..7</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">weekDay</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_Date_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>All the above mentioned structures are gathered into one single structure that contains both the date and the time, as shown in the following code snippet:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC time and date structure</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC date</span>
+<span class="w">  </span><span class="n">RTC_Date_t</span><span class="w"> </span><span class="n">date</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">/// RTC time</span>
+<span class="w">  </span><span class="n">RTC_Time_t</span><span class="w"> </span><span class="n">time</span><span class="p">;</span>
+
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_TimeDate_t</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-subsecond">
+<h2>RTC Subsecond<a class="headerlink" href="#rtc-subsecond" title="Link to this heading"></a></h2>
+<p>The subsecond is a unsigned 8 bits value representing a fraction of one second.
+One LSB is 1 / 256 = 3,906 ms.</p>
+</section>
+<section id="rtc-weekday">
+<h2>RTC Weekday<a class="headerlink" href="#rtc-weekday" title="Link to this heading"></a></h2>
+<p>The RTC is able to manage which day is considered the first day of the week. One RTC function is available to set the first day of the week which can be Monday or Sunday. Depending on this special day, all other days of the week are renumbered as follow:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">First day of the week (day_of_the_week_value)</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Monday</p></th>
+<th class="head"><p>Sunday</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Monday = 1</p></td>
+<td><p>Sunday = 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tuesday = 2</p></td>
+<td><p>Monday = 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Wednesday = 3</p></td>
+<td><p>Tuesday = 3</p></td>
+</tr>
+<tr class="row-odd"><td><p>Thursday = 4</p></td>
+<td><p>Wednesday = 4</p></td>
+</tr>
+<tr class="row-even"><td><p>Friday = 5</p></td>
+<td><p>Thursday = 5</p></td>
+</tr>
+<tr class="row-odd"><td><p>Saturday = 6</p></td>
+<td><p>Friday = 6</p></td>
+</tr>
+<tr class="row-even"><td><p>Sunday = 7</p></td>
+<td><p>Saturday = 7</p></td>
+</tr>
+</tbody>
+</table>
+<p>By default the RTC uses Monday as the first day of the week, but it can be changed to Sunday with <cite>RTC_SetFirstDayOfTheWeek()</cite> API. It takes one single parameter of type <cite>RTC_FirstDayOfTheWeek_t</cite> which is a simple enum type containing Monday and Sunday numerical representation as follow:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief RTC first day of the week.</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">/// RTC first day of the week Sunday</span>
+<span class="w">  </span><span class="n">RTC_FIRST_DAY_OF_THE_WEEK_SUNDAY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6u</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">/// RTC first day of the week Monday</span>
+<span class="w">  </span><span class="n">RTC_FIRST_DAY_OF_THE_WEEK_MONDAY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5u</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RTC_FirstDayOfTheWeek_t</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief Set the first day of the week which can be Monday or Sunday.</span>
+<span class="cm"> * @param fdotw first day of the week</span>
+<span class="cm"> * @return RTC error code (see errno.h)</span>
+<span class="cm">*/</span>
+<span class="kt">int32_t</span><span class="w"> </span><span class="nf">RTC_SetFirstDayOfTheWeek</span><span class="p">(</span><span class="n">RTC_FirstDayOfTheWeek_t</span><span class="w"> </span><span class="n">fdotw</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="rtc-api-return-error-codes">
+<h2>RTC API return Error Codes<a class="headerlink" href="#rtc-api-return-error-codes" title="Link to this heading"></a></h2>
+<p>Some RTC API return a signed 32 bits values error code that mimic the status code defined in the well known <cite>errno.h</cite> header file.
+Consequently, the status code is <cite>0</cite> in case of success. Otherwise, a negative error is returned.</p>
+</section>
+<section id="rtc-alarms">
+<h2>RTC Alarms<a class="headerlink" href="#rtc-alarms" title="Link to this heading"></a></h2>
+<p>As mentionned before, the RTC supports two types of alarms:</p>
+<ul class="simple">
+<li><p>the standard alarm with a date &amp; time</p></li>
+<li><p>the short alarm which can be one shot or periodic with a range from 1 ms to 1 day</p></li>
+</ul>
+<p>The RTC library can only manage one alarm of each type at the same time. Two (or more) alarms of the same type cannot be defined. Consequently, if a new standard alarm is set, it will replace the previous one that could have been previously configured. If a new short alarm is set, it will also replace the previously defined one of the same type.</p>
+</section>
+<section id="setting-an-alarm">
+<h2>Setting an Alarm<a class="headerlink" href="#setting-an-alarm" title="Link to this heading"></a></h2>
+<p>An alarm can be set for a date &amp; time in the future. When this moment is reached, the RTC generates the related RTC_ALARM event.</p>
+<p>The following code snippet shows an example on how to configure a one shot alarm that will trigger the 23th of November, 2023 at 11:37:5:00.00.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_TimeDate_t</span><span class="w"> </span><span class="n">timeDate</span><span class="p">;</span>
+
+<span class="n">timeDate</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">day</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">23</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">month</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">year</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">2023</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">hours</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">minutes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">37</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">timeDate</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">subSeconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="n">RTC_SetAlarmTimeAndDate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timeDate</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Moreover, an alarm can be set to trigger an event 30 seconds in the future from the current time. The principle is to read the elapsed time from the first of January 2000, add 30 seconds and use this new time to setup the alarm. The following code shows an example on how to configure such alarm:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_RefTimeCounter_t</span><span class="w"> </span><span class="n">refTime</span><span class="p">;</span>
+
+<span class="c1">// Read the elapsed time from the reference time</span>
+<span class="n">RTC_GetTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+<span class="c1">// Add 30 seconds (RTC_RefTimeCounter_t type is useful for time computations)</span>
+<span class="n">refTime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+<span class="c1">// Configure a oneshot alarm this new time</span>
+<span class="n">RTC_SetAlarmTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In case an already configured alarm has been setup and prior to its event being triggered, it can be cancelled by using a dedicated API. In this case the RTC_ALARM event will not be generated.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_DisableAlarm</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>As already mentioned, an already configured alarm can be replaced by configuring a new one of the same type. In the example shown below, an alarm is set to be triggered 30 seconds in the future, and later in the code we increase this delay by 15 seconds. In this case the alarm is not raised when calling the second time RTC_SetAlarmTime(). The alarm event will be set 45 seconds later instead of 30 seconds.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_RefTimeCounter_t</span><span class="w"> </span><span class="n">refTime</span><span class="p">;</span>
+
+<span class="n">RTC_GetTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+<span class="n">refTime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+<span class="n">RTC_SetAlarmTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="n">refTime</span><span class="p">.</span><span class="n">time</span><span class="p">.</span><span class="n">seconds</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
+<span class="n">RTC_SetAlarmTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refTime</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-a-short-alarm">
+<h2>Setting a Short Alarm<a class="headerlink" href="#setting-a-short-alarm" title="Link to this heading"></a></h2>
+<p>The RTC supports short alarm and can be configured with a delay ranging from 1 ms to maximum 1 day with a precision of 1 ms.</p>
+<p>In the example below, a one short alarm in configured with a delay of 50 ms. The RTC_SHORT_ALARM event then will be generated only once.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_SetShortAlarm</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="n">RTC_SHORT_ALARM_ONE_SHOT</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In the example below, a periodic short alarm is configured with a delay of 1 minute. The RTC_SHORT_ALARM
+event will be generated each minute until it is disabled or overriden by an other short alarm.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_SetShortAlarm</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="n">RTC_SHORT_ALARM_PERIODIC</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Like a standard alarm, a short alarm can be disabled. In the case of one shot, the alarm can be disabled before it has been generated. In case of a periodic alarm, it will stop it immediatly and stops emitting periodic events. This can simply be done by invoking the following function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTC_DisableShortAlarm</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

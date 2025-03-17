@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHA512 &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="SHA384" href="SHA384.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="SHA1.html">SHA-1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SHA224.html">SHA224</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SHA256.html">SHA256</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SHA384.html">SHA384</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SHA512</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#types-of-apis">Types of APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#defines">Defines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#one-shot-computation-function-sha512-api">ONE SHOT COMPUTATION FUNCTION : SHA512 API</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#function">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#step-by-step-functions">STEP BY STEP FUNCTIONS</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-functions">Goal of the functions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#sha512init">SHA512Init</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#id1">Function</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Return values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#sha512update">SHA512Update</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#id4">Function</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#id5">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id6">Return values</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#sha512final">SHA512Final</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#id7">Function</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#id8">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id9">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performances">Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="HASH_FUNCTIONS.html">Hash functions</a> &raquo;</li>
+      <li>SHA512</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sha512">
+<span id="sha512-label"></span><h1>SHA512<a class="headerlink" href="#sha512" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] FIPS 180-4: Secure Hash Standard</p>
+<p><a class="reference external" href="https://csrc.nist.gov/publications/detail/fips/180/4/final">FIPS 180-4</a>: <a class="reference external" href="https://csrc.nist.gov/publications/detail/fips/180/4/final">https://csrc.nist.gov/publications/detail/fips/180/4/final</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this document is to describe the functionality of the library <strong>SHA512</strong>.
+It describes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the supported functions,</p></li>
+<li><p>the parameters of the functions,</p></li>
+<li><p>the error cases,</p></li>
+<li><p>the performances of the functions.</p></li>
+</ul>
+</div></blockquote>
+<p>This library implements SHA512 algorithm according to the specification FIPS 180-4 [1].</p>
+</section>
+<section id="types-of-apis">
+<h2>Types of APIs<a class="headerlink" href="#types-of-apis" title="Permalink to this headline"></a></h2>
+<p>It implements two sets of APIs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A first API allows to perform SHA512 in one shot: the message and its size are provided and the function computes the digest in one shot.</p></li>
+<li><p>A second set of APIs allows to provide the data to hash block by block. The computation of the digest can be performed step by step, accumulating data until the final processing.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418SHA512_Lib_error_t">
+<span id="_CPPv318SHA512_Lib_error_t"></span><span id="_CPPv218SHA512_Lib_error_t"></span><span class="target" id="group___s_h_a512_1gaf12f9344cfb4197db755acc12bcb732f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv418SHA512_Lib_error_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Error status words for SHA512. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA512_Lib_error_t14SHA512_SUCCESSE">
+<span id="_CPPv3N18SHA512_Lib_error_t14SHA512_SUCCESSE"></span><span id="_CPPv2N18SHA512_Lib_error_t14SHA512_SUCCESSE"></span><span class="target" id="group___s_h_a512_1ggaf12f9344cfb4197db755acc12bcb732facff44a3430ff41d9cc02a2f75ad4aa2b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N18SHA512_Lib_error_t14SHA512_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>SHA512 computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE"></span><span class="target" id="group___s_h_a512_1ggaf12f9344cfb4197db755acc12bcb732fa25fa221d20bfffd89d27f8340e828b7c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="defines">
+<h3>Defines<a class="headerlink" href="#defines" title="Permalink to this headline"></a></h3>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA512_DIGEST_SIZE">
+<span class="target" id="group___s_h_a512_1ga67f489f3eee39c447a6db3ba34ef75f2"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_DIGEST_SIZE</span></span></span><a class="headerlink" href="#c.SHA512_DIGEST_SIZE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Digest size for SHA512 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA512_BLOCK_SIZE">
+<span class="target" id="group___s_h_a512_1gac7071364cb94c9fcce009ba16a4bdca1"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_BLOCK_SIZE</span></span></span><a class="headerlink" href="#c.SHA512_BLOCK_SIZE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Block size for SHA512 in bytes </p>
+</dd></dl>
+
+</section>
+<section id="one-shot-computation-function-sha512-api">
+<h3>ONE SHOT COMPUTATION FUNCTION : SHA512 API<a class="headerlink" href="#one-shot-computation-function-sha512-api" title="Permalink to this headline"></a></h3>
+<p>This function computes the SHA512 digest of a data of any length. The computation is performed in one-shot. Next figure shows the general scheme.</p>
+<img alt="_images/SHA512_oneStep.png" src="_images/SHA512_oneStep.png" />
+<section id="function">
+<h4>Function<a class="headerlink" href="#function" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv46SHA512P7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv36SHA512P7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv26SHA512P7uint8_tP7uint8_t8uint32_t"></span><span id="SHA512__uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="group___s_h_a512_1ga71daadc728c3a03d0d12d369ed3c1a6f"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">MessageLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46SHA512P7uint8_tP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Computes the hash of the message with SHA512. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Message</strong> – <strong>[in]</strong> Message to hash </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> Digest of the message </p></li>
+<li><p><strong>MessageLength</strong> – <strong>[in]</strong> Message length in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA512_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA512_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Message</strong> : The message to hash. It can be of any length.</p></li>
+<li><p><strong>Result</strong>: Pointer on the 64-byte result.</p></li>
+<li><p><strong>MessageLength</strong> : Length of the message in bytes. It can be any value from 0x00 (included) to 0xFFFFFFFF (included).</p></li>
+</ul>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SHA512_SUCCESS</p></td>
+<td><p>SHA512 computation successful.</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHA512_INCORRECT_RESULT_POINTER</p></td>
+<td><p>Result pointer is null.</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="step-by-step-functions">
+<h3>STEP BY STEP FUNCTIONS<a class="headerlink" href="#step-by-step-functions" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-functions">
+<h4>Goal of the functions<a class="headerlink" href="#goal-of-the-functions" title="Permalink to this headline"></a></h4>
+<p>According to [1] SHA512 algorithm is performed in several steps.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The first step consists in initializing a context of 64 bytes with known constants.</p></li>
+<li><p>The second step consists in splitting the data to hash into blocks of 128 bytes. Each block is processed to update the context.</p></li>
+<li><p>Finally the data to hash is padded with a fix pattern and the data length. The context is updated accordingly. The digest consists in the last value of the 64-byte context.</p></li>
+</ul>
+</div></blockquote>
+<p>The step by step functions allow to perform SHA512 in several steps. Especially it permits to provide the data by block of any size.</p>
+<p>The set of functions is constituted of 3 functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>An initialization function that initializes the context.</p></li>
+<li><p>An update function that accumulates the input data and processes the data as soon as 128 bytes are accumulated.</p></li>
+<li><p>A final function that performs the padding and computes the final digest.</p></li>
+</ul>
+</div></blockquote>
+<p>Next image shows the principle of the step by step functions:</p>
+<blockquote>
+<div><img alt="_images/SHA512_Steps.png" src="_images/SHA512_Steps.png" />
+</div></blockquote>
+</section>
+<section id="context">
+<h4>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h4>
+<p>SHA512_CTX is a structure that accumulates the intermediate data necessary to the hash computation.
+It is defined as follows in SHA512_CTX.</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410SHA512_CTX">
+<span id="_CPPv310SHA512_CTX"></span><span id="_CPPv210SHA512_CTX"></span><span id="SHA512_CTX"></span><span class="target" id="struct_s_h_a512___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_CTX</span></span></span><a class="headerlink" href="#_CPPv410SHA512_CTX" title="Permalink to this definition"></a><br /></dt>
+<dd><p>SHA512 context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX4HashE">
+<span id="_CPPv3N10SHA512_CTX4HashE"></span><span id="_CPPv2N10SHA512_CTX4HashE"></span><span id="SHA512_CTX::Hash__uint32_tA"></span><span class="target" id="struct_s_h_a512___c_t_x_1a762b4054795a781603226f969c9641fe"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hash</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">SHA512_DIGEST_SIZE</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX4HashE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Digest buffer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX5BlockE">
+<span id="_CPPv3N10SHA512_CTX5BlockE"></span><span id="_CPPv2N10SHA512_CTX5BlockE"></span><span id="SHA512_CTX::Block__uint8_tA"></span><span class="target" id="struct_s_h_a512___c_t_x_1aece6c6ec258d47f6d297d7f9378ad9e4"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Block</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">SHA512_BLOCK_SIZE</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX5BlockE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Working buffer to accumulate data to hash </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX10MessageLenE">
+<span id="_CPPv3N10SHA512_CTX10MessageLenE"></span><span id="_CPPv2N10SHA512_CTX10MessageLenE"></span><span id="SHA512_CTX::MessageLen__uint32_t"></span><span class="target" id="struct_s_h_a512___c_t_x_1ad1f9f46b29d15504a8a736e13432d8f1"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageLen</span></span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX10MessageLenE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Size in bytes of the message accumulated till now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX5IndexE">
+<span id="_CPPv3N10SHA512_CTX5IndexE"></span><span id="_CPPv2N10SHA512_CTX5IndexE"></span><span id="SHA512_CTX::Index__uint8_t"></span><span class="target" id="struct_s_h_a512___c_t_x_1a4643caac8775c9b775161873e1820d1c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX5IndexE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Size of the data accumulated in the Block buffer </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="sha512init">
+<h4>SHA512Init<a class="headerlink" href="#sha512init" title="Permalink to this headline"></a></h4>
+<section id="id1">
+<h5>Function<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h5>
+<p>This function initializes a SHA512 computation. It initializes the SHA512_CTX.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410SHA512InitP10SHA512_CTX">
+<span id="_CPPv310SHA512InitP10SHA512_CTX"></span><span id="_CPPv210SHA512InitP10SHA512_CTX"></span><span id="SHA512Init__SHA512_CTXP"></span><span class="target" id="group___s_h_a512_1ga5bf03a0e211c5df19bc524a871249f05"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512Init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA512_CTX" title="SHA512_CTX"><span class="n"><span class="pre">SHA512_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410SHA512InitP10SHA512_CTX" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initializes a SHA512 computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ctx</strong> – <strong>[out]</strong> SHA512 context </p>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><p><strong>SHA512_SUCCESS</strong> – Successful initialization </p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>ctx</strong> : a SHA512 context</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>Return values<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SHA512_SUCCESS</p></td>
+<td><p>SHA512 successfully initialized.</p></td>
+<td><p>OK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sha512update">
+<h4>SHA512Update<a class="headerlink" href="#sha512update" title="Permalink to this headline"></a></h4>
+<section id="id4">
+<h5>Function<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h5>
+<p>This function processes the data provided by pbInput buffer. It accumulates the data in the context until the block is full (128 bytes). If the block is full, the data are hashed and the 64-byte long context is updated. The inputLength can be any size from 0x00 (included) to 0xFFFFFFFF.
+One will usually call SHA512Update several times. All the bytes of the message must be processed SHA512Update, including the potential incomplete block. On the other hand, the padding should not be provided to SHA512Update.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t">
+<span id="_CPPv312SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t"></span><span id="_CPPv212SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t"></span><span id="SHA512Update__SHA512_CTXP.uint8_tP.uint32_t"></span><span class="target" id="group___s_h_a512_1ga6ab00f9363f777bddc1cb05248690471"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512Update</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA512_CTX" title="SHA512_CTX"><span class="n"><span class="pre">SHA512_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbInput</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">InputLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> SHA-512 context </p></li>
+<li><p><strong>pbInput</strong> – <strong>[in]</strong> data to hash </p></li>
+<li><p><strong>InputLength</strong> – <strong>[inout]</strong> length of the data pointed by pbInput (in byte) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><p><strong>SHA512_SUCCESS</strong> – Successful computation </p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>ctx</strong> : a SHA512 context that was initialized previously.</p></li>
+<li><p><strong>pbInput</strong> : data to hash of length InputLength</p></li>
+<li><p><strong>InputLength</strong> : length in bytes of the data (from 0x00 to 0xFFFFFFFF)</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>Return values<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SHA512_SUCCESS</p></td>
+<td><p>SHA512 update successful</p></td>
+<td><p>OK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sha512final">
+<h4>SHA512Final<a class="headerlink" href="#sha512final" title="Permalink to this headline"></a></h4>
+<section id="id7">
+<h5>Function<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h5>
+<p>SHA512Final adds the final padding and processes the context a final time to produce the digest.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411SHA512FinalP10SHA512_CTXP7uint8_t">
+<span id="_CPPv311SHA512FinalP10SHA512_CTXP7uint8_t"></span><span id="_CPPv211SHA512FinalP10SHA512_CTXP7uint8_t"></span><span id="SHA512Final__SHA512_CTXP.uint8_tP"></span><span class="target" id="group___s_h_a512_1ga4947fddec5a170e3adf2833103dad163"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512Final</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA512_CTX" title="SHA512_CTX"><span class="n"><span class="pre">SHA512_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbResult</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411SHA512FinalP10SHA512_CTXP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[in]</strong> SHA512 context </p></li>
+<li><p><strong>pbResult</strong> – <strong>[out]</strong> Final digest (64 bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA512_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA512_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>ctx</strong> : a SHA512 context that was initialized previously.</p></li>
+<li><p><strong>pbResult</strong> : pointer on the 64-byte hash digest</p></li>
+</ul>
+</section>
+<section id="id9">
+<h4>Return values<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SHA512_SUCCESS</p></td>
+<td><p>SHA512 update successfull.</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHA512_INCORRECT_RESULT_POINTER</p></td>
+<td><p>pbResult is null pointer</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="performances">
+<h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1996 bytes in ROM for the SHA512 module</p></td>
+</tr>
+<tr class="row-odd"><td><p>In addition, the generic hash framework is 564 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No usage of global RAM except the SHA512_CTX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Approximatively 384 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="execution-time">
+<h3>Execution time<a class="headerlink" href="#execution-time" title="Permalink to this headline"></a></h3>
+<p>The execution time of SHA512 naturally depends on the length of the message to hash.
+The data being processed by blocks of 128 bytes, the time will essentially depend on the number of 128-byte blocks the message has. Nonetheless for small data, one will take care that, due to the padding, an extra block may be added.</p>
+<p>The next table shows the number of processed block(s) for various message lengths as example.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Data length in bytes</p></th>
+<th class="head"><p>Number of processed blocks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>111</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>112</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>128</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>256</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>1024</p></td>
+<td><p>9</p></td>
+</tr>
+</tbody>
+</table>
+<p>The performances of each function are given in the next table.</p>
+<p>For the SHA512Update, besides the fact that it depends on the data length, it also depends on the amount of data already accumulated. The process of an extra 128-byte block may be necessary or not.</p>
+<p>For the SHA512Final, 1 or 2 blocks must be processed depending on the overall length of the data to digest.</p>
+<p>For the SHA512 API, it also depends on the data length.
+All together, the processing time of one 128-byte block is the most relevant figure.</p>
+<p>Next table gives some examples of execution time.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Number of cycles</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Process of 1 128-byte block</p></td>
+<td><p>89240</p></td>
+<td><p>1864</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHA512Init</p></td>
+<td><p>211</p></td>
+<td><p>4.39</p></td>
+</tr>
+<tr class="row-even"><td><p>SHA512Update(for 128 bytes)</p></td>
+<td><p>89240</p></td>
+<td><p>1863</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHA512Final(for 1 block processed)</p></td>
+<td><p>87674</p></td>
+<td><p>1926</p></td>
+</tr>
+<tr class="row-even"><td><p>SHA512(for 112 bytes)</p></td>
+<td><p>89495</p></td>
+<td><p>1864</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<p>SHA512 lib depends on the generic hash framework library <strong>hash.lib</strong>.</p>
+<p>Note that SHA384 and SHA512 algorithms are included in the same library.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @file       ExampleSHA512.c</span>
+<span class="c1">///</span>
+<span class="c1">/// @project    T9305</span>
+<span class="c1">///</span>
+<span class="c1">/// @author     SAS</span>
+<span class="c1">///</span>
+<span class="c1">/// @brief   	Example of use of SHA512 library</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @copyright Copyright (C) 2022 EM Microelectronic</span>
+<span class="c1">/// @cond</span>
+<span class="c1">///</span>
+<span class="c1">/// All rights reserved.</span>
+<span class="c1">///</span>
+<span class="c1">/// Redistribution and use in source and binary forms, with or without</span>
+<span class="c1">/// modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">/// 1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer.</span>
+<span class="c1">/// 2. Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1">/// and/or other materials provided with the distribution.</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="c1">/// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="c1">/// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="c1">/// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span>
+<span class="c1">/// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span>
+<span class="c1">/// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<span class="c1">/// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<span class="c1">/// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="c1">/// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<span class="c1">/// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="c1">/// POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">/// @endcond</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;SHA512.h&quot;</span><span class="cp"></span>
+
+<span class="cm">/*******************************************************************************</span>
+<span class="cm"> Function: ExampleSHA512</span>
+
+<span class="cm"> Basic example of use of the SHA512 library</span>
+
+<span class="cm"> Return:</span>
+<span class="cm"> 0 if everything is ok</span>
+<span class="cm"> 1 otherwise</span>
+
+<span class="cm"> Remark 1:</span>
+<span class="cm"> SHA512 uses the generic hash Engine SHA_ARC.lib. Therefore, to call SHA512 one needs:</span>
+<span class="cm"> - SHA_ARC.lib</span>
+<span class="cm"> - SHA384_512_ARC.lib</span>
+
+<span class="cm"> Remark 2:</span>
+<span class="cm"> Two kinds of APIs are supported:</span>
+<span class="cm"> * SHA512 API allows to perform a SHA512 hash in one step</span>
+<span class="cm"> * SHA512Init, SHA512Update, SHA512Final allow to hash a message step by step.</span>
+
+<span class="cm"> *******************************************************************************/</span><span class="w"></span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">ExampleSHA512</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Digest</span><span class="p">[</span><span class="n">SHA512_DIGEST_SIZE</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">SHA512_CTX</span><span class="w"> </span><span class="n">MyCtx</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">SHA512_Lib_error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+
+<span class="cp">#define MESSAGE_LEN 112</span>
+
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Message</span><span class="p">[</span><span class="n">MESSAGE_LEN</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x61</span><span class="p">,</span><span class="w"> </span><span class="mh">0x62</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63</span><span class="p">,</span><span class="w"> </span><span class="mh">0x64</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x62</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63</span><span class="p">,</span><span class="w"> </span><span class="mh">0x64</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x64</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x64</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0x72</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x72</span><span class="p">,</span><span class="w"> </span><span class="mh">0x73</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0x72</span><span class="p">,</span><span class="w"> </span><span class="mh">0x73</span><span class="p">,</span><span class="w"> </span><span class="mh">0x74</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0x72</span><span class="p">,</span><span class="w"> </span><span class="mh">0x73</span><span class="p">,</span><span class="w"> </span><span class="mh">0x74</span><span class="p">,</span><span class="w"> </span><span class="mh">0x75</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ExpectedResult</span><span class="p">[</span><span class="n">SHA512_DIGEST_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x8e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x95</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x75</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xda</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x13</span><span class="p">,</span><span class="w"> </span><span class="mh">0xda</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x14</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x3f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x79</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x72</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xae</span><span class="p">,</span><span class="w"> </span><span class="mh">0xad</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x90</span><span class="p">,</span><span class="w"> </span><span class="mh">0x18</span><span class="p">,</span><span class="w"> </span><span class="mh">0x50</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x49</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf7</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x33</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99</span><span class="p">,</span><span class="w"> </span><span class="mh">0xde</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x43</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3a</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xc7</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x29</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x26</span><span class="p">,</span><span class="w"> </span><span class="mh">0x54</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x96</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe5</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x5b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x87</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Example 1: we perform the computation in one step</span>
+<span class="w">	</span><span class="c1">//--------------------------------------------------</span>
+<span class="w">	</span><span class="c1">//perform the computation in one step</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512</span><span class="p">((</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Message</span><span class="p">,</span><span class="w"> </span><span class="n">Digest</span><span class="p">,</span><span class="w"> </span><span class="n">MESSAGE_LEN</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//compare the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SHA512_DIGEST_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Digest</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedResult</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Example 2: we perform the computation in several steps</span>
+<span class="w">	</span><span class="c1">//------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Note that in the two following examples, the size of the cuts message is purely</span>
+<span class="w">	</span><span class="c1">// arbitrary for the sake of examples. Any size, including 0 is allowed.</span>
+
+<span class="w">	</span><span class="c1">//Example 2a. We first perform the update 64 bytes per 64 bytes.</span>
+<span class="w">	</span><span class="c1">//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span>
+<span class="w">	</span><span class="c1">//init</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyCtx</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//accumulate and perform computation of first 64 bytes</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512Update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyCtx</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Message</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="mi">64</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//continue on the next 112-64 following bytes</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512Update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyCtx</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Message</span><span class="p">[</span><span class="mi">64</span><span class="p">],</span><span class="w"> </span><span class="n">MESSAGE_LEN</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">64</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//finalize the computation and get the result</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512Final</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyCtx</span><span class="p">,</span><span class="w"> </span><span class="n">Digest</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//compare the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SHA512_DIGEST_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Digest</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedResult</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Example 2b. We first perform the update 16 bytes per 16 bytes.</span>
+<span class="w">	</span><span class="c1">//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</span>
+<span class="w">	</span><span class="c1">//init</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyCtx</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//accumulate and perform computation on 16 bytes</span>
+<span class="w">		</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512Update</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyCtx</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Message</span><span class="p">[</span><span class="mi">16</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">			</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//finalize the computation and get the result</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SHA512Final</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyCtx</span><span class="p">,</span><span class="w"> </span><span class="n">Digest</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SHA512_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//compare the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SHA512_DIGEST_SIZE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Digest</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedResult</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//final status of the test</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SHA384.html" class="btn btn-neutral float-left" title="SHA384" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

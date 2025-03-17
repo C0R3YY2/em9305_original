@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Temperature Indicator Library &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="UART Driver" href="../uart/index.html" />
+    <link rel="prev" title="SPI Slave Driver" href="../spi_slave/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Temperature Indicator Library</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Temperature Indicator Library</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="temperature-indicator-library">
+<h1>Temperature Indicator Library<a class="headerlink" href="#temperature-indicator-library" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Temperature indicator library provides a way to get the device temperature
+with an accuracy of ± 5 °C using Low Frequency RC Low Power (LF-RC LP).</p>
+<p>It needs calibration data written in user nvm info page.</p>
+<section id="how-does-it-work">
+<h3>How does it work ?<a class="headerlink" href="#how-does-it-work" title="Link to this heading"></a></h3>
+<p>Due to the fact that the LF-RC LP is not temperature compensated, it is actually
+used to compute the device temperature.</p>
+<p>The Temperature Indicator uses the LF-RC Low Power oscillator and measures his frequency
+with RC Calibration hardware. The number of clock of HF-XTAL is counted in order to
+determine the LF-RC LP frequency.</p>
+<p>The RC calibration stops counting the HF-XTAL clock when it reaches a certain
+number of LF-RC LP clocks. It then generates an ISR. In the interrupt handler,
+the driver reads the number of counted clock cycles and computes the LF-RC LP frequency.</p>
+<p>The HF-XTAL is started by the driver automatically.</p>
+<p>The temperature calculation relies on the use of the RC calibration HW unit.
+However, this unit might also be used to periodically calibrate the LF-RC and
+during this process it is not available for any other calibration.
+Thus, calibrating the LF-RC LP might be delayed.</p>
+<p>For this reason, the API is asynchronous using a callback mechanism.</p>
+</section>
+<section id="hf-xtal">
+<h3>HF-XTAL<a class="headerlink" href="#hf-xtal" title="Link to this heading"></a></h3>
+<p>The HF-XTAL is mandatory when using the temperature indicator driver.</p>
+</section>
+<section id="temperature-indicator-driver-registration">
+<h3>Temperature Indicator Driver registration<a class="headerlink" href="#temperature-indicator-driver-registration" title="Link to this heading"></a></h3>
+<p>Temperature Indicator Driver shall be registered in NVM_ConfigModules() function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;temperature_indicator.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">TI_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="temperature-indicator-callback">
+<h3>Temperature Indicator callback<a class="headerlink" href="#temperature-indicator-callback" title="Link to this heading"></a></h3>
+<p>The temperature indicator works in a asynchronous way because the frequency
+measurement takes time and the calibration with LF-RC LP cannot be done when
+LF-RC calibration is in progress.</p>
+<p>A callback shall be provided to the driver which will be called when the
+measurement is finished.</p>
+<p>The callback is called from an interrupt context (RC Calibration),
+in case of QP/C usage, an event shall be posted to the task to be
+informed that a new measurement is available.</p>
+<p>The temperature is provided as a parameter of the user callback.
+Moreover, an API is also available to get the last measurement.</p>
+<p>The temperature measurement is in °C.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;temperature_indicator.h&quot;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief Temperature Indicator callback</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">TI_Callback</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">QK_ISR_ENTRY</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Post an event to the task.</span>
+<span class="w">    </span><span class="n">QEventParams</span><span class="o">*</span><span class="w"> </span><span class="n">pEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">QEventParams</span><span class="o">*</span><span class="p">)</span><span class="n">Q_NEW</span><span class="p">(</span><span class="n">QEventParams</span><span class="p">,</span><span class="w"> </span><span class="n">SIG_TEMP_INDICATOR_ISR</span><span class="p">);</span>
+<span class="w">    </span><span class="n">pEvent</span><span class="o">-&gt;</span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">temperature</span><span class="p">;</span>
+<span class="w">    </span><span class="n">QACTIVE_POST</span><span class="p">(</span><span class="o">&amp;</span><span class="n">AO_Task</span><span class="p">.</span><span class="n">super</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">QEvt</span><span class="o">*</span><span class="p">)</span><span class="n">pEvent</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">QK_ISR_EXIT</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="n">TI_SetMeasurementCallback</span><span class="p">(</span><span class="n">TI_Callback</span><span class="p">);</span>
+
+<span class="p">...</span>
+</pre></div>
+</div>
+</section>
+<section id="start-the-temperature-measurement">
+<h3>Start the temperature measurement<a class="headerlink" href="#start-the-temperature-measurement" title="Link to this heading"></a></h3>
+<p>The TI_StartMeasure API returns false if there is no callback provided
+to the driver. This API just ask the driver to start the temperature
+measurement. This measurement is started when the system check if it
+can go to sleep and if there is no LF-RC calibration running.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="n">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TI_StartMeasure</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>When the task receive the event, the result can be read with
+TI_GetLastTemperature() API.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span><span class="no">SIG_TEMP_INDIC_ISR</span><span class="p">:</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Get temperature from parameter of event</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="p">((</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">pEvent</span><span class="o">-&gt;</span><span class="n">params</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// The API TI_GetLastTemperature(void); can also</span>
+<span class="w">    </span><span class="c1">// be used to get the last temperature measurement.</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Temperature = %.1f C</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">temperature</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">break</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="calibration">
+<h3>Calibration<a class="headerlink" href="#calibration" title="Link to this heading"></a></h3>
+<p>The Temperature Indicator is not factory calibrated. The frequency of LF-RC LP
+shall be measured at two different temperature and a linear regression shall be
+done to compute the coefficient and offset.</p>
+<p>The temperature is computed from the following formula.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">coefficient</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">frequency</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The calibration data shall be written in NVM Info Page 2 (User) and is
+read by the driver at power up of the system.</p>
+<p>There are two address definitions in nvm_info.h header file that are used
+to locate the calibration data.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define NVM_INFO_P2_TI_CALIBRATION_ADDR       (MEMORY_NVMINFO_START + 0x4F58)</span>
+<span class="cp">#define NVM_INFO_P2_TI_CALIBRATION_BLOCK_ADDR (MEMORY_NVMINFO_START + 0x4F50)</span>
+</pre></div>
+</div>
+<p>Calibration data address table.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">NVM Info page 2 calibration data</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Data</p></th>
+<th class="head"><p>Address</p></th>
+<th class="head"><p>Format</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Length</p></td>
+<td><p>0x4F50</p></td>
+<td><p>uint32_t</p></td>
+</tr>
+<tr class="row-odd"><td><p>CRC</p></td>
+<td><p>0x4F54</p></td>
+<td><p>uint32_t</p></td>
+</tr>
+<tr class="row-even"><td><p>Coefficient</p></td>
+<td><p>0x4F58</p></td>
+<td><p>float</p></td>
+</tr>
+<tr class="row-odd"><td><p>Offset</p></td>
+<td><p>0x4F5C</p></td>
+<td><p>float</p></td>
+</tr>
+</tbody>
+</table>
+<p>Data shall be written in little endian in NVM Info page.</p>
+<p>The float values are the IEEE-754 representation of
+single precision float used by the FPU (32 bits).</p>
+<p>A float converter is available on the following link.</p>
+<p><a class="reference external" href="https://www.h-schmidt.net/FloatConverter/IEEE754de.html">https://www.h-schmidt.net/FloatConverter/IEEE754de.html</a></p>
+<p>The Temperature Indicator driver provides an API to check
+if calibration data are available and valid in NVM Info Page.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="n">isCalibrated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TI_IsCalibrated</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>When executing calibration, the frequency of LF-RC LP can be
+read with the TI_GetFrequency() API. The frequency is in fixed
+point 24.8 format.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Frequency in fixed point format 24.8</span>
+<span class="kt">uint32_t</span><span class="w"> </span><span class="n">frequency_fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TI_GetFrequency</span><span class="p">();</span>
+
+<span class="c1">// Frequency in Hz in single precision float</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">frequency_fp</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)((</span><span class="n">frequency_fp</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">256.0f</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d6/d13/group__temperature__indicator"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">temperature_indicator</span></span></dt>
+<dd><p>Library for Temperature Indicator. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413TI_Callback_t">
+<span id="_CPPv313TI_Callback_t"></span><span id="_CPPv213TI_Callback_t"></span><span id="TI_Callback_t"></span><span class="target" id="d6/d13/group__temperature__indicator_1gadca55d1d0bfc25647a4a6c6699572381"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">TI_Callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv413TI_Callback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Type for any functions that are called due to a TI event. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This callback is called in an interrupt context. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Param temperature<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Temperature in degree celsius computed by the library. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417TI_RegisterModulev">
+<span id="_CPPv317TI_RegisterModulev"></span><span id="_CPPv217TI_RegisterModulev"></span><span id="TI_RegisterModule__void"></span><span class="target" id="d6/d13/group__temperature__indicator_1gaf2386bd33ea7a5cccff1943f298ca0a2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TI_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417TI_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the TI (Temperature Indicator) module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425TI_SetMeasurementCallback13TI_Callback_t">
+<span id="_CPPv325TI_SetMeasurementCallback13TI_Callback_t"></span><span id="_CPPv225TI_SetMeasurementCallback13TI_Callback_t"></span><span id="TI_SetMeasurementCallback__TI_Callback_t"></span><span class="target" id="d6/d13/group__temperature__indicator_1gafb8161a98022c6ef57abb8a63930c85e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TI_SetMeasurementCallback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413TI_Callback_t" title="TI_Callback_t"><span class="n"><span class="pre">TI_Callback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425TI_SetMeasurementCallback13TI_Callback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set Measurement callback which will be called when temperature has been computed from LF-RC LP calibration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – A user defined callback function that is called when the temperature measurement is complete. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415TI_StartMeasurev">
+<span id="_CPPv315TI_StartMeasurev"></span><span id="_CPPv215TI_StartMeasurev"></span><span id="TI_StartMeasure__void"></span><span class="target" id="d6/d13/group__temperature__indicator_1gadbeec40f6761167fc9e0e11c94de5201"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TI_StartMeasure</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415TI_StartMeasurev" title="Link to this definition"></a><br /></dt>
+<dd><p>Start a measurement. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if successfully started </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421TI_GetLastTemperaturev">
+<span id="_CPPv321TI_GetLastTemperaturev"></span><span id="_CPPv221TI_GetLastTemperaturev"></span><span id="TI_GetLastTemperature__void"></span><span class="target" id="d6/d13/group__temperature__indicator_1gac082c38438edf5bc64dd427b4315a179"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TI_GetLastTemperature</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421TI_GetLastTemperaturev" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the last temperature measurement. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The last temperature measurement in degree celsius </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415TI_GetFrequencyv">
+<span id="_CPPv315TI_GetFrequencyv"></span><span id="_CPPv215TI_GetFrequencyv"></span><span id="TI_GetFrequency__void"></span><span class="target" id="d6/d13/group__temperature__indicator_1gaeeaa9bed2d6ac31cc86a9a7e058c401f"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TI_GetFrequency</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415TI_GetFrequencyv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the LF-RC LP frequency measured. Used when doing calibration to compute coefficient and offset. The frequency is in fixed point 24.8 format in Hz unit. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The last frequency measurement in fixed point 24.8 (Hz) </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415TI_IsCalibratedv">
+<span id="_CPPv315TI_IsCalibratedv"></span><span id="_CPPv215TI_IsCalibratedv"></span><span id="TI_IsCalibrated__void"></span><span class="target" id="d6/d13/group__temperature__indicator_1ga92c547dd0d4d9a82603143ba82fe147b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TI_IsCalibrated</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415TI_IsCalibratedv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the calibration state, return true if valid calibration data have been found in nvm info page. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if driver has found valid calibration data in nvm info page </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv418TI_Configuration_t">
+<span id="_CPPv318TI_Configuration_t"></span><span id="_CPPv218TI_Configuration_t"></span><span id="TI_Configuration_t"></span><span class="target" id="de/deb/struct_t_i___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TI_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv418TI_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;temperature_indicator.h&gt;</em></div>
+<p>TI configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18TI_Configuration_t12moduleConfigE">
+<span id="_CPPv3N18TI_Configuration_t12moduleConfigE"></span><span id="_CPPv2N18TI_Configuration_t12moduleConfigE"></span><span id="TI_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="de/deb/struct_t_i___configuration__t_1a5456a4b461f364f6d8dd48cedfc23571"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N18TI_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18TI_Configuration_t14lfCounterLimitE">
+<span id="_CPPv3N18TI_Configuration_t14lfCounterLimitE"></span><span id="_CPPv2N18TI_Configuration_t14lfCounterLimitE"></span><span id="TI_Configuration_t::lfCounterLimit__uint32_t"></span><span class="target" id="de/deb/struct_t_i___configuration__t_1a0c6bf2b133ec62a6374ae0c2e1fb316d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lfCounterLimit</span></span></span><a class="headerlink" href="#_CPPv4N18TI_Configuration_t14lfCounterLimitE" title="Link to this definition"></a><br /></dt>
+<dd><p>LF Counter Limit used for LF-RC LP calibration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18TI_Configuration_t14hfCounterLimitE">
+<span id="_CPPv3N18TI_Configuration_t14hfCounterLimitE"></span><span id="_CPPv2N18TI_Configuration_t14hfCounterLimitE"></span><span id="TI_Configuration_t::hfCounterLimit__uint32_t"></span><span class="target" id="de/deb/struct_t_i___configuration__t_1a78f608dddb26265633ab1e7922c34a72"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hfCounterLimit</span></span></span><a class="headerlink" href="#_CPPv4N18TI_Configuration_t14hfCounterLimitE" title="Link to this definition"></a><br /></dt>
+<dd><p>HF Counter Limit used for LF-RC LP calibration. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0-0">
+<h3>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The Temperature indicator library provides a way to get the device temperature
+with an accuracy of ± 5 °C using Low Frequency RC Low Power (LF-RC LP).</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../spi_slave/index.html" class="btn btn-neutral float-left" title="SPI Slave Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../uart/index.html" class="btn btn-neutral float-right" title="UART Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

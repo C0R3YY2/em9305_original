@@ -1,0 +1,80 @@
+#include <unit_test.h>
+
+#include <arc.h>
+
+
+DEFINE_TEST_RUN(GROUP_01, TEST_01)
+DEFINE_TEST_RUN(GROUP_01, TEST_02)
+DEFINE_TEST_RUN(GROUP_02, TEST_01)
+DEFINE_TEST_RUN(GROUP_02, TEST_02)
+
+test_list_t GROUP_01_tests[] =
+{
+    TEST_RUN_SIMPLE_FUNC(GROUP_01, TEST_01),
+    TEST_RUN_SIMPLE_FUNC(GROUP_01, TEST_02),
+    TEST_LIST_END(),
+};
+
+test_list_t GROUP_02_tests[] =
+{
+    TEST_RUN_SIMPLE_FUNC(GROUP_02, TEST_01),
+    TEST_RUN_SIMPLE_FUNC(GROUP_02, TEST_02),
+    TEST_LIST_END(),
+};
+
+
+TEST_GROUP(GROUP_01);
+
+TEST_SETUP(GROUP_01)
+{
+
+}
+
+TEST_TEAR_DOWN(GROUP_01)
+{
+
+}
+
+TEST_GROUP(GROUP_02);
+
+TEST_SETUP(GROUP_02)
+{
+
+}
+
+TEST_TEAR_DOWN(GROUP_02)
+{
+
+}
+
+
+/**
+ * \brief Unit Test Tester :-)
+ */
+
+int sum1(int a, int b)
+{
+  return a+b;
+}
+
+TEST(GROUP_01, TEST_01)
+{
+  TEST_ASSERT_EQUAL(sum1(2,8),10);
+}
+
+IGNORE_TEST(GROUP_01, TEST_02);
+/*
+TEST(GROUP_01, TEST_02)
+{
+  TEST_ASSERT_EQUAL(sum1(2,-8),-6);
+}
+*/
+TEST(GROUP_02, TEST_01)
+{
+  TEST_ASSERT_EQUAL(sum1(-2,8),6);
+}
+
+TEST(GROUP_02, TEST_02)
+{
+  TEST_ASSERT_EQUAL(sum1(-2,-8),-10);
+}

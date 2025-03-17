@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The PML (<em>Power Management Logic</em>) driver provides functionalities to configure the power management logic unit of the EM9305.</p>
+<p>This includes management of power domains, sleep mode, wakeup and flags handling for EM Core, Bootloader or Application boot.</p>
+<section id="global-configuration-structure">
+<h2>Global configuration structure<a class="headerlink" href="#global-configuration-structure" title="Link to this heading"></a></h2>
+<p>The PML driver defines a global volatile structure named <code class="docutils literal notranslate"><span class="pre">gPML_Config</span></code>. This structure can be directly accessed after having
+included the <code class="docutils literal notranslate"><span class="pre">pml.h</span></code> file from within an application.</p>
+<p>This global structure gives access to several fields that are used to configure the device behavior like source or accuracy of the clock for example, or anything related to clock calibration and sleep mode. Refer to the <code class="docutils literal notranslate"><span class="pre">pml.h</span></code> file provided in the SDK for more details on this structure.
+The Implementer’s Guide also contains a comprehensive description of all this structure’s fields in the PML dedicated chapter.</p>
+</section>
+<section id="power-domain">
+<h2>Power domain<a class="headerlink" href="#power-domain" title="Link to this heading"></a></h2>
+<p>There are two power domains which can be enabled / disabled by the PML:</p>
+<ul class="simple">
+<li><p>NVM</p></li>
+<li><p>QDEC</p></li>
+</ul>
+<p>For each domain, there are two functions available to power ON the corresponding domain.
+One function activates a domain and actively waits for it to be ON (synchronous activation function),
+and one function that activates a domain but immediatly returns without waiting for the domain to be ON
+(asynchronous function).</p>
+<p>The following power domain <code class="docutils literal notranslate"><span class="pre">define</span></code> statements shall be used for identifying the power domain to control
+through the use of the two above mentioned functions:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">/// Enable VDD NVM domain</span>
+<span class="cp">#define PML_VDD_NVM    PML_NVM_REQ_ON_R(1)</span>
+
+<span class="c1">/// Enable VDD QDEC domain</span>
+<span class="cp">#define PML_VDD_QDEC   PML_QDEC_REQ_ON_R(1)</span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">PML_EnableVddDomain()</span></code> waits for the power domain to be ready. Its prototype is the following:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Turn on/off selected voltage domain.</span>
+<span class="cm"> * @param domain PML_VDD_NVM - select VDD9 domain</span>
+<span class="cm"> *               PML_VDD_QDEC - select VDD0 domain</span>
+<span class="cm"> *               note that input domain can be ORed</span>
+<span class="cm"> *                   (e.g. PML_VDD_NVM | PML_VDD_QDEC)</span>
+<span class="cm"> * @param enable TRUE switch selected domain on</span>
+<span class="cm"> *               FALSE switch selected domain off</span>
+<span class="cm"> * @note</span>
+<span class="cm"> *   This function is blocking, it waits till the selected</span>
+<span class="cm"> *   domain is switched on or off.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">PML_EnableVddDomain</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It switches ON/OFF the power domain and waits for it to reach the requested state before returning.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">PML_EnableVddDomainNonBlocking()</span></code> is another way to enable or disable a power domain without
+waiting. Once called, this function will immediatly return back to the caller. It can be used when some initialization
+actions can be done before a power domain is fully activated. For example, the NVM power domain can be switched ON but
+knowing it takes some time, the initialization process can continue to do something else not related to the NVM.
+Here is the prototype of this function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Turn on/off selected voltage domain.</span>
+<span class="cm"> * @param domain PML_VDD_NVM - select VDD9 domain</span>
+<span class="cm"> *               PML_VDD_QDEC - select VDD0 domain</span>
+<span class="cm"> *               note that input domain can be ORed</span>
+<span class="cm"> *                   (e.g. PML_VDD_NVM | PML_VDD_QDEC)</span>
+<span class="cm"> * @param enable TRUE switch selected domain on</span>
+<span class="cm"> *               FALSE switch selected domain off</span>
+<span class="cm"> * @note</span>
+<span class="cm"> *   This function is non-blocking.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">PML_EnableVddDomainNonBlocking</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When using the asynchronous domain control function, at some point, it might be requested to actually know if the
+power domain has been fully enabled before accessing the device (e.g. the NVM). If there are no other operation that
+could be done in parallel, then the function <code class="docutils literal notranslate"><span class="pre">PML_EnableVddDomainWait()</span></code> can be called. It will actively wait for
+the clock domain to be in the requested state. If this never happens, then the device will be stuck in this function
+since there is no timeout mechanism to force exiting it.</p>
+<p>Its prototype is the following:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Wait till domain is really turn on/off.</span>
+<span class="cm"> * @param domain PML_VDD_NVM - select VDD9 domain</span>
+<span class="cm"> *               PML_VDD_QDEC - select VDD0 domain</span>
+<span class="cm"> *               note that input domain can be ORed</span>
+<span class="cm"> *                   (e.g. PML_VDD_NVM | PML_VDD_QDEC)</span>
+<span class="cm"> * @param enable TRUE switch selected domain on</span>
+<span class="cm"> *               FALSE switch selected domain off</span>
+<span class="cm"> * @note</span>
+<span class="cm"> *   This function just waits till the selected</span>
+<span class="cm"> *   domain is switch on.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">PML_EnableVddDomainWait</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">enable</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="coil-configuration">
+<h2>Coil configuration<a class="headerlink" href="#coil-configuration" title="Link to this heading"></a></h2>
+<p>By default the software use a Coil configuration of 4.7 uH. If the system use a coil of 2.2 uH,
+this configuration shall be set in NVM_ConfigModules function of the application.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// System use a Coil of 2.2 uH, by default software use 4.7 uH.</span>
+<span class="w">    </span><span class="n">PML_SetDcdcCoil</span><span class="p">(</span><span class="n">COIL_2_2_UH</span><span class="p">);</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="clock-domain">
+<h2>Clock domain<a class="headerlink" href="#clock-domain" title="Link to this heading"></a></h2>
+<p>The HF (high frequency) Clock frequency can be set to run at 24 MHz or 48 MHz. By default, the CPU starts executing the ROM code at the
+frequency of 24 MHz and before switching to the NVM, it switches at a frequency of 48 MHz. This is done automatically
+by the ROM software. But in case changing the core frequency is needed, the function <code class="docutils literal notranslate"><span class="pre">PML_SetHfClkFrequency()</span></code> can be
+used.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief  HF clock frequency</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PML_HF_CLK_FREQ_24MHZ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">      </span><span class="cm">/**&lt; 24MHz */</span>
+<span class="w">    </span><span class="n">PML_HF_CLK_FREQ_48MHZ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">      </span><span class="cm">/**&lt; 48MHz */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">PML_HfClkFrequency_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Set HF clock frequency configuration.</span>
+<span class="cm"> * @param freq HF clock frequency to be set.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">PML_SetHfClkFrequency</span><span class="p">(</span><span class="n">PML_HfClkFrequency_t</span><span class="w"> </span><span class="n">freq</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is not recommended to switch frequency back to 24 MHz when using the BLE stack since
+the protocol timer has been sized to reach the BLE requirements with a 48 MHz clock.</p>
+</div>
+<p>There are two source clocks that can be used for HF Clock:</p>
+<ul class="simple">
+<li><p>HF-RC</p></li>
+<li><p>HF-XTAL</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">PML_HfClkSource_t</span></code> type shall be used to select the source clock:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief  HF clock source</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">/// RC</span>
+<span class="w">    </span><span class="n">PML_HF_CLK_RC</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">PML_SYS_MODE_ACTIVE_RC</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">/// XTAL</span>
+<span class="w">    </span><span class="n">PML_HF_CLK_XTAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PML_SYS_MODE_ACTIVE_XTAL</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">PML_HfClkSource_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Two functions are available to select the HF clock source.</p>
+<p>The first one <code class="docutils literal notranslate"><span class="pre">PML_SetHfClkSourceNonBlocking()</span></code> just starts the clock but doesn’t wait to be up and running.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Select HF clock oscillator: XTAL or RC</span>
+<span class="cm"> * @param hfClkSrc select oscillator:</span>
+<span class="cm"> *            PML_HF_CLK_RC   = RC</span>
+<span class="cm"> *            PML_HF_CLK_XTAL = XTAL</span>
+<span class="cm"> * @note This function is non blocking</span>
+<span class="cm"> *          - it does not wait till the clock source is switched</span>
+<span class="cm"> */</span>
+<span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">PML_SetHfClkSourceNonBlocking</span><span class="p">(</span><span class="n">PML_HfClkSource_t</span><span class="w"> </span><span class="n">hfClkSrc</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The second one <code class="docutils literal notranslate"><span class="pre">PML_SetHfClkSource()</span></code> waits for the clock source to be ready and then returns.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Select HF clock oscillator: XTAL or RC</span>
+<span class="cm"> * @param hfClkSrc select oscillator:</span>
+<span class="cm"> *            PML_HF_CLK_RC   = RC</span>
+<span class="cm"> *            PML_HF_CLK_XTAL = XTAL</span>
+<span class="cm"> * @note This function is blocking</span>
+<span class="cm"> *          - it waits till the clock source is switched</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">PML_SetHfClkSource</span><span class="p">(</span><span class="n">PML_HfClkSource_t</span><span class="w"> </span><span class="n">hfClkSrc</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Different LF (low frequency) Clock Source can be used, their IDs are defined in <code class="docutils literal notranslate"><span class="pre">PML_LfClkSource_t</span></code> structure.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief  LF Clk source modes</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">/// LF XTAL disabled</span>
+<span class="w">    </span><span class="n">PML_LF_CLK_XTAL_DIS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">/// LF XTAL enabled</span>
+<span class="w">    </span><span class="n">PML_LF_CLK_XTAL_EN</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">/// External square wave clock is used</span>
+<span class="w">    </span><span class="n">PML_LF_CLK_XTAL_SQ</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">/// External sine wave clock is used</span>
+<span class="w">    </span><span class="n">PML_LF_CLK_XTAL_SINE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">PML_LfClkSource_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">PML_SetLfClkSource()</span></code> selects the LF clock source and waits for the requested source to be up and running.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Select LF clock oscillator: XTAL or RC, SINE, SQUARE</span>
+<span class="cm"> * @param lfClkSrc select clk source:</span>
+<span class="cm"> *            PML_LF_CLK_XTAL_DIS  = Internal RC</span>
+<span class="cm"> *            PML_LF_CLK_XTAL_EN   = External XTAL</span>
+<span class="cm"> *            PML_LF_CLK_XTAL_SQ   = External source of square wave signal</span>
+<span class="cm"> *            PML_LF_CLK_XTAL_SINE = External source of sine wave signal</span>
+<span class="cm"> * @note This function is non blocking</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">PML_SetLfClkSource</span><span class="p">(</span><span class="n">PML_LfClkSource_t</span><span class="w"> </span><span class="n">lfClkSrc</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="clock-source-selection-in-pml-configuration">
+<h2>Clock Source selection in PML configuration<a class="headerlink" href="#clock-source-selection-in-pml-configuration" title="Link to this heading"></a></h2>
+<p>The clock source selection can be set in PML configuration structure. This is a global structure defined in <code class="docutils literal notranslate"><span class="pre">pml.h</span></code> header file.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// in pml.h</span>
+<span class="c1">/// PML configuration structure</span>
+<span class="k">extern</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="n">PML_Configuration_t</span><span class="w"> </span><span class="n">gPML_Config</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Then in <code class="docutils literal notranslate"><span class="pre">NVM_ConfigModules()</span></code> function, update the configuration of the PML.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Update gPML_Config structure here (example).</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkSourceType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PML_LF_CLK_XTAL_EN</span><span class="p">;</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The default configuration uses the LF-RC with calibration. Here is a more complete example.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Use LF-RC with calibration (default configuration)</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkSourceType</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PML_LF_CLK_XTAL_DIS</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkFreqRatioHf</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">589030</span><span class="p">;</span><span class="w">   </span><span class="c1">// 48MHz &amp; 500kHz/12</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkFreqRatioLf</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1023</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkSourceAccuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">250</span><span class="p">;</span><span class="w">      </span><span class="c1">// 250ppm</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibSkip</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">    </span><span class="c1">// Do not skip calibration</span>
+
+<span class="w">    </span><span class="c1">// LF-RC Calibration using LF Limit</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibHfLimit</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibLfLimit</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">48</span><span class="p">;</span><span class="w">       </span><span class="c1">// ~1200us @500kHz/12</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibPeriod</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">20600</span><span class="p">;</span><span class="w">    </span><span class="c1">// ~500ms for 500kHz/12</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibCorrection</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">-105</span><span class="p">;</span><span class="w">     </span><span class="c1">// -105ppm</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The LF-XTAL can also be used as a clock source. To select it, the application shall change the
+default PML configuration settings.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Use LF-XTAL without calibration</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkSourceType</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PML_LF_CLK_XTAL_EN</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkFreqRatioHf</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">46875</span><span class="p">;</span><span class="w">    </span><span class="c1">// 48MHz &amp; 32.768kHz</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkFreqRatioLf</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkSourceAccuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">150</span><span class="p">;</span><span class="w">      </span><span class="c1">// 150ppm</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibSkip</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">     </span><span class="c1">// Disable calibration</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The LF-XTAL calibration can be enabled and configured with more fine tuning parameters.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Use LF-XTAL with calibration</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkSourceType</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">PML_LF_CLK_XTAL_EN</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkFreqRatioHf</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">46875</span><span class="p">;</span><span class="w">    </span><span class="c1">// 48MHz &amp; 32.768kHz</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkFreqRatioLf</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">lfClkSourceAccuracy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span><span class="w">       </span><span class="c1">// 50ppm</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibSkip</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">    </span><span class="c1">// Do not skip calibration</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibHfLimit</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">38400</span><span class="p">;</span><span class="w">    </span><span class="c1">// 800us @48MHz</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibLfLimit</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibPeriod</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">16384</span><span class="p">;</span><span class="w">    </span><span class="c1">// 500ms @32kHz</span>
+<span class="w">    </span><span class="n">gPML_Config</span><span class="p">.</span><span class="n">rcCalibCorrection</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">        </span><span class="c1">// 0ppm</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="sleep-timer">
+<h2>Sleep Timer<a class="headerlink" href="#sleep-timer" title="Link to this heading"></a></h2>
+<p>The LF XTAL clock source can be selected for the sleep timer. It provides a better accuracy when it is used
+and less power consumption compared to HF clock source.
+To achieve that, the dedicated function <code class="docutils literal notranslate"><span class="pre">PML_UseLfXtalClk()</span></code> has called be called during the configuration
+stage.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Use LF XTAL/External clock for sleep timer</span>
+<span class="cm"> * @param enable TRUE use xtal/external clock, FALSE uses RC clock</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">PML_UseLfXtalClk</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">enable</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="entering-sleep-mode">
+<h2>Entering Sleep mode<a class="headerlink" href="#entering-sleep-mode" title="Link to this heading"></a></h2>
+<p>There are different possibilities to enter sleep mode and there are three levels of sleep.</p>
+<ul>
+<li><p>CPU sleep</p>
+<p>In this mode, the processor executes the <code class="docutils literal notranslate"><span class="pre">sleep</span></code> instruction. It is kept powered ON but it does nothing else.</p>
+</li>
+<li><p>Sleep</p>
+<p>In this mode, the SoC (CPU + internals with exception of the PML) is powered OFF. Some RAM blocks might be powered
+ON mainly for data retention depending on the RAM blocks configuration. The system is able to wake-up through an
+interrupt triggered by some events (GPIO, timers, …). In this mode, the saved power is higher than in CPU sleep mode
+and it is the most used sleep mode.
+If case an application uses QP/C, the system will automatically switch to sleep mode when in idle task and if the sleep
+mode has not been forbidden.</p>
+</li>
+<li><p>Deep Sleep</p>
+<p>In this mode, the SoC is powered OFF and by default all RAM blocks are also powered OFF. This is the mode where the
+saved powered is the highest. In ROM v1.0 (DI01 to DI03), the only way to resume from this mode is to issue a complete
+POR cycle (e.g. by removing and inserting again the battery).
+However, in ROM v2.0 and v3.0 (respectively, DI04 and DI05), it is possible to activate an event that will wake-up the SoC when triggered.
+Thus, before switching to this mode, it is also possible to powered ON one or more RAM blocks for data retention.</p>
+</li>
+</ul>
+<p>These three modes are defined in the <code class="docutils literal notranslate"><span class="pre">PML_SleepMode_t</span></code> structure:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief  Sleep modes</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">/// Sleep CPU - least power saving</span>
+<span class="w">    </span><span class="n">PML_SLEEP_CPU</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">/// Sleep mode</span>
+<span class="w">    </span><span class="n">PML_SLEEP</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">/// Deep Sleep mode</span>
+<span class="w">    </span><span class="n">PML_DEEP_SLEEP</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">PML_SleepMode_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Then, the function <code class="docutils literal notranslate"><span class="pre">PML_GoToSleep()</span></code> instructs the system to enter the selected sleep mode. However, this function
+does some check to verify that it is possible to switch to sleep mode. If yes, then it enters this mode and never returns.
+Otherwise, the function returns <code class="docutils literal notranslate"><span class="pre">False</span></code> meaning that switching to sleep mode has been canceled.</p>
+<p>The conditions to allow switching to the sleep mode are:</p>
+<ul class="simple">
+<li><p>sleep mode is not forbidden</p></li>
+<li><p>sleep timer is up and running</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Go to sleep</span>
+<span class="cm"> * @param sleepMode 5 = PML_SLEEP</span>
+<span class="cm"> *                  6 = PML_DEEP_SLEEP   (relaxed RC Osc)</span>
+<span class="cm"> * @return FALSE if sleep mode entry is denied, otherwise system goes to sleep</span>
+<span class="cm"> *               and never return from this function.</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">PML_GoToSleep</span><span class="p">(</span><span class="n">PML_SleepMode_t</span><span class="w"> </span><span class="n">sleepMode</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">PML_GoToSleepWithoutChecks</span></code> enters in selected sleep mode and doesn’t check
+any condition. Sleep mode is forced!</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Go to sleep without check (Sleep mode is forced)</span>
+<span class="cm"> * @param sleepMode 5 = PML_SLEEP</span>
+<span class="cm"> *                  6 = PML_DEEP_SLEEP   (relaxed RC Osc)</span>
+<span class="cm"> * @return FALSE if sleep mode entry is denied, otherwise system goes to sleep</span>
+<span class="cm"> *               and never return from this function.</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">PML_GoToSleepWithoutChecks</span><span class="p">(</span><span class="n">PML_SleepMode_t</span><span class="w"> </span><span class="n">sleepMode</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">PML_SystemShutDown</span></code> shuts down the system by making it entering in deep sleep mode.
+Remind that with ROM v2.0 and above (starting with DI04), the system can resume from this mode through a GPIO signal assertion.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief System shut-down</span>
+<span class="cm"> * @note Function trigger system shutting-down. Shut-down means that</span>
+<span class="cm"> *       sleep timer is disabled, all IRQs are disabled and system goes to</span>
+<span class="cm"> *       deep sleep mode.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">PML_SystemShutDown</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="wakeup">
+<h2>Wakeup<a class="headerlink" href="#wakeup" title="Link to this heading"></a></h2>
+<p>The system can be woken up by a GPIO. The <code class="docutils literal notranslate"><span class="pre">PML_ConfigWakeUpByGpio()</span></code> function is then used to configure this GPIO.
+It has to be called before actually switching to sleep mode and after a POR or software reset. When resuming from sleep mode,
+there is no need to configure it again since the GPIO configuration is saved in retention memory.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Configuration of wake-up by GPIO pad</span>
+<span class="cm"> * @note Function configures wake-up event triggered by GPIO pad</span>
+<span class="cm"> * @param gpio gpio pad used to wakeing-up</span>
+<span class="cm"> * @param wakePolarity gpio pad wake-up polarity</span>
+<span class="cm"> * @param wakeEnable gpio pad wake-up enable</span>
+<span class="cm"> * @param irqEnable enable IRQ (it substitutes wakeup function in active mode)</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">PML_ConfigWakeUpByGpio</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">gpio</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">wakePolarity</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">wakeEnable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">irqEnable</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here is an example of use:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ApplicationEntry</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Not resuming from sleep: POR or SW reset */</span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">PML_ConfigWakeUpByGpio</span><span class="p">(</span><span class="n">gpio</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="boot">
+<h2>Boot<a class="headerlink" href="#boot" title="Link to this heading"></a></h2>
+<p>At startup, it is important to know from which state the system is resuming. It can be a POR (e.g. battery insertion),
+a software reset or resuming from a sleep period. Knowing that has an impact on the initialization process.
+As an example, a GPIO configuration will have to be done when starting-up from POR or SW reset while it might not be
+necessary when resuming from a sleep period because this configuration might have been saved in a retention memory.</p>
+<p>Three functions provide a way to know from which state the device is starting-up.</p>
+<p>For Power on Reset check (power supply is applied):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Get if the chip has booted from POR.</span>
+<span class="cm"> * @return TRUE if the chip booted from POR, FALSE otherwise.</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">ALWAYS_INLINE</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PML_DidBootFromPOR</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>For resuming from sleep mode check:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Get if the chip has booted from sleep.</span>
+<span class="cm"> * @return TRUE if the chip booted from sleep, FALSE otherwise.</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">ALWAYS_INLINE</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PML_DidBootFromSleep</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>For resuming after a software reset check:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Get if the chip has booted from reset.</span>
+<span class="cm"> * @return TRUE if the chip booted from reset, FALSE otherwise.</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">ALWAYS_INLINE</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">PML_DidBootFromReset</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="ram-retention">
+<h2>RAM Retention<a class="headerlink" href="#ram-retention" title="Link to this heading"></a></h2>
+<p>The memory manager configures any required number of RAM blocks as retention RAM according the needs of the system or the application.</p>
+<p>But the RAM retention can also be configured manually using the PML driver.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Enable DRAM0 and DRAM1 retention</span>
+<span class="n">PML_SetRamRetentionEnable</span><span class="p">(</span><span class="n">PML_DRAM0_RETENTION</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PML_DRAM1_RETENTION</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The RAM retention can also be checked by calling <code class="docutils literal notranslate"><span class="pre">PML_IsDramRetOn()</span></code> with the index of the RAM block which needs to be checked.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Is DRAMx retention on</span>
+<span class="cm"> * @param dram DRAM block number: 0..6</span>
+<span class="cm"> * @return TRUE, if retention of DRAMx is on, FALSE otherwise</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="n">ALWAYS_INLINE</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">PML_IsDramRetOn</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">dram</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>At boot, the system can also check if the RAM retention was disabled.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Indicates if the DRAM retention was disabled during last chip reset.</span>
+<span class="cm"> * @return TRUE if the DRAM retention was disabled, FALSE otherwise.</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">PML_DidBootWithoutDRAMRetention</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

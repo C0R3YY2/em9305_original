@@ -1,0 +1,1531 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Device API &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/js/search.js?v=a5c8da7a"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="packets.html">HCI Packets List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Device API</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="device-api">
+<h1>Device API<a class="headerlink" href="#device-api" title="Link to this heading"></a></h1>
+<p>The Bluetooth Device Module you need.</p>
+<section id="device-api-summary">
+<h2>Device API Summary<a class="headerlink" href="#device-api-summary" title="Link to this heading"></a></h2>
+<p>Theses Classes implement a high-level representation of a Bluetooth Device, it
+provide abstraction on top of Gatt and Gap Layers.</p>
+<p>A device must implement <code class="docutils literal notranslate"><span class="pre">BLEDevice</span></code> class which provide basic bluetooth related fucntions.</p>
+<dl class="simple">
+<dt>The <a class="reference internal" href="api/blengine.host.html#blengine.host.devices.BLEDevice" title="blengine.host.devices.BLEDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">BLEDevice</span></code></a> have the following abilities:</dt><dd><ul class="simple">
+<li><p>Standard GAP set/get commands (name, mode, role, etc…).</p></li>
+<li><p>The ability to read and write a characteristic value.</p></li>
+<li><p>Discover (read) Gatt services and characterisitcs on the devices.</p></li>
+<li><p>Enable notifications / indications for the devices.</p></li>
+</ul>
+</dd>
+</dl>
+<p>To work with local device (dongles), a <code class="docutils literal notranslate"><span class="pre">BLELocalDevice</span></code> instance can be used.
+This class inherit BLEDevice and have specific functions and attributes to work
+with. It retain a list of remotes devices, automagically created and updated when
+the device perform a scan.</p>
+<dl class="simple">
+<dt>Abilities:</dt><dd><ul class="simple">
+<li><p>Scan / Observe for devices.</p></li>
+<li><p>Filter and sorting of remote devices list.</p></li>
+<li><p>Manage Services and Characteristics (Add/Remove).</p></li>
+<li><p>Perform a reset.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The remotes devices class instances <code class="docutils literal notranslate"><span class="pre">BLERemoteDevices</span></code> created by a local device
+implement all the functions related to a remote device from the local one,
+it actually use the engine of the local device to send commands by itself.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">An</span> <span class="pre">advertisiemnts</span> <span class="pre">packets</span> <span class="pre">list.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">The</span> <span class="pre">device</span> <span class="pre">mode.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-</span> <span class="pre">RSSI</span> <span class="pre">and</span> <span class="pre">Interval</span> <span class="pre">moving</span> <span class="pre">average.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="simple">
+<dt>Abilities:</dt><dd><ul class="simple">
+<li><p>Connect and Disconnect To/from itself.</p></li>
+<li><p>Automatically update (attributes, averages, etc…) on advertisement.</p></li>
+<li><p>Compute averages between advertisements packets</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.devices.</span></span><span class="sig-name descname"><span class="pre">BLEDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>A BLE Device represent a Generic Bluetooth Device that can manipulate an
+Engine.</p>
+<p>The constructor set the following:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – A reference to the actual <code class="xref py py-class docutils literal notranslate"><span class="pre">blengine.hci.engine.HCIEngine</span></code>
+engine used to communicate with the device</p></li>
+<li><p><strong>bd_addr</strong> – optional, the actual bluetooth MAC Address of the device</p></li>
+<li><p><strong>name</strong> – optional, the common name used for the device, it’s a convience attribute,
+defaulted to the bd_addr or noname by default.</p></li>
+<li><p><strong>conn_handle</strong> – optional, the connection handle used in many layers of the bluetooth</p></li>
+</ul>
+</dd>
+</dl>
+<p>The others attributes provided by this class are</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr_type</strong> – The type of the bd_addr, defaulted to 0x00</p></li>
+<li><p><strong>type</strong> – String, defaulted to “Generic BLE Device”</p></li>
+<li><p><strong>services</strong> – List of <a class="reference internal" href="api/blengine.host.html#blengine.host.gatt.BLEService" title="blengine.host.gatt.BLEService"><code class="xref py py-class docutils literal notranslate"><span class="pre">blengine.host.gatt.BLEService</span></code></a> instances</p></li>
+<li><p><strong>mode</strong> – Bluetooth mode</p></li>
+<li><p><strong>role</strong> – Bluetooth role</p></li>
+<li><p><strong>is_client</strong> – Is the device client or not</p></li>
+<li><p><strong>conn_handle</strong> – The device conn_handle</p></li>
+<li><p><strong>logger</strong> – Device logger (the name is the same as the device)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">disable_indication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Disable notification for this device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>char</strong> – The characteristic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">disable_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Disable notification for this device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>char</strong> – The characteristic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">discover_services</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Discover GATT Server services for this device, this includes
+characteristics, descriptors, etc…. It will fill the <code class="docutils literal notranslate"><span class="pre">self.services</span></code>
+attribute and return it anyway</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">enable_indication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Enable notification on this device for the specified characteristic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>char</strong> – The characteristic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">enable_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Enable notification on this device for the specified characteristic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>char</strong> – The characteristic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_char_by_handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>find a characteristics by handle (int) or value_handle (int)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>handle</strong> – The handle</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The characteristic by handle or None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Characteristic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_conn_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the GAP Connection handle for this device.</p>
+<p>This will also update the conn_handle attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The connection handle.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>return a service by uuid or search among string name</p>
+<p>filters are exclusive</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">on_indication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>indication callback</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">on_notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Default Notification Callback</p>
+<p>This callback, triggers on notification or observation,
+will parse the notification packet and try to find a corresponding characteristic
+in the device services.</p>
+<p>If so, The value is parsed with the characteristic parse function.</p>
+<p>Finally two events are triggered on this device, one with the uuid object
+as key and one with the uuid name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pkt</strong> – The packet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">read_all_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">services</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Read value for each characteristics</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>services</strong> – The services</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Convenience Function to register a device, the minimum requirement</p>
+<p>Role and Mode can be the same input format as the corresponding procedures</p>
+<p>The order of execution is the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>call self.set_role() then</p></li>
+<li><p>call self.set_mode() then</p></li>
+<li><p>call self.set_name() then</p></li>
+<li><p>call self.set_register_client()</p></li>
+</ul>
+</div></blockquote>
+<p>It can be constraining so feel free to use the atomic functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>role</strong> (<em>str</em><em> or </em><em>int</em>) – The role</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em> or </em><em>int</em>) – The mode</p></li>
+<li><p><strong>is_client</strong> (<em>bool</em>) – register as client or not</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">register_client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Register or deregister this device as a client.</p>
+<p>If nothing has to be done (e.g. already registered as client),
+this function do nothing and return <code class="docutils literal notranslate"><span class="pre">(true,</span> <span class="pre">&quot;Done</span> <span class="pre">Nothing&quot;)</span></code> tuple</p>
+<p>Please refer to <a class="reference internal" href="api/blengine.host.procedures.html#blengine.host.procedures.gatt.register_client" title="blengine.host.procedures.gatt.register_client"><code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.register_client()</span></code></a>
+and <code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.unregister_client()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>set_client</strong> (<em>bool</em>) – Register or not (default to True)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>procedure return value or <code class="docutils literal notranslate"><span class="pre">(true,</span> <span class="pre">&quot;Done</span> <span class="pre">Nothing&quot;)</span></code></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(bool, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">set_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Sets the Bluetooth Mode.</p>
+<p>Please refer to <a class="reference internal" href="api/blengine.host.procedures.html#blengine.host.procedures.gap.set_mode" title="blengine.host.procedures.gap.set_mode"><code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.set_mode()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>int</em><em> or </em><em>string</em>) – mode</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>procedure return value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(bool, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">set_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Set the name of the bluetooth device.</p>
+<p>Please refer to <a class="reference internal" href="api/blengine.host.procedures.html#blengine.host.procedures.gap.set_name" title="blengine.host.procedures.gap.set_name"><code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.set_name()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>procedure return value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(bool, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">set_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Sets the Bluetooth role.</p>
+<p>Please refer to <a class="reference internal" href="api/blengine.host.procedures.html#blengine.host.procedures.gap.set_role" title="blengine.host.procedures.gap.set_role"><code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.set_role()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>role</strong> (<em>int</em><em> or </em><em>string</em>) – the Role</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>procedure return</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(bool, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">without_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>write a value to a characteristic</p>
+<p>TODO: manage errors (permissions, etc…)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>char</strong> – The character</p></li>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.devices.</span></span><span class="sig-name descname"><span class="pre">BLEDeviceException</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.devices.</span></span><span class="sig-name descname"><span class="pre">BLEDeviceNotConnectedException</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.devices.</span></span><span class="sig-name descname"><span class="pre">BLELocalDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>A Local device represent a bluetooth chip directly connected to the computer (a dongle)</p>
+<p>the conn_handle of a local device is always 0, obviously the same engine cannot be used by more than one LocalDevice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dyn_attrs</strong> – Define by names the attributes wich have dynamic sizes</p></li>
+<li><p><strong>remote_devices</strong> – A List of <a class="reference internal" href="api/blengine.host.html#blengine.host.devices.BLERemoteDevice" title="blengine.host.devices.BLERemoteDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">BLERemoteDevice</span></code></a> remotes bluetooth devices: list</p></li>
+<li><p><strong>attributes_sizes</strong> – Attributes size defined by this device, see <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_attribute_size()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">disconnect</span></span></dt>
+<dd><p>see <a class="reference internal" href="api/blengine.host.procedures.html#blengine.host.procedures.gap.disconnect" title="blengine.host.procedures.gap.disconnect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.disconnect()</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">add_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Adds a device, return existing instance if it exist already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bd_addr</strong> (<em>{ type_description }</em>) – The bd address</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Device</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BleRemoteDevice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">allocate_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Allocate some Memory (EMSHI)</p>
+<p>TODO: transform it to a procedure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> – The size</p></li>
+<li><p><strong>persistent</strong> – The persistent</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the starting address or None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">cancel_scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Call CancelInquiry, do not wait on response</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Always True</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">connect_by_addr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addr_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_window_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_timeout_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Connect to a device with the mac addr, for convenience when you already
+know the mac address of the remote device, or your name is André.</p>
+<p>if the diven bd addr is not in the remote devices, it create a remote
+device and conect to it.</p>
+<p>This function call be called without the need to call scan()
+before-hand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>addr_type</strong> – The address type</p></li>
+<li><p><strong>retry</strong> – The retry</p></li>
+<li><p><strong>scan_interval_ms</strong> – The scan interval milliseconds</p></li>
+<li><p><strong>scan_window_ms</strong> – The scan window milliseconds</p></li>
+<li><p><strong>conn_interval_ms</strong> – The connection interval milliseconds</p></li>
+<li><p><strong>conn_timeout_ms</strong> – The connection timeout milliseconds</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The device if connected successfully, otherwise None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="api/blengine.host.html#blengine.host.devices.BLERemoteDevice" title="blengine.host.devices.BLERemoteDevice">BLERemoteDevice</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">filter_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Filter devices list as specified, many parameters can be defined,
+if so it filter non-exclusively with the non-null parameters.</p>
+<p>Available filters:
+- bd_addr: MAC Addr of the device (must be an bytearray)
+- name : search a string in the device name
+- uuid: search in the device service list (uuid format)
+- max_rssi and min_rssi : define an rssi range in dBm (int)</p>
+<p>max_rssi and min_rssi are defaulted to 20 and -127 respectively</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>name</strong> – The name</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>min_rssi</strong> – The minimum rssi</p></li>
+<li><p><strong>max_rssi</strong> – The maximum rssi</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A device list</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An array of device, maybe empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_attributes_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Populate the attributes sizes dynamically following special
+Attribute_Size command</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Get a unique remote device, if many are found, return the first one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>name</strong> – The name</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>min_rssi</strong> – The minimum rssi</p></li>
+<li><p><strong>max_rssi</strong> – The maximum rssi</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The device.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BleRemoteDevice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_nearest_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>get the nearest of remote devices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The nearest device.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>BleRemoteDevice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">on_disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>disconnect callback</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">program</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>program the device with a given file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – The file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">register_characteristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>register the given characteristic at a given address if provided.</p>
+<p>If no address is provided it will allocate some memory.</p>
+<p>the provided must have a parent service which is already registered</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>char</strong> – The character</p></li>
+<li><p><strong>start_address</strong> – The start address</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Operation Successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – The characteristic cannot be registered</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">register_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Add a particular service to this device</p>
+<p>see <code class="docutils literal notranslate"><span class="pre">gatt.register_service</span></code> procedure</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">register_services</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">services</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>compute memory map and add all the services to this device.</p>
+<p>this will auto-allocate some memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>services</strong> – The services</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">remove_all_services</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Remove all services.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">remove_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>remove an Attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>attribute</strong> – The attribute</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>operatoin successfull</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">remove_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>remove a service instance from this device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>service</strong> – The service</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Success or not</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Perform a ARC Reset</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>call gap.scan and populate self.remote_devices with BLERemoteDevices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – The keywords arguments</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>status</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">sort_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Sort the devices list by attribute name,
+to sort it by name <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;name&quot;)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;rssi&quot;)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;interval&quot;)</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>write a value to a characteristic</p>
+<p>TODO: manage errors (permissions, etc…)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>char</strong> – The character</p></li>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.devices.</span></span><span class="sig-name descname"><span class="pre">BLERemoteDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>A Remote Device is any device that is usable by a local device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – A HCIengine</p></li>
+<li><p><strong>bd_addr</strong> – The mac address of the device</p></li>
+<li><p><strong>name</strong> – A default name</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">compute_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method=&lt;function</span> <span class="pre">median&gt;</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>compute intervals and compute the mean of it, on the given segment if
+advertisments packets recevied, via the given method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(&lt;beginnnig&gt;,&lt;end&gt;,&lt;interval&gt;)</p></li>
+<li><p><strong>method</strong> – The statistics function to process the rssi’s
+array default to <code class="docutils literal notranslate"><span class="pre">statistics.median</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The interval.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">compute_rssi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method=&lt;function</span> <span class="pre">median&gt;</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>compute a mean of rssi’s on the given segment of advertisments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(&lt;beginnnig&gt;,&lt;end&gt;,&lt;interval&gt;)</p></li>
+<li><p><strong>method</strong> – The statistics function to process the rssi’s
+array default to <code class="docutils literal notranslate"><span class="pre">statistics.median</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rssi.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_window_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_timeout_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>connect to this remote device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>retry</strong> – The retry</p></li>
+<li><p><strong>scan_interval_ms</strong> – The scan interval milliseconds</p></li>
+<li><p><strong>scan_window_ms</strong> – The scan window milliseconds</p></li>
+<li><p><strong>conn_interval_ms</strong> – The connection interval milliseconds</p></li>
+<li><p><strong>conn_timeout_ms</strong> – The connection timeout milliseconds</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+<li><p><strong>bd_addr_type</strong> – The bd address type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>connection successful flag</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>disconnect this device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>status</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">discover_services</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Overload the standard discover_service to change the interval to 7.5 ms
+then make it like before.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_conn_handle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Get the GAP Connection handle for this device.</p>
+<p>This will also update the conn_handle attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The connection handle.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_intervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Return an array of float representing the intervals betweem
+advertisements packet given segment and filtered by filter_func
+function, at the given resolution (default to 1ms).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(&lt;beginnnig&gt;,&lt;end&gt;,&lt;interval&gt;)</p></li>
+<li><p><strong>filter_func</strong> – the function used to filter the
+adverstisements</p></li>
+<li><p><strong>resolution_ms</strong> – The resolution milliseconds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The intervals.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of intervals numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">on_advertising_pkt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adv_pkt</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>This function is triggered by the local device linked to this device on each advertising packet received,
+AD Packet Callback will update varying things on this device :</p>
+<ul class="simple">
+<li><p>mean interval</p></li>
+<li><p>mean rssi</p></li>
+<li><p>local name</p></li>
+<li><p>address</p></li>
+<li><p>mode</p></li>
+</ul>
+<p>Also, for each Advertising Data Packet decoded this function will trig a named event
+that have the same name as the Advertising Data packet.
+Ref Needed (see GAP_AD_Struct class in blengine.host.packets.ad)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>adv_pkt</strong> – The advertising packet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">on_disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>disconnect callback</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="the-gatt-module">
+<h2>the Gatt module<a class="headerlink" href="#the-gatt-module" title="Link to this heading"></a></h2>
+<p>This module implement essentials element of the Bluetooth GATT Layer and provide some basic GATT Procedures.</p>
+<p>There is a lot in here, consider splitting it up !
+The first part of this listing define the implementations then the
+Device Characteristics and Descriptors objects</p>
+<p>Not many comments on implementations, Core Spec knowledge assumed.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">BLECharacteristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permission</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>This class define a Characteristic as in the Bluletooth GATT Layer.</p>
+<p>It provide read() and write() functions which directly send a gatt command.</p>
+<p>It implement UserDict which provide a dict-like access for this class,
+it is not used internally but it is saved/restored, it provide a convenient way to
+manipulate custom fields
+by interacting directly with the Characteristic. It is used mainly in the parse()
+function to write to some custom fields when decoding complex characteristics.
+The goal is to have the same fields names as in the bluetooth specs.</p>
+<p>The class attributes are:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>properties</strong> – The characteristics properties</p></li>
+<li><p><strong>permission</strong> – The permission</p></li>
+<li><p><strong>handle</strong> – The handle</p></li>
+<li><p><strong>parent_service</strong> – The parent service</p></li>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>value_handle</strong> – The value handle</p></li>
+<li><p><strong>description</strong> – The description</p></li>
+<li><p><strong>max_size</strong> – The maximum size</p></li>
+<li><p><strong>descriptors</strong> – list of BLEDescriptors</p></li>
+</ul>
+</dd>
+</dl>
+<p>Constructs a new instance.</p>
+<p>The properties can be entered as a string of comma-separated properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>properties</strong> – The properties as int or string</p></li>
+<li><p><strong>permission</strong> – The permission</p></li>
+<li><p><strong>handle</strong> – The handle</p></li>
+<li><p><strong>parent_service</strong> – The parent service</p></li>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>value_handle</strong> – The value handle</p></li>
+<li><p><strong>description</strong> – The description</p></li>
+<li><p><strong>max_size</strong> – The maximum size</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dct</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Create a instance from a dictionary entry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dct</strong> – The dct</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>BLECharacteristic instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">full_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>this function is deprecated use self.size() insitead</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_descriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>get a particular descriptor by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uuid</strong> – The uuid</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The descriptor.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="api/blengine.host.html#blengine.host.gatt.BLEDescriptor" title="blengine.host.gatt.BLEDescriptor">BLEDescriptor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Return properties list as a comma separated string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The properties.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>the default parse function, it will fill the value field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>length</strong> – The length</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Read this characteristics value.</p>
+<p>If the device is not provided it will get the parent service device.</p>
+<p>plese refer to <a class="reference internal" href="api/blengine.host.procedures.html#blengine.host.procedures.gatt.read_value" title="blengine.host.procedures.gatt.read_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.read_value()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device</strong> – The device</p></li>
+<li><p><strong>parser</strong> – The parser</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – No value handle for this characteristic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>register this characteristic in the characteristic register</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cls</strong> – The cls</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Returns a dictionary representation of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>write a value for this characteristic to a device, if device is not provided,
+it will use the device from this characteristic service.</p>
+<p>plese refer to <a class="reference internal" href="api/blengine.host.procedures.html#blengine.host.procedures.gatt.write_value" title="blengine.host.procedures.gatt.write_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.write_value()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>device</strong> – The device</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>status</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – This characteristic value handle is not set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">BLEDescriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Describe a Descriptor as in the Bluetooth GATT Layer</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dct</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>construct an instance from a dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dct</strong> – The dct</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="api/blengine.host.html#blengine.host.gatt.BLEDescriptor" title="blengine.host.gatt.BLEDescriptor">BLEDescriptor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Returns a dictionary representation of the object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">BLEPrimaryService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Convenience class to define a Primary service</p>
+<p>see <a class="reference internal" href="api/blengine.host.html#blengine.host.gatt.BLEService" title="blengine.host.gatt.BLEService"><code class="xref py py-class docutils literal notranslate"><span class="pre">BLEService</span></code></a></p>
+<p>Constructs a new instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uuid</strong> (<a class="reference internal" href="api/blengine.host.html#blengine.host.uuid.UUID" title="blengine.host.uuid.UUID"><em>UUID</em></a>) – the service uuid</p></li>
+<li><p><strong>handle_start</strong> (<em>int</em>) – the start handle of the service</p></li>
+<li><p><strong>handle_end</strong> (<em>int</em>) – the end handle of the service</p></li>
+<li><p><strong>uuid_type</strong> (<a class="reference internal" href="api/blengine.host.html#blengine.host.uuid.UUID" title="blengine.host.uuid.UUID"><em>UUID</em></a>) – the type UUID</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">BLESecondaryService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Convenience class to define a secondary service</p>
+<p>see <a class="reference internal" href="api/blengine.host.html#blengine.host.gatt.BLEService" title="blengine.host.gatt.BLEService"><code class="xref py py-class docutils literal notranslate"><span class="pre">BLEService</span></code></a></p>
+<p>Constructs a new instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uuid</strong> (<a class="reference internal" href="api/blengine.host.html#blengine.host.uuid.UUID" title="blengine.host.uuid.UUID"><em>UUID</em></a>) – the service uuid</p></li>
+<li><p><strong>handle_start</strong> (<em>int</em>) – the start handle of the service</p></li>
+<li><p><strong>handle_end</strong> (<em>int</em>) – the end handle of the service</p></li>
+<li><p><strong>uuid_type</strong> (<a class="reference internal" href="api/blengine.host.html#blengine.host.uuid.UUID" title="blengine.host.uuid.UUID"><em>UUID</em></a>) – the type UUID</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">BLEService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid_type</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Define a Service as in the Bluetooth GATT Layer.</p>
+<p>The others attributes provided by this class are</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>characteristics</strong> – The type of the bd_addr defaulted to 0x00</p></li>
+<li><p><strong>included_services</strong> – Services Included in this one</p></li>
+<li><p><strong>device</strong> – the device who own this service</p></li>
+</ul>
+</dd>
+</dl>
+<p>Constructs a new instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uuid</strong> (<a class="reference internal" href="api/blengine.host.html#blengine.host.uuid.UUID" title="blengine.host.uuid.UUID"><em>UUID</em></a>) – the service uuid</p></li>
+<li><p><strong>handle_start</strong> (<em>int</em>) – the start handle of the service</p></li>
+<li><p><strong>handle_end</strong> (<em>int</em>) – the end handle of the service</p></li>
+<li><p><strong>uuid_type</strong> (<a class="reference internal" href="api/blengine.host.html#blengine.host.uuid.UUID" title="blengine.host.uuid.UUID"><em>UUID</em></a>) – the type UUID</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dct</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Create a Service instance fform the object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dct</strong> – The dct</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">full_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>return the size of this service plus the the sizes of each of this
+service characteristic’s</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>return a characteristic or a included service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uuid</strong> – The uuid</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>characteristic or service</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="api/blengine.host.html#blengine.host.gatt.BLECharacteristic" title="blengine.host.gatt.BLECharacteristic">BLECharacteristic</a> or <a class="reference internal" href="api/blengine.host.html#blengine.host.gatt.BLEService" title="blengine.host.gatt.BLEService">BLEService</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">include_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Include another service into this one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>service</strong> – The service</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>return this service size, not the characteristics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Returns a dictionary representation of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">CharacteristicPropertyNotFoundException</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">ServiceException</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">discover_all_characteristics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>discover all characteristics for a given services</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>service_handle</strong> – The service handle</p></li>
+<li><p><strong>handle_start</strong> – The handle start</p></li>
+<li><p><strong>handle_end</strong> – The handle end</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">discover_all_services</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Discover a Device Services and Characteristics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>include_chars</strong> – The include characters</p></li>
+<li><p><strong>timeout</strong> – Wait time for service discovery</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">discover_relationships</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>discover all characteristics for a given service</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>service_handle</strong> – The service handle</p></li>
+<li><p><strong>handle_start</strong> – The handle start</p></li>
+<li><p><strong>handle_end</strong> – The handle end</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">get_descriptors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">services</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Gets the descriptors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>services</strong> – The services</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">register_characteristic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_address</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>{ function_description }</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>char</strong> – The character</p></li>
+<li><p><strong>start_address</strong> – The start address</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">register_relationship</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>{ function_description }</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>service</strong> – The service</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">blengine.host.gatt.</span></span><span class="sig-name descname"><span class="pre">register_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Add a particular service to this device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>service</strong> – The service</p></li>
+<li><p><strong>start_address</strong> – The start address</p></li>
+<li><p><strong>include_chars</strong> – The include characters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

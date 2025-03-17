@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPI Master Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SPI Slave Driver" href="../spi_slave/index.html" />
+    <link rel="prev" title="RTC Library" href="../rtc/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SPI Master Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hal-api">HAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">SPI Master Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spi-master-driver">
+<h1>SPI Master Driver<a class="headerlink" href="#spi-master-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The SPI master driver has 2 modes: 4-wires and 3-wires.</p>
+<p>The clock can be configured from 750kHz up to 24MHz.</p>
+<p>The configuration of the SPI master is not saved during sleep. It needs to be reconfigured after each wake-up.</p>
+<section id="spi-master-configuration-structure">
+<h3>SPI Master configuration structure<a class="headerlink" href="#spi-master-configuration-structure" title="Link to this heading"></a></h3>
+<p>The SPI Master module needs to be registered in order to be used.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Register SPI Master module</span>
+<span class="n">SPIM_RegisterModule</span><span class="p">();</span>
+
+<span class="c1">// Enable SPI master.</span>
+<span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The module needs to be registered in NVM_ConfigModules and to be enabled.</p>
+<p>The default configuration of the SPI master is:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Default SPI master configuration</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 50.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enabled</p></td>
+<td><p>SPI master module enable/disable</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpioSck</p></td>
+<td><p>The SPI clock GPIO</p></td>
+<td><p>GPIO9</p></td>
+</tr>
+<tr class="row-even"><td><p>gpioMiso</p></td>
+<td><p>The SPI MISO GPIO</p></td>
+<td><p>GPIO10 (not used for 3-wires mode)</p></td>
+</tr>
+<tr class="row-odd"><td><p>gpioMosi</p></td>
+<td><p>The SPI MOSI GPIO</p></td>
+<td><p>GPIO11</p></td>
+</tr>
+<tr class="row-even"><td><p>transactionDepth</p></td>
+<td><p>The size of the transaction queue</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>rxPhase</p></td>
+<td><p>Invert the RX phase clock</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>spiMode</p></td>
+<td><p>The SPI mode</p></td>
+<td><p>SPIM_MODE_4WIRES (0)</p></td>
+</tr>
+<tr class="row-odd"><td><p>msbFirst</p></td>
+<td><p>Most significant bit first</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>cpol</p></td>
+<td><p>Clock polarity</p></td>
+<td><p>0 (low when inactive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>cpha</p></td>
+<td><p>Clock phase</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>prescaler</p></td>
+<td><p>The clock prescaler</p></td>
+<td><p>SPIM_PRESCALER_32</p></td>
+</tr>
+</tbody>
+</table>
+<p>The CSN GPIO is set for each transaction.</p>
+<p>The SPI Master configuration structure is located in non-persistent memory and is lost during sleep.
+It needs to be reinitialized at each wake-up (not only after POR).</p>
+<p>The modifications of the default configuration can be done in NVM_ConfigModules in order to be applied during the initialization of the modules.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">SPIM_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+
+<span class="w">    </span><span class="c1">// Enable SPI master.</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// SPI Master config</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">rxPhase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">spiMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_MODE_4_WIRES</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">prescaler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_PRESCALER_3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 48MHz/3 = 16MHz clock</span>
+
+<span class="w">    </span><span class="c1">// SPI Master GPIO configuration.</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">gpioSck</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">gpioMiso</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIM_Config</span><span class="p">.</span><span class="n">gpioMosi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The configuration of the SPI master driver has to be done after each wake-up (not only POR). The configuration is lost during sleep.</p>
+</div>
+</section>
+<section id="spi-master-csn">
+<h3>SPI Master CSN<a class="headerlink" href="#spi-master-csn" title="Link to this heading"></a></h3>
+<p>The SPI master CSN is given as a parameter to the transfer functions. It needs to be configured as a GPIO output.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPI master write using GPIO_SPIM_CSN</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_WriteBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">gWriteBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The second parameter of SPIM_WriteBytes (bool keepChipSelectLow) can be set to true if you want to keep the CSN asserted after the transaction.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPI master write using GPIO_SPIM_CSN, keep GPIO_SPIM_CSN low after the transaction</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_WriteBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">gWriteBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// Schedule a read transaction. GPIO_SPIM_CSN is set high after the transaction.</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_ReadBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">gReadBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It is also possible to set manually the CSN. In this case, the transfer functions have to be called with SPIM_CSN_GPIO_NONE
+(keepChipSelectLow is ignored).</p>
+</section>
+<section id="spim-clock-frequency-selection">
+<h3>SPIM clock frequency selection<a class="headerlink" href="#spim-clock-frequency-selection" title="Link to this heading"></a></h3>
+<p>The clock frequency is defined like this:</p>
+<p>clock freq = 48MHz / prescaler</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">SPI master clock prescaler</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 37.5%" />
+<col style="width: 25.0%" />
+<col style="width: 37.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Enum</p></th>
+<th class="head"><p>Prescaler</p></th>
+<th class="head"><p>Frequency</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPIM_PRESCALER_2</p></td>
+<td><p>2</p></td>
+<td><p>24MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_3</p></td>
+<td><p>3</p></td>
+<td><p>16MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIM_PRESCALER_4</p></td>
+<td><p>4</p></td>
+<td><p>12MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_6</p></td>
+<td><p>6</p></td>
+<td><p>8MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIM_PRESCALER_8</p></td>
+<td><p>8</p></td>
+<td><p>6MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_16</p></td>
+<td><p>16</p></td>
+<td><p>3MHz</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIM_PRESCALER_32</p></td>
+<td><p>32</p></td>
+<td><p>1.5MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIM_PRESCALER_64</p></td>
+<td><p>64</p></td>
+<td><p>750kHz</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For SPIM_PRESCALER_3 , rxPhase cannot be modified and is set to rxPhase = 0 (Sampling Issue)</p>
+</div>
+</section>
+<section id="update-the-configuration-on-the-fly">
+<h3>Update the configuration on the fly<a class="headerlink" href="#update-the-configuration-on-the-fly" title="Link to this heading"></a></h3>
+<p>It is possible to change the configuration on the fly using the function SPIM_SetConfiguration.</p>
+<p>If you are using multiple devices connected to the SPI master GPIOs, in some case you would like to update the configuration
+between transactions.</p>
+<p>The function SPIM_SetConfiguration is done for this purpose. This function sets the configuration for the next transactions. It has no effect on the
+transactions already waiting in the queue.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Init the configuration to apply</span>
+<span class="n">SPIM_Config_t</span><span class="w"> </span><span class="n">conf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">prescaler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_PRESCALER_4</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rxPhase</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">spiMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIM_MODE_3_WIRES</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Apply the configuration for the next transaction</span>
+<span class="n">SPIM_SetConfiguration</span><span class="p">(</span><span class="n">conf</span><span class="p">);</span>
+
+<span class="c1">// SPI master write using the configuration conf</span>
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">SPIM_WriteBytes</span><span class="p">(</span><span class="n">GPIO_SPIM_CSN</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="n">gWriteBuf</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The configuration is reset to default after a sleep.</p>
+</section>
+<section id="spi-master-blocking-functions">
+<h3>SPI master blocking functions<a class="headerlink" href="#spi-master-blocking-functions" title="Link to this heading"></a></h3>
+<p>The standard functions (non-blocking) use internally a transaction queue.
+Interrupts are called each time a transaction is done (after maximum 16 bytes).
+This mechanism is very useful when the SPI master frequency is low because the CPU can do something else during the transaction.
+But is adds delays between each transaction.</p>
+<p>When the SPI master clock frequency is high, the delays become important compared to transaction time.</p>
+<p>Blocking functions are available to reduce the delays between the transactions:</p>
+<ul class="simple">
+<li><p>SPIM_WriteBytesBlocking</p></li>
+<li><p>SPIM_ReadBytesBlocking</p></li>
+<li><p>SPIM_TransferBytesBlocking</p></li>
+</ul>
+<p>For a 24MHz clock frequency, a write of 100 bytes is almost 2 times faster with the blocking function (40us instead of 77us).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not mix blocking and non-blocking functions. If a blocking function is called when the transaction queue is not empty,
+it will return false (transaction not started).</p>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d0/d28/group__spim"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">spim</span></span></dt>
+<dd><p>Driver for the SPI master. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIM_CSN_GPIO_NONE">
+<span class="target" id="d0/d28/group__spim_1gaee68fbf30b9dc01278d2dd752db1a420"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_CSN_GPIO_NONE</span></span></span> <span class="pre">(0xFFu)</span><a class="headerlink" href="#c.SPIM_CSN_GPIO_NONE" title="Link to this definition"></a><br /></dt>
+<dd><p>Use this define if the driver should not toggle a chip select GPIO. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413SPIM_Enable_t">
+<span id="_CPPv313SPIM_Enable_t"></span><span id="_CPPv213SPIM_Enable_t"></span><span id="SPIM_Enable_t"></span><span class="target" id="d0/d28/group__spim_1gabe90fef1285faa7bf85faad578832ef6"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_Enable_t</span></span></span><a class="headerlink" href="#_CPPv413SPIM_Enable_t" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI Master enable control. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv417SPIM_QueueIndex_t">
+<span id="_CPPv317SPIM_QueueIndex_t"></span><span id="_CPPv217SPIM_QueueIndex_t"></span><span id="SPIM_QueueIndex_t"></span><span class="target" id="d0/d28/group__spim_1gaee0c981cc7a67e4130a67a9f885ddb18"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_QueueIndex_t</span></span></span><a class="headerlink" href="#_CPPv417SPIM_QueueIndex_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Variable type to store a queue index or depth. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv420SPIM_AssertChipFct_t">
+<span id="_CPPv320SPIM_AssertChipFct_t"></span><span id="_CPPv220SPIM_AssertChipFct_t"></span><span id="SPIM_AssertChipFct_t"></span><span class="target" id="d0/d28/group__spim_1gacb876662be23307e22dec1a4ecc41b7c"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_AssertChipFct_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv420SPIM_AssertChipFct_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to assert the slave device. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Param param<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Slave device parameter. It is usually the CSN GPIO. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv422SPIM_DeassertChipFct_t">
+<span id="_CPPv322SPIM_DeassertChipFct_t"></span><span id="_CPPv222SPIM_DeassertChipFct_t"></span><span id="SPIM_DeassertChipFct_t"></span><span class="target" id="d0/d28/group__spim_1gab4b658b5be5c459f588b4a019e830f27"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_DeassertChipFct_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv422SPIM_DeassertChipFct_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to deassert the slave device. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Param param<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Slave device parameter. It is usually the CSN GPIO. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419SPIM_RegisterModulev">
+<span id="_CPPv319SPIM_RegisterModulev"></span><span id="_CPPv219SPIM_RegisterModulev"></span><span id="SPIM_RegisterModule__void"></span><span class="target" id="d0/d28/group__spim_1ga8f12e49187bd4e372230500d4e7edf9e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419SPIM_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the SPI master module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414SPIM_ReadBytes7uint8_tbP7uint8_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv314SPIM_ReadBytes7uint8_tbP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv214SPIM_ReadBytes7uint8_tbP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="SPIM_ReadBytes__uint8_t.b.uint8_tP.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d0/d28/group__spim_1gaf5e87ad7d5c4a741be821ec20dbff215"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_ReadBytes</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReadBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414SPIM_ReadBytes7uint8_tbP7uint8_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a read operation. </p>
+<p>This is a non-blocking operation. The input buffer will be overwritten once the transaction has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pReadBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>bytes</strong> – The number of bytes to read. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the transaction is complete, the return status is passed as an argument. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415SPIM_WriteBytes7uint8_tbPK7uint8_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv315SPIM_WriteBytes7uint8_tbPK7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv215SPIM_WriteBytes7uint8_tbPK7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="SPIM_WriteBytes__uint8_t.b.uint8_tCP.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d0/d28/group__spim_1ga5c753857036825c87de0933fb8c0ea8b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_WriteBytes</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pWriteBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415SPIM_WriteBytes7uint8_tbPK7uint8_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a write operation. </p>
+<p>This is a non-blocking operation, the input buffer cannot be modified until the transaction is complete.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the buffer is on the stack, you must ensure that the transaction completes before the function exits.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pWriteBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>bytes</strong> – The number bytes to write. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the transaction is complete, the return status is passed as an argument. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418SPIM_TransferBytes7uint8_tbPK7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv318SPIM_TransferBytes7uint8_tbPK7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv218SPIM_TransferBytes7uint8_tbPK7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="SPIM_TransferBytes__uint8_t.b.uint8_tCP.uint8_tP.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d0/d28/group__spim_1gaf4f484cfc1ec0b0aca6aa949a05d0e89"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_TransferBytes</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pWriteBuffer</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReadBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418SPIM_TransferBytes7uint8_tbPK7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a read and write operation. </p>
+<p>This is a non-blocking operation. The read buffer will be overwritten once the transaction has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pWriteBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>pReadBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>bytes</strong> – The number of bytes to transfer. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the transaction is complete, the return status is passed as an argument. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428SPIM_TransferBytesHalfDuplex7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv328SPIM_TransferBytesHalfDuplex7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv228SPIM_TransferBytesHalfDuplex7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t17Driver_Callback_tPv"></span><span id="SPIM_TransferBytesHalfDuplex__uint8_t.b.uint8_tCP.uint8_tP.uint32_t.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d0/d28/group__spim_1ga89a85b5a4520a316b9be6f6825f4f601"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_TransferBytesHalfDuplex</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pWriteBuffer</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReadBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">writeBytes</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">readBytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428SPIM_TransferBytesHalfDuplex7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a write operation with number of writesbytes then performs a read operation with number of readbytes. </p>
+<p>This is a non-blocking operation. The read buffer will be overwritten once the transaction has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pWriteBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>pReadBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>writeBytes</strong> – The number of bytes to write. </p></li>
+<li><p><strong>readBytes</strong> – The number of bytes to read. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the transaction is complete, the return status is passed as an argument. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv436SPIM_TransferBytesHalfDuplexBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t">
+<span id="_CPPv336SPIM_TransferBytesHalfDuplexBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t"></span><span id="_CPPv236SPIM_TransferBytesHalfDuplexBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t"></span><span id="SPIM_TransferBytesHalfDuplexBlocking__uint8_t.b.uint8_tCP.uint8_tP.uint32_t.uint32_t"></span><span class="target" id="d0/d28/group__spim_1ga54bb3e6352de3d49d756cba97fddf813"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_TransferBytesHalfDuplexBlocking</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pWriteBuffer</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReadBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">writeBytes</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">readBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv436SPIM_TransferBytesHalfDuplexBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a write operation with number of writesbytes then performs a read operation with number of readbytes. </p>
+<p>This is a blocking operation. The read buffer will be overwritten once the transaction has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pWriteBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>pReadBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>writeBytes</strong> – The number of bytes to write. </p></li>
+<li><p><strong>readBytes</strong> – The number of bytes to read. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423SPIM_WriteBytesBlocking7uint8_tbP7uint8_t8uint32_t">
+<span id="_CPPv323SPIM_WriteBytesBlocking7uint8_tbP7uint8_t8uint32_t"></span><span id="_CPPv223SPIM_WriteBytesBlocking7uint8_tbP7uint8_t8uint32_t"></span><span id="SPIM_WriteBytesBlocking__uint8_t.b.uint8_tP.uint32_t"></span><span class="target" id="d0/d28/group__spim_1ga85f10f1a1f24b30e86af6f8a5cf3ff31"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_WriteBytesBlocking</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pWriteBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423SPIM_WriteBytesBlocking7uint8_tbP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a write operation. </p>
+<p>This is a blocking operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pWriteBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>bytes</strong> – The number of bytes to write. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was executed, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422SPIM_ReadBytesBlocking7uint8_tbP7uint8_t8uint32_t">
+<span id="_CPPv322SPIM_ReadBytesBlocking7uint8_tbP7uint8_t8uint32_t"></span><span id="_CPPv222SPIM_ReadBytesBlocking7uint8_tbP7uint8_t8uint32_t"></span><span id="SPIM_ReadBytesBlocking__uint8_t.b.uint8_tP.uint32_t"></span><span class="target" id="d0/d28/group__spim_1ga132d68c4cecb6e06fb9f5c6ecebc2252"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_ReadBytesBlocking</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReadBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422SPIM_ReadBytesBlocking7uint8_tbP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a read operation. </p>
+<p>This is a blocking operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pReadBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>bytes</strong> – The number of bytes to read. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was executed, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426SPIM_TransferBytesBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv326SPIM_TransferBytesBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv226SPIM_TransferBytesBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t"></span><span id="SPIM_TransferBytesBlocking__uint8_t.b.uint8_tCP.uint8_tP.uint32_t"></span><span class="target" id="d0/d28/group__spim_1ga05d34b211cb48c043613c70cfe22ab8a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_TransferBytesBlocking</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chipSelectGpio</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keepChipSelectLow</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pWriteBuffer</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReadBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426SPIM_TransferBytesBlocking7uint8_tbPK7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs a read and write operation. </p>
+<p>This is a blocking operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chipSelectGpio</strong> – Number of the GPIO to use for the chip select. </p></li>
+<li><p><strong>keepChipSelectLow</strong> – True if the CSN should be kept asserted after transaction. </p></li>
+<li><p><strong>pWriteBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>pReadBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>bytes</strong> – The number of bytes to transfer. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was executed, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428SPIM_PendingTransactionCountv">
+<span id="_CPPv328SPIM_PendingTransactionCountv"></span><span id="_CPPv228SPIM_PendingTransactionCountv"></span><span id="SPIM_PendingTransactionCount__void"></span><span class="target" id="d0/d28/group__spim_1ga1199d54ecfa4f6d9b54319fa9d904b94"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PendingTransactionCount</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428SPIM_PendingTransactionCountv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the number of pending transactions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of pending SPI master transactions. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437SPIM_GetPrescalerForMaxClockFrequency8uint32_t">
+<span id="_CPPv337SPIM_GetPrescalerForMaxClockFrequency8uint32_t"></span><span id="_CPPv237SPIM_GetPrescalerForMaxClockFrequency8uint32_t"></span><span id="SPIM_GetPrescalerForMaxClockFrequency__uint32_t"></span><span class="target" id="d0/d28/group__spim_1ga176dc4f1d1a1d7730a0da72113034c7f"></span><a class="reference internal" href="#_CPPv416SPIM_Prescaler_t" title="SPIM_Prescaler_t"><span class="n"><span class="pre">SPIM_Prescaler_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_GetPrescalerForMaxClockFrequency</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">frequency</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437SPIM_GetPrescalerForMaxClockFrequency8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the SPI master clock to a frequency at or bellow the given frequency. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the frequency is too low, the lowest frequency possible is used. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>frequency</strong> – Frequency that the SPI master clock may not exceed. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Highest prescaler that produces a frequency that approaches but is not above the requested frequency. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422SPIM_SetClockFrequency8uint32_t">
+<span id="_CPPv322SPIM_SetClockFrequency8uint32_t"></span><span id="_CPPv222SPIM_SetClockFrequency8uint32_t"></span><span id="SPIM_SetClockFrequency__uint32_t"></span><span class="target" id="d0/d28/group__spim_1ga0e7f6230306ddaaef65e3e318ff7d1c8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_SetClockFrequency</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">frequency</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422SPIM_SetClockFrequency8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Configure the clock frequency at or bellow the given frequency. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the frequency is too low, the lowest frequency possible is used. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The clock frequency is applied on next transaction but not on transaction that are already in the queue. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This configuration is lost during sleep. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>frequency</strong> – Frequency that the SPI master clock may not exceed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422SPIM_SetClockPrescaler16SPIM_Prescaler_t">
+<span id="_CPPv322SPIM_SetClockPrescaler16SPIM_Prescaler_t"></span><span id="_CPPv222SPIM_SetClockPrescaler16SPIM_Prescaler_t"></span><span id="SPIM_SetClockPrescaler__SPIM_Prescaler_t"></span><span class="target" id="d0/d28/group__spim_1ga6d8ec11e047753e38e66387756eb00e1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_SetClockPrescaler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416SPIM_Prescaler_t" title="SPIM_Prescaler_t"><span class="n"><span class="pre">SPIM_Prescaler_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">prescaler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422SPIM_SetClockPrescaler16SPIM_Prescaler_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Configure the clock prescaler. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The prescaler is applied on next transaction but not on transaction that are already in the queue. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This configuration is lost during sleep. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prescaler</strong> – The clock prescaler. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421SPIM_SetConfiguration13SPIM_Config_t">
+<span id="_CPPv321SPIM_SetConfiguration13SPIM_Config_t"></span><span id="_CPPv221SPIM_SetConfiguration13SPIM_Config_t"></span><span id="SPIM_SetConfiguration__SPIM_Config_t"></span><span class="target" id="d0/d28/group__spim_1ga2598f47e9ec22ad72041d774a88ecfd5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_SetConfiguration</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413SPIM_Config_t" title="SPIM_Config_t"><span class="n"><span class="pre">SPIM_Config_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421SPIM_SetConfiguration13SPIM_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the configuration for next transaction. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The configuration is applied on next transaction but not on transaction that are already in the queue. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This configuration is lost during sleep. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The SPI master config. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415SPIM_AssertChip7uint8_t">
+<span id="_CPPv315SPIM_AssertChip7uint8_t"></span><span id="_CPPv215SPIM_AssertChip7uint8_t"></span><span id="SPIM_AssertChip__uint8_t"></span><span class="target" id="d0/d28/group__spim_1gab10cb09d493a0e77223a92a2ff218149"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_AssertChip</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">gpio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415SPIM_AssertChip7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Assert the slave device on the given GPIO. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gpio</strong> – The CSN GPIO. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417SPIM_DeassertChip7uint8_t">
+<span id="_CPPv317SPIM_DeassertChip7uint8_t"></span><span id="_CPPv217SPIM_DeassertChip7uint8_t"></span><span id="SPIM_DeassertChip__uint8_t"></span><span class="target" id="d0/d28/group__spim_1gae273b08005a77ccafd45d628759cc2d9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_DeassertChip</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">gpio</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417SPIM_DeassertChip7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>De-assert the slave device on the given GPIO. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gpio</strong> – The CSN GPIO. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv412gSPIM_Config">
+<span id="_CPPv312gSPIM_Config"></span><span id="_CPPv212gSPIM_Config"></span><span id="gSPIM_Config__SPIM_Configuration_tV"></span><span class="target" id="d0/d28/group__spim_1ga56a6b6a3324378387186dda4c7e3c940"></span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420SPIM_Configuration_t" title="SPIM_Configuration_t"><span class="n"><span class="pre">SPIM_Configuration_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gSPIM_Config</span></span></span><a class="headerlink" href="#_CPPv412gSPIM_Config" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI master configuration data. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv420SPIM_Configuration_t">
+<span id="_CPPv320SPIM_Configuration_t"></span><span id="_CPPv220SPIM_Configuration_t"></span><span id="SPIM_Configuration_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv420SPIM_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;spi_master.h&gt;</em></div>
+<p>SPI master configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t12moduleConfigE">
+<span id="_CPPv3N20SPIM_Configuration_t12moduleConfigE"></span><span id="_CPPv2N20SPIM_Configuration_t12moduleConfigE"></span><span id="SPIM_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1abe185de246cca5a56e9e50e120486c72"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t10configBitsE">
+<span id="_CPPv3N20SPIM_Configuration_t10configBitsE"></span><span id="_CPPv2N20SPIM_Configuration_t10configBitsE"></span><span id="SPIM_Configuration_t::configBits__SPIM_Config_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1a738782b0c46057bbb5fdf913fcce115c"></span><a class="reference internal" href="#_CPPv413SPIM_Config_t" title="SPIM_Config_t"><span class="n"><span class="pre">SPIM_Config_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configBits</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t10configBitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Configuration bits for the SPI master. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t13assertChipFctE">
+<span id="_CPPv3N20SPIM_Configuration_t13assertChipFctE"></span><span id="_CPPv2N20SPIM_Configuration_t13assertChipFctE"></span><span id="SPIM_Configuration_t::assertChipFct__SPIM_AssertChipFct_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1a02d5c126d9f9fb9ce3841c964faacc36"></span><a class="reference internal" href="#_CPPv420SPIM_AssertChipFct_t" title="SPIM_AssertChipFct_t"><span class="n"><span class="pre">SPIM_AssertChipFct_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assertChipFct</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t13assertChipFctE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to assert the slave device. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t15deassertChipFctE">
+<span id="_CPPv3N20SPIM_Configuration_t15deassertChipFctE"></span><span id="_CPPv2N20SPIM_Configuration_t15deassertChipFctE"></span><span id="SPIM_Configuration_t::deassertChipFct__SPIM_DeassertChipFct_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1a774b25a70105c1a761c1d7cf4460a92a"></span><a class="reference internal" href="#_CPPv422SPIM_DeassertChipFct_t" title="SPIM_DeassertChipFct_t"><span class="n"><span class="pre">SPIM_DeassertChipFct_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deassertChipFct</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t15deassertChipFctE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to deassert the slave device. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t7enabledE">
+<span id="_CPPv3N20SPIM_Configuration_t7enabledE"></span><span id="_CPPv2N20SPIM_Configuration_t7enabledE"></span><span id="SPIM_Configuration_t::enabled__SPIM_Enable_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1ae5cf85e24d5e29b611232b6f22094b1b"></span><a class="reference internal" href="#_CPPv413SPIM_Enable_t" title="SPIM_Enable_t"><span class="n"><span class="pre">SPIM_Enable_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t7enabledE" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI Master driver enabled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t16transactionDepthE">
+<span id="_CPPv3N20SPIM_Configuration_t16transactionDepthE"></span><span id="_CPPv2N20SPIM_Configuration_t16transactionDepthE"></span><span id="SPIM_Configuration_t::transactionDepth__SPIM_QueueIndex_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1a6f7a8d971d139924d5a1e884c75f19a3"></span><a class="reference internal" href="#_CPPv417SPIM_QueueIndex_t" title="SPIM_QueueIndex_t"><span class="n"><span class="pre">SPIM_QueueIndex_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transactionDepth</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t16transactionDepthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the transaction queue. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t7gpioSckE">
+<span id="_CPPv3N20SPIM_Configuration_t7gpioSckE"></span><span id="_CPPv2N20SPIM_Configuration_t7gpioSckE"></span><span id="SPIM_Configuration_t::gpioSck__uint8_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1ab355f4b5ceec0500f509c9f342a656a6"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpioSck</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t7gpioSckE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO for the SPI master SCK. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t8gpioMisoE">
+<span id="_CPPv3N20SPIM_Configuration_t8gpioMisoE"></span><span id="_CPPv2N20SPIM_Configuration_t8gpioMisoE"></span><span id="SPIM_Configuration_t::gpioMiso__uint8_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1a84dfbf236c246f4543edd8e421e5da83"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpioMiso</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t8gpioMisoE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO for the SPI master MISO. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t8gpioMosiE">
+<span id="_CPPv3N20SPIM_Configuration_t8gpioMosiE"></span><span id="_CPPv2N20SPIM_Configuration_t8gpioMosiE"></span><span id="SPIM_Configuration_t::gpioMosi__uint8_t"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1aa71d60bd2832c02705ccd2921ab4bae1"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpioMosi</span></span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t8gpioMosiE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO for the SPI master MOSI. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIM_Configuration_t8reservedE">
+<span id="_CPPv3N20SPIM_Configuration_t8reservedE"></span><span id="_CPPv2N20SPIM_Configuration_t8reservedE"></span><span id="SPIM_Configuration_t::reserved__uint8_tA"></span><span class="target" id="d3/ddb/struct_s_p_i_m___configuration__t_1aac9f3ec6a57e3394e26a522334f80ba4"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N20SPIM_Configuration_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reserved bytes for alignment. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="hal-api">
+<h2>HAL API<a class="headerlink" href="#hal-api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d6/df7/group__spim__hal"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">spim_hal</span></span></dt>
+<dd><p>HAL Driver for the SPI master. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIM_MAX_TRANS_LENGTH">
+<span class="target" id="d6/df7/group__spim__hal_1ga3e35e28b0eaeeef161a1ede751f19c53"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_MAX_TRANS_LENGTH</span></span></span> <span class="pre">(16)</span><a class="headerlink" href="#c.SPIM_MAX_TRANS_LENGTH" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum number of bytes that are sent in a single transaction. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIM_TIMER_OVERHEAD">
+<span class="target" id="d6/df7/group__spim__hal_1ga5b98b848e814a9f4e219a9a9dadbe873"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_TIMER_OVERHEAD</span></span></span> <span class="pre">(0.0f)</span><a class="headerlink" href="#c.SPIM_TIMER_OVERHEAD" title="Link to this definition"></a><br /></dt>
+<dd><p>Clock overhead for scheduling (in milliseconds). </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv416SPIM_Prescaler_t">
+<span id="_CPPv316SPIM_Prescaler_t"></span><span id="_CPPv216SPIM_Prescaler_t"></span><span class="target" id="d6/df7/group__spim__hal_1ga7040b54a82cb1d8fa6c5c09f75dd03af"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_Prescaler_t</span></span></span><a class="headerlink" href="#_CPPv416SPIM_Prescaler_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Prescaler value to divide the clock source by. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_2E">
+<span id="_CPPv3N16SPIM_Prescaler_t16SPIM_PRESCALER_2E"></span><span id="_CPPv2N16SPIM_Prescaler_t16SPIM_PRESCALER_2E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afafd29614b36403b418641da632f3826a4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_2E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_3E">
+<span id="_CPPv3N16SPIM_Prescaler_t16SPIM_PRESCALER_3E"></span><span id="_CPPv2N16SPIM_Prescaler_t16SPIM_PRESCALER_3E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afaf2e4059e9ac9e19b3b0b1ae2171544c0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_3</span></span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_3E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_4E">
+<span id="_CPPv3N16SPIM_Prescaler_t16SPIM_PRESCALER_4E"></span><span id="_CPPv2N16SPIM_Prescaler_t16SPIM_PRESCALER_4E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afa135fda1945031385bec59fda6d9e412e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_4</span></span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_4E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_6E">
+<span id="_CPPv3N16SPIM_Prescaler_t16SPIM_PRESCALER_6E"></span><span id="_CPPv2N16SPIM_Prescaler_t16SPIM_PRESCALER_6E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afa543860f12d205ec48a93be5a6fe3b5e4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_6</span></span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_6E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_8E">
+<span id="_CPPv3N16SPIM_Prescaler_t16SPIM_PRESCALER_8E"></span><span id="_CPPv2N16SPIM_Prescaler_t16SPIM_PRESCALER_8E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afa91636c50f8a4cdfbe83d792c02c7e688"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_8</span></span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t16SPIM_PRESCALER_8E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t17SPIM_PRESCALER_16E">
+<span id="_CPPv3N16SPIM_Prescaler_t17SPIM_PRESCALER_16E"></span><span id="_CPPv2N16SPIM_Prescaler_t17SPIM_PRESCALER_16E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afa635b1d703510c811de5a55aa1fe56d9b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_16</span></span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t17SPIM_PRESCALER_16E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t17SPIM_PRESCALER_32E">
+<span id="_CPPv3N16SPIM_Prescaler_t17SPIM_PRESCALER_32E"></span><span id="_CPPv2N16SPIM_Prescaler_t17SPIM_PRESCALER_32E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afa14cb8bb00d58a928aa0188428bc935c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_32</span></span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t17SPIM_PRESCALER_32E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SPIM_Prescaler_t17SPIM_PRESCALER_64E">
+<span id="_CPPv3N16SPIM_Prescaler_t17SPIM_PRESCALER_64E"></span><span id="_CPPv2N16SPIM_Prescaler_t17SPIM_PRESCALER_64E"></span><span class="target" id="d6/df7/group__spim__hal_1gga7040b54a82cb1d8fa6c5c09f75dd03afaf848f7722eca14f3aa3e607b8120ba1b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_PRESCALER_64</span></span></span><a class="headerlink" href="#_CPPv4N16SPIM_Prescaler_t17SPIM_PRESCALER_64E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv411SPIM_Mode_t">
+<span id="_CPPv311SPIM_Mode_t"></span><span id="_CPPv211SPIM_Mode_t"></span><span class="target" id="d6/df7/group__spim__hal_1ga79ea0f85bddb6f3dcf1de9a26d6a13e0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_Mode_t</span></span></span><a class="headerlink" href="#_CPPv411SPIM_Mode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI Master mode (3 or 4-wires). </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11SPIM_Mode_t17SPIM_MODE_4_WIRESE">
+<span id="_CPPv3N11SPIM_Mode_t17SPIM_MODE_4_WIRESE"></span><span id="_CPPv2N11SPIM_Mode_t17SPIM_MODE_4_WIRESE"></span><span class="target" id="d6/df7/group__spim__hal_1gga79ea0f85bddb6f3dcf1de9a26d6a13e0a3e65e1e87658b3ca2feecafc5a65665e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_MODE_4_WIRES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N11SPIM_Mode_t17SPIM_MODE_4_WIRESE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11SPIM_Mode_t17SPIM_MODE_3_WIRESE">
+<span id="_CPPv3N11SPIM_Mode_t17SPIM_MODE_3_WIRESE"></span><span id="_CPPv2N11SPIM_Mode_t17SPIM_MODE_3_WIRESE"></span><span class="target" id="d6/df7/group__spim__hal_1gga79ea0f85bddb6f3dcf1de9a26d6a13e0ab99c7230271046905e881554d43b9176"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_MODE_3_WIRES</span></span></span><a class="headerlink" href="#_CPPv4N11SPIM_Mode_t17SPIM_MODE_3_WIRESE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415SPIM_HAL_IsBusyv">
+<span id="_CPPv315SPIM_HAL_IsBusyv"></span><span id="_CPPv215SPIM_HAL_IsBusyv"></span><span id="SPIM_HAL_IsBusy__void"></span><span class="target" id="d6/df7/group__spim__hal_1ga49344607b0422a3b400d1b8a006913ad"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_HAL_IsBusy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415SPIM_HAL_IsBusyv" title="Link to this definition"></a><br /></dt>
+<dd><p>Determines if the SPI master is currently in use. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>true</strong> – The SPI master is in use. </p></li>
+<li><p><strong>false</strong> – The SPI master is available. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425SPIM_HAL_StartTransaction7uint8_t">
+<span id="_CPPv325SPIM_HAL_StartTransaction7uint8_t"></span><span id="_CPPv225SPIM_HAL_StartTransaction7uint8_t"></span><span id="SPIM_HAL_StartTransaction__uint8_t"></span><span class="target" id="d6/df7/group__spim__hal_1ga30b619be7383eca6b610943131999fc2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_HAL_StartTransaction</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425SPIM_HAL_StartTransaction7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Start a SPI master transaction. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>length</strong> – Number of bytes in the transaction. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421SPIM_HAL_SetPrescaler16SPIM_Prescaler_t">
+<span id="_CPPv321SPIM_HAL_SetPrescaler16SPIM_Prescaler_t"></span><span id="_CPPv221SPIM_HAL_SetPrescaler16SPIM_Prescaler_t"></span><span id="SPIM_HAL_SetPrescaler__SPIM_Prescaler_t"></span><span class="target" id="d6/df7/group__spim__hal_1ga2f0feb0d8d90bc3b55dd0aebf5d5ca61"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_HAL_SetPrescaler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416SPIM_Prescaler_t" title="SPIM_Prescaler_t"><span class="n"><span class="pre">SPIM_Prescaler_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">prescaler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421SPIM_HAL_SetPrescaler16SPIM_Prescaler_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the clock prescaler to the desired value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prescaler</strong> – The clock prescaler. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421SPIM_HAL_GetPrescalerv">
+<span id="_CPPv321SPIM_HAL_GetPrescalerv"></span><span id="_CPPv221SPIM_HAL_GetPrescalerv"></span><span id="SPIM_HAL_GetPrescaler__void"></span><span class="target" id="d6/df7/group__spim__hal_1ga4c7fff9186cb72f9373e8f4b6b361fa9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv416SPIM_Prescaler_t" title="SPIM_Prescaler_t"><span class="n"><span class="pre">SPIM_Prescaler_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_HAL_GetPrescaler</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421SPIM_HAL_GetPrescalerv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the clock prescaler value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The clock prescaler. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425SPIM_HAL_EnableWithConfig7uint8_t">
+<span id="_CPPv325SPIM_HAL_EnableWithConfig7uint8_t"></span><span id="_CPPv225SPIM_HAL_EnableWithConfig7uint8_t"></span><span id="SPIM_HAL_EnableWithConfig__uint8_t"></span><span class="target" id="d6/df7/group__spim__hal_1ga7a9b8a3faa6af1ffeaa5a4e0273c71e5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_HAL_EnableWithConfig</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">configByte</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425SPIM_HAL_EnableWithConfig7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable SPI master with configuration register to the desired value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>configByte</strong> – The configuration to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv433SPIM_HAL_SetConfigurationRegister13SPIM_Config_t">
+<span id="_CPPv333SPIM_HAL_SetConfigurationRegister13SPIM_Config_t"></span><span id="_CPPv233SPIM_HAL_SetConfigurationRegister13SPIM_Config_t"></span><span id="SPIM_HAL_SetConfigurationRegister__SPIM_Config_t"></span><span class="target" id="d6/df7/group__spim__hal_1ga878f6503c213ad72f485bf10480d0d39"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_HAL_SetConfigurationRegister</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413SPIM_Config_t" title="SPIM_Config_t"><span class="n"><span class="pre">SPIM_Config_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv433SPIM_HAL_SetConfigurationRegister13SPIM_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the SPI master configuration register to the desired value. </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not call this function during a transfer. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The configuration to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417SPIM_HAL_SetRWSel7uint8_t">
+<span id="_CPPv317SPIM_HAL_SetRWSel7uint8_t"></span><span id="_CPPv217SPIM_HAL_SetRWSel7uint8_t"></span><span id="SPIM_HAL_SetRWSel__uint8_t"></span><span class="target" id="d6/df7/group__spim__hal_1gae0d6e07ce73dff3a5b2b3f25c93ca826"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_HAL_SetRWSel</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rw</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417SPIM_HAL_SetRWSel7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set Read/Write Sel (for 3 wires mode). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rw</strong> – Read=1, Write=0. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv413SPIM_Config_t">
+<span id="_CPPv313SPIM_Config_t"></span><span id="_CPPv213SPIM_Config_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIM_Config_t</span></span></span><a class="headerlink" href="#_CPPv413SPIM_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;spi_master_hal.h&gt;</em></div>
+<p>SPI master configuration bits. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t10configByteE">
+<span id="_CPPv3N13SPIM_Config_t10configByteE"></span><span id="_CPPv2N13SPIM_Config_t10configByteE"></span><span id="SPIM_Config_t::configByte__uint8_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1a1f35a0943c88cfec83574213cdbcf9ef"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configByte</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t10configByteE" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI master config byte. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t9prescalerE">
+<span id="_CPPv3N13SPIM_Config_t9prescalerE"></span><span id="_CPPv2N13SPIM_Config_t9prescalerE"></span><span id="SPIM_Config_t::prescaler__SPIM_Prescaler_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1a710cdcee697c67b1857a4b7f82f61a60"></span><a class="reference internal" href="#_CPPv416SPIM_Prescaler_t" title="SPIM_Prescaler_t"><span class="n"><span class="pre">SPIM_Prescaler_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prescaler</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t9prescalerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Clock prescaler. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t4cphaE">
+<span id="_CPPv3N13SPIM_Config_t4cphaE"></span><span id="_CPPv2N13SPIM_Config_t4cphaE"></span><span id="SPIM_Config_t::cpha__uint8_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1af5bb7abf9de99c9b20f0248d05925ece"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpha</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t4cphaE" title="Link to this definition"></a><br /></dt>
+<dd><p>Clock phase. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t4cpolE">
+<span id="_CPPv3N13SPIM_Config_t4cpolE"></span><span id="_CPPv2N13SPIM_Config_t4cpolE"></span><span id="SPIM_Config_t::cpol__uint8_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1a92e0fca2507c5fa652cd1a2bd9b4d4cd"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpol</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t4cpolE" title="Link to this definition"></a><br /></dt>
+<dd><p>Clock polarity. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t8msbFirstE">
+<span id="_CPPv3N13SPIM_Config_t8msbFirstE"></span><span id="_CPPv2N13SPIM_Config_t8msbFirstE"></span><span id="SPIM_Config_t::msbFirst__uint8_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1a019501a2922ac61899cc09a8296254b7"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">msbFirst</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t8msbFirstE" title="Link to this definition"></a><br /></dt>
+<dd><p>Send/receive data with the most significant bit (MSB) first. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t7spiModeE">
+<span id="_CPPv3N13SPIM_Config_t7spiModeE"></span><span id="_CPPv2N13SPIM_Config_t7spiModeE"></span><span id="SPIM_Config_t::spiMode__SPIM_Mode_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1aa69b2e295d449fd1c5ac9e946b3339e1"></span><a class="reference internal" href="#_CPPv411SPIM_Mode_t" title="SPIM_Mode_t"><span class="n"><span class="pre">SPIM_Mode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">spiMode</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t7spiModeE" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI mode, 4 or 3 wires. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t7rxPhaseE">
+<span id="_CPPv3N13SPIM_Config_t7rxPhaseE"></span><span id="_CPPv2N13SPIM_Config_t7rxPhaseE"></span><span id="SPIM_Config_t::rxPhase__uint8_t"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1a0ebee3afe1a75c419a026d0298eb1f73"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rxPhase</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t7rxPhaseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Invert RX phase clock. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIM_Config_t4bitsE">
+<span id="_CPPv3N13SPIM_Config_t4bitsE"></span><span id="_CPPv2N13SPIM_Config_t4bitsE"></span><span class="target" id="d9/dee/union_s_p_i_m___config__t_1a7ee00e2dc8aa032d29f4b5692f7e078d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413SPIM_Config_t" title="SPIM_Config_t"><span class="n"><span class="pre">SPIM_Config_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N13SPIM_Config_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-2-2">
+<h3>Version 0.2.2<a class="headerlink" href="#version-0-2-2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Critical Section allow execution of radio driver ISR with maximum priority.</p></li>
+</ul>
+</section>
+<section id="version-0-2-1">
+<h3>Version 0.2.1<a class="headerlink" href="#version-0-2-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed prescaler_3 sampling issue.</p></li>
+</ul>
+</section>
+<section id="version-0-2-0">
+<h3>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Added blocking functions for read and write operations. When using them, the delays between transactions are reduced.</p></li>
+</ul>
+</section>
+<section id="version-0-1-4">
+<h3>Version 0.1.4<a class="headerlink" href="#version-0-1-4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Updated sphinx documentation.</p></li>
+<li><p>Cleaned doxygen comments.</p></li>
+</ul>
+</section>
+<section id="version-0-1-3">
+<h3>Version 0.1.3<a class="headerlink" href="#version-0-1-3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Added SPI master 3-wires mode.</p></li>
+<li><p>Removed the clock frequency parameter from the transfer functions.</p></li>
+<li><p>The configuration of the SPI master can be changed on the fly (cpol, cpha, msb first, clock freq).</p></li>
+<li><p>Renamed HAL functions (SPIM -&gt; SPIM_HAL)</p></li>
+<li><p>New parameter in transfer functions (bool keepChipSelectLow) to keep the CSN low after a transaction.</p></li>
+</ul>
+</section>
+<section id="version-0-1-2">
+<h3>Version 0.1.2<a class="headerlink" href="#version-0-1-2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Removed clockPrescaler from SPIM configuration. It was not used because the prescaler is calculated for each transaction.</p></li>
+</ul>
+</section>
+<section id="version-0-1-1">
+<h3>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed prescaler calculation issue.</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+<li><p>Support basic functionalities.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rtc/index.html" class="btn btn-neutral float-left" title="RTC Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../spi_slave/index.html" class="btn btn-neutral float-right" title="SPI Slave Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

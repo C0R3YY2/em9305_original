@@ -1,0 +1,39 @@
+=========================================================================
+FWU Target Example
+=========================================================================
+
+
+Overview
+--------
+
+This sample application is used to demonstrate the Firmware Update feature that is part of this SDK.
+
+.. note::
+
+  This sample application is intended to be executed on a DVK where the SPI slave of the EM9305 is managed by the EM Transport interface.
+
+  If for any reason the SPI Slave of the EM9305 is used for other purposes, the EM Transport Manager must be disabled from the sample application.
+
+  To disable the EM Transport Manager, remove the calls to EMTransportManager_InitWithSleepCB, EMTransportManager_SendEvent and EMTransportManager_Resume functions from the NVM_ApplicationEntry function defined in nvm_main.c.
+
+  EM Transport Manager must also be disabled from the firmware_updater sample applications.
+
+Build
+-----
+
+This sample application generates two targets: **fwu_target** and **fwu_target_v2**.
+
+When **fwu_target** is executed, the FWU Target becomes connectable and starts advertising with the Complete Local Name set to "FWU Target".
+
+When **fwu_target_v2** is executed, the FWU Target becomes connectable and starts advertising with the Complete Local Name set to "FWU Target V2".
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target fwu_target
+  cmake --build . --target fwu_target_v2
+
+
+Program
+-------
+Refer to the `Firmware Update <../../sections/FirmwareUpdate.html>`_ section of the SDK Documentation for additional information on the firmware update functionality.

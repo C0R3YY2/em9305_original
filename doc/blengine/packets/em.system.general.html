@@ -1,0 +1,2616 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>em.system.general &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="em.system.hi.cmd.arc" href="em.system.hi.cmd.arc.html" />
+    <link rel="prev" title="em.system.fwu" href="em.system.fwu.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../packets.html">HCI Packets List</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aci.em.hci.html">aci.em.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.9304.system.cmd.html">em.9304.system.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.bridge.cmd.html">em.bridge.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.dvk.cmd.html">em.dvk.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.event.unity.html">em.event.unity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.em.html">em.system.em</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.fwu.html">em.system.fwu</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">em.system.general</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-read-product-information">EMSG_Read_Product_Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-read-supported-features">EMSG_Read_Supported_Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-cpu-reset">EMSG_CPU_Reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-public-address">EMSG_Set_Public_Address</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-uart-baud-rate">EMSG_Set_UART_Baud_Rate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-clock-source">EMSG_Set_Clock_Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-hf-clock-frequency">EMSG_Set_HF_Clock_Frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-get-memory-usage">EMSG_Get_Memory_Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-power-mode">EMSG_Set_Power_Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-sleep-options">EMSG_Set_Sleep_Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-svld-measurement">EMSG_SVLD_Measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-execute-jli-function">EMSG_Execute_JLI_Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-execute-function">EMSG_Execute_Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-jump-to-function">EMSG_Jump_To_Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-calculate-crc32">EMSG_Calculate_CRC32</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-enter-configuration-mode">EMSG_Enter_Configuration_Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-leave-configuration-mode">EMSG_Leave_Configuration_Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-call-weak-function">EMSG_Call_Weak_Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-read-mac-address">EMSG_Read_MAC_Address</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-get-emcore-information">EMSG_Get_EMCore_Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-boot-mode-flags">EMSG_Set_Boot_Mode_Flags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-clear-mode-flags">EMSG_Clear_Mode_Flags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-disable-timeout">EMSG_Disable_Timeout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsg-set-rssi-offset">EMSG_Set_RSSI_Offset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.arc.html">em.system.hi.cmd.arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.att.html">em.system.hi.cmd.att</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.attc.html">em.system.hi.cmd.attc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.atts.html">em.system.hi.cmd.atts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.dm.html">em.system.hi.cmd.dm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gap.html">em.system.hi.cmd.gap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gatt.html">em.system.hi.cmd.gatt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gpio.html">em.system.hi.cmd.gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.hci.html">em.system.hi.cmd.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.l2cap.html">em.system.hi.cmd.l2cap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.rtc.html">em.system.hi.cmd.rtc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.sm.html">em.system.hi.cmd.sm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smp.html">em.system.hi.cmd.smp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpi.html">em.system.hi.cmd.smpi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpr.html">em.system.hi.cmd.smpr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.whitelist.html">em.system.hi.cmd.whitelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.event.html">em.system.hi.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.mm.html">em.system.mm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pc.html">em.system.pc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pm.html">em.system.pm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rc.html">em.system.rc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rm.html">em.system.rm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.security.html">em.system.security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.ut.html">em.system.ut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.wt.html">em.system.wt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.html">hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.cmd.html">hci.aci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.event.html">hci.aci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.hci.event.html">hci.aci.hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.acl.html">hci.acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.ble.event.html">hci.ble.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd.html">hci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd_802_15_4.html">hci.cmd_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.data_802_15_4.html">hci.data_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.html">hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.vs.html">hci.event.vs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event_802_15_4.html">hci.event_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.iso.html">hci.iso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">HCI Packets Index by ID</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../packets.html">HCI Packets List</a></li>
+      <li class="breadcrumb-item active">em.system.general</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="em-system-general">
+<h1>em.system.general<a class="headerlink" href="#em-system-general" title="Link to this heading"></a></h1>
+<nav class="contents local" id="index">
+<p class="topic-title">Index</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#emsg-read-product-information" id="id49">EMSG_Read_Product_Information</a></p></li>
+<li><p><a class="reference internal" href="#emsg-read-supported-features" id="id50">EMSG_Read_Supported_Features</a></p></li>
+<li><p><a class="reference internal" href="#emsg-cpu-reset" id="id51">EMSG_CPU_Reset</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-public-address" id="id52">EMSG_Set_Public_Address</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-uart-baud-rate" id="id53">EMSG_Set_UART_Baud_Rate</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-clock-source" id="id54">EMSG_Set_Clock_Source</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-hf-clock-frequency" id="id55">EMSG_Set_HF_Clock_Frequency</a></p></li>
+<li><p><a class="reference internal" href="#emsg-get-memory-usage" id="id56">EMSG_Get_Memory_Usage</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-power-mode" id="id57">EMSG_Set_Power_Mode</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-sleep-options" id="id58">EMSG_Set_Sleep_Options</a></p></li>
+<li><p><a class="reference internal" href="#emsg-svld-measurement" id="id59">EMSG_SVLD_Measurement</a></p></li>
+<li><p><a class="reference internal" href="#emsg-execute-jli-function" id="id60">EMSG_Execute_JLI_Function</a></p></li>
+<li><p><a class="reference internal" href="#emsg-execute-function" id="id61">EMSG_Execute_Function</a></p></li>
+<li><p><a class="reference internal" href="#emsg-jump-to-function" id="id62">EMSG_Jump_To_Function</a></p></li>
+<li><p><a class="reference internal" href="#emsg-calculate-crc32" id="id63">EMSG_Calculate_CRC32</a></p></li>
+<li><p><a class="reference internal" href="#emsg-enter-configuration-mode" id="id64">EMSG_Enter_Configuration_Mode</a></p></li>
+<li><p><a class="reference internal" href="#emsg-leave-configuration-mode" id="id65">EMSG_Leave_Configuration_Mode</a></p></li>
+<li><p><a class="reference internal" href="#emsg-call-weak-function" id="id66">EMSG_Call_Weak_Function</a></p></li>
+<li><p><a class="reference internal" href="#emsg-read-mac-address" id="id67">EMSG_Read_MAC_Address</a></p></li>
+<li><p><a class="reference internal" href="#emsg-get-emcore-information" id="id68">EMSG_Get_EMCore_Information</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-boot-mode-flags" id="id69">EMSG_Set_Boot_Mode_Flags</a></p></li>
+<li><p><a class="reference internal" href="#emsg-clear-mode-flags" id="id70">EMSG_Clear_Mode_Flags</a></p></li>
+<li><p><a class="reference internal" href="#emsg-disable-timeout" id="id71">EMSG_Disable_Timeout</a></p></li>
+<li><p><a class="reference internal" href="#emsg-set-rssi-offset" id="id72">EMSG_Set_RSSI_Offset</a></p></li>
+</ul>
+</nav>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div>
+<div id="count">24 Packets</div><section id="emsg-read-product-information">
+<span id="pkt-emsg-read-product-information"></span><h2><a class="reference internal" href="#emsg-read-product-information">EMSG_Read_Product_Information</a><a class="headerlink" href="#emsg-read-product-information" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Read_Product_Information&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Read_Product_Information</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc01</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x01fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Product_Information_Structure_Version</strong></p></td>
+<td><p>4</p></td>
+<td><p>&gt;L</p></td>
+<td><div class="line-block">
+<div class="line">Device information Structure Version.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>IC_Family_ID</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">IC Family ID.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Lot_ID</strong></p></td>
+<td><p>8</p></td>
+<td><p>&lt;8s</p></td>
+<td><div class="line-block">
+<div class="line">Lot ID.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Wafer_Number</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;b</p></td>
+<td><div class="line-block">
+<div class="line">Wafer Number</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>X_Position</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;b</p></td>
+<td><div class="line-block">
+<div class="line">X Coordinate on the Wafer</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Y_Position</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;b</p></td>
+<td><div class="line-block">
+<div class="line">Y Coordinate on the Wafer</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Maskset</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;1s</p></td>
+<td><div class="line-block">
+<div class="line">Maskset Revision</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Test_Program_Revision</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;1s</p></td>
+<td><div class="line-block">
+<div class="line">Test Program Revision</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Test_Program_Version</strong></p></td>
+<td><p>3</p></td>
+<td><p>&lt;3s</p></td>
+<td><div class="line-block">
+<div class="line">Test Program Version</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Package_Type</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;b</p></td>
+<td><div class="line-block">
+<div class="line">Package Type</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-read-supported-features">
+<span id="pkt-emsg-read-supported-features"></span><h2><a class="reference internal" href="#emsg-read-supported-features">EMSG_Read_Supported_Features</a><a class="headerlink" href="#emsg-read-supported-features" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Read_Supported_Features&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Read_Supported_Features</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc41</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x41fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-cpu-reset">
+<span id="pkt-emsg-cpu-reset"></span><h2><a class="reference internal" href="#emsg-cpu-reset">EMSG_CPU_Reset</a><a class="headerlink" href="#emsg-cpu-reset" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_CPU_Reset&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_CPU_Reset</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc42</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x42fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id6" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-public-address">
+<span id="pkt-emsg-set-public-address"></span><h2><a class="reference internal" href="#emsg-set-public-address">EMSG_Set_Public_Address</a><a class="headerlink" href="#emsg-set-public-address" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_Public_Address&quot;,</span> <span class="pre">Public_Address=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_Public_Address</span> <span class="pre">--Public_Address=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc43</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x43fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Public_Address</strong></p></td>
+<td></td>
+<td><p>6</p></td>
+<td><p>&lt;6s</p></td>
+<td><div class="line-block">
+<div class="line">Device Public Address.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-uart-baud-rate">
+<span id="pkt-emsg-set-uart-baud-rate"></span><h2><a class="reference internal" href="#emsg-set-uart-baud-rate">EMSG_Set_UART_Baud_Rate</a><a class="headerlink" href="#emsg-set-uart-baud-rate" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_UART_Baud_Rate&quot;,</span> <span class="pre">Baud_Rate=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_UART_Baud_Rate</span> <span class="pre">--Baud_Rate=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc44</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x44fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Baud_Rate</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Baud rate selection.</div>
+<div class="line">0x00 =    1200 Baud</div>
+<div class="line">0x01 =    2400 Baud</div>
+<div class="line">0x02 =    4800 Baud</div>
+<div class="line">0x03 =    9600 Baud</div>
+<div class="line">0x04 =   14400 Baud</div>
+<div class="line">0x05 =   19200 Baud</div>
+<div class="line">0x06 =   28800 Baud</div>
+<div class="line">0x07 =   38400 Baud</div>
+<div class="line">0x08 =   57600 Baud</div>
+<div class="line">0x09 =   76800 Baud</div>
+<div class="line">0x0A =  115200 Baud</div>
+<div class="line">0x0B =  230400 Baud</div>
+<div class="line">0x0C =  460800 Baud</div>
+<div class="line">0x0D =  921600 Baud</div>
+<div class="line">0x0E = 1843200 Baud</div>
+<div class="line">0x0F - 0xFF = Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id10" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-clock-source">
+<span id="pkt-emsg-set-clock-source"></span><h2><a class="reference internal" href="#emsg-set-clock-source">EMSG_Set_Clock_Source</a><a class="headerlink" href="#emsg-set-clock-source" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_Clock_Source&quot;,</span> <span class="pre">Clock_Source=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_Clock_Source</span> <span class="pre">--Clock_Source=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc45</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x45fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Clock_Source</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Clock source selection.</div>
+<div class="line">0x00 = High Frequency RC</div>
+<div class="line">0x01 = High Frequency Crystal</div>
+<div class="line">0x02 - 0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-hf-clock-frequency">
+<span id="pkt-emsg-set-hf-clock-frequency"></span><h2><a class="reference internal" href="#emsg-set-hf-clock-frequency">EMSG_Set_HF_Clock_Frequency</a><a class="headerlink" href="#emsg-set-hf-clock-frequency" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_HF_Clock_Frequency&quot;,</span> <span class="pre">Clock_Frequency=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_HF_Clock_Frequency</span> <span class="pre">--Clock_Frequency=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc46</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x46fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Clock_Frequency</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Clock frequency selection.</div>
+<div class="line">0x00 = 24MHz</div>
+<div class="line">0x01 = 48MHz</div>
+<div class="line">0x02 - 0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id14" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-get-memory-usage">
+<span id="pkt-emsg-get-memory-usage"></span><h2><a class="reference internal" href="#emsg-get-memory-usage">EMSG_Get_Memory_Usage</a><a class="headerlink" href="#emsg-get-memory-usage" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Get_Memory_Usage&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Get_Memory_Usage</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc47</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x47fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>RAM_Pool_Size</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Total size of the memory pool in bytes.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>PRAM_Used</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Retention memory used in bytes.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>NPRAM_Used</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Non-retention memory used in bytes.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>PRAM_Reserved</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Size in bytes of memory reserved as retention memory.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-power-mode">
+<span id="pkt-emsg-set-power-mode"></span><h2><a class="reference internal" href="#emsg-set-power-mode">EMSG_Set_Power_Mode</a><a class="headerlink" href="#emsg-set-power-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_Power_Mode&quot;,</span> <span class="pre">Power_Mode=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_Power_Mode</span> <span class="pre">--Power_Mode=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc48</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id17" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x48fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Power_Mode</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Power Mode selection.</div>
+<div class="line">0x00 = Active Mode</div>
+<div class="line">0x01 = CPU Sleep Mode</div>
+<div class="line">0x02 = Sleep Mode</div>
+<div class="line">0x03 = Deep Sleep Mode</div>
+<div class="line">0x04 - 0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-sleep-options">
+<span id="pkt-emsg-set-sleep-options"></span><h2><a class="reference internal" href="#emsg-set-sleep-options">EMSG_Set_Sleep_Options</a><a class="headerlink" href="#emsg-set-sleep-options" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_Sleep_Options&quot;,</span> <span class="pre">Sleep_Options=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_Sleep_Options</span> <span class="pre">--Sleep_Options=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc49</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id19">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id19" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x49fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Sleep_Options</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Sleep Options Settings.</div>
+<div class="line">0x00 = Disable Automatic Sleep Mode</div>
+<div class="line">0x01 = Enable Automatic Sleep Mode</div>
+<div class="line">0x02 - 0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id20">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id20" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-svld-measurement">
+<span id="pkt-emsg-svld-measurement"></span><h2><a class="reference internal" href="#emsg-svld-measurement">EMSG_SVLD_Measurement</a><a class="headerlink" href="#emsg-svld-measurement" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_SVLD_Measurement&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_SVLD_Measurement</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc4a</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id21">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id21" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x4afc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id22">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id22" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Power_Configuration</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Power Management Setups.</div>
+<div class="line">0x00 = DCDC Step-Down Configuration</div>
+<div class="line">0x01 = Direct Power (DCDC off) Configuration</div>
+<div class="line">0x02 = DCDC Step-Up Configuration</div>
+<div class="line">0x03 = Voltage Multiplier Configuration</div>
+<div class="line">0x04 - 0xFF  Reserved</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>SVLD_Value</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">SVLD Comparator Value.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-execute-jli-function">
+<span id="pkt-emsg-execute-jli-function"></span><h2><a class="reference internal" href="#emsg-execute-jli-function">EMSG_Execute_JLI_Function</a><a class="headerlink" href="#emsg-execute-jli-function" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Execute_JLI_Function&quot;,</span> <span class="pre">JLI_Entry=0xXx,Number_Of_Arguments=0xXx,Argument_1=0xXx,Argument_2=0xXx,Argument_3=0xXx,Argument_4=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Execute_JLI_Function</span> <span class="pre">--JLI_Entry=0xXx</span> <span class="pre">--Number_Of_Arguments=0xXx</span> <span class="pre">--Argument_1=0xXx</span> <span class="pre">--Argument_2=0xXx</span> <span class="pre">--Argument_3=0xXx</span> <span class="pre">--Argument_4=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc4b</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id23">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id23" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x4bfc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>JLI_Entry</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">JLI Entry Number.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Number_Of_Arguments</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of arguments of the function (maximum = 4).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Argument_1</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">First argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Argument_2</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Second argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Argument_3</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Third argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Argument_4</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Forth argument of the function.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id24">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id24" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Return_Value</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Return value of the function.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-execute-function">
+<span id="pkt-emsg-execute-function"></span><h2><a class="reference internal" href="#emsg-execute-function">EMSG_Execute_Function</a><a class="headerlink" href="#emsg-execute-function" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Execute_Function&quot;,</span> <span class="pre">Function_Address=0xXx,Number_Of_Arguments=0xXx,Argument_1=0xXx,Argument_2=0xXx,Argument_3=0xXx,Argument_4=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Execute_Function</span> <span class="pre">--Function_Address=0xXx</span> <span class="pre">--Number_Of_Arguments=0xXx</span> <span class="pre">--Argument_1=0xXx</span> <span class="pre">--Argument_2=0xXx</span> <span class="pre">--Argument_3=0xXx</span> <span class="pre">--Argument_4=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc4c</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id25">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id25" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x4cfc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Function_Address</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Address of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Number_Of_Arguments</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of arguments of the function (maximum = 4).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Argument_1</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">First argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Argument_2</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Second argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Argument_3</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Third argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Argument_4</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Forth argument of the function.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id26">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id26" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Return_Value</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Return value of the function.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-jump-to-function">
+<span id="pkt-emsg-jump-to-function"></span><h2><a class="reference internal" href="#emsg-jump-to-function">EMSG_Jump_To_Function</a><a class="headerlink" href="#emsg-jump-to-function" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Jump_To_Function&quot;,</span> <span class="pre">Function_Address=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Jump_To_Function</span> <span class="pre">--Function_Address=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc4d</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id27">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id27" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x4dfc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Function_Address</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Address of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Number_Of_Arguments</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of arguments of the function (maximum = 4).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Argument_1</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">First argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Argument_2</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Second argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Argument_3</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Third argument of the function.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Argument_4</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Forth argument of the function.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id28">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id28" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-calculate-crc32">
+<span id="pkt-emsg-calculate-crc32"></span><h2><a class="reference internal" href="#emsg-calculate-crc32">EMSG_Calculate_CRC32</a><a class="headerlink" href="#emsg-calculate-crc32" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Calculate_CRC32&quot;,</span> <span class="pre">Start_Address=0xXx,End_Address=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Calculate_CRC32</span> <span class="pre">--Start_Address=0xXx</span> <span class="pre">--End_Address=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc4e</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id29">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id29" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x4efc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Start_Address</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Starting address (included in the calculation).</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>End_Address</strong></p></td>
+<td></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Ending address (excluded from the calculation).</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id30">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id30" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>CRC32</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">Calculated 32-bit CRC value.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-enter-configuration-mode">
+<span id="pkt-emsg-enter-configuration-mode"></span><h2><a class="reference internal" href="#emsg-enter-configuration-mode">EMSG_Enter_Configuration_Mode</a><a class="headerlink" href="#emsg-enter-configuration-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Enter_Configuration_Mode&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Enter_Configuration_Mode</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc4f</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id31">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id31" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x4ffc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id32">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id32" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-leave-configuration-mode">
+<span id="pkt-emsg-leave-configuration-mode"></span><h2><a class="reference internal" href="#emsg-leave-configuration-mode">EMSG_Leave_Configuration_Mode</a><a class="headerlink" href="#emsg-leave-configuration-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Leave_Configuration_Mode&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Leave_Configuration_Mode</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc50</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id33">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id33" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x50fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id34">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id34" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-call-weak-function">
+<span id="pkt-emsg-call-weak-function"></span><h2><a class="reference internal" href="#emsg-call-weak-function">EMSG_Call_Weak_Function</a><a class="headerlink" href="#emsg-call-weak-function" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Call_Weak_Function&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Call_Weak_Function</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc51</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id35">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id35" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x51fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id36">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id36" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-read-mac-address">
+<span id="pkt-emsg-read-mac-address"></span><h2><a class="reference internal" href="#emsg-read-mac-address">EMSG_Read_MAC_Address</a><a class="headerlink" href="#emsg-read-mac-address" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Read_MAC_Address&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Read_MAC_Address</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc52</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id37">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id37" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x52fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>ID</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">MAC address selection:</div>
+<div class="line">0x00 = Automatic (USER if it exists, EM otherwise)</div>
+<div class="line">0x01 = EM</div>
+<div class="line">0x02 = USER</div>
+<div class="line">0x03 - 0xFF - Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id38">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id38" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>MAC</strong></p></td>
+<td><p>6</p></td>
+<td><p>mac</p></td>
+<td><div class="line-block">
+<div class="line">MAC address</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-get-emcore-information">
+<span id="pkt-emsg-get-emcore-information"></span><h2><a class="reference internal" href="#emsg-get-emcore-information">EMSG_Get_EMCore_Information</a><a class="headerlink" href="#emsg-get-emcore-information" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Get_EMCore_Information&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Get_EMCore_Information</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc53</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id39">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id39" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x53fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id40">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id40" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Variant_ID</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Identifier of the EM Core variant</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Version</strong></p></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Version from git describe</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-boot-mode-flags">
+<span id="pkt-emsg-set-boot-mode-flags"></span><h2><a class="reference internal" href="#emsg-set-boot-mode-flags">EMSG_Set_Boot_Mode_Flags</a><a class="headerlink" href="#emsg-set-boot-mode-flags" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_Boot_Mode_Flags&quot;,</span> <span class="pre">Boot_Mode=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_Boot_Mode_Flags</span> <span class="pre">--Boot_Mode=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc54</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id41">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id41" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x54fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Boot_Mode</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Boot Mode:</div>
+<div class="line-block">
+<div class="line">0x00: Reserved</div>
+<div class="line">0x01: EMCore</div>
+<div class="line">0x02: Bootloader</div>
+<div class="line">0x03: Application</div>
+<div class="line">0x04-0xFF: Reserved</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id42">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id42" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-clear-mode-flags">
+<span id="pkt-emsg-clear-mode-flags"></span><h2><a class="reference internal" href="#emsg-clear-mode-flags">EMSG_Clear_Mode_Flags</a><a class="headerlink" href="#emsg-clear-mode-flags" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Clear_Mode_Flags&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Clear_Mode_Flags</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc55</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id43">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id43" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x55fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id44">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id44" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-disable-timeout">
+<span id="pkt-emsg-disable-timeout"></span><h2><a class="reference internal" href="#emsg-disable-timeout">EMSG_Disable_Timeout</a><a class="headerlink" href="#emsg-disable-timeout" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Disable_Timeout&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Disable_Timeout</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfc56</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id45">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id45" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x56fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id46">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id46" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsg-set-rssi-offset">
+<span id="pkt-emsg-set-rssi-offset"></span><h2><a class="reference internal" href="#emsg-set-rssi-offset">EMSG_Set_RSSI_Offset</a><a class="headerlink" href="#emsg-set-rssi-offset" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSG_Set_RSSI_Offset&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSG_Set_RSSI_Offset</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfcc8</p>
+</dd>
+</dl>
+<table class="docutils align-default" id="id47">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id47" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0xc8fc</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Offset</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Offset.</div>
+<div class="line">&lt; 0x00 = negative dB</div>
+<div class="line">= 0x00 = zero dB</div>
+<div class="line">&gt; 0x01 = Positve dB</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id48">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id48" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="em.system.fwu.html" class="btn btn-neutral float-left" title="em.system.fwu" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="em.system.hi.cmd.arc.html" class="btn btn-neutral float-right" title="em.system.hi.cmd.arc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

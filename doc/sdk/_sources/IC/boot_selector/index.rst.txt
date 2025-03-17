@@ -1,0 +1,109 @@
+=============================
+Boot Selector
+=============================
+
+
+Overview
+========
+
+The goal of the ’boot_selector’ example is to show how to use the functions for
+configuring the execution mode to be reached at next startup.
+
+The following execution modes are available:
+- configuration (ROM)
+- EMCore (NVM)
+- customer bootloader (NVM)
+- customer application (NVM)
+
+When an execution mode is configured, a check is done prior to actually enter this
+mode. The checks that are done are:
+- presence of a firmware through the detection of its header
+- integrity of a firmware through a CRC computation
+
+This check is done by the so called ’NVM-Bootloader’ which resides in the first page
+of the NVM. However, the integrity check is not done when resuming from sleep mode.
+
+Functions
+=========
+
+The functions exposed in this example are the following:
+
+.. code-block:: C
+
+   PML_GetApplicationModeFlag();
+   PML_GetBootloaderModeFlag();
+   PML_GetEmCoreModeFlag();
+   PML_ClearModeFlag();
+   PML_SetApplicationModeFlag();
+   PML_SetBootloaderModeFlag();
+
+The other functions listed below are also part of the boot mode configuration functions
+subset but are not used in the current example. However, they are used in a similar way
+than the one used in the example.
+
+.. code-block:: C
+
+   PML_GetConfigurationModeFlag(void);
+   PML_SetConfigurationModeFlag(void);
+   PML_ClearConfigurationModeFlag(void);
+   PML_SetEmCoreModeFlag(void);
+
+
+For a detailed explanation on the above mentioned function, the reader shall point to
+the SDK documentation in API > SDK API > PML Driver > PML.
+
+Source code breakdown
+=====================
+
+The example application is very simple. What it does is:
+
+#. read current boot mode by gathering the three bits into one single variable
+#. wait 20 seconds
+#. clear all flags
+#. depending on the current mode, restart either in application mode or in bootloader mode
+#. trigger a CPU reset to restart
+
+If there is only this application example programmed within the NVM, then all restart operations will
+endup in executing this image since no other is programmed.
+
+It is important to note that to restart the device into a specific mode, the following two
+steps shall be achived:
+
+#. configure the next startup mode by calling a function *PML_SetXXXModeFlag()* where XXX is the mode to activate
+#. reset the CPU by a call to *ResetCPU();*
+
+
+This should do the job.
+
+Build
+=====
+
+The build targets of this example is:
+
+* **boot_selector**
+
+.. code-block:: bash
+
+  cmake --build . --target boot_selector
+
+
+Run
+===
+
+To program and run the example:
+
+  .. code-block:: bash
+
+    cd <sdk>\tools\blengine
+    python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\boot_selector\boot_selector.ihex --progress
+
+With YY = the virtual COM port number to which your DVK is connected.
+
+You should see the following outputs:
+
+  .. image:: imgs/boot_selector_output.png
+    :scale: 105%
+    :alt: Boot selector
+    :align: center
+
+The device will count until 20 and then a CPU reset will occur.

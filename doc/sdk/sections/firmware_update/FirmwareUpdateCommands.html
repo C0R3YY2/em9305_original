@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update Commands &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="EM9305 Lifecycle Control" href="../Lifecycle.html" />
+    <link rel="prev" title="Firmware Update Service - FWUS" href="FirmwareUpdateService.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../FirmwareUpdate.html">Firmware Update</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateGeneral.html">Firmware Update Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwarePackageGenerator.html">Firmware Package Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateStepByStep.html">Firmware Update - A Step by Step process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateService.html">Firmware Update Service - FWUS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Firmware Update Commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">1 Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-and-response-structure">2 Command and response structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#generic-structure">2.1 Generic structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specific-write-data-chunk-command-structure">2.2 Specific Write Data Chunk command structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-transport-em-firmware-update-service-emfwus">2.3 BLE transport - EM Firmware Update Service (EMFWUS)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spi-hci-transport-em-system-firmware-update-emsfwu">2.4 SPI-HCI transport - EM System Firmware Update (EMSFWU)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#list-of-commands">3 List of commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-firmware-update-information">3.1 Get Firmware Update Information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-firmware-area-count">3.2 Get Firmware Area Count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-firmware-information">3.3 Get Firmware Information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-current-firmware-information">3.4 Get Current Firmware Information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#invalidate-firmware-area">3.5 Invalidate Firmware Area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cryptographic-engine-initialization">3.6 Cryptographic Engine Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cryptographic-engine-upload-signature-material">3.7 Cryptographic Engine Upload Signature Material</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-upload-initialization">3.8 Firmware Upload Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#store-firmware-block">3.9 Store Firmware Block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validate-firmware-update">3.10 Validate Firmware Update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reboot">3.11 Reboot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../FirmwareUpdate.html">Firmware Update</a></li>
+      <li class="breadcrumb-item active">Firmware Update Commands</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-commands">
+<h1>Firmware Update Commands<a class="headerlink" href="#firmware-update-commands" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>1 Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The commands that are used during the firmware update process are described in this section.</p>
+<p>The commands are accessible with the BLE transport through the EM Firmware Update Service (EMFWUS) or with the SPI transport.</p>
+<p>Refer to the <a class="reference external" href="FirmwareUpdateGeneral.html">main Firmware Update documentation page</a> for a detailed description of the firmware update mechanism.</p>
+</section>
+<section id="command-and-response-structure">
+<h2>2 Command and response structure<a class="headerlink" href="#command-and-response-structure" title="Link to this heading"></a></h2>
+<section id="generic-structure">
+<h3>2.1 Generic structure<a class="headerlink" href="#generic-structure" title="Link to this heading"></a></h3>
+<p>The generic command and response structure is shown in the picture below:</p>
+<a class="reference internal image-reference" href="../../_images/fwu_generic_command_event_structure.png"><img alt="../../_images/fwu_generic_command_event_structure.png" class="align-center" src="../../_images/fwu_generic_command_event_structure.png" style="width: 714.0px; height: 275.79999999999995px;" /></a>
+</section>
+<section id="specific-write-data-chunk-command-structure">
+<h3>2.2 Specific Write Data Chunk command structure<a class="headerlink" href="#specific-write-data-chunk-command-structure" title="Link to this heading"></a></h3>
+<p>The specific Write Data Chunk command structure is shown in the picture below:</p>
+<a class="reference internal image-reference" href="../../_images/fwu_write_data_chunk_structure.png"><img alt="../../_images/fwu_write_data_chunk_structure.png" class="align-center" src="../../_images/fwu_write_data_chunk_structure.png" style="width: 726.6px; height: 308.4px;" /></a>
+</section>
+<section id="ble-transport-em-firmware-update-service-emfwus">
+<h3>2.3 BLE transport - EM Firmware Update Service (EMFWUS)<a class="headerlink" href="#ble-transport-em-firmware-update-service-emfwus" title="Link to this heading"></a></h3>
+<p>The generic command is written in the Attribute Value of the Control Point characterisitic with an ATT Write Request.
+The response is received in the Attribute Value of the Control Point characterisitic Indication.</p>
+<p>The Write Data Chunk command is written the Attribute Value of the Write Data Chunk characterisitic with an ATT Write Command.
+There is no response to the Write Data Chunk command.</p>
+<p>Refer to the <a class="reference external" href="FirmwareUpdateService.html">Firmware Update Service - FWUS documentation page</a> for a detailed description of the packet structure.</p>
+</section>
+<section id="spi-hci-transport-em-system-firmware-update-emsfwu">
+<h3>2.4 SPI-HCI transport - EM System Firmware Update (EMSFWU)<a class="headerlink" href="#spi-hci-transport-em-system-firmware-update-emsfwu" title="Link to this heading"></a></h3>
+<p>The Opcode for the general HCI command is 0xFE40 (OGF = 0x3F (vendor-specific) and OCF = 0x240).
+The command data is written in the command parameter after the Command Opcode field.
+The response is received in the command complete Return Parameters field.</p>
+<p>The Opcode for the Write Data Chunk HCI command is 0xFE41 (OGF = 0x3F (vendor-specific) and OCF = 0x241).
+The Firmware Data is written in the command parameter after the Command Opcode field.
+No command complete event is generated if the command is a succes.
+If there is an error, a command complete event is generated and the status is given in the Return Parameters field.</p>
+<p>For a better understanding of the HCI command and event format, refer to the Bluetooth Core Specification published by the Bluetooth SIG.</p>
+</section>
+</section>
+<section id="list-of-commands">
+<h2>3 List of commands<a class="headerlink" href="#list-of-commands" title="Link to this heading"></a></h2>
+<section id="get-firmware-update-information">
+<h3>3.1 Get Firmware Update Information<a class="headerlink" href="#get-firmware-update-information" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Firmware_Update_Information</p></td>
+<td><p>0x01</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<p><em>None</em></p>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Firmware_Update_Information</p></td>
+<td><p>0x01</p></td>
+<td><p>Command Status</p>
+<p>IC Family ID</p>
+<p>Silicon Version</p>
+<p>Firmware Revision</p>
+<p>Firmware Type</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>IC Family ID</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00000001</p></td>
+<td><p>EM9305</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Silicon Version</em></div>
+<div class="line">Size : 2 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXX</p></td>
+<td><p>The silicon version of the chip</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Revision</em></div>
+<div class="line">Size : 2 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXX</p></td>
+<td><p>The version of the firmware currently executing in unsigned fixed point 8.8 format</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Type</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Firmware Updater</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x01</p></td>
+<td><p>EM-Core</p></td>
+</tr>
+<tr class="row-even"><td><p>0x02</p></td>
+<td><p>RFU</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x03</p></td>
+<td><p>User application</p></td>
+</tr>
+<tr class="row-even"><td><p>0x04</p></td>
+<td><p>Customer Bootloader</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="get-firmware-area-count">
+<h3>3.2 Get Firmware Area Count<a class="headerlink" href="#get-firmware-area-count" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Firmware_Area_Count</p></td>
+<td><p>0x02</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<p><em>None</em></p>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Firmware_Area_Count</p></td>
+<td><p>0x02</p></td>
+<td><p>Command Status</p>
+<p>Firmware Area Count</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Area Count</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX</p></td>
+<td><p>The total count of valid firmware images in the device</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="get-firmware-information">
+<h3>3.3 Get Firmware Information<a class="headerlink" href="#get-firmware-information" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Firmware_Information</p></td>
+<td><p>0x03</p></td>
+<td><p>Firmware Index</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Firmware Index</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX</p></td>
+<td><p>Start at index 0, the last firmware index is obtained with the ‘Firmware Area Count’</p>
+<p>field of the ‘Get Firmware Area Count’ command response substracted by 1.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Firmware_Information</p></td>
+<td><p>0x03</p></td>
+<td><p>Command Status</p>
+<p>Firmware Header</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Header</em></div>
+<div class="line">Size : 40 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX..</p></td>
+<td><p>The firmware header structure is detailed below.</p></td>
+</tr>
+</tbody>
+</table>
+<p id="firmware-header-structure"><strong>Firmware Header structure</strong></p>
+<div class="line-block">
+<div class="line"><em>Magic Number</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x52444846</p></td>
+<td><p>“FHDR” in ASCII.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Header Version</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX</p></td>
+<td><p>The version of the header structure.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Header Length</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX</p></td>
+<td><p>The total length of the header structure.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Type</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Firmware Updater</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x01</p></td>
+<td><p>EM-Core</p></td>
+</tr>
+<tr class="row-even"><td><p>0x02</p></td>
+<td><p>RFU</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x03</p></td>
+<td><p>User application</p></td>
+</tr>
+<tr class="row-even"><td><p>0x04</p></td>
+<td><p>Customer Bootloader</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>RFU</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Reserved for future use.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Start Address</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>The start address of the firmware payload (header excluded).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Size</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>The size of the firmware payload (header excluded).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware CRC</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>The CRC of the firmware payload (header excluded).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>EM-Core CRC</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xFFFFFFFF</p></td>
+<td><p>Reserved for future use. Not used for now.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Options</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Bits</p></th>
+<th class="head"><p>Bit Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0-3</p></td>
+<td><p>EM-Core flavor ID (EMB standard = 14). Other values are RFU.</p></td>
+</tr>
+<tr class="row-odd"><td><p>4-7</p></td>
+<td><p>Stack type (EMB = 2). Other values are RFU.</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Enable firmware image CRC check at power-up and at wake-up from sleep.</p></td>
+</tr>
+<tr class="row-odd"><td><p>9-31</p></td>
+<td><p>Reserved for future use.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Version</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>Version of the firmware image.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Execution Address</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>First execution address in the firmware image.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Header CRC</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>Computed CRC of this header, used to check its integrity.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>RFU</em></div>
+<div class="line">Size : 2 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0000</p></td>
+<td><p>Reserved for future use.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="get-current-firmware-information">
+<h3>3.4 Get Current Firmware Information<a class="headerlink" href="#get-current-firmware-information" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Current_Firmware_Info</p></td>
+<td><p>0x05</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<p><em>None</em></p>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Get_Current_Firmware_Info</p></td>
+<td><p>0x05</p></td>
+<td><p>Command Status</p>
+<p>Header of the Currently Executing Firmware</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Header of the Currently Executing Firmware</em></div>
+<div class="line">Size : 40 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX..</p></td>
+<td><p>The firmware header structure is detailed below.</p></td>
+</tr>
+</tbody>
+</table>
+<p id="id4"><strong>Firmware Header structure</strong></p>
+<div class="line-block">
+<div class="line"><em>Magic Number</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x52444846</p></td>
+<td><p>“FHDR” in ASCII.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Header Version</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX</p></td>
+<td><p>The version of the header structure.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Header Length</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX</p></td>
+<td><p>The total length of the header structure.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Type</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Firmware Updater</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x01</p></td>
+<td><p>EM-Core</p></td>
+</tr>
+<tr class="row-even"><td><p>0x02</p></td>
+<td><p>RFU</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x03</p></td>
+<td><p>User application</p></td>
+</tr>
+<tr class="row-even"><td><p>0x04</p></td>
+<td><p>Customer Bootloader</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>RFU</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Reserved for future use.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Start Address</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>The start address of the firmware payload (header excluded).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Size</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>The size of the firmware payload (header excluded).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware CRC</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>The CRC of the firmware payload (header excluded).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>EM-Core CRC</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xFFFFFFFF</p></td>
+<td><p>Reserved for future use. Not used for now.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Options</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Bits</p></th>
+<th class="head"><p>Bit Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0-3</p></td>
+<td><p>EM-Core flavor ID (EMB standard = 14). Other values are RFU.</p></td>
+</tr>
+<tr class="row-odd"><td><p>4-7</p></td>
+<td><p>Stack type (EMB = 2). Other values are RFU.</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Enable firmware image CRC check at power-up and at wake-up from sleep.</p></td>
+</tr>
+<tr class="row-odd"><td><p>9-31</p></td>
+<td><p>Reserved for future use.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Version</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>Version of the firmware image.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Execution Address</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>First execution address in the firmware image.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Header CRC</em></div>
+<div class="line">Size : 4 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXXXXXXXX</p></td>
+<td><p>Computed CRC of this header, used to check its integrity.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>RFU</em></div>
+<div class="line">Size : 2 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0000</p></td>
+<td><p>Reserved for future use.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="invalidate-firmware-area">
+<h3>3.5 Invalidate Firmware Area<a class="headerlink" href="#invalidate-firmware-area" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Invalidate_Firmware_Area</p></td>
+<td><p>0x06</p></td>
+<td><p>Firmware Index</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Firmware Index</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX</p></td>
+<td><p>Start at index 0, the last firmware index is obtained with the ‘Firmware Area Count’</p>
+<p>field of the ‘Get Firmware Area Count’ command response substracted by 1.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Invalidate_Firmware_Area</p></td>
+<td><p>0x03</p></td>
+<td><p>Command Status</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cryptographic-engine-initialization">
+<h3>3.6 Cryptographic Engine Initialization<a class="headerlink" href="#cryptographic-engine-initialization" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Crypto_Engine_init</p></td>
+<td><p>0x30</p></td>
+<td><p>Crypto Mode</p>
+<p>Initialization Vector (optional)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Crypto Mode</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Not encrypted.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x01</p></td>
+<td><p>Crypted with AES_ECB.</p></td>
+</tr>
+<tr class="row-even"><td><p>0x02</p></td>
+<td><p>Crypted with AES_CBC.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x03</p></td>
+<td><p>Crypted with AES_CTR.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Initialization Vector (optional)</em></div>
+<div class="line">Size : 16 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX..</p></td>
+<td><p>Initialization Vector only for AES_CBC and AES_CTR.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Crypto_Engine_init</p></td>
+<td><p>0x30</p></td>
+<td><p>Command Status</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cryptographic-engine-upload-signature-material">
+<h3>3.7 Cryptographic Engine Upload Signature Material<a class="headerlink" href="#cryptographic-engine-upload-signature-material" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Crypto_Engine_Upload_Sig_Material</p></td>
+<td><p>0x31</p></td>
+<td><p>Signature X</p>
+<p>Signature Y</p>
+<p>Digest</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Signature X</em></div>
+<div class="line">Size : 32 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX..</p></td>
+<td><p>Signature X coordinate for ECDSA.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Signature Y</em></div>
+<div class="line">Size : 32 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX..</p></td>
+<td><p>Signature Y coordinate for ECDSA.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Signature Y</em></div>
+<div class="line">Size : 32 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX..</p></td>
+<td><p>Digest for ECDSA.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Crypto_Engine_Upload_Sig_Material</p></td>
+<td><p>0x31</p></td>
+<td><p>Command Status</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="firmware-upload-initialization">
+<h3>3.8 Firmware Upload Initialization<a class="headerlink" href="#firmware-upload-initialization" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Firmware_Upload_Init</p></td>
+<td><p>0x10</p></td>
+<td><p>Header of the firmware to be uploaded</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Firmware Header</em></div>
+<div class="line">Size : 40 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xXX..</p></td>
+<td><p>Header of the firmware to be uploaded.</p>
+<p>The firmware header structure is detailed <span class="xref std std-ref">here</span>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Firmware_Upload_Init</p></td>
+<td><p>0x10</p></td>
+<td><p>Command Status</p>
+<p>Firmware Block Size</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><em>Firmware Block Size</em></div>
+<div class="line">Size : 2 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0800</p></td>
+<td><p>Default firmware block size.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXXXX</p></td>
+<td><p>Reserved for future use.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="store-firmware-block">
+<h3>3.9 Store Firmware Block<a class="headerlink" href="#store-firmware-block" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Store_Firmware_Block</p></td>
+<td><p>0x20</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<p><em>None</em></p>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Store_Firmware_Block</p></td>
+<td><p>0x20</p></td>
+<td><p>Command Status</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="validate-firmware-update">
+<h3>3.10 Validate Firmware Update<a class="headerlink" href="#validate-firmware-update" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Validate_Firmware_Update</p></td>
+<td><p>0x21</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<p><em>None</em></p>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Validate_Firmware_Update</p></td>
+<td><p>0x21</p></td>
+<td><p>Command Status</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octets</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reboot">
+<h3>3.11 Reboot<a class="headerlink" href="#reboot" title="Link to this heading"></a></h3>
+<p><strong>Command</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Command Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reboot</p></td>
+<td><p>0x04</p></td>
+<td><p>Reboot Mode</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Command Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Reboot Mode</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Unspecified</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x01</p></td>
+<td><p>EM-Core</p></td>
+</tr>
+<tr class="row-even"><td><p>0x02</p></td>
+<td><p>Application</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x03</p></td>
+<td><p>Firmware Updater</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Response</p></th>
+<th class="head"><p>Opcode</p></th>
+<th class="head"><p>Response Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reboot</p></td>
+<td><p>0x04</p></td>
+<td><p>Command Status</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response Parameters</strong></p>
+<div class="line-block">
+<div class="line"><em>Command Status</em></div>
+<div class="line">Size : 1 octet</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Parameter Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>Command success status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>0xXX</p></td>
+<td><p>Command error status code.</p>
+<p>Refer to <cite>FWU_ERROR_CODE_UNKNOWN_COMMAND</cite> and associated error codes in the</p>
+<p><a class="reference external" href="../../IC/fwu_core/index.html">Firmware Update Core API</a> page.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="FirmwareUpdateService.html" class="btn btn-neutral float-left" title="Firmware Update Service - FWUS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Lifecycle.html" class="btn btn-neutral float-right" title="EM9305 Lifecycle Control" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

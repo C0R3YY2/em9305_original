@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QDEC Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Radio Driver" href="../radio/index.html" />
+    <link rel="prev" title="Protocol Timer Driver" href="../protocol_timer/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">QDEC Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">QDEC Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qdec-driver">
+<h1>QDEC Driver<a class="headerlink" href="#qdec-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Quadrature decoder (QDEC) driver allows to configure the peripheral and
+reads movements from mechanical or optical encoder.</p>
+<p>An incremental encoder has two output signals, A and B, which issue pulses
+when device is moved. Together, the A and B signals indicate both the occurence
+of and direction of movement.</p>
+<p>It does not indicate absolute position, it only reports changes in position and,
+for each reported position change, the direction of the movement.</p>
+<p>Incremental encoders report position changes nearly instantaneously, which allows
+them to monitor the movements of high speed mechanisms in near real-time.
+Because of this, incremental encoders are commonly used in applications that
+require precise measurement and control of position and velocity.</p>
+<p>If the QDEC is used with an optical sensor, the led shall be configured.
+The peripheral allows to set the polarity and led time.</p>
+<p>Each channel (A, B) has separate debouncer, this debouncer has same debounce
+time as sampling time.</p>
+<p>The Led driver for optical sensor is synchronous with sampling period.</p>
+<section id="how-does-it-work">
+<h3>How does it work ?<a class="headerlink" href="#how-does-it-work" title="Link to this heading"></a></h3>
+<p>The two phases have a 90° phase difference and generate square signals.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Phase A &amp; B output signals</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+<col style="width: 12.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Prev A</p></th>
+<th class="head"><p>Prev B</p></th>
+<th class="head"><p>Curr A</p></th>
+<th class="head"><p>Curr B</p></th>
+<th class="head"><p>Sample</p></th>
+<th class="head"><p>acc</p></th>
+<th class="head"><p>acc_dbl</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 1</p></td>
+<td><p>Error (double movement)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>-1</p></td>
+<td><p>acc - 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in negative direction</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>acc + 1</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>Movement in positive direction</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>acc + 0</p></td>
+<td><p>acc_dbl + 0</p></td>
+<td><p>No movement</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="gpios-for-phase-a-b-and-led">
+<h3>GPIOs for Phase A, B and Led<a class="headerlink" href="#gpios-for-phase-a-b-and-led" title="Link to this heading"></a></h3>
+<p>The QDEC peripheral is able to work with any of the GPIOs available.</p>
+<p>The driver allows to enable pullup on phase A and B.</p>
+</section>
+<section id="qdec-clock-source">
+<h3>QDEC Clock source<a class="headerlink" href="#qdec-clock-source" title="Link to this heading"></a></h3>
+<p>QDEC is clocked by LF-RC clock at 500 kHz.</p>
+</section>
+<section id="qdec-sample">
+<h3>QDEC Sample<a class="headerlink" href="#qdec-sample" title="Link to this heading"></a></h3>
+<p>The QDEC peripheral is able to compute the movement from phase A and phase B
+signals. The value stored in the sample can be -1 (movement in negative direction),
+0 (no movement), +1 (movement in positive direction) or 2 (double movement error).</p>
+<p>For each sample, the value is added to the accumulator, if a double movement occurs,
+the value is added to the double movement accumulator.</p>
+<p>The sampling period can be configured from 128 us to 131072 us.</p>
+</section>
+<section id="qdec-with-polling-mechanism">
+<h3>QDEC with polling mechanism<a class="headerlink" href="#qdec-with-polling-mechanism" title="Link to this heading"></a></h3>
+<p>The QDEC driver can be used to read the current accumulator and double movement accumulator
+at any time. This operation just reads the current values from the register without any
+interruption from the hardware.</p>
+</section>
+<section id="qdec-with-hardware-detection-and-interruptions">
+<h3>QDEC with hardware detection and interruptions<a class="headerlink" href="#qdec-with-hardware-detection-and-interruptions" title="Link to this heading"></a></h3>
+<p>The QDEC driver can be used with hardware detection of movements. In case of
+movement detection, the peripheral trigger an ISR. The driver reads the status of the ISR
+and detect if new samples are available, if there is an overflow of the accumulator or
+if a doublement movement error has been detected.</p>
+<p>Then the driver calls the user callback, with the status and the two accumulators values
+as user callback parameter.</p>
+</section>
+<section id="report-period">
+<h3>Report Period<a class="headerlink" href="#report-period" title="Link to this heading"></a></h3>
+<p>When the driver is used with hardware detection of movement, the driver shall be initialized
+with a report period.</p>
+<p>This specifies how many sample reports are generated if one or both conditions occur.</p>
+<p>The two conditions are:
+- movement is not null
+- double movement is detected</p>
+<p>The report period can be configured from 1 sample / report to 320 samples / report.</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Report period configuration</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Report period</p></th>
+<th class="head"><p>Enumeration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1 sample / report</p></td>
+<td><p>REPORT_PERIOD_1_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>REPORT_PERIOD_5_SAMPLE</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>REPORT_PERIOD_10_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>REPORT_PERIOD_20_SAMPLE</p></td>
+</tr>
+<tr class="row-even"><td><p>40</p></td>
+<td><p>REPORT_PERIOD_40_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>80</p></td>
+<td><p>REPORT_PERIOD_80_SAMPLE</p></td>
+</tr>
+<tr class="row-even"><td><p>160</p></td>
+<td><p>REPORT_PERIOD_160_SAMPLE</p></td>
+</tr>
+<tr class="row-odd"><td><p>320</p></td>
+<td><p>REPORT_PERIOD_320_SAMPLE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wake-up-source">
+<h3>Wake up source<a class="headerlink" href="#wake-up-source" title="Link to this heading"></a></h3>
+<p>Different wakeup source can be configured. They are used only when the driver is used with
+hardware detection and interruptions.</p>
+<ul class="simple">
+<li><p>Report Ready (accumulator is available with number of samples configured by report)</p></li>
+<li><p>Overflow (overflow of the accumulator)</p></li>
+<li><p>Double movement (movement error detection)</p></li>
+</ul>
+<p>When the SOC is in sleep mode, the PML and the QDEC are powered. It allows the QDEC
+peripheral to detect a movement and wakeup the system.</p>
+<p>When the system wakes up, it checks the wakeup source and then the QDEC condition
+and generates the corresponding ISR which will call the user callback with the status and
+accumulator values.</p>
+</section>
+<section id="led-driver">
+<h3>LED Driver<a class="headerlink" href="#led-driver" title="Link to this heading"></a></h3>
+<p>The LED driver shall be enabled in case of optical sensor usage. The Led polarity shall be
+set. A polarity of 1 means that the GPIO controlling the LED is set to one for the configured
+duration when the LED shall be ON.</p>
+<p>The Led time shall also be configured. The clock of the QDEC is 500 kHz, meaning that
+each LSB for the led time is equivalent to about 2 us.</p>
+<p>Since the LED active duration value is stored in 16 bits, this duration ranges
+from 2µs to 131070µs with a resolution of 2µs.</p>
+<p>If Led time is set to 0, it means that the Led is always on.</p>
+</section>
+<section id="qdec-driver-registration">
+<h3>QDEC Driver registration<a class="headerlink" href="#qdec-driver-registration" title="Link to this heading"></a></h3>
+<p>QDEC Driver shall be registered in NVM_ConfigModules() function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;qdec.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">QDEC_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qdec-driver-configuration">
+<h3>QDEC Driver configuration<a class="headerlink" href="#qdec-driver-configuration" title="Link to this heading"></a></h3>
+<p>The QDEC driver has a configuration structure that shall be declared as extern.
+Then the configuration structure shall be initialized in NVM_ConfigModules()
+in all conditions of boot because the driver doesn’t use persistent memory.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="n">QDEC_Configuration_t</span><span class="w"> </span><span class="n">gQDEC_Config</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">...</span>
+
+<span class="w">    </span><span class="c1">// Enable QDEC peripheral</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Led is enabled</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Led polarity set to zero.</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led_pol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Phase A &amp; B Debouncer enabled</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">debounce_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Wakeup when report ready is available</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_rpt_rdy_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Wakeup when accumulator overflow occurs</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_ovf_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Wakeup when double movement is detected</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_dbl_mvt_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Phase A input signal connected to GPIO 9</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">pinBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">phase_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Phase B input signal connected to GPIO 11</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">pinBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">phase_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Led output driver connected to GPIO 5</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">pinBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Sampling period set to 512 us</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">periodBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">sample_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">SAMPLING_PERIOD_512_US</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// Report period set to 80 samples</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">periodBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">report_period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">REPORT_PERIOD_80_SAMPLE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Led time on is set to 16 * 2 us (500 kHz clock)</span>
+<span class="w">    </span><span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">ledTimeBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">led_time_on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="qdec-usage-with-polling">
+<h3>QDEC usage with polling<a class="headerlink" href="#qdec-usage-with-polling" title="Link to this heading"></a></h3>
+<p>The QDEC accumulator values can be read at any moment by calling QDEC_StartSingleCapture().
+It returns the accumulator value for movement detection and the double movement accumulator
+for error detection.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int32_t</span><span class="w"> </span><span class="n">acc</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">dbl_acc</span><span class="p">;</span>
+
+<span class="n">QDEC_StartSingleCapture</span><span class="p">(</span><span class="o">&amp;</span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dbl_acc</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In this case wake up condition should be disabled, because there is no need to wakeup the
+system in polling mode.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Wakeup when report ready is available</span>
+<span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_rpt_rdy_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">// Wakeup when accumulator overflow occurs</span>
+<span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_ovf_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">// Wakeup when double movement is detected</span>
+<span class="n">gQDEC_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">wakeup_dbl_mvt_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="qdec-usage-with-hardware-detection-of-movement-and-errors">
+<h3>QDEC usage with hardware detection of movement and errors<a class="headerlink" href="#qdec-usage-with-hardware-detection-of-movement-and-errors" title="Link to this heading"></a></h3>
+<p>The QDEC can be used with interruptions mechanism. It allows the system to enter sleep mode
+when there is no movement detected. The QDEC is powered like the PML during sleep mode and
+is able to detect any movement or error. In this case, it wakes up the system and generates
+an ISR. Then the user callback is called with the status and accumulator values.</p>
+<p>QDEC ISR Callback prototype.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Callback for QDEC driver</span>
+<span class="cm"> * @param status status of the QDEC, report ready, overflow or double movement error</span>
+<span class="cm"> * @param values accumulator values</span>
+<span class="cm"> */</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">QDEC_ISR_Callback</span><span class="p">(</span><span class="n">QDEC_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">QDEC_Values_t</span><span class="w"> </span><span class="n">values</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">QK_ISR_ENTRY</span><span class="p">();</span>
+
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">acc</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">accumulator</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">dbl_acc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">dbl_mvt_accumulator</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">REPORT_READY</span><span class="p">:</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">OVERFLOW_ERROR</span><span class="p">:</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">DOUBLE_MOVEMENT_ERROR</span><span class="p">:</span>
+
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">QK_ISR_EXIT</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The callback shall be registered first and then capture can be enabled.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">QDEC_RegisterCallback</span><span class="p">(</span><span class="n">QDEC_ISR_Callback</span><span class="p">);</span>
+
+<span class="n">QDEC_StartContinuousCapture</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>When the capture needs to be disabled.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">QDEC_StopContinuousCapture</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d5/d4a/group__qdec"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">qdec</span></span></dt>
+<dd><p>Driver for the QDEC. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv422QDEC_Driver_Callback_t">
+<span id="_CPPv322QDEC_Driver_Callback_t"></span><span id="_CPPv222QDEC_Driver_Callback_t"></span><span id="QDEC_Driver_Callback_t"></span><span class="target" id="d5/d4a/group__qdec_1ga5940c8a9b3f3fa23979ca2ec2c000732"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_Driver_Callback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv413QDEC_Status_t" title="QDEC_Status_t"><span class="n"><span class="pre">QDEC_Status_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413QDEC_Values_t" title="QDEC_Values_t"><span class="n"><span class="pre">QDEC_Values_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv422QDEC_Driver_Callback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Callback function to be called by a driver. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv413QDEC_Status_t">
+<span id="_CPPv313QDEC_Status_t"></span><span id="_CPPv213QDEC_Status_t"></span><span class="target" id="d5/d4a/group__qdec_1gaad0cce4eb3f10c8a43df590c70b5a867"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_Status_t</span></span></span><a class="headerlink" href="#_CPPv413QDEC_Status_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Status returned by the driver to the callback function. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Status_t12REPORT_READYE">
+<span id="_CPPv3N13QDEC_Status_t12REPORT_READYE"></span><span id="_CPPv2N13QDEC_Status_t12REPORT_READYE"></span><span class="target" id="d5/d4a/group__qdec_1ggaad0cce4eb3f10c8a43df590c70b5a867a765f0ec2fb5437c7241b9bc977e51a1a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_READY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N13QDEC_Status_t12REPORT_READYE" title="Link to this definition"></a><br /></dt>
+<dd><p>The driver is ready to report values. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Status_t14OVERFLOW_ERRORE">
+<span id="_CPPv3N13QDEC_Status_t14OVERFLOW_ERRORE"></span><span id="_CPPv2N13QDEC_Status_t14OVERFLOW_ERRORE"></span><span class="target" id="d5/d4a/group__qdec_1ggaad0cce4eb3f10c8a43df590c70b5a867a954e88e683c220600d6f047173f5bc30"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OVERFLOW_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N13QDEC_Status_t14OVERFLOW_ERRORE" title="Link to this definition"></a><br /></dt>
+<dd><p>The driver report an overflow error. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Status_t21DOUBLE_MOVEMENT_ERRORE">
+<span id="_CPPv3N13QDEC_Status_t21DOUBLE_MOVEMENT_ERRORE"></span><span id="_CPPv2N13QDEC_Status_t21DOUBLE_MOVEMENT_ERRORE"></span><span class="target" id="d5/d4a/group__qdec_1ggaad0cce4eb3f10c8a43df590c70b5a867a1f1bf78a1db5ee3e867f02a0845088b8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MOVEMENT_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N13QDEC_Status_t21DOUBLE_MOVEMENT_ERRORE" title="Link to this definition"></a><br /></dt>
+<dd><p>The driver report a movement error. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv421QDEC_SamplingPeriod_t">
+<span id="_CPPv321QDEC_SamplingPeriod_t"></span><span id="_CPPv221QDEC_SamplingPeriod_t"></span><span class="target" id="d5/d4a/group__qdec_1ga1c2c8f5a589ef0f12ecd4a88894eea2a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_SamplingPeriod_t</span></span></span><a class="headerlink" href="#_CPPv421QDEC_SamplingPeriod_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling period values. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_128_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_128_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_128_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aae3e93067c1a31e5365307ae7b4549f58"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_128_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_128_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 128 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_256_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_256_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_256_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aaa982e7169cfea249adfa72e5a2a19f16"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_256_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_256_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 256 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_512_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_512_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_512_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aad2d4294d51bc1911f1c1e2e822890825"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_512_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t22SAMPLING_PERIOD_512_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 512 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_1024_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_1024_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_1024_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aad9e01013faa4438e5e7385196e072e18"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_1024_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_1024_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 1024 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_2048_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_2048_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_2048_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aadb2278bf655b16304e54f9d74679ea3f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_2048_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_2048_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 2048 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_4096_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_4096_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_4096_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aa3d9dcbf39070c6c87190e62e38220a41"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_4096_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_4096_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 4096 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_8192_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_8192_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_8192_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aa95a550784d7cee235a04c6294cd2f661"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_8192_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t23SAMPLING_PERIOD_8192_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 8192 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_16384_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_16384_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_16384_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aa0553bc8a5cbf609397b6e2658c110cec"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_16384_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_16384_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 16384 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_32768_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_32768_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_32768_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aa16c59a78ff9cffd9e2c6aebf19f44ffc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_32768_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_32768_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 32768 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_65536_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_65536_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_65536_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aa4e569c008fddb05428ea64a11a8bd71b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_65536_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">9</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t24SAMPLING_PERIOD_65536_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 65536 us. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N21QDEC_SamplingPeriod_t25SAMPLING_PERIOD_131072_USE">
+<span id="_CPPv3N21QDEC_SamplingPeriod_t25SAMPLING_PERIOD_131072_USE"></span><span id="_CPPv2N21QDEC_SamplingPeriod_t25SAMPLING_PERIOD_131072_USE"></span><span class="target" id="d5/d4a/group__qdec_1gga1c2c8f5a589ef0f12ecd4a88894eea2aa49059ff3d98fc78aff2e99996482fb74"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SAMPLING_PERIOD_131072_US</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><a class="headerlink" href="#_CPPv4N21QDEC_SamplingPeriod_t25SAMPLING_PERIOD_131072_USE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampling Period of 131072 us. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv419QDEC_ReportPeriod_t">
+<span id="_CPPv319QDEC_ReportPeriod_t"></span><span id="_CPPv219QDEC_ReportPeriod_t"></span><span class="target" id="d5/d4a/group__qdec_1gadc9d8b6cb05a8f4f7ad8d8b39383d120"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_ReportPeriod_t</span></span></span><a class="headerlink" href="#_CPPv419QDEC_ReportPeriod_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Report period, number of sample(s) for each report. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t22REPORT_PERIOD_1_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t22REPORT_PERIOD_1_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t22REPORT_PERIOD_1_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120ae0a1a9e91e7729a2f72f71eb8a67a4e3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_1_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t22REPORT_PERIOD_1_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 1 sample. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t22REPORT_PERIOD_5_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t22REPORT_PERIOD_5_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t22REPORT_PERIOD_5_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120a171c9302ae8bddb10fb46b7fe3819257"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_5_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t22REPORT_PERIOD_5_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 5 sample. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_10_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t23REPORT_PERIOD_10_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t23REPORT_PERIOD_10_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120ae37643722da58afe26048d6cdb8df080"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_10_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_10_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 10 sample. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_20_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t23REPORT_PERIOD_20_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t23REPORT_PERIOD_20_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120a6f644f88470c629b40476c9bb5dab3cd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_20_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_20_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 20 sample. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_40_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t23REPORT_PERIOD_40_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t23REPORT_PERIOD_40_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120a41499d4260c424e99908bd8edc8f3012"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_40_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_40_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 40 sample. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_80_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t23REPORT_PERIOD_80_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t23REPORT_PERIOD_80_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120aa82131c3dcd587cc8b9def7fb307adc4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_80_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t23REPORT_PERIOD_80_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 80 sample. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t24REPORT_PERIOD_160_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t24REPORT_PERIOD_160_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t24REPORT_PERIOD_160_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120a9b18f3aa238515545497366f1efe4bc9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_160_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t24REPORT_PERIOD_160_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 160 sample. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_ReportPeriod_t24REPORT_PERIOD_320_SAMPLEE">
+<span id="_CPPv3N19QDEC_ReportPeriod_t24REPORT_PERIOD_320_SAMPLEE"></span><span id="_CPPv2N19QDEC_ReportPeriod_t24REPORT_PERIOD_320_SAMPLEE"></span><span class="target" id="d5/d4a/group__qdec_1ggadc9d8b6cb05a8f4f7ad8d8b39383d120ae49b437e470d288cd2c4e0695b4159f6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPORT_PERIOD_320_SAMPLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#_CPPv4N19QDEC_ReportPeriod_t24REPORT_PERIOD_320_SAMPLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period with 320 sample. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419QDEC_RegisterModulev">
+<span id="_CPPv319QDEC_RegisterModulev"></span><span id="_CPPv219QDEC_RegisterModulev"></span><span id="QDEC_RegisterModule__void"></span><span class="target" id="d5/d4a/group__qdec_1gaa9c58a622a4bc144bb8cbe0b3cf58fdb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419QDEC_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the QDEC module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421QDEC_RegisterCallback22QDEC_Driver_Callback_t">
+<span id="_CPPv321QDEC_RegisterCallback22QDEC_Driver_Callback_t"></span><span id="_CPPv221QDEC_RegisterCallback22QDEC_Driver_Callback_t"></span><span id="QDEC_RegisterCallback__QDEC_Driver_Callback_t"></span><span class="target" id="d5/d4a/group__qdec_1ga00816e0306ed4061f71ff5d40cf278de"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_RegisterCallback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv422QDEC_Driver_Callback_t" title="QDEC_Driver_Callback_t"><span class="n"><span class="pre">QDEC_Driver_Callback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421QDEC_RegisterCallback22QDEC_Driver_Callback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Register callback for ISR interruptions when samples are ready. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callbackFunction</strong> – callback to be registered </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv427QDEC_StartContinuousCapturev">
+<span id="_CPPv327QDEC_StartContinuousCapturev"></span><span id="_CPPv227QDEC_StartContinuousCapturev"></span><span id="QDEC_StartContinuousCapture__void"></span><span class="target" id="d5/d4a/group__qdec_1ga521ef6aaeb04d345dfc0eee064a46917"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_StartContinuousCapture</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv427QDEC_StartContinuousCapturev" title="Link to this definition"></a><br /></dt>
+<dd><p>Start continuous capture. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426QDEC_StopContinuousCapturev">
+<span id="_CPPv326QDEC_StopContinuousCapturev"></span><span id="_CPPv226QDEC_StopContinuousCapturev"></span><span id="QDEC_StopContinuousCapture__void"></span><span class="target" id="d5/d4a/group__qdec_1ga1cd3c35e3a01b4cdf4fc2ecfbd65da2d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_StopContinuousCapture</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426QDEC_StopContinuousCapturev" title="Link to this definition"></a><br /></dt>
+<dd><p>Stop continuous capture. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423QDEC_StartSingleCaptureP7int32_tP7uint8_t">
+<span id="_CPPv323QDEC_StartSingleCaptureP7int32_tP7uint8_t"></span><span id="_CPPv223QDEC_StartSingleCaptureP7int32_tP7uint8_t"></span><span id="QDEC_StartSingleCapture__int32_tP.uint8_tP"></span><span class="target" id="d5/d4a/group__qdec_1gad20305657b7c715737d54deeaf9ac4c6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_StartSingleCapture</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">acc</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dbl_acc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423QDEC_StartSingleCaptureP7int32_tP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Start single capture. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>acc</strong> – accumulator value </p></li>
+<li><p><strong>dbl_acc</strong> – double movement accumulator value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv412gQDEC_Config">
+<span id="_CPPv312gQDEC_Config"></span><span id="_CPPv212gQDEC_Config"></span><span id="gQDEC_Config__QDEC_Configuration_tV"></span><span class="target" id="d5/d4a/group__qdec_1ga0f55b0a7b7a30c515dadc97a8c7719a9"></span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420QDEC_Configuration_t" title="QDEC_Configuration_t"><span class="n"><span class="pre">QDEC_Configuration_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gQDEC_Config</span></span></span><a class="headerlink" href="#_CPPv412gQDEC_Config" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC Configuration. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv413QDEC_Config_t">
+<span id="_CPPv313QDEC_Config_t"></span><span id="_CPPv213QDEC_Config_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_Config_t</span></span></span><a class="headerlink" href="#_CPPv413QDEC_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;qdec.h&gt;</em></div>
+<p>QDEC configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t6configE">
+<span id="_CPPv3N13QDEC_Config_t6configE"></span><span id="_CPPv2N13QDEC_Config_t6configE"></span><span id="QDEC_Config_t::config__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1a6d05a64b71377d5571b8ee0bf4e2fb5d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">config</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t6configE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC config byte. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t6led_enE">
+<span id="_CPPv3N13QDEC_Config_t6led_enE"></span><span id="_CPPv2N13QDEC_Config_t6led_enE"></span><span id="QDEC_Config_t::led_en__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1ad8a7cbe6f11ac696709c807c6cdb2d51"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">led_en</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t6led_enE" title="Link to this definition"></a><br /></dt>
+<dd><p>Led Enable bit. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t7led_polE">
+<span id="_CPPv3N13QDEC_Config_t7led_polE"></span><span id="_CPPv2N13QDEC_Config_t7led_polE"></span><span id="QDEC_Config_t::led_pol__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1a69500786e4b58f314b45f7a080163af9"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">led_pol</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t7led_polE" title="Link to this definition"></a><br /></dt>
+<dd><p>Led Polarity bit. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t8reservedE">
+<span id="_CPPv3N13QDEC_Config_t8reservedE"></span><span id="_CPPv2N13QDEC_Config_t8reservedE"></span><span id="QDEC_Config_t::reserved__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1a7b0618e9b9d2ce98d4b4af38b15b049b"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used bits. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t11debounce_enE">
+<span id="_CPPv3N13QDEC_Config_t11debounce_enE"></span><span id="_CPPv2N13QDEC_Config_t11debounce_enE"></span><span id="QDEC_Config_t::debounce_en__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1a551bc454d245f90d87fdf045fd548dfa"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">debounce_en</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t11debounce_enE" title="Link to this definition"></a><br /></dt>
+<dd><p>Debounce enable bit. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t9reserved2E">
+<span id="_CPPv3N13QDEC_Config_t9reserved2E"></span><span id="_CPPv2N13QDEC_Config_t9reserved2E"></span><span id="QDEC_Config_t::reserved2__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1a0f16c034af031c3eafbd8070a94ffe72"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved2</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t9reserved2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used bits. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t17wakeup_rpt_rdy_enE">
+<span id="_CPPv3N13QDEC_Config_t17wakeup_rpt_rdy_enE"></span><span id="_CPPv2N13QDEC_Config_t17wakeup_rpt_rdy_enE"></span><span id="QDEC_Config_t::wakeup_rpt_rdy_en__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1a9e05a517969c4699170e4c5de4cb81b7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wakeup_rpt_rdy_en</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t17wakeup_rpt_rdy_enE" title="Link to this definition"></a><br /></dt>
+<dd><p>Wakeup report ready enable bit. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t13wakeup_ovf_enE">
+<span id="_CPPv3N13QDEC_Config_t13wakeup_ovf_enE"></span><span id="_CPPv2N13QDEC_Config_t13wakeup_ovf_enE"></span><span id="QDEC_Config_t::wakeup_ovf_en__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1a154a986057067b41d86f77ba3bf7d660"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wakeup_ovf_en</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t13wakeup_ovf_enE" title="Link to this definition"></a><br /></dt>
+<dd><p>Wakeup overflow enable bit. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t17wakeup_dbl_mvt_enE">
+<span id="_CPPv3N13QDEC_Config_t17wakeup_dbl_mvt_enE"></span><span id="_CPPv2N13QDEC_Config_t17wakeup_dbl_mvt_enE"></span><span id="QDEC_Config_t::wakeup_dbl_mvt_en__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1ae9ea07f7c04d7e23000c0030b348dbad"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wakeup_dbl_mvt_en</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t17wakeup_dbl_mvt_enE" title="Link to this definition"></a><br /></dt>
+<dd><p>Wakeup double movement enable bit. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t9reserved3E">
+<span id="_CPPv3N13QDEC_Config_t9reserved3E"></span><span id="_CPPv2N13QDEC_Config_t9reserved3E"></span><span id="QDEC_Config_t::reserved3__uint32_t"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1ad2bc778e3866aa724731e8da4e10d7d2"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved3</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t9reserved3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used bits. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Config_t4bitsE">
+<span id="_CPPv3N13QDEC_Config_t4bitsE"></span><span id="_CPPv2N13QDEC_Config_t4bitsE"></span><span class="target" id="d2/deb/union_q_d_e_c___config__t_1ae91fea6b3ed86f7a3b893d60741d4545"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413QDEC_Config_t" title="QDEC_Config_t"><span class="n"><span class="pre">QDEC_Config_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Config_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv419QDEC_PinSelection_t">
+<span id="_CPPv319QDEC_PinSelection_t"></span><span id="_CPPv219QDEC_PinSelection_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_PinSelection_t</span></span></span><a class="headerlink" href="#_CPPv419QDEC_PinSelection_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;qdec.h&gt;</em></div>
+<p>QDEC pin selection. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t13pin_selectionE">
+<span id="_CPPv3N19QDEC_PinSelection_t13pin_selectionE"></span><span id="_CPPv2N19QDEC_PinSelection_t13pin_selectionE"></span><span id="QDEC_PinSelection_t::pin_selection__uint32_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1ad518e290342d47be5cc4f756642bf8d3"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pin_selection</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t13pin_selectionE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC pin selection. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t7phase_aE">
+<span id="_CPPv3N19QDEC_PinSelection_t7phase_aE"></span><span id="_CPPv2N19QDEC_PinSelection_t7phase_aE"></span><span id="QDEC_PinSelection_t::phase_a__uint32_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1a472a05b7b19723491f3cd544d647ce85"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">phase_a</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t7phase_aE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pin selection phase A. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t9reserved1E">
+<span id="_CPPv3N19QDEC_PinSelection_t9reserved1E"></span><span id="_CPPv2N19QDEC_PinSelection_t9reserved1E"></span><span id="QDEC_PinSelection_t::reserved1__uint32_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1aa75e072daf15e8ec14a2dc656867daf2"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved1</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t9reserved1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t7phase_bE">
+<span id="_CPPv3N19QDEC_PinSelection_t7phase_bE"></span><span id="_CPPv2N19QDEC_PinSelection_t7phase_bE"></span><span id="QDEC_PinSelection_t::phase_b__uint32_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1ae1ec8032956c9d4bd50764e2e0a88070"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">phase_b</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t7phase_bE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pin selection phase B. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t9reserved2E">
+<span id="_CPPv3N19QDEC_PinSelection_t9reserved2E"></span><span id="_CPPv2N19QDEC_PinSelection_t9reserved2E"></span><span id="QDEC_PinSelection_t::reserved2__uint32_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1aebac6a011fc37a934620dfef38eb5ffe"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved2</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t9reserved2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t3ledE">
+<span id="_CPPv3N19QDEC_PinSelection_t3ledE"></span><span id="_CPPv2N19QDEC_PinSelection_t3ledE"></span><span id="QDEC_PinSelection_t::led__uint32_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1a9c7d0046700722b550f0779309bc2bc6"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">led</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t3ledE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pin selection Led. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t9reserved3E">
+<span id="_CPPv3N19QDEC_PinSelection_t9reserved3E"></span><span id="_CPPv2N19QDEC_PinSelection_t9reserved3E"></span><span id="QDEC_PinSelection_t::reserved3__uint32_t"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1a742f4533dcad04deba6980e8b1e2558d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved3</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t9reserved3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PinSelection_t4bitsE">
+<span id="_CPPv3N19QDEC_PinSelection_t4bitsE"></span><span id="_CPPv2N19QDEC_PinSelection_t4bitsE"></span><span class="target" id="da/db5/union_q_d_e_c___pin_selection__t_1a9989e2e527745530ea06ea0dcc9834ad"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419QDEC_PinSelection_t" title="QDEC_PinSelection_t"><span class="n"><span class="pre">QDEC_PinSelection_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PinSelection_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv419QDEC_PeriodConfig_t">
+<span id="_CPPv319QDEC_PeriodConfig_t"></span><span id="_CPPv219QDEC_PeriodConfig_t"></span><span class="target" id="df/d97/union_q_d_e_c___period_config__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_PeriodConfig_t</span></span></span><a class="headerlink" href="#_CPPv419QDEC_PeriodConfig_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;qdec.h&gt;</em></div>
+<p>QDEC sample and report period configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PeriodConfig_t13period_configE">
+<span id="_CPPv3N19QDEC_PeriodConfig_t13period_configE"></span><span id="_CPPv2N19QDEC_PeriodConfig_t13period_configE"></span><span id="QDEC_PeriodConfig_t::period_config__uint32_t"></span><span class="target" id="df/d97/union_q_d_e_c___period_config__t_1a9ccf70c56add84bea14bee3c018b0478"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">period_config</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PeriodConfig_t13period_configE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC period config. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PeriodConfig_t13sample_periodE">
+<span id="_CPPv3N19QDEC_PeriodConfig_t13sample_periodE"></span><span id="_CPPv2N19QDEC_PeriodConfig_t13sample_periodE"></span><span id="QDEC_PeriodConfig_t::sample_period__uint32_t"></span><span class="target" id="df/d97/union_q_d_e_c___period_config__t_1a9a2523799b5ec794898166b8d584a99a"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sample_period</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PeriodConfig_t13sample_periodE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sample Period. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PeriodConfig_t9reserved1E">
+<span id="_CPPv3N19QDEC_PeriodConfig_t9reserved1E"></span><span id="_CPPv2N19QDEC_PeriodConfig_t9reserved1E"></span><span id="QDEC_PeriodConfig_t::reserved1__uint32_t"></span><span class="target" id="df/d97/union_q_d_e_c___period_config__t_1aa377474ca5f859cb7f904a78cfa7d4de"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved1</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PeriodConfig_t9reserved1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Not Used. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PeriodConfig_t13report_periodE">
+<span id="_CPPv3N19QDEC_PeriodConfig_t13report_periodE"></span><span id="_CPPv2N19QDEC_PeriodConfig_t13report_periodE"></span><span id="QDEC_PeriodConfig_t::report_period__uint32_t"></span><span class="target" id="df/d97/union_q_d_e_c___period_config__t_1a10ef382080f20de833a5a7f52b359f1e"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">report_period</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PeriodConfig_t13report_periodE" title="Link to this definition"></a><br /></dt>
+<dd><p>Report Period. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PeriodConfig_t9reserved2E">
+<span id="_CPPv3N19QDEC_PeriodConfig_t9reserved2E"></span><span id="_CPPv2N19QDEC_PeriodConfig_t9reserved2E"></span><span id="QDEC_PeriodConfig_t::reserved2__uint32_t"></span><span class="target" id="df/d97/union_q_d_e_c___period_config__t_1ac24396027474a1b0d856b968a023658f"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved2</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PeriodConfig_t9reserved2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19QDEC_PeriodConfig_t4bitsE">
+<span id="_CPPv3N19QDEC_PeriodConfig_t4bitsE"></span><span id="_CPPv2N19QDEC_PeriodConfig_t4bitsE"></span><span class="target" id="df/d97/union_q_d_e_c___period_config__t_1a1693ad83fd25a61bf32d414cbe53a815"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419QDEC_PeriodConfig_t" title="QDEC_PeriodConfig_t"><span class="n"><span class="pre">QDEC_PeriodConfig_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N19QDEC_PeriodConfig_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv420QDEC_LedTimeConfig_t">
+<span id="_CPPv320QDEC_LedTimeConfig_t"></span><span id="_CPPv220QDEC_LedTimeConfig_t"></span><span class="target" id="df/d4f/union_q_d_e_c___led_time_config__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_LedTimeConfig_t</span></span></span><a class="headerlink" href="#_CPPv420QDEC_LedTimeConfig_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;qdec.h&gt;</em></div>
+<p>QDEC Debounce and LED timing configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_LedTimeConfig_t8led_timeE">
+<span id="_CPPv3N20QDEC_LedTimeConfig_t8led_timeE"></span><span id="_CPPv2N20QDEC_LedTimeConfig_t8led_timeE"></span><span id="QDEC_LedTimeConfig_t::led_time__uint32_t"></span><span class="target" id="df/d4f/union_q_d_e_c___led_time_config__t_1a0b84769b909c36fa07eab5a3d41b4527"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">led_time</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_LedTimeConfig_t8led_timeE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC Debounce and LED timing configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_LedTimeConfig_t8reservedE">
+<span id="_CPPv3N20QDEC_LedTimeConfig_t8reservedE"></span><span id="_CPPv2N20QDEC_LedTimeConfig_t8reservedE"></span><span id="QDEC_LedTimeConfig_t::reserved__uint32_t"></span><span class="target" id="df/d4f/union_q_d_e_c___led_time_config__t_1a9c8c04550708ed9660bc2f8ef9fc7e0c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_LedTimeConfig_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Not used. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_LedTimeConfig_t11led_time_onE">
+<span id="_CPPv3N20QDEC_LedTimeConfig_t11led_time_onE"></span><span id="_CPPv2N20QDEC_LedTimeConfig_t11led_time_onE"></span><span id="QDEC_LedTimeConfig_t::led_time_on__uint32_t"></span><span class="target" id="df/d4f/union_q_d_e_c___led_time_config__t_1aa8174da2cad1bcd134fa8ea0f3f277b7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">led_time_on</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_LedTimeConfig_t11led_time_onE" title="Link to this definition"></a><br /></dt>
+<dd><p>LED Time On by step of 2 us, 0 = always on. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_LedTimeConfig_t4bitsE">
+<span id="_CPPv3N20QDEC_LedTimeConfig_t4bitsE"></span><span id="_CPPv2N20QDEC_LedTimeConfig_t4bitsE"></span><span class="target" id="df/d4f/union_q_d_e_c___led_time_config__t_1a1bc466651a4e24bf96b1235217a32dd8"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420QDEC_LedTimeConfig_t" title="QDEC_LedTimeConfig_t"><span class="n"><span class="pre">QDEC_LedTimeConfig_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_LedTimeConfig_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv420QDEC_Configuration_t">
+<span id="_CPPv320QDEC_Configuration_t"></span><span id="_CPPv220QDEC_Configuration_t"></span><span id="QDEC_Configuration_t"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv420QDEC_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;qdec.h&gt;</em></div>
+<p>QDEC configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_Configuration_t12moduleConfigE">
+<span id="_CPPv3N20QDEC_Configuration_t12moduleConfigE"></span><span id="_CPPv2N20QDEC_Configuration_t12moduleConfigE"></span><span id="QDEC_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t_1a14b52f33fc1cec5364c19f950a5b4b0f"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_Configuration_t10configBitsE">
+<span id="_CPPv3N20QDEC_Configuration_t10configBitsE"></span><span id="_CPPv2N20QDEC_Configuration_t10configBitsE"></span><span id="QDEC_Configuration_t::configBits__QDEC_Config_t"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t_1a9812cda50f51848a7543d49229bcc8ad"></span><a class="reference internal" href="#_CPPv413QDEC_Config_t" title="QDEC_Config_t"><span class="n"><span class="pre">QDEC_Config_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configBits</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_Configuration_t10configBitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC Configuration bits. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_Configuration_t7pinBitsE">
+<span id="_CPPv3N20QDEC_Configuration_t7pinBitsE"></span><span id="_CPPv2N20QDEC_Configuration_t7pinBitsE"></span><span id="QDEC_Configuration_t::pinBits__QDEC_PinSelection_t"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t_1a955e797e4839c160953de50bfe69bb91"></span><a class="reference internal" href="#_CPPv419QDEC_PinSelection_t" title="QDEC_PinSelection_t"><span class="n"><span class="pre">QDEC_PinSelection_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pinBits</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_Configuration_t7pinBitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC Pin Selection. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_Configuration_t10periodBitsE">
+<span id="_CPPv3N20QDEC_Configuration_t10periodBitsE"></span><span id="_CPPv2N20QDEC_Configuration_t10periodBitsE"></span><span id="QDEC_Configuration_t::periodBits__QDEC_PeriodConfig_t"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t_1aa1238de7e188498adb72f250d263e520"></span><a class="reference internal" href="#_CPPv419QDEC_PeriodConfig_t" title="QDEC_PeriodConfig_t"><span class="n"><span class="pre">QDEC_PeriodConfig_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">periodBits</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_Configuration_t10periodBitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC Sample and Report Period Configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_Configuration_t11ledTimeBitsE">
+<span id="_CPPv3N20QDEC_Configuration_t11ledTimeBitsE"></span><span id="_CPPv2N20QDEC_Configuration_t11ledTimeBitsE"></span><span id="QDEC_Configuration_t::ledTimeBits__QDEC_LedTimeConfig_t"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t_1a6b731aceb6c2131af7982e01d32a31e2"></span><a class="reference internal" href="#_CPPv420QDEC_LedTimeConfig_t" title="QDEC_LedTimeConfig_t"><span class="n"><span class="pre">QDEC_LedTimeConfig_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ledTimeBits</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_Configuration_t11ledTimeBitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>QDEC Led Time On. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_Configuration_t7enabledE">
+<span id="_CPPv3N20QDEC_Configuration_t7enabledE"></span><span id="_CPPv2N20QDEC_Configuration_t7enabledE"></span><span id="QDEC_Configuration_t::enabled__uint8_t"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t_1a19e647bf7b944902f79f8520910f6ba7"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_Configuration_t7enabledE" title="Link to this definition"></a><br /></dt>
+<dd><p>If the driver is enabled or not. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20QDEC_Configuration_t13enable_pullupE">
+<span id="_CPPv3N20QDEC_Configuration_t13enable_pullupE"></span><span id="_CPPv2N20QDEC_Configuration_t13enable_pullupE"></span><span id="QDEC_Configuration_t::enable_pullup__b"></span><span class="target" id="de/df1/struct_q_d_e_c___configuration__t_1a7e911bcddd684fd9828d40a8b74cbf8a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enable_pullup</span></span></span><a class="headerlink" href="#_CPPv4N20QDEC_Configuration_t13enable_pullupE" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable pullp. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv413QDEC_Values_t">
+<span id="_CPPv313QDEC_Values_t"></span><span id="_CPPv213QDEC_Values_t"></span><span id="QDEC_Values_t"></span><span class="target" id="d0/d11/struct_q_d_e_c___values__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QDEC_Values_t</span></span></span><a class="headerlink" href="#_CPPv413QDEC_Values_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;qdec.h&gt;</em></div>
+<p>brief QDEC Values containing accumulator and double movement </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Values_t11accumulatorE">
+<span id="_CPPv3N13QDEC_Values_t11accumulatorE"></span><span id="_CPPv2N13QDEC_Values_t11accumulatorE"></span><span id="QDEC_Values_t::accumulator__int32_t"></span><span class="target" id="d0/d11/struct_q_d_e_c___values__t_1a87f8df73dd5c5509705f990a080b0811"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">accumulator</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Values_t11accumulatorE" title="Link to this definition"></a><br /></dt>
+<dd><p>Captured accumulator value. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13QDEC_Values_t19dbl_mvt_accumulatorE">
+<span id="_CPPv3N13QDEC_Values_t19dbl_mvt_accumulatorE"></span><span id="_CPPv2N13QDEC_Values_t19dbl_mvt_accumulatorE"></span><span id="QDEC_Values_t::dbl_mvt_accumulator__uint8_t"></span><span class="target" id="d0/d11/struct_q_d_e_c___values__t_1a54fce6089ee93675ae82e4338d6a3100"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dbl_mvt_accumulator</span></span></span><a class="headerlink" href="#_CPPv4N13QDEC_Values_t19dbl_mvt_accumulatorE" title="Link to this definition"></a><br /></dt>
+<dd><p>Captured double movement accumulator value. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-1-1">
+<h3>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>PR 8685: Fixed double accumulator capture issue when using QDEC_StartSingleCapture()</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../protocol_timer/index.html" class="btn btn-neutral float-left" title="Protocol Timer Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../radio/index.html" class="btn btn-neutral float-right" title="Radio Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

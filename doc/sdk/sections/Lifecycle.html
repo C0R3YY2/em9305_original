@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EM9305 Lifecycle Control &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API" href="../IC/API.html" />
+    <link rel="prev" title="Firmware Update Commands" href="firmware_update/FirmwareUpdateCommands.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">EM9305 Lifecycle Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#memory-organization">Memory Organization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rom-nvm-main-and-nvm-info">ROM, NVM Main and NVM Info</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#boot-sequence-configuration-mode-and-nvm-application">Boot Sequence, Configuration Mode and NVM Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lifecycle-control">Lifecycle Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-of-usage">Example of Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">EM9305 Lifecycle Control</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="em9305-lifecycle-control">
+<h1>EM9305 Lifecycle Control<a class="headerlink" href="#em9305-lifecycle-control" title="Link to this heading"></a></h1>
+<p>The lifecycle of a part describes te entire life
+of the part, from wafer production to end-user application
+programming, usage, and update.</p>
+<p>This also covers security aspects and the mechanisms used to
+protect the content and its integrity during the lifetime of a product.</p>
+<section id="memory-organization">
+<h2>Memory Organization<a class="headerlink" href="#memory-organization" title="Link to this heading"></a></h2>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Link to this heading"></a></h3>
+<p>The RAM content organization is depicted on the figure below.</p>
+<a class="reference internal image-reference" href="../_images/T9305-ram-mapping-Overview.drawio.png"><img alt="T9305 RAM Organization" class="align-center" src="../_images/T9305-ram-mapping-Overview.drawio.png" style="width: 414.4px; height: 407.4px;" /></a>
+<p>The RAM starts from address <code class="docutils literal notranslate"><span class="pre">0x800000</span></code> to <code class="docutils literal notranslate"><span class="pre">0x80FFFF</span></code> which represents 64kBytes.
+Some blocks are allocated to contain persistent information that is not lost when the
+system goes to sleep mode while other blocks are powered off during sleep period. For
+these, any data store within is lost.
+Persistent block allocation is done from the bottom toward the end of the RAM, and the
+non persistent block allocation is done from the top of the RAM toward the bottom, like
+the memory stack management.</p>
+</section>
+<section id="rom-nvm-main-and-nvm-info">
+<h3>ROM, NVM Main and NVM Info<a class="headerlink" href="#rom-nvm-main-and-nvm-info" title="Link to this heading"></a></h3>
+<p>The following picture depicts the overall NVM memory organization.</p>
+<a class="reference internal image-reference" href="../_images/NVM_detailed_organization.drawio.png"><img alt="T9305 NVM Organization" class="align-center" src="../_images/NVM_detailed_organization.drawio.png" style="width: 364.7px; height: 562.0999999999999px;" /></a>
+<p>NVM-Main section may include a monolitic application or a fragmented application.</p>
+<p>The monolitic application includes everything at built time in a single code bloc.</p>
+<p>The fragmented approach is based on EM-Core. EM-Core is used as an extension of the ROM
+and includes additional libraries that can be used by an application.</p>
+<p>EM-Core also includes a standalone application which provides useful
+commands for production testing (e.g. Radio Receiver and Transmitter test).</p>
+</section>
+</section>
+<section id="boot-sequence-configuration-mode-and-nvm-application">
+<h2>Boot Sequence, Configuration Mode and NVM Application<a class="headerlink" href="#boot-sequence-configuration-mode-and-nvm-application" title="Link to this heading"></a></h2>
+<p>For additional information about EM-Core and the lifecycle management of the EM9305, please refer to <a class="reference internal" href="../IC/emcore/index.html#emcore"><span class="std std-ref">EM-Core</span></a> section and the application notes available in <a class="reference internal" href="ApplicationNotes.html#appnotes"><span class="std std-ref">Application Notes</span></a> section</p>
+</section>
+<section id="lifecycle-control">
+<h2>Lifecycle Control<a class="headerlink" href="#lifecycle-control" title="Link to this heading"></a></h2>
+<p>Included in the SDK, the BLEngine tool allows to perform
+some experiments with the lifecycle of the device.</p>
+<p>The BLEngine tool includes a set of procedure that can be accessed
+on the command line.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">BLengine Lifecycle Control Command Set</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 66.7%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Authentication</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>run authenticate</p></td>
+<td><p>Run authentication procedure (EM or User)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Boot Management</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>run power_cycle</p></td>
+<td><p>Perform a power cycle. Requires DVK.</p></td>
+</tr>
+<tr class="row-even"><td><p>run restart</p></td>
+<td><p>Restart the part in a mode specified as a parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Miscelleaneous</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>send EMSG_Get_EMCore_Information</p></td>
+<td><p>Get EMCore Version and Variant</p></td>
+</tr>
+<tr class="row-odd"><td><p>send EMSG_Read_Product_Information</p></td>
+<td><p>Get Product Information (P3)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>NVM Management</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>send EMSMM_NVM_Erase_Full</p></td>
+<td><p>Erase full NVM (requires EM Authentication)</p></td>
+</tr>
+<tr class="row-even"><td><p>send EMSMM_NVM_Erase_Main</p></td>
+<td><p>Erase Main area in NVM</p></td>
+</tr>
+<tr class="row-odd"><td><p>run emsystem_prog</p></td>
+<td><p>Write ihex file in NVM</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>NVM Info Page Management</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>run nvm_dump</p></td>
+<td><p>Read memory (start address as a parameter)</p></td>
+</tr>
+<tr class="row-even"><td><p>run nvm_read</p></td>
+<td><p>Read Info Page 2 or 3 and generates a JSON file</p></td>
+</tr>
+<tr class="row-odd"><td><p>run nvm_write</p></td>
+<td><p>Write Info Page 2 or 3 with JSON file as an input</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-of-usage">
+<h2>Example of Usage<a class="headerlink" href="#example-of-usage" title="Link to this heading"></a></h2>
+<p>The following commands sequence showcases an example on how to use the BLEngine lifecycle fonctionalities.
+In this example, an EM-Core is programmed along with the NVM-Bootloader.
+Then, an instruction is sent to the device to start into configuration mode, to start in EM-Core mode, and then
+to start in the default mode, which is the mode where the customer application is executed. Since no application
+has been previously written, the execution falls back to EM-Core.
+Last operation to be done is to program an end user application and then to restart the device in the default mode.
+This should lead the device to execute the end user application ‘nvm_emb_controller_emcore’.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Example fo BLengine lifecycle usage</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>../../emcore/bin/nvm_bootloader/nvm_bootloader_base.ihex
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>../../emcore/bin/vA.B.C/standard/emcore_standard.ihex
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>restart<span class="w"> </span>-m<span class="w"> </span>cm
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>restart<span class="w"> </span>-m<span class="w"> </span>emcore
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>restart<span class="w"> </span>-m<span class="w"> </span>default
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>../../projects/nvm_emb_fit/nvm_emb_controller_emcore.ihex
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>restart<span class="w"> </span>-m<span class="w"> </span>default
+</pre></div>
+</div>
+</div>
+<p>With A.B.C = the version of EMCore.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="firmware_update/FirmwareUpdateCommands.html" class="btn btn-neutral float-left" title="Firmware Update Commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../IC/API.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

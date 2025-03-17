@@ -1,0 +1,1786 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hci.event.vs &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="hci.event_802_15_4" href="hci.event_802_15_4.html" />
+    <link rel="prev" title="hci.event" href="hci.event.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../packets.html">HCI Packets List</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aci.em.hci.html">aci.em.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.9304.system.cmd.html">em.9304.system.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.bridge.cmd.html">em.bridge.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.dvk.cmd.html">em.dvk.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.event.unity.html">em.event.unity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.em.html">em.system.em</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.fwu.html">em.system.fwu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.general.html">em.system.general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.arc.html">em.system.hi.cmd.arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.att.html">em.system.hi.cmd.att</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.attc.html">em.system.hi.cmd.attc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.atts.html">em.system.hi.cmd.atts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.dm.html">em.system.hi.cmd.dm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gap.html">em.system.hi.cmd.gap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gatt.html">em.system.hi.cmd.gatt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gpio.html">em.system.hi.cmd.gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.hci.html">em.system.hi.cmd.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.l2cap.html">em.system.hi.cmd.l2cap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.rtc.html">em.system.hi.cmd.rtc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.sm.html">em.system.hi.cmd.sm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smp.html">em.system.hi.cmd.smp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpi.html">em.system.hi.cmd.smpi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpr.html">em.system.hi.cmd.smpr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.whitelist.html">em.system.hi.cmd.whitelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.event.html">em.system.hi.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.mm.html">em.system.mm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pc.html">em.system.pc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pm.html">em.system.pm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rc.html">em.system.rc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rm.html">em.system.rm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.security.html">em.system.security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.ut.html">em.system.ut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.wt.html">em.system.wt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.html">hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.cmd.html">hci.aci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.event.html">hci.aci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.hci.event.html">hci.aci.hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.acl.html">hci.acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.ble.event.html">hci.ble.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd.html">hci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd_802_15_4.html">hci.cmd_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.data_802_15_4.html">hci.data_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.html">hci.event</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">hci.event.vs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unknown-hci-vs-event">UNKNOWN_HCI_VS_EVENT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aci-vendor-event">ACI_VENDOR_EVENT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enter-active-mode">ENTER_ACTIVE_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hal-notification">HAL_NOTIFICATION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enter-configuration-mode">ENTER_CONFIGURATION_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enter-production-tests-mode">ENTER_PRODUCTION_TESTS_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enter-emcore-mode">ENTER_EMCORE_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enter-bootloader-mode">ENTER_BOOTLOADER_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enter-emshi-mode">ENTER_EMSHI_MODE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unity-event">unity_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emsas-event">emsas_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fwu-event">fwu_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gap-event">gap_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gatt-event">gatt_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#att-event">att_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sm-event">sm_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arc-event">arc_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gpio-event">gpio_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rtc-event">rtc_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-event">em_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#whitelist-event">whitelist_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#l2cap-event">l2cap_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dm-event">dm_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#l2cap-emb-event">l2cap_emb_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#att-emb-event">att_emb_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#smp-event">smp_event</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event_802_15_4.html">hci.event_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.iso.html">hci.iso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">HCI Packets Index by ID</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../packets.html">HCI Packets List</a></li>
+      <li class="breadcrumb-item active">hci.event.vs</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hci-event-vs">
+<h1>hci.event.vs<a class="headerlink" href="#hci-event-vs" title="Link to this heading"></a></h1>
+<nav class="contents local" id="index">
+<p class="topic-title">Index</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#unknown-hci-vs-event" id="id27">UNKNOWN_HCI_VS_EVENT</a></p></li>
+<li><p><a class="reference internal" href="#aci-vendor-event" id="id28">ACI_VENDOR_EVENT</a></p></li>
+<li><p><a class="reference internal" href="#enter-active-mode" id="id29">ENTER_ACTIVE_MODE</a></p></li>
+<li><p><a class="reference internal" href="#hal-notification" id="id30">HAL_NOTIFICATION</a></p></li>
+<li><p><a class="reference internal" href="#enter-configuration-mode" id="id31">ENTER_CONFIGURATION_MODE</a></p></li>
+<li><p><a class="reference internal" href="#enter-production-tests-mode" id="id32">ENTER_PRODUCTION_TESTS_MODE</a></p></li>
+<li><p><a class="reference internal" href="#enter-emcore-mode" id="id33">ENTER_EMCORE_MODE</a></p></li>
+<li><p><a class="reference internal" href="#enter-bootloader-mode" id="id34">ENTER_BOOTLOADER_MODE</a></p></li>
+<li><p><a class="reference internal" href="#enter-emshi-mode" id="id35">ENTER_EMSHI_MODE</a></p></li>
+<li><p><a class="reference internal" href="#unity-event" id="id36">unity_event</a></p></li>
+<li><p><a class="reference internal" href="#emsas-event" id="id37">emsas_event</a></p></li>
+<li><p><a class="reference internal" href="#fwu-event" id="id38">fwu_event</a></p></li>
+<li><p><a class="reference internal" href="#gap-event" id="id39">gap_event</a></p></li>
+<li><p><a class="reference internal" href="#gatt-event" id="id40">gatt_event</a></p></li>
+<li><p><a class="reference internal" href="#att-event" id="id41">att_event</a></p></li>
+<li><p><a class="reference internal" href="#sm-event" id="id42">sm_event</a></p></li>
+<li><p><a class="reference internal" href="#arc-event" id="id43">arc_event</a></p></li>
+<li><p><a class="reference internal" href="#gpio-event" id="id44">gpio_event</a></p></li>
+<li><p><a class="reference internal" href="#rtc-event" id="id45">rtc_event</a></p></li>
+<li><p><a class="reference internal" href="#em-event" id="id46">em_event</a></p></li>
+<li><p><a class="reference internal" href="#whitelist-event" id="id47">whitelist_event</a></p></li>
+<li><p><a class="reference internal" href="#l2cap-event" id="id48">l2cap_event</a></p></li>
+<li><p><a class="reference internal" href="#dm-event" id="id49">dm_event</a></p></li>
+<li><p><a class="reference internal" href="#l2cap-emb-event" id="id50">l2cap_emb_event</a></p></li>
+<li><p><a class="reference internal" href="#att-emb-event" id="id51">att_emb_event</a></p></li>
+<li><p><a class="reference internal" href="#smp-event" id="id52">smp_event</a></p></li>
+</ul>
+</nav>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div>
+<div id="count">26 Packets</div><section id="unknown-hci-vs-event">
+<span id="pkt-unknown-hci-vs-event"></span><h2><a class="reference internal" href="#unknown-hci-vs-event">UNKNOWN_HCI_VS_EVENT</a><a class="headerlink" href="#unknown-hci-vs-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;UNKNOWN_HCI_VS_EVENT&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">UNKNOWN_HCI_VS_EVENT</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x00</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x00</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="aci-vendor-event">
+<span id="pkt-aci-vendor-event"></span><h2><a class="reference internal" href="#aci-vendor-event">ACI_VENDOR_EVENT</a><a class="headerlink" href="#aci-vendor-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;ACI_VENDOR_EVENT&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">ACI_VENDOR_EVENT</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AciEventPacket</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xa0</p>
+</dd>
+</dl>
+<p>ACI VENDOR Event</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0xa0</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="enter-active-mode">
+<span id="pkt-enter-active-mode"></span><h2><a class="reference internal" href="#enter-active-mode">ENTER_ACTIVE_MODE</a><a class="headerlink" href="#enter-active-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;ENTER_ACTIVE_MODE&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">ENTER_ACTIVE_MODE</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x01</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x01</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="hal-notification">
+<span id="pkt-hal-notification"></span><h2><a class="reference internal" href="#hal-notification">HAL_NOTIFICATION</a><a class="headerlink" href="#hal-notification" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;HAL_NOTIFICATION&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">HAL_NOTIFICATION</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x02</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x02</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="enter-configuration-mode">
+<span id="pkt-enter-configuration-mode"></span><h2><a class="reference internal" href="#enter-configuration-mode">ENTER_CONFIGURATION_MODE</a><a class="headerlink" href="#enter-configuration-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;ENTER_CONFIGURATION_MODE&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">ENTER_CONFIGURATION_MODE</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x03</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x03</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="enter-production-tests-mode">
+<span id="pkt-enter-production-tests-mode"></span><h2><a class="reference internal" href="#enter-production-tests-mode">ENTER_PRODUCTION_TESTS_MODE</a><a class="headerlink" href="#enter-production-tests-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;ENTER_PRODUCTION_TESTS_MODE&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">ENTER_PRODUCTION_TESTS_MODE</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x04</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id6" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x04</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="enter-emcore-mode">
+<span id="pkt-enter-emcore-mode"></span><h2><a class="reference internal" href="#enter-emcore-mode">ENTER_EMCORE_MODE</a><a class="headerlink" href="#enter-emcore-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;ENTER_EMCORE_MODE&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">ENTER_EMCORE_MODE</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x05</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x05</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="enter-bootloader-mode">
+<span id="pkt-enter-bootloader-mode"></span><h2><a class="reference internal" href="#enter-bootloader-mode">ENTER_BOOTLOADER_MODE</a><a class="headerlink" href="#enter-bootloader-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;ENTER_BOOTLOADER_MODE&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">ENTER_BOOTLOADER_MODE</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x06</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x06</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="enter-emshi-mode">
+<span id="pkt-enter-emshi-mode"></span><h2><a class="reference internal" href="#enter-emshi-mode">ENTER_EMSHI_MODE</a><a class="headerlink" href="#enter-emshi-mode" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;ENTER_EMSHI_MODE&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">ENTER_EMSHI_MODE</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0x07</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x07</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="unity-event">
+<span id="pkt-unity-event"></span><h2><a class="reference internal" href="#unity-event">unity_event</a><a class="headerlink" href="#unity-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;unity_event&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">unity_event</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>UnityEventPacket</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xfe</p>
+</dd>
+</dl>
+<p>Unity Event</p>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id10" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0xfe</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emsas-event">
+<span id="pkt-emsas-event"></span><h2><a class="reference internal" href="#emsas-event">emsas_event</a><a class="headerlink" href="#emsas-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;emsas_event&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">emsas_event</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EMSASEventPacket</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0xff</p>
+</dd>
+</dl>
+<p>EMSAS Event</p>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0xff</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="fwu-event">
+<span id="pkt-fwu-event"></span><h2><a class="reference internal" href="#fwu-event">fwu_event</a><a class="headerlink" href="#fwu-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;fwu_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,data=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">fwu_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--data=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0xfd</p>
+</dd>
+</dl>
+<p>Firmware Update Event</p>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0xfd</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Command Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>data</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Event Data</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="gap-event">
+<span id="pkt-gap-event"></span><h2><a class="reference internal" href="#gap-event">gap_event</a><a class="headerlink" href="#gap-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;gap_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">gap_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x80</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x80</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="gatt-event">
+<span id="pkt-gatt-event"></span><h2><a class="reference internal" href="#gatt-event">gatt_event</a><a class="headerlink" href="#gatt-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;gatt_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">gatt_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x81</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id14" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x81</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="att-event">
+<span id="pkt-att-event"></span><h2><a class="reference internal" href="#att-event">att_event</a><a class="headerlink" href="#att-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;att_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">att_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x82</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x82</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="sm-event">
+<span id="pkt-sm-event"></span><h2><a class="reference internal" href="#sm-event">sm_event</a><a class="headerlink" href="#sm-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;sm_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">sm_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x83</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x83</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="arc-event">
+<span id="pkt-arc-event"></span><h2><a class="reference internal" href="#arc-event">arc_event</a><a class="headerlink" href="#arc-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;arc_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">arc_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x84</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id17" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x84</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="gpio-event">
+<span id="pkt-gpio-event"></span><h2><a class="reference internal" href="#gpio-event">gpio_event</a><a class="headerlink" href="#gpio-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;gpio_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">gpio_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x85</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x85</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="rtc-event">
+<span id="pkt-rtc-event"></span><h2><a class="reference internal" href="#rtc-event">rtc_event</a><a class="headerlink" href="#rtc-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;rtc_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">rtc_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x86</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id19">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id19" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x86</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-event">
+<span id="pkt-em-event"></span><h2><a class="reference internal" href="#em-event">em_event</a><a class="headerlink" href="#em-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;em_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">em_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x87</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id20">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id20" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x87</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="whitelist-event">
+<span id="pkt-whitelist-event"></span><h2><a class="reference internal" href="#whitelist-event">whitelist_event</a><a class="headerlink" href="#whitelist-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;whitelist_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">whitelist_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x88</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id21">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id21" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x88</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="l2cap-event">
+<span id="pkt-l2cap-event"></span><h2><a class="reference internal" href="#l2cap-event">l2cap_event</a><a class="headerlink" href="#l2cap-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;l2cap_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">l2cap_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8a</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id22">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id22" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x8a</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="dm-event">
+<span id="pkt-dm-event"></span><h2><a class="reference internal" href="#dm-event">dm_event</a><a class="headerlink" href="#dm-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;dm_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">dm_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8b</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id23">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id23" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x8b</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="l2cap-emb-event">
+<span id="pkt-l2cap-emb-event"></span><h2><a class="reference internal" href="#l2cap-emb-event">l2cap_emb_event</a><a class="headerlink" href="#l2cap-emb-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;l2cap_emb_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">l2cap_emb_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8c</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id24">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id24" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x8c</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="att-emb-event">
+<span id="pkt-att-emb-event"></span><h2><a class="reference internal" href="#att-emb-event">att_emb_event</a><a class="headerlink" href="#att-emb-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;att_emb_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">att_emb_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id25">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id25" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="smp-event">
+<span id="pkt-smp-event"></span><h2><a class="reference internal" href="#smp-event">smp_event</a><a class="headerlink" href="#smp-event" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;smp_event&quot;,</span> <span class="pre">command=0xXx,status=0xXx,callback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">smp_event</span> <span class="pre">--command=0xXx</span> <span class="pre">--status=0xXx</span> <span class="pre">--callback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrap<span class="colon">:</span></dt>
+<dd class="field-odd"><p>EmEvent</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8e</p>
+</dd>
+</dl>
+<p>No Description</p>
+<table class="docutils align-default" id="id26">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id26" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>vendor_event_code</strong></p></td>
+<td><p>0x8e</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Event code</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Command</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>callback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Callback Code</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="hci.event.html" class="btn btn-neutral float-left" title="hci.event" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hci.event_802_15_4.html" class="btn btn-neutral float-right" title="hci.event_802_15_4" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

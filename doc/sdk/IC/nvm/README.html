@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>This driver is used to write and erase the EM9305 FLASH memory (NVM).</p>
+<p>The NVM driver is located in ROM. However, some fixes have been added and are mapped
+into NVM since the ROM cannot be modified.</p>
+<p>These fixes address an issue with NVM API call from ISR context with priority
+higher than NVM priority.</p>
+<section id="blocking-mechanism">
+<h2>Blocking mechanism<a class="headerlink" href="#blocking-mechanism" title="Link to this heading"></a></h2>
+<p>The NVM write and erase functions are blocking because concurrent access to NVM is forbidden.
+When the erase or write operation is running, the CPU is put in halt mode and is woken up
+by NVM ISR.</p>
+</section>
+<section id="nvm-api-call-in-isr">
+<h2>NVM API call in ISR<a class="headerlink" href="#nvm-api-call-in-isr" title="Link to this heading"></a></h2>
+<p>The NVM write and erase functions disable all other ISR during operations and wait on
+NVM ISR for completion. In order to work in ISR context, the NVM ISR priority is
+increased to maximum priority during operation and reverted back to previous
+priority when operation is done.</p>
+</section>
+<section id="nvm-driver-in-nvm-and-rom">
+<h2>NVM Driver in NVM and ROM<a class="headerlink" href="#nvm-driver-in-nvm-and-rom" title="Link to this heading"></a></h2>
+<p>Some NVM functions have been updated with new versions mapped in the NVM.
+The NVM driver is split now between ROM and NVM. The functions remaining in ROM
+are defined in rom/bin/vX.X/rom.sym file. All the other API functions are located
+in NVM.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">ROM and NVM functions for NVM driver</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>ROM</p></th>
+<th class="head"><p>NVM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NVM_GetLock</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_SetLock</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_EraseFull</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_EraseMain</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_ErasePage</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_ErasePages_PhysAddr</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_Write_PhysAddr</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_Write</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_GetLockPage</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_LockPage</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_SetTimings</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVM_SetRedundancyPageMapping</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>NVM_GetRedundancyPageMapping</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

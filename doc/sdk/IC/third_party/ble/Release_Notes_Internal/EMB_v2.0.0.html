@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internal EMB Module Release v2.0.0 &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../../../index.html">
+            
+              <img src="../../../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Internal EMB Module Release v2.0.0</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="internal-emb-module-release-v2-0-0">
+<h1>Internal EMB Module Release v2.0.0<a class="headerlink" href="#internal-emb-module-release-v2-0-0" title="Link to this heading"></a></h1>
+<p>This is an internal document ONLY. Do NOT release in external facing SDK documentation.</p>
+<section id="consolidated-change-list">
+<h2>Consolidated Change list<a class="headerlink" href="#consolidated-change-list" title="Link to this heading"></a></h2>
+<p>This release is targeted for use in the 7198 r.14 release. It uses the Lime release from PacketCraft with select Mango commits applied. While there are no new major features added in Lime that the 7198 will be utilizing heavily, it does include many MISRA related fixes.</p>
+<p>We have also refactored the “Small PRAM” stacks and applications. The previously known “7k” and “3k” stacks will now be known as the “production” and “advertising” stacks. The sample applications utilizing these stacks have also been renamed, and moved to be under the emb module. This relocation is NOT reflected in the SDK, the <code class="docutils literal notranslate"><span class="pre">spa_app_production</span></code> and <code class="docutils literal notranslate"><span class="pre">spa_app_advertising</span></code> applications will still be located in the projects folder of the SDK. This move is to ensure the Small PRAM Applications are kept up to date closely with the stack for development purposes.</p>
+<p>See official emb/docs/changelog.rst included in SDK documentation for more details</p>
+</section>
+<section id="development-environment-changes">
+<h2>Development Environment Changes<a class="headerlink" href="#development-environment-changes" title="Link to this heading"></a></h2>
+<p><strong>New Packetcraft submodule</strong>
+We have converted the <code class="docutils literal notranslate"><span class="pre">packetcraft/</span></code> folder of the EMB module to be a submodule of the EMB module. This allows us to more easily take, integrate, and experiment with different PacketCraft release branches. It also allows us to have complete access to the PacketCraft commit history for greater clarity when making changes inside the stack.</p>
+<p><strong>Deprecation of bool_t</strong>
+With the MISRA changes introduced with the Lime, the previously defined <cite>bool_t</cite> type in the WSF layer of the Packetcraft stack has been deprecated. All instances of <cite>bool_t</cite> have been replaced with the standard <cite>bool</cite> type. Additionally, all instances of the capital values <cite>TRUE</cite> and <cite>FALSE</cite> has been replaced with the correct lowercase <cite>true</cite> and <cite>false</cite>. Since sample applications that use the EMB stack inherent the types defined in the WSF layer, all apps that use EMB have had to replace all <cite>bool_t</cite> instances with <cite>bool</cite> as well.</p>
+</section>
+<section id="detailed-migration-steps">
+<h2>Detailed Migration Steps<a class="headerlink" href="#detailed-migration-steps" title="Link to this heading"></a></h2>
+<p>After pulling the top level commit with this new release, simply run <cite>git submodule update –init –recursive</cite>, and the packetcraft/ submodule should automatically clone. The new packetcraft/ submodule is located on Azure DevOps here: <a class="reference external" href="https://its-ado.swatchgroup.net/EMMarinProjects/T930x_Libraries/_git/packetcraft">https://its-ado.swatchgroup.net/EMMarinProjects/T930x_Libraries/_git/packetcraft</a></p>
+<p>If you need to <strong>revert back to a previous EMB release</strong>, you will have an issue removing the submodule. In the scenario where you checkout a top-level commit of the platform codebase, and run <cite>git submodule update –init –recursive</cite>, git will complain:</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+error: The following untracked working tree files would be overwritten by checkout:</p>
+<blockquote>
+<div><p>&lt;list of packetcraft files&gt;</p>
+</div></blockquote>
+<p>Aborting
+fatal: Unable to checkout
+<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<p>To proceed, delete the entire packetcraft/ folder under libs/third_party/emb. Afterwards, re-run <cite>git submodule update –init –recursive</cite> from the top level directory, and the revert should work.</p>
+</section>
+<section id="test-results">
+<h2>Test Results<a class="headerlink" href="#test-results" title="Link to this heading"></a></h2>
+<p>We completed Link Layer Qualification testing on the Jackfruit based PacketCraft controller test harness. We initially passed at 85%, showing a 6% regression in the privacy feature. We retested the failing privacy tests multiple times with better RF isolation, which fixed the regressions.</p>
+<p>We completed application testing using the EMB Application Tester, supplemented with manually testing of several apps not covered under the application tester.</p>
+<p>Full test results can be found in the EMB_releases repo here: <a class="reference external" href="https://its-ado.swatchgroup.net/EMMarinProjects/T930x_Libraries/_git/EMB_releases">https://its-ado.swatchgroup.net/EMMarinProjects/T930x_Libraries/_git/EMB_releases</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

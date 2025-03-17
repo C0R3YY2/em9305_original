@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECC Schnorr’s Authentication protocol &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Hash functions" href="HASH_FUNCTIONS.html" />
+    <link rel="prev" title="ECDSA" href="ECDSA.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="P256.html">ECC P-256</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCEnum.html">ECC Error Enumeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCKey.html">ECC Key management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECDH.html">ECDH - Diffie Hellman key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECDSA.html">ECDSA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ECC Schnorr’s Authentication protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schnorr-s-authentication-protocol">Schnorr’s Authentication protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#protocol-description">Protocol description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#why-does-it-work">Why does it work?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eccschnoor-generateverifierchallenge">ECCSchnoor_GenerateVerifierChallenge</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#function">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#eccschnoor-verify">ECCSchnoor_Verify</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#general-performances">General Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performances">Performances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ECC_FUNCTIONS.html">ECC Functions</a> &raquo;</li>
+      <li>ECC Schnorr’s Authentication protocol</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ecc-schnorr-s-authentication-protocol">
+<h1>ECC Schnorr’s Authentication protocol<a class="headerlink" href="#ecc-schnorr-s-authentication-protocol" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] RFC 8235: Schnorr Non-interactive Zero-Knowledge Proof</p>
+<p><a class="reference external" href="https://tools.ietf.org/html/rfc8235#section-3">RFC 8235</a>: <a class="reference external" href="https://tools.ietf.org/html/rfc8235#section-3">https://tools.ietf.org/html/rfc8235#section-3</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this document is to describe the functionality of the ECC function <strong>Schnorr</strong>.</p>
+<dl>
+<dt>This chapter:</dt><dd><blockquote>
+<div><ul class="simple">
+<li><p>introduce the authentication protocol Schnorr.</p></li>
+<li><dl class="simple">
+<dt>describes all the APIs supported by EM9305 including</dt><dd><ul>
+<li><p>the prototypes of the functions</p></li>
+<li><p>the parameters</p></li>
+<li><p>the error status</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>provides the performances of the functions.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="schnorr-s-authentication-protocol">
+<h2>Schnorr’s Authentication protocol<a class="headerlink" href="#schnorr-s-authentication-protocol" title="Permalink to this headline"></a></h2>
+<section id="protocol-description">
+<h3>Protocol description<a class="headerlink" href="#protocol-description" title="Permalink to this headline"></a></h3>
+<p>Schnorr’s protocol is an identification protocol based on public key primitives. It aims <strong>at authenticating unilaterally</strong> a party to another party.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the context of EM9305, Schnorr’s protocol is used to enter in configuration mode. The device EM9305 authenticates the external reader/tester. Therefore, the external reader is the <strong>“Prover”</strong> and the part EM9305 is the <strong>“Verifier”</strong>.</p>
+</div>
+<p>Schnorr’s protocol is based on the <em>discret logarithm problem</em>. The library implements Schnorr’s protocol based on ECC. As BLE products already embeds P-256, the Schnorr’s protocol is also based on the underlying curve P-256. The curve details are described here: <a class="reference internal" href="P256.html#ecc-p256-label"><span class="std std-ref">ECC P-256</span></a>.</p>
+<p>The implemented protocol is an <strong>interactive Schnorr’s identification protocol</strong> and is partially described in the document [1].</p>
+<p>Next picture illustrates the protocol.</p>
+<img alt="_images/SchnorrProtocol.png" src="_images/SchnorrProtocol.png" />
+<p>The protocol is performed in 2 phases.</p>
+<ol class="upperalpha">
+<li><p>Phase 1: Generation of the system key set</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>An ECC private key (<em>PrivateKey</em>) is generated.</p></li>
+<li><p>The public key (<em>PublicKey</em>) is computed from the private key. <em>PublicKey=PrivateKey.G</em></p></li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+<p>The Private key is distributed to the <strong>prover</strong>, while the public key is provided to the <strong>verifier</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The key pair (PrivateKey-PublicKey) composes the keys of the system. This operation is performed only once.</p>
+</div>
+<ol class="upperalpha simple" start="2">
+<li><p>Phase 2:  Authentication</p></li>
+</ol>
+<p>When the <strong>prover</strong> wants to authenticate to the <strong>verifier</strong>, the following steps are performed:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The prover generates a random challenge: <em>ProverChallenge</em></p></li>
+<li><p>The prover computes the commitment corresponding to the prover challenge: <em>Commitment= ProverChallenge.G</em></p></li>
+<li><p>The prover sends the <em>commitment</em> to the verifier</p></li>
+<li><p>The verifier generates a challenge:<em>VerifierChallenge</em></p></li>
+<li><p>The verifier sends the <em>VerifierChallenge</em> to the prover</p></li>
+<li><p>The prover generates the signature: <em>Signature=(ProverChallenge -  PrivateKey*VerifierChallenge) mod N</em></p></li>
+<li><p>The prover sends the <em>Signature</em> to the verifier</p></li>
+<li><p>The verifier verifies the signature. It computes <em>V=Signature.G + VerifierChallenge.PublicKey</em> and compares V with the <em>Commitment</em>. If <em>V=Commitment</em>, the prover is successfully authenticated. Otherwise, the prover is rejected.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The operator “.” in step 2 and 8 is an ECC point multiplication. The “+” ,the “-”  and the “*” of steps 6 and 8 are modular operation on scalars.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="why-does-it-work">
+<h3>Why does it work?<a class="headerlink" href="#why-does-it-work" title="Permalink to this headline"></a></h3>
+<p>Developing the formulae and replacing each element we show that:</p>
+<p><em>V = Signature.G + VerifierChallenge.PublicKey</em></p>
+<p><em>V = [(ProverChallenge -  PrivateKey*VerifierChallenge)]. G + VerifierChallenge .(PrivateKey.G)</em></p>
+<p><em>V = (ProverChallenge. G) - [(PrivateKey *VerifierChallenge)mod N.G] +[VerifierChallenge *PrivateKey)modN.G]</em></p>
+<p><em>V = (ProverChallenge. G)</em></p>
+<p><em>V = Commitment</em></p>
+<p>Therefore, when the prover has knowledge of the PrivateKey , the V value computed by the verifier matches the recieved commitment.</p>
+</section>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<p>The library includes  useful APIs for the <strong>verifier</strong> that is to say:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>a function that generates the verifier challenge</p></li>
+<li><p>a function that verifies the prover signature</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The embedded library does not include functions executed by the prover.</p>
+</div>
+</div></blockquote>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<p>The error status are given here: <a class="reference internal" href="ECCEnum.html#ecc-enumerations-label"><span class="std std-ref">ECC Error Enumeration</span></a></p>
+</section>
+<section id="eccschnoor-generateverifierchallenge">
+<h3>ECCSchnoor_GenerateVerifierChallenge<a class="headerlink" href="#eccschnoor-generateverifierchallenge" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>The function generates a 256-bit random challenge.</p>
+</section>
+<section id="function">
+<h4>Function<a class="headerlink" href="#function" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv436ECCSchnoor_GenerateVerifierChallengeP8uint32_t">
+<span id="_CPPv336ECCSchnoor_GenerateVerifierChallengeP8uint32_t"></span><span id="_CPPv236ECCSchnoor_GenerateVerifierChallengeP8uint32_t"></span><span id="ECCSchnoor_GenerateVerifierChallenge__uint32_tP"></span><span class="target" id="group___e_c_c_s_chnoor_1gae07d879f3d20a2de7dda9aa0611e0f22"></span><a class="reference internal" href="ECCEnum.html#_CPPv411ECC_Error_t" title="ECC_Error_t"><span class="n"><span class="pre">ECC_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECCSchnoor_GenerateVerifierChallenge</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">VerifierChallenge</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv436ECCSchnoor_GenerateVerifierChallengeP8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Generate a random challenge. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>VerifierChallenge</strong> – <strong>[out]</strong> a random challenge of the size of the curve (32 bytes) </p>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – Successful private key generation </p></li>
+<li><p><strong>SW_ECC_RANDOM_ERROR</strong> – Error in random generation </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>VerifierChallenge</strong> : Result buffer of 256-bit(32 bytes)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SW_ECC_OK</p></td>
+<td><p>Verifier random challenge successfully generated</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECC_RANDOM_ERROR</p></td>
+<td><p>Error in the random generation</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="eccschnoor-verify">
+<h3>ECCSchnoor_Verify<a class="headerlink" href="#eccschnoor-verify" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Goal of the function<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>The function verifies the consistency of the signature and the commitment received from the prover.</p>
+</section>
+<section id="id2">
+<h4>Function<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417ECCSchnoor_VerifyP5POINTP5POINTP8uint32_tP8uint32_t">
+<span id="_CPPv317ECCSchnoor_VerifyP5POINTP5POINTP8uint32_tP8uint32_t"></span><span id="_CPPv217ECCSchnoor_VerifyP5POINTP5POINTP8uint32_tP8uint32_t"></span><span id="ECCSchnoor_Verify__POINTP.POINTP.uint32_tP.uint32_tP"></span><span class="target" id="group___e_c_c_s_chnoor_1ga60f179322bc77eb05d861edb4e6debad"></span><a class="reference internal" href="ECCEnum.html#_CPPv411ECC_Error_t" title="ECC_Error_t"><span class="n"><span class="pre">ECC_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECCSchnoor_Verify</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PublicKey</span></span>, <span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Commitment</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">VerifierChallenge</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Signature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417ECCSchnoor_VerifyP5POINTP5POINTP8uint32_tP8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Verify the external signature. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>PublicKey</strong> – <strong>[in]</strong> The public key of the device. A point on P-256 </p></li>
+<li><p><strong>Commitment</strong> – <strong>[in]</strong> The commitment sent by the external entity. A point on p-256 </p></li>
+<li><p><strong>VerifierChallenge</strong> – <strong>[in]</strong> The 32-byte challenge generated by the device </p></li>
+<li><p><strong>Signature</strong> – <strong>[in]</strong> The 32-byte signature sent by the external entity </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_SCHNOOR_SIGNATURE_VALID</strong> – Signature is valid </p></li>
+<li><p><strong>SW_SCHNOOR_SIGNATURE_INVALID</strong> – Signature is not valid </p></li>
+<li><p><strong>SW_ECC_INVALID_COMMITMENT</strong> – Invalid commitment </p></li>
+<li><p><strong>SW_ECC_INVALID_PUBLIC_POINT</strong> – Invalid public key </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status- Validiy of the signature</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>PublicKey</strong> : Public key of the system</p></li>
+<li><p><strong>Commitment</strong> : The commitment received from the prover</p></li>
+<li><p><strong>VerifierChallenge</strong> : The challenge generated during the ECCSchnorr_GenerateVerifierChallenge command</p></li>
+<li><p><strong>Signature</strong> : The signature submitted by the prover</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id4">
+<h4>Return values<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SW_SCHNOOR_SIGNATURE_VALID</p></td>
+<td><p>Signature is valid. The prover is authenticated</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_SCHNOOR_SIGNATURE_INVALID</p></td>
+<td><p>Signature is invalid. The prover is rejected</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>SW_ECC_INVALID_COMMITMENT</p></td>
+<td><p>The commitment is invalid</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECC_INVALID_PUBLIC_POINT</p></td>
+<td><p>The public key is invalid</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="general-performances">
+<h2>General Performances<a class="headerlink" href="#general-performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM. Schnorr’s authentication protocol is included in the <strong>ECC.lib</strong>.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5284 bytes in ROM for the complete ECC lib</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No global RAM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Approximately 600 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="performances">
+<h3>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Time in ms at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ECCSchnorr_GenerateVerifierChallenge</p></td>
+<td><p>0.287</p></td>
+</tr>
+<tr class="row-odd"><td><p>ECCSchnorr_Verify</p></td>
+<td><p>127</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h3>
+<dl class="simple">
+<dt>The ECC lib depends on :</dt><dd><ul class="simple">
+<li><p>PRNG.lib for the random number generation</p></li>
+<li><p>AES.lib which is used by PRNG.lib</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<p>Next C code shows a basic example of the Schnorr’s protocol APIs in the context of an external reader authenticating to EM9305.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @file       ExampleECCSchnoorUserManual.c</span>
+<span class="c1">///</span>
+<span class="c1">/// @project    T9305</span>
+<span class="c1">///</span>
+<span class="c1">/// @author     SAS</span>
+<span class="c1">///</span>
+<span class="c1">/// @brief   	Example of use of Schnoor lib functions</span>
+<span class="c1">/// @classification  Confidential</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @copyright Copyright (C) 2020 EM Microelectronic</span>
+<span class="c1">/// @cond</span>
+<span class="c1">///</span>
+<span class="c1">/// All rights reserved.</span>
+<span class="c1">///</span>
+<span class="c1">/// Redistribution and use in source and binary forms, with or without</span>
+<span class="c1">/// modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">/// 1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer.</span>
+<span class="c1">/// 2. Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1">/// and/or other materials provided with the distribution.</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="c1">/// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="c1">/// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="c1">/// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span>
+<span class="c1">/// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span>
+<span class="c1">/// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<span class="c1">/// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<span class="c1">/// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="c1">/// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<span class="c1">/// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="c1">/// POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">/// @endcond</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCTypedef.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCStatus.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCSchnoor.h&quot;</span><span class="cp"></span>
+
+<span class="c1">//Basic example of Schnoor functions with fix test value</span>
+<span class="c1">//This is the most basic and thus quickest test.</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">Example_ECC_Schnoor_UM</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">ECC_Error_t</span><span class="w"> </span><span class="n">SW</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">u32Error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Supposing that the system keys are :</span>
+
+<span class="w">	</span><span class="c1">//1- the private key of the system</span>
+<span class="w">	</span><span class="cm">/*static const uint32_t PrivateKey[CURVE_SIZE_P256] =</span>
+<span class="cm">	 * { 0x3f49f6d4, 0xa3c55f38, 0x74c9b3e3,0xd2103f50, 0x4aff607b, 0xeb40b799, 0x5899b8a6, 0xcd3c1abd };*/</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//2- It correspond to the public key(normaly stored in the device T9305)</span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">POINT_P256</span><span class="w"> </span><span class="n">PubKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x20b003d2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf297be2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5e2c83a7</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xe9f9a5b9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeff49111</span><span class="p">,</span><span class="w"> </span><span class="mh">0xacf4fddb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc030148</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0e359de6</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xdc809c49</span><span class="p">,</span><span class="w"> </span><span class="mh">0x652aeb6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63329abf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5a52155c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x766345c2</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x8fed3024</span><span class="p">,</span><span class="w"> </span><span class="mh">0x741c8ed0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1589d28b</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Supposing that the prover(Reader) generates the following challenge</span>
+<span class="w">	</span><span class="c1">//static uint32_t ProverChallenge[CURVE_SIZE_P256]=  {0x12345678,0x9ABCDEF0,0xAABBCCDD,0xEEFF0011,0x12345678,0x9ABCDEF0,0xAABBCCDD,0xEEFF0011};</span>
+
+<span class="w">	</span><span class="c1">// and the the Verifier(Device) generates this challenge</span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">VerifierChallenge</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xABCDEF12</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xFEDCBA12</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12121212</span><span class="p">,</span><span class="w"> </span><span class="mh">0x34343434</span><span class="p">,</span><span class="w"> </span><span class="mh">0x56565656</span><span class="p">,</span><span class="w"> </span><span class="mh">0x78787878</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x9A9A9A9A</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1B1B1B1B</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//then the Prover(reader) should generate the following commitment</span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">POINT_P256</span><span class="w"> </span><span class="n">Commitment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xbf4a7502</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11c5a2f2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x17c557e1</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x9c1b43a3</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd5547099</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23181f94</span><span class="p">,</span><span class="w"> </span><span class="mh">0x91521db7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5ceb8b16</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xfebcceb1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66124ba2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3bae58c6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe7d4152c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4609b2f7</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x1bcc47e9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4b1e95e0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x325a9805</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//and the following signature</span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Signature</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x14ef47ab</span><span class="p">,</span><span class="w"> </span><span class="mh">0x128a3627</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x73df4636</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7ecc1d15</span><span class="p">,</span><span class="w"> </span><span class="mh">0x64b5a898</span><span class="p">,</span><span class="w"> </span><span class="mh">0xba454da7</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdb47b279</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x2c439c92</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Perform the Verification of the signature by the verifier (Device)</span>
+<span class="w">	</span><span class="n">SW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ECCSchnoor_Verify</span><span class="p">((</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PubKey</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Commitment</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">VerifierChallenge</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Signature</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SW</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SW_SCHNOOR_SIGNATURE_VALID</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">u32Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//return the test status</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u32Error</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ECDSA.html" class="btn btn-neutral float-left" title="ECDSA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HASH_FUNCTIONS.html" class="btn btn-neutral float-right" title="Hash functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

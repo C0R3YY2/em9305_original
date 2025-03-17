@@ -1,0 +1,1721 @@
+# Device API
+
+The Bluetooth Device Module you need.
+
+## Device API Summary
+
+Theses Classes implement a high-level representation of a Bluetooth Device, it
+provide abstraction on top of Gatt and Gap Layers.
+
+A device must implement `BLEDevice` class which provide basic bluetooth related fucntions.
+
+The `BLEDevice` have the following abilities:
+
+    
+    * Standard GAP set/get commands (name, mode, role, etc…).
+
+
+    * The ability to read and write a characteristic value.
+
+
+    * Discover (read) Gatt services and characterisitcs on the devices.
+
+
+    * Enable notifications / indications for the devices.
+
+To work with local device (dongles), a `BLELocalDevice` instance can be used.
+This class inherit BLEDevice and have specific functions and attributes to work
+with. It retain a list of remotes devices, automagically created and updated when
+the device perform a scan.
+
+Abilities:
+
+    
+    * Scan / Observe for devices.
+
+
+    * Filter and sorting of remote devices list.
+
+
+    * Manage Services and Characteristics (Add/Remove).
+
+
+    * Perform a reset.
+
+The remotes devices class instances `BLERemoteDevices` created by a local device
+implement all the functions related to a remote device from the local one,
+it actually use the engine of the local device to send commands by itself.
+
+
+### - An advertisiemnts packets list.()
+
+### - The device mode.()
+
+### - RSSI and Interval moving average.()
+Abilities:
+
+    
+    * Connect and Disconnect To/from itself.
+
+
+    * Automatically update (attributes, averages, etc…) on advertisement.
+
+
+    * Compute averages between advertisements packets
+
+
+### class blengine.host.devices.BLEDevice(engine, bd_addr=None, name=None, conn_handle=None)
+A BLE Device represent a Generic Bluetooth Device that can manipulate an
+Engine.
+
+The constructor set the following:
+
+
+* **Variables**
+
+    
+    * **engine** – A reference to the actual `blengine.hci.engine.HCIEngine`
+    engine used to communicate with the device
+
+
+    * **bd_addr** – optional, the actual bluetooth MAC Address of the device
+
+
+    * **name** – optional, the common name used for the device, it’s a convience attribute,
+    defaulted to the bd_addr or noname by default.
+
+
+    * **conn_handle** – optional, the connection handle used in many layers of the bluetooth
+
+
+The others attributes provided by this class are
+
+
+* **Variables**
+
+    
+    * **bd_addr_type** – The type of the bd_addr, defaulted to 0x00
+
+
+    * **type** – String, defaulted to “Generic BLE Device”
+
+
+    * **services** – List of `blengine.host.gatt.BLEService` instances
+
+
+    * **mode** – Bluetooth mode
+
+
+    * **role** – Bluetooth role
+
+
+    * **is_client** – Is the device client or not
+
+
+    * **conn_handle** – The device conn_handle
+
+
+    * **logger** – Device logger (the name is the same as the device)
+
+
+
+#### disable_indication(char)
+Disable notification for this device
+
+
+* **Parameters**
+
+    **char** – The characteristic
+
+
+
+#### disable_notification(char)
+Disable notification for this device
+
+
+* **Parameters**
+
+    **char** – The characteristic
+
+
+
+#### discover_services()
+Discover GATT Server services for this device, this includes
+characteristics, descriptors, etc…. It will fill the `self.services`
+attribute and return it anyway
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### enable_indication(char)
+Enable notification on this device for the specified characteristic
+
+
+* **Parameters**
+
+    **char** – The characteristic
+
+
+
+#### enable_notification(char)
+Enable notification on this device for the specified characteristic
+
+
+* **Parameters**
+
+    **char** – The characteristic
+
+
+
+#### get_char_by_handle(handle)
+find a characteristics by handle (int) or value_handle (int)
+
+
+* **Parameters**
+
+    **handle** – The handle
+
+
+
+* **Returns**
+
+    The characteristic by handle or None
+
+
+
+* **Return type**
+
+    Characteristic
+
+
+
+#### get_conn_handle()
+Get the GAP Connection handle for this device.
+
+This will also update the conn_handle attribute.
+
+
+* **Returns**
+
+    The connection handle.
+
+
+
+* **Return type**
+
+    int
+
+
+
+#### get_service(uuid=None, name=None)
+return a service by uuid or search among string name
+
+filters are exclusive
+
+
+#### on_indication(pkt)
+indication callback
+
+
+#### on_notification(pkt)
+Default Notification Callback
+
+This callback, triggers on notification or observation,
+will parse the notification packet and try to find a corresponding characteristic
+in the device services.
+
+If so, The value is parsed with the characteristic parse function.
+
+Finally two events are triggered on this device, one with the uuid object
+as key and one with the uuid name.
+
+
+* **Parameters**
+
+    **pkt** – The packet
+
+
+
+#### read_all_values(services=None)
+Read value for each characteristics
+
+
+* **Parameters**
+
+    **services** – The services
+
+
+
+#### register(role, name=None, mode=None, is_client=False)
+Convenience Function to register a device, the minimum requirement
+
+Role and Mode can be the same input format as the corresponding procedures
+
+The order of execution is the following:
+
+> 
+> * call self.set_role() then
+
+
+> * call self.set_mode() then
+
+
+> * call self.set_name() then
+
+
+> * call self.set_register_client()
+
+It can be constraining so feel free to use the atomic functions.
+
+
+* **Parameters**
+
+    
+    * **role** (*str** or **int*) – The role
+
+
+    * **name** (*str*) – The name
+
+
+    * **mode** (*str** or **int*) – The mode
+
+
+    * **is_client** (*bool*) – register as client or not
+
+
+
+#### register_client(set_client=True)
+Register or deregister this device as a client.
+
+If nothing has to be done (e.g. already registered as client),
+this function do nothing and return `(true, "Done Nothing")` tuple
+
+Please refer to `blengine.host.procedures.gatt.register_client()`
+and `blengine.host.procedures.gatt.unregister_client()`
+
+
+* **Parameters**
+
+    **set_client** (*bool*) – Register or not (default to True)
+
+
+
+* **Returns**
+
+    procedure return value or `(true, "Done Nothing")`
+
+
+
+* **Return type**
+
+    tuple(bool, str)
+
+
+
+#### set_mode(mode)
+Sets the Bluetooth Mode.
+
+Please refer to `blengine.host.procedures.gap.set_mode()`
+
+
+* **Parameters**
+
+    **mode** (*int** or **string*) – mode
+
+
+
+* **Returns**
+
+    procedure return value
+
+
+
+* **Return type**
+
+    tuple(bool, str)
+
+
+
+#### set_name(name)
+Set the name of the bluetooth device.
+
+Please refer to `blengine.host.procedures.gap.set_name()`
+
+
+* **Parameters**
+
+    **name** – The name
+
+
+
+* **Returns**
+
+    procedure return value
+
+
+
+* **Return type**
+
+    tuple(bool, str)
+
+
+
+#### set_role(role)
+Sets the Bluetooth role.
+
+Please refer to `blengine.host.procedures.gap.set_role()`
+
+
+* **Parameters**
+
+    **role** (*int** or **string*) – the Role
+
+
+
+* **Returns**
+
+    procedure return
+
+
+
+* **Return type**
+
+    tuple(bool, str)
+
+
+
+#### write(char, value, timeout=1)
+write a value to a characteristic
+
+TODO: manage errors (permissions, etc…)
+
+
+* **Parameters**
+
+    
+    * **char** – The character
+
+
+    * **value** – The value
+
+
+    * **timeout** – The timeout
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+### exception blengine.host.devices.BLEDeviceException()
+
+### class blengine.host.devices.BLELocalDevice(engine, bd_addr=None, name=None, conn_handle=0)
+A Local device represent a bluetooth chip directly connected to the computer (a dongle)
+
+the conn_handle of a local device is always 0, obviously the same engine cannot be used by more than one LocalDevice
+
+
+* **Variables**
+
+    
+    * **dyn_attrs** – Define by names the attributes wich have dynamic sizes
+
+
+    * **remote_devices** – A List of `BLERemoteDevice` remotes bluetooth devices: list
+
+
+    * **attributes_sizes** – Attributes size defined by this device, see `get_attribute_size()`
+
+
+
+#### disconnect()
+see `blengine.host.procedures.gap.disconnect()`
+
+
+#### add_device(bd_addr)
+Adds a device, return existing instance if it exist already.
+
+
+* **Parameters**
+
+    **bd_addr** (*{ type_description }*) – The bd address
+
+
+
+* **Returns**
+
+    A Device
+
+
+
+* **Return type**
+
+    BleRemoteDevice
+
+
+
+#### allocate_memory(size, persistent=False)
+Allocate some Memory (EMSHI)
+
+TODO: transform it to a procedure
+
+
+* **Parameters**
+
+    
+    * **size** – The size
+
+
+    * **persistent** – The persistent
+
+
+
+* **Returns**
+
+    the starting address or None
+
+
+
+* **Return type**
+
+    int
+
+
+
+#### cancel_scan()
+Call CancelInquiry, do not wait on response
+
+
+* **Returns**
+
+    Always True
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### connect_by_addr(bd_addr, addr_type=0, retry=3, scan_interval_ms=30, scan_window_ms=30, conn_interval_ms=7.5, conn_timeout_ms=1000, timeout=0.5)
+Connect to a device with the mac addr, for convenience when you already
+know the mac address of the remote device, or your name is André.
+
+if the diven bd addr is not in the remote devices, it create a remote
+device and conect to it.
+
+This function call be called without the need to call scan()
+before-hand.
+
+
+* **Parameters**
+
+    
+    * **bd_addr** – The bd address
+
+
+    * **addr_type** – The address type
+
+
+    * **retry** – The retry
+
+
+    * **scan_interval_ms** – The scan interval milliseconds
+
+
+    * **scan_window_ms** – The scan window milliseconds
+
+
+    * **conn_interval_ms** – The connection interval milliseconds
+
+
+    * **conn_timeout_ms** – The connection timeout milliseconds
+
+
+    * **timeout** – The timeout
+
+
+
+* **Returns**
+
+    The device if connected successfully, otherwise None
+
+
+
+* **Return type**
+
+    BLERemoteDevice or None
+
+
+
+#### filter_devices(bd_addr=None, name=None, uuid=None, min_rssi=None, max_rssi=None)
+Filter devices list as specified, many parameters can be defined,
+if so it filter non-exclusively with the non-null parameters.
+
+Available filters:
+- bd_addr: MAC Addr of the device (must be an bytearray)
+- name : search a string in the device name
+- uuid: search in the device service list (uuid format)
+- max_rssi and min_rssi : define an rssi range in dBm (int)
+
+max_rssi and min_rssi are defaulted to 20 and -127 respectively
+
+
+* **Parameters**
+
+    
+    * **bd_addr** – The bd address
+
+
+    * **name** – The name
+
+
+    * **uuid** – The uuid
+
+
+    * **min_rssi** – The minimum rssi
+
+
+    * **max_rssi** – The maximum rssi
+
+
+
+* **Returns**
+
+    A device list
+
+
+
+* **Return type**
+
+    An array of device, maybe empty
+
+
+
+#### get_attributes_size()
+Populate the attributes sizes dynamically following special
+Attribute_Size command
+
+
+#### get_device(bd_addr=None, name=None, uuid=None, min_rssi=None, max_rssi=None)
+Get a unique remote device, if many are found, return the first one
+
+
+* **Parameters**
+
+    
+    * **bd_addr** – The bd address
+
+
+    * **name** – The name
+
+
+    * **uuid** – The uuid
+
+
+    * **min_rssi** – The minimum rssi
+
+
+    * **max_rssi** – The maximum rssi
+
+
+
+* **Returns**
+
+    The device.
+
+
+
+* **Return type**
+
+    BleRemoteDevice
+
+
+
+#### get_nearest_device()
+get the nearest of remote devices
+
+
+* **Returns**
+
+    The nearest device.
+
+
+
+* **Return type**
+
+    BleRemoteDevice
+
+
+
+#### program(file)
+program the device with a given file
+
+
+* **Parameters**
+
+    **file** – The file
+
+
+
+#### register_characteristic(char, start_address=None)
+register the given characteristic at a given address if provided.
+
+If no address is provided it will allocate some memory.
+
+the provided must have a parent service which is already registered
+
+
+* **Parameters**
+
+    
+    * **char** – The character
+
+
+    * **start_address** – The start address
+
+
+
+* **Returns**
+
+    Operation Successful
+
+
+
+* **Return type**
+
+    boolean
+
+
+
+* **Raises**
+
+    **Exception** – The characteristic cannot be registered
+
+
+
+#### register_service(service, start_address=None)
+Add a particular service to this device
+
+see `gatt.register_service` procedure
+
+
+#### register_services(services=None)
+compute memory map and add all the services to this device.
+
+this will auto-allocate some memory.
+
+
+* **Parameters**
+
+    **services** – The services
+
+
+
+#### remove_all_services()
+Remove all services.
+
+
+#### remove_attribute(attribute)
+remove an Attribute
+
+
+* **Parameters**
+
+    **attribute** – The attribute
+
+
+
+* **Returns**
+
+    operatoin successfull
+
+
+
+* **Return type**
+
+    boolean
+
+
+
+#### remove_service(service)
+remove a service instance from this device
+
+
+* **Parameters**
+
+    **service** – The service
+
+
+
+* **Returns**
+
+    Success or not
+
+
+
+* **Return type**
+
+    bool
+
+
+
+#### reset()
+Perform a ARC Reset
+
+
+#### scan(\*\*kwargs)
+call gap.scan and populate self.remote_devices with BLERemoteDevices
+
+
+* **Parameters**
+
+    **kwargs** – The keywords arguments
+
+
+
+* **Returns**
+
+    status
+
+
+
+* **Return type**
+
+    bool
+
+
+
+#### sort_devices(key: str)
+Sort the devices list by attribute name,
+to sort it by name `device.sort_device("name")`
+or `device.sort_device("rssi")`
+or `device.sort_device("interval")`
+
+
+* **Parameters**
+
+    **key** (*str*) – The key
+
+
+
+### class blengine.host.devices.BLERemoteDevice(engine, bd_addr, name=None)
+A Remote Device is any device that is usable by a local device.
+
+
+* **Parameters**
+
+    
+    * **engine** – A HCIengine
+
+
+    * **bd_addr** – The mac address of the device
+
+
+    * **name** – A default name
+
+
+
+#### compute_interval(segment=None, method=<function median>)
+compute intervals and compute the mean of it, on the given segment if
+advertisments packets recevied, via the given method
+
+
+* **Parameters**
+
+    
+    * **segment** – The segment (tuple format)
+    (<beginnnig>,<end>,<interval>)
+
+
+    * **method** – The statistics function to process the rssi’s
+    array default to `statistics.median`
+
+
+
+* **Returns**
+
+    The interval.
+
+
+
+* **Return type**
+
+    float
+
+
+
+#### compute_rssi(segment=None, method=<function median>)
+compute a mean of rssi’s on the given segment of advertisments
+
+
+* **Parameters**
+
+    
+    * **segment** – The segment (tuple format)
+    (<beginnnig>,<end>,<interval>)
+
+
+    * **method** – The statistics function to process the rssi’s
+    array default to `statistics.median`
+
+
+
+* **Returns**
+
+    The rssi.
+
+
+
+* **Return type**
+
+    Number
+
+
+
+#### connect(retry=3, scan_interval_ms=30, scan_window_ms=30, conn_interval_ms=7.5, conn_timeout_ms=1000, timeout=1, bd_addr_type=None)
+connect to this remote device.
+
+
+* **Parameters**
+
+    
+    * **retry** – The retry
+
+
+    * **scan_interval_ms** – The scan interval milliseconds
+
+
+    * **scan_window_ms** – The scan window milliseconds
+
+
+    * **conn_interval_ms** – The connection interval milliseconds
+
+
+    * **conn_timeout_ms** – The connection timeout milliseconds
+
+
+    * **timeout** – The timeout
+
+
+    * **bd_addr_type** – The bd address type
+
+
+
+* **Returns**
+
+    connection successful flag
+
+
+
+* **Return type**
+
+    bool
+
+
+
+#### disconnect()
+disconnect this device
+
+
+* **Returns**
+
+    status
+
+
+
+* **Return type**
+
+    bool
+
+
+
+#### discover_services()
+Overload the standard discover_service to change the interval to 7.5 ms
+then make it like before.
+
+
+#### get_intervals(segment=None, filter_func=None, resolution_ms=1)
+Return an array of float representing the intervals betweem
+advertisements packet given segment and filtered by filter_func
+function, at the given resolution (default to 1ms).
+
+
+* **Parameters**
+
+    
+    * **segment** – The segment (tuple format)
+    (<beginnnig>,<end>,<interval>)
+
+
+    * **filter_func** – the function used to filter the
+    adverstisements
+
+
+    * **resolution_ms** – The resolution milliseconds
+
+
+
+* **Returns**
+
+    The intervals.
+
+
+
+* **Return type**
+
+    Array of intervals numbers
+
+
+
+#### on_advertising_pkt(adv_pkt)
+This function is triggered by the local device linked to this device on each advertising packet received,
+AD Packet Callback will update varying things on this device :
+
+
+* mean interval
+
+
+* mean rssi
+
+
+* local name
+
+
+* address
+
+
+* mode
+
+Also, for each Advertising Data Packet decoded this function will trig a named event
+that have the same name as the Advertising Data packet.
+Ref Needed (see GAP_AD_Struct class in blengine.host.packets.gap)
+
+
+* **Parameters**
+
+    **adv_pkt** – The advertising packet
+
+
+
+#### on_disconnect(pkt)
+disconnect callback
+
+## the Gatt module
+
+This module implement essentials element of the Bluetooth GATT Layer and provide some basic GATT Procedures.
+
+There is a lot in here, consider splitting it up !
+The first part of this listing define the implementations then the
+Device Characteristics and Descriptors objects
+
+Not many comments on implementations, Core Spec knowledge assumed.
+
+
+### class blengine.host.gatt.BLECharacteristic(uuid, properties, permission=0, handle=None, parent_service=None, value=None, value_handle=None, description=None, max_size=32)
+This class define a Characteristic as in the Bluletooth GATT Layer.
+
+It provide read() and write() functions which directly send a gatt command.
+
+It implement UserDict which provide a dict-like access for this class,
+it is not used internally but it is saved/restored, it provide a convenient way to
+manipulate custom fields
+by interacting directly with the Characteristic. It is used mainly in the parse()
+function to write to some custom fields when decoding complex characteristics.
+The goal is to have the same fields names as in the bluetooth specs.
+
+The class attributes are:
+
+
+* **Variables**
+
+    
+    * **uuid** – The uuid
+
+
+    * **properties** – The characteristics properties
+
+
+    * **permission** – The permission
+
+
+    * **handle** – The handle
+
+
+    * **parent_service** – The parent service
+
+
+    * **value** – The value
+
+
+    * **value_handle** – The value handle
+
+
+    * **description** – The description
+
+
+    * **max_size** – The maximum size
+
+
+    * **descriptors** – list of BLEDescriptors
+
+
+Constructs a new instance.
+
+The properties can be entered as a string of comma-separated properties.
+
+
+* **Parameters**
+
+    
+    * **uuid** – The uuid
+
+
+    * **properties** – The properties as int or string
+
+
+    * **permission** – The permission
+
+
+    * **handle** – The handle
+
+
+    * **parent_service** – The parent service
+
+
+    * **value** – The value
+
+
+    * **value_handle** – The value handle
+
+
+    * **description** – The description
+
+
+    * **max_size** – The maximum size
+
+
+
+#### static from_dict(dct)
+Create a instance from a dictionary entry
+
+
+* **Parameters**
+
+    **dct** – The dct
+
+
+
+* **Returns**
+
+    BLECharacteristic instance
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### full_size()
+this function is deprecated use self.size() insitead
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### get_descriptor(uuid)
+get a particular descriptor by name
+
+
+* **Parameters**
+
+    **uuid** – The uuid
+
+
+
+* **Returns**
+
+    The descriptor.
+
+
+
+* **Return type**
+
+    BLEDescriptor
+
+
+
+#### get_properties()
+Return properties list as a comma separated string
+
+
+* **Returns**
+
+    The properties.
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### parse(value, length=None)
+the default parse function, it will fill the value field.
+
+
+* **Parameters**
+
+    
+    * **value** – The value
+
+
+    * **length** – The length
+
+
+
+#### read(device=None, parser=None)
+Read this characteristics value.
+
+If the device is not provided it will get the parent service device.
+
+plese refer to `blengine.host.procedures.gatt.read_value()`
+
+
+* **Parameters**
+
+    
+    * **device** – The device
+
+
+    * **parser** – The parser
+
+
+
+* **Raises**
+
+    **Exception** – No value handle for this characteristic
+
+
+
+#### classmethod register(uuid)
+register this characteristic in the characteristic register
+
+
+* **Parameters**
+
+    
+    * **cls** – The cls
+
+
+    * **uuid** – The uuid
+
+
+
+#### to_dict()
+Returns a dictionary representation of the object.
+
+
+* **Returns**
+
+    Dictionary representation of the object.
+
+
+
+* **Return type**
+
+    dict
+
+
+
+#### write(value=None, device=None, timeout=1)
+write a value for this characteristic to a device, if device is not provided,
+it will use the device from this characteristic service.
+
+plese refer to `blengine.host.procedures.gatt.write_value()`
+
+
+* **Parameters**
+
+    
+    * **value** – The value
+
+
+    * **device** – The device
+
+
+    * **timeout** – The timeout
+
+
+
+* **Returns**
+
+    status
+
+
+
+* **Return type**
+
+    bool
+
+
+
+* **Raises**
+
+    **Exception** – This characteristic value handle is not set
+
+
+
+### class blengine.host.gatt.BLEDescriptor(handle, uuid)
+Describe a Descriptor as in the Bluetooth GATT Layer
+
+
+#### static from_dict(dct)
+construct an instance from a dictionary
+
+
+* **Parameters**
+
+    **dct** – The dct
+
+
+
+* **Returns**
+
+    a new instance
+
+
+
+* **Return type**
+
+    BLEDescriptor
+
+
+
+#### to_dict()
+Returns a dictionary representation of the object.
+
+
+### class blengine.host.gatt.BLEPrimaryService(uuid, handle_start=0, handle_end=0)
+Convenience class to define a Primary service
+
+see `BLEService`
+
+Constructs a new instance.
+
+
+* **Parameters**
+
+    
+    * **uuid** (*UUID*) – the service uuid
+
+
+    * **handle_start** (*int*) – the start handle of the service
+
+
+    * **handle_end** (*int*) – the end handle of the service
+
+
+    * **uuid_type** (*UUID*) – the type UUID
+
+
+
+### class blengine.host.gatt.BLESecondaryService(uuid, handle_start=0, handle_end=0)
+Convenience class to define a secondary service
+
+see `BLEService`
+
+Constructs a new instance.
+
+
+* **Parameters**
+
+    
+    * **uuid** (*UUID*) – the service uuid
+
+
+    * **handle_start** (*int*) – the start handle of the service
+
+
+    * **handle_end** (*int*) – the end handle of the service
+
+
+    * **uuid_type** (*UUID*) – the type UUID
+
+
+
+### class blengine.host.gatt.BLEService(uuid, handle_start: int, handle_end: int, uuid_type)
+Define a Service as in the Bluetooth GATT Layer.
+
+The others attributes provided by this class are
+
+
+* **Variables**
+
+    
+    * **characteristics** – The type of the bd_addr defaulted to 0x00
+
+
+    * **included_services** – Services Included in this one
+
+
+    * **device** – the device who own this service
+
+
+Constructs a new instance.
+
+
+* **Parameters**
+
+    
+    * **uuid** (*UUID*) – the service uuid
+
+
+    * **handle_start** (*int*) – the start handle of the service
+
+
+    * **handle_end** (*int*) – the end handle of the service
+
+
+    * **uuid_type** (*UUID*) – the type UUID
+
+
+
+#### static from_dict(dct)
+Create a Service instance fform the object
+
+
+* **Parameters**
+
+    **dct** – The dct
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### full_size()
+return the size of this service plus the the sizes of each of this
+service characteristic’s
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### get(uuid)
+return a characteristic or a included service
+
+
+* **Parameters**
+
+    **uuid** – The uuid
+
+
+
+* **Returns**
+
+    characteristic or service
+
+
+
+* **Return type**
+
+    BLECharacteristic or BLEService
+
+
+
+#### include_service(service)
+Include another service into this one
+
+
+* **Parameters**
+
+    **service** – The service
+
+
+
+#### size()
+return this service size, not the characteristics.
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+#### to_dict()
+Returns a dictionary representation of the object.
+
+
+* **Returns**
+
+    Dictionary representation of the object.
+
+
+
+* **Return type**
+
+    dict
+
+
+
+### exception blengine.host.gatt.CharacteristicPropertyNotFoundException()
+
+### exception blengine.host.gatt.ServiceException()
+
+### blengine.host.gatt.discover_all_characteristics(engine, conn_handle, service_handle, handle_start, handle_end, timeout=2)
+discover all characteristics for a given services
+
+
+* **Parameters**
+
+    
+    * **engine** – The engine
+
+
+    * **conn_handle** – The connection handle
+
+
+    * **service_handle** – The service handle
+
+
+    * **handle_start** – The handle start
+
+
+    * **handle_end** – The handle end
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+### blengine.host.gatt.discover_all_services(engine, conn_handle, include_chars=True, timeout=2)
+Discover a Device Services and Characteristics.
+
+
+* **Parameters**
+
+    
+    * **engine** – The engine
+
+
+    * **conn_handle** – The connection handle
+
+
+    * **include_chars** – The include characters
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+### blengine.host.gatt.discover_relationships(engine, conn_handle, service_handle, handle_start, handle_end, timeout=2)
+discover all characteristics for a given service
+
+
+* **Parameters**
+
+    
+    * **engine** – The engine
+
+
+    * **conn_handle** – The connection handle
+
+
+    * **service_handle** – The service handle
+
+
+    * **handle_start** – The handle start
+
+
+    * **handle_end** – The handle end
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+### blengine.host.gatt.get_descriptors(engine, conn_handle, services, timeout=2)
+Gets the descriptors.
+
+
+* **Parameters**
+
+    
+    * **engine** – The engine
+
+
+    * **conn_handle** – The connection handle
+
+
+    * **services** – The services
+
+
+
+### blengine.host.gatt.register_characteristic(engine, char, start_address)
+{ function_description }
+
+
+* **Parameters**
+
+    
+    * **engine** – The engine
+
+
+    * **char** – The character
+
+
+    * **start_address** – The start address
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+### blengine.host.gatt.register_relationship(engine, service)
+{ function_description }
+
+
+* **Parameters**
+
+    
+    * **engine** – The engine
+
+
+    * **service** – The service
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }
+
+
+
+### blengine.host.gatt.register_service(engine, service, start_address, include_chars=True)
+Add a particular service to this device
+
+
+* **Parameters**
+
+    
+    * **engine** – The engine
+
+
+    * **service** – The service
+
+
+    * **start_address** – The start address
+
+
+    * **include_chars** – The include characters
+
+
+
+* **Returns**
+
+    { description_of_the_return_value }
+
+
+
+* **Return type**
+
+    { return_type_description }

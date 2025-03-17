@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update Library for SPI Transport &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="../third_party/index.html" />
+    <link rel="prev" title="Firmware Update Cryptographic Toolbox Library" href="../fwu_crypto/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm_op_sched/index.html">NVM operation scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../firmware_header/index.html">Firmware Header Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_core/index.html">Firmware Update Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_database/index.html">EMB Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_crypto/index.html">Firmware Update Cryptographic Toolbox Library</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Firmware Update Library for SPI Transport</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Firmware Update Library for SPI Transport</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-library-for-spi-transport">
+<h1>Firmware Update Library for SPI Transport<a class="headerlink" href="#firmware-update-library-for-spi-transport" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This library implements the Firmware Updated functionalities for SPI transport.
+It defines the command parser used in the <a class="reference external" href="../firmware_updater/index.html">firmware_updater</a> as well as <a class="reference external" href="../fwu_target/index.html">fwu_target</a> applications.</p>
+<p>Refer to the <a class="reference external" href="../../sections/FirmwareUpdate.html">Firmware Update</a> section of the SDK Documentation for additional information on the firmware update functionality.</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d1/d67/group__fwu__spi"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">fwu_spi</span></span></dt>
+<dd><p>SPI support for Firmware Update feature. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv424gEMSCmdFWUCommandParsers">
+<span id="_CPPv324gEMSCmdFWUCommandParsers"></span><span id="_CPPv224gEMSCmdFWUCommandParsers"></span><span id="gEMSCmdFWUCommandParsers__EMSystem_CommandParser_tCA"></span><span class="target" id="d1/d67/group__fwu__spi_1gad29757d3377517506501ae58af558572"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">EMSystem_CommandParser_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gEMSCmdFWUCommandParsers</span></span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv424gEMSCmdFWUCommandParsers" title="Link to this definition"></a><br /></dt>
+<dd><p>Sorted array of command parsers for the firmware update. </p>
+<p>This is an array of function pointers to functions that parse a specific command packet. Each function pointer is associated with a command opcode. These parsers are sorted in ascending opcode order (for a binary search of the list). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv432gEMSCmdFWUNumberOfCommandParsers">
+<span id="_CPPv332gEMSCmdFWUNumberOfCommandParsers"></span><span id="_CPPv232gEMSCmdFWUNumberOfCommandParsers"></span><span id="gEMSCmdFWUNumberOfCommandParsers__uint16_tC"></span><span class="target" id="d1/d67/group__fwu__spi_1gacd687993166dbf9cd9b2ea2b2b95aee3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gEMSCmdFWUNumberOfCommandParsers</span></span></span><a class="headerlink" href="#_CPPv432gEMSCmdFWUNumberOfCommandParsers" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of firmware update command parsers. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0">
+<h3>Version 1.0<a class="headerlink" href="#version-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial version of the firmware update crypto lib.</p></li>
+<li><p>This version supports ECDSA signature verification.</p></li>
+<li><p>This version supports AES ECB, CBC and CTR for firmware package decryption.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../fwu_crypto/index.html" class="btn btn-neutral float-left" title="Firmware Update Cryptographic Toolbox Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../third_party/index.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

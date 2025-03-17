@@ -1,0 +1,52 @@
+###############
+Migration guide
+###############
+
+Overview
+^^^^^^^^
+
+The em|bleu SDK 4.x series introduces a compatibility breakdown with the previous 3.x series.
+This breakdown is described in the paragraphs hereafter that you should read carefully to see if your application falls into
+these usecases. If this is the case, the current page explains how to adapt your application to be compliant with the new
+introduced features.
+
+Migration guide
+^^^^^^^^^^^^^^^
+
+The gPML_Config structure
+-------------------------
+
+This structure is very important to drive the behavior of the application. A complete comprehensive description is given in the `Implementer's Guide <../../app_notes/EM9305_SoC_ImplementersGuide_v2.1.pdf>`_ so please refer to this document.
+
+Until now, it was mandatory to explicitly add an external reference to this structure in case it is used in an application,
+like in the following example:
+
+.. code-block:: c
+
+  #include "pml.h"
+  extern PML_Configuration_t gPML_Config;
+  ...
+  gPML_Config.sleepModeForbiden = true;
+  ...
+
+Now, the external reference must be removed from the user application code. By just including the `pml.h` file, access is given to this structure. Consequently, the above example should be translated to the following:
+
+.. code-block:: c
+
+    #include "pml.h"
+    ...
+    gPML_Config.sleepModeForbiden = true;
+    ...
+
+
+
+
+The new sample application structure
+------------------------------------
+
+The SDK’s 3.x series provides a set of sample applications based on a specific structure. However, over the time, it turned out that this structure can be improved in such a way that the code is split based on its functionality, making the understanding of the example smoother and easier.
+
+The SDK 4.x series introduces this new structure which is heavily described in the `Implementer's Guide <../../app_notes/EM9305_SoC_ImplementersGuide_v2.1.pdf>`_ taking as a first example the Heart Rate Service sample application.
+As of now, the other sample applications have not been migrated yet to this new structure but will be fully migrated in the next SDK’s release.
+
+However, it is not mandatory that an application is translated to this new structure. Even if your application has been inspired from the old 3.x series sample application, it will still build and run properly. But be aware that for further SDK’s in the future, any added sample applications will be based on this new structure.

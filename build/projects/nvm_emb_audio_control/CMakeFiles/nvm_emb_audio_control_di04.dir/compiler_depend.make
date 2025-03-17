@@ -1,0 +1,2 @@
+# Empty compiler generated dependencies file for nvm_emb_audio_control_di04.
+# This may be replaced when dependencies are built.

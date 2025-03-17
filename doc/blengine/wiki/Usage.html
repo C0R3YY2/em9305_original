@@ -1,0 +1,368 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLI Usage and options &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NVM Configuration" href="NVM-Information.html" />
+    <link rel="prev" title="Configuration" href="Configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CLI Usage and options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#help">Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shortcut">Shortcut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file">Configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#blengine-commands">Blengine Commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#send-a-packet">Send a packet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#error-management">Error management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#run-a-specific-procedure">Run a specific procedure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-helper">Configuration helper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#search-or-list-available-procedure-and-packets">Search or list available procedure and packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repl-mode-beta">REPL Mode (beta)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#python-module-usage">Python Module Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#api-examples">API Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CLI Usage and options</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p>How to use the BLEngine as a Command Line Tool or from a Python script.</p>
+<section id="cli-usage-and-options">
+<h1>CLI Usage and options<a class="headerlink" href="#cli-usage-and-options" title="Link to this heading"></a></h1>
+<p>Don’t forget to read the <a class="reference internal" href="Getting-Started.html"><span class="std std-doc">Getting Started Page</span></a> to know how to call blengine from the Command Line.</p>
+<p>You can add support of the options below in your script by importing <code class="docutils literal notranslate"><span class="pre">blengine.enable_cli_args</span></code> then add <code class="docutils literal notranslate"><span class="pre">args</span> <span class="pre">=</span> <span class="pre">blengine.enable_cli_arg()</span></code> at the beginning of your code, to have access to the following.</p>
+<section id="help">
+<h2>Help<a class="headerlink" href="#help" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">-h</span> <span class="pre">or</span> <span class="pre">--help</span></code> will show command help if you are lost.</p>
+<p>Add this option after any command to have further information like in the following example with the command <code class="docutils literal notranslate"><span class="pre">run</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">blengine_cli</span> <span class="n">run</span> <span class="o">--</span><span class="n">help</span>
+<span class="o">&gt;</span> <span class="n">standard</span> <span class="n">blengine</span> <span class="n">cli</span><span class="p">,</span>  <span class="o">-</span><span class="n">h</span> <span class="k">for</span> <span class="n">help</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">blengine</span> <span class="n">run</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">model</span> <span class="n">DEVICE_MODEL</span><span class="p">]</span> <span class="n">name</span> <span class="o">...</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">name</span>                  <span class="n">procedure</span> <span class="n">name</span>
+  <span class="n">args</span>                  <span class="n">Procedure</span> <span class="n">arguments</span> <span class="k">as</span> <span class="n">described</span> <span class="n">by</span> <span class="n">the</span> <span class="n">procedure</span> <span class="o">&lt;</span><span class="n">help</span><span class="o">&gt;</span> <span class="n">command</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">--</span><span class="n">model</span> <span class="n">DEVICE_MODEL</span>  <span class="n">device</span> <span class="n">model</span> <span class="p">(</span><span class="n">example</span><span class="p">:</span> <span class="n">em9305</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="shortcut">
+<h2>Shortcut<a class="headerlink" href="#shortcut" title="Link to this heading"></a></h2>
+<p>To quickly send a command or execute a procedure, you can use the <code class="docutils literal notranslate"><span class="pre">--port</span></code> option which will create a default device connected the serial port provided with default parameters (EM9305&#64;115200 bauds)</p>
+<p>Quickly send an HCI Reset</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blengine</span> <span class="o">--</span><span class="n">port</span> <span class="n">COM22</span> <span class="n">send</span> <span class="n">Reset</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-file">
+<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Link to this heading"></a></h2>
+<p>To load a specific configuration, use the <code class="docutils literal notranslate"><span class="pre">--config</span> <span class="pre">&lt;config_file&gt;</span></code> option. The <code class="docutils literal notranslate"><span class="pre">&lt;config_file&gt;</span></code> might contain an absolute or a relative path.
+If available in the specified folder, a <code class="docutils literal notranslate"><span class="pre">config_local.cfg</span></code> will will also be loaded and used.</p>
+</section>
+<section id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Link to this heading"></a></h2>
+<p>It can sometimes be useful to get more details on the current operation. This can be achieved by specifying the <code class="docutils literal notranslate"><span class="pre">--debug</span></code> option to enable the very verbose debug mode, including RX/TX raw data output.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">blengine_cli</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">port</span> <span class="n">COMxx</span> <span class="o">--</span><span class="n">debug</span> <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span> <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="blengine-commands">
+<h1>Blengine Commands<a class="headerlink" href="#blengine-commands" title="Link to this heading"></a></h1>
+<p><em>Hint:</em> Use <code class="docutils literal notranslate"><span class="pre">-h</span></code>or <code class="docutils literal notranslate"><span class="pre">--help</span></code> after the command to get more help !</p>
+<section id="send-a-packet">
+<h2>Send a packet<a class="headerlink" href="#send-a-packet" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">send</span></code> command takes the packet name as the first argument and the packet argument in the <code class="docutils literal notranslate"><span class="pre">--&lt;NAME&gt;=&lt;VALUE&gt;</span></code> form. It serializes the provided parameters into a packet that will contain the command operational code (opcode) followed by the parameters value.</p>
+<p>As an example, the <code class="docutils literal notranslate"><span class="pre">esmm_write_at_address</span></code> command takes two parameters. The parameter <code class="docutils literal notranslate"><span class="pre">--start_address=…</span></code> is used to specified a memory address in which a data will be written, like <code class="docutils literal notranslate"><span class="pre">0x801000</span></code> for example which is a location in RAM. The parameter <code class="docutils literal notranslate"><span class="pre">--data=…</span></code> is used to specify a data which can either be a byte, a 16 bits word or a 32 bits word.</p>
+<p>Since the 9305 ARC CPU implementation is little endian, the least significant byte of a word is stored first in memory, and the most significant byte is stored last at a higher address.</p>
+<p>The figure below shows how a 32 bits (or 4 bytes word) is stored in memory by the CPU:</p>
+<p><img alt="Little endianness" src="../_images/little_endian_storage_RAM.drawio.png" /></p>
+<p>Most of the time, there is no need for a user to bother with endianness. Any hexadecimal or binary value is written in a natural way like in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blengine</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="n">COM22</span> <span class="n">send</span> <span class="n">emsmm_write_at_address</span> <span class="o">--</span><span class="n">start_address</span><span class="o">=</span><span class="mh">0x801000</span> <span class="o">--</span><span class="n">data</span><span class="o">=</span><span class="mh">0x12345678</span>
+</pre></div>
+</div>
+<p>This command will end up in sending the following serialized data:</p>
+<p><code class="docutils literal notranslate"><span class="pre">0103fd080010800078563412</span></code></p>
+<p>As it can be seen here, the least significant byte (0x78) is sent first, and the most significant byte (0x12) is sent last. And such word is stored in RAM memory at address 0x801000 in the way represented by the above picture.</p>
+<p>However, in case a fine tuning over the values is needed, this order can be changed by following the rules below:</p>
+<ul class="simple">
+<li><p>prefixed with <code class="docutils literal notranslate"><span class="pre">0x</span></code>: (lowercase <code class="docutils literal notranslate"><span class="pre">x</span></code>) interpreted as hexadecimal (<code class="docutils literal notranslate"><span class="pre">0x12345678</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">0x12345678</span></code>).</p></li>
+<li><p>prefixed with <code class="docutils literal notranslate"><span class="pre">0X</span></code>: (uppercase <code class="docutils literal notranslate"><span class="pre">X</span></code>) interpreted as hexadecimal and invert the bytes order (<code class="docutils literal notranslate"><span class="pre">0X12345678</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">0x78563412</span></code>)</p></li>
+<li><p>prefixed with <code class="docutils literal notranslate"><span class="pre">0b</span></code>: (lowercase <code class="docutils literal notranslate"><span class="pre">b</span></code>) interpreted as binary LSB First value. <code class="docutils literal notranslate"><span class="pre">0b00001111</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">0x0F</span></code></p></li>
+<li><p>prefixed with <code class="docutils literal notranslate"><span class="pre">0B</span></code>: (uppercase <code class="docutils literal notranslate"><span class="pre">B</span></code>) interpreted as binary MSB First value. <code class="docutils literal notranslate"><span class="pre">0B00001111</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">0xF0</span></code></p></li>
+<li><p>prefixed with <code class="docutils literal notranslate"><span class="pre">0d</span></code>: interpreted as integer value.</p></li>
+</ul>
+<p>Here is an example in which the bytes of the data are inverted:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blengine</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="n">COM22</span> <span class="n">send</span> <span class="n">emsmm_write_at_address</span> <span class="o">--</span><span class="n">start_address</span><span class="o">=</span><span class="mh">0x801000</span> <span class="o">--</span><span class="n">data</span><span class="o">=</span><span class="mh">0X12345678</span>
+</pre></div>
+</div>
+<p>This command will invert the data word. Consequently, the sent packet will be:</p>
+<p><code class="docutils literal notranslate"><span class="pre">0103fd080010800012345678</span></code></p>
+<p>In this example, the most significant byte (0x12) is transmitted first and the least significant byte (0x78) is tranmitted last.</p>
+<p>Beyond specifying a binary or an hexadecimal value, it is possible to provide the data to be written through an array of bytes written in Python syntax as shown in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">blengine</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="n">COM22</span> <span class="n">send</span> <span class="n">emsmm_write_at_address</span> <span class="o">--</span><span class="n">start_address</span><span class="o">=</span><span class="mh">0x801000</span> <span class="o">--</span><span class="n">data</span><span class="o">=</span><span class="s2">&quot;int.from_bytes(bytearray([ 0x00, 0x00, 0x00, 0x03 ]), &#39;little&#39;)&quot;</span> <span class="o">--</span><span class="n">data_length</span><span class="o">=</span><span class="mi">4</span>
+</pre></div>
+</div>
+<p>The serialized sent packet will be the following: <code class="docutils literal notranslate"><span class="pre">0103fd080010800012345678</span></code>. Note the keyword <code class="docutils literal notranslate"><span class="pre">little</span></code> to instruct the Python interpreter how to order the bytes passed within the array (little endian in this case).</p>
+<p>This keyword can be replaced by <code class="docutils literal notranslate"><span class="pre">big</span></code> and then the bytes order will be big endian. In such a case, the sent serialized packet will be: <code class="docutils literal notranslate"><span class="pre">0103fd080010800078563412</span></code>.</p>
+<section id="error-management">
+<h3>Error management<a class="headerlink" href="#error-management" title="Link to this heading"></a></h3>
+<p>BLEngine is able to detect many errors and to inform the user of such error along with relevant information for figuring out what is wrong with a command or a procedure.</p>
+<p>Where some commands have mandatory arguments, an error will be raised in case such type of argument is missing. This will not be the case for optional argument since they have a default value that can be used.</p>
+<p>In case a parameter name or a command name is mispelled, BLEngine will list commands with very similar names to help the user find the exact command needed.</p>
+</section>
+</section>
+<section id="run-a-specific-procedure">
+<h2>Run a specific procedure<a class="headerlink" href="#run-a-specific-procedure" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">run</span></code> procedure will execute a predefined procedure.</p>
+<p>Since every procedure can define its own sub-parser for the command line options, please refer to the procedure usage for details.
+The parsing of the argument values goes through the standard parser and is not processed like for sending a packet.</p>
+<p>Below is an example for programming a device with a one-liner.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">blengine</span> <span class="o">--</span><span class="n">port</span><span class="o">=</span><span class="n">COM22</span> <span class="n">run</span> <span class="n">emsystem_prog</span> <span class="o">--</span><span class="n">help</span>
+
+<span class="n">usage</span><span class="p">:</span> <span class="n">emsystem_prog</span> <span class="n">Func</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">directory</span> <span class="n">DIRECTORY</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">address</span> <span class="n">ADDRESS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">version_check</span> <span class="n">VERSION_CHECK</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">spi_disable</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">return_address</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">progress</span><span class="p">]</span>
+                          <span class="n">files</span> <span class="p">[</span><span class="n">files</span> <span class="o">...</span><span class="p">]</span>
+
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">files</span>                 <span class="nb">hex</span> <span class="n">file</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="n">options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">--</span><span class="n">directory</span> <span class="n">DIRECTORY</span>
+                        <span class="n">The</span> <span class="n">directory</span> <span class="n">where</span> <span class="n">the</span> <span class="n">files</span> <span class="n">are</span> <span class="n">located</span>
+  <span class="o">--</span><span class="n">address</span> <span class="n">ADDRESS</span>     <span class="n">Memory</span> <span class="n">Address</span> <span class="mi">0</span><span class="n">xXX</span><span class="o">..</span>
+  <span class="o">--</span><span class="n">version_check</span> <span class="n">VERSION_CHECK</span>
+                        <span class="n">Check</span> <span class="n">that</span> <span class="n">the</span> <span class="n">indicated</span> <span class="n">version</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">same</span> <span class="k">as</span> <span class="n">the</span> <span class="n">current</span> <span class="n">version</span> <span class="n">of</span> <span class="n">the</span> <span class="n">device</span><span class="o">.</span> <span class="n">If</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">same</span> <span class="n">version</span><span class="p">,</span> <span class="n">it</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">programmed</span> <span class="n">again</span><span class="o">.</span> <span class="n">If</span> <span class="n">the</span>
+                        <span class="n">device</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">have</span> <span class="n">a</span> <span class="n">version</span> <span class="ow">or</span> <span class="n">the</span> <span class="n">version</span> <span class="ow">is</span> <span class="n">different</span><span class="p">,</span> <span class="n">the</span> <span class="n">device</span> <span class="ow">is</span> <span class="n">programmed</span> <span class="k">with</span> <span class="n">the</span> <span class="n">version</span> <span class="n">indicated</span>
+  <span class="o">--</span><span class="n">spi_disable</span>         <span class="n">Disable</span> <span class="n">SPI</span> <span class="n">configure</span> <span class="n">mode</span>
+  <span class="o">--</span><span class="n">return_address</span>      <span class="n">Read</span> <span class="n">the</span> <span class="n">Bluetooth</span> <span class="n">address</span> <span class="n">of</span> <span class="n">the</span> <span class="n">device</span> <span class="n">before</span> <span class="n">programming</span><span class="o">.</span> <span class="n">The</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">stored</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">engine</span> <span class="n">parameter</span> <span class="n">local_address</span>
+  <span class="o">--</span><span class="n">progress</span>            <span class="n">Show</span> <span class="n">Progress</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-helper">
+<h2>Configuration helper<a class="headerlink" href="#configuration-helper" title="Link to this heading"></a></h2>
+<p>BLEngine comes with a default configuration living inside the installation or package folder. To customize this configuration to be suitable for your needs, blengine provide a <code class="docutils literal notranslate"><span class="pre">config</span></code> command which will create the files needed. The following command will create configuration files in your current working directory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">blengine</span> <span class="n">config</span> <span class="o">--</span><span class="n">init</span>
+
+<span class="n">Copying</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">AppData</span>\<span class="n">BLEngine</span>\<span class="n">config</span> <span class="n">to</span> <span class="n">current</span> <span class="n">working</span> <span class="nb">dir</span> <span class="p">(</span><span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">Documents</span>\<span class="n">EMToolkit</span>\<span class="n">BLEngine</span><span class="p">)</span>
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">Documents</span>\<span class="n">EMToolkit</span>\<span class="n">BLEngine</span>\<span class="n">config</span><span class="o">.</span><span class="n">cfg</span>
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">Documents</span>\<span class="n">EMToolkit</span>\<span class="n">BLEngine</span>\<span class="n">nvm_infos</span>\<span class="n">EM9305</span>\<span class="n">configurations</span><span class="o">.</span><span class="n">json</span>
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">Documents</span>\<span class="n">EMToolkit</span>\<span class="n">BLEngine</span>\<span class="n">nvm_infos</span>\<span class="n">EM9305</span>\<span class="n">nvm_default_data</span><span class="o">.</span><span class="n">json</span>
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">Documents</span>\<span class="n">EMToolkit</span>\<span class="n">BLEngine</span>\<span class="n">nvm_infos</span>\<span class="n">EM9305</span>\<span class="n">nvm_descriptions</span><span class="o">.</span><span class="n">json</span>
+<span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">Documents</span>\<span class="n">EMToolkit</span>\<span class="n">BLEngine</span>\<span class="n">nvm_infos</span>\<span class="n">EM9305</span>\<span class="n">registers</span><span class="o">.</span><span class="n">json</span>
+<span class="o">&gt;</span> <span class="n">creating</span> <span class="n">local</span> <span class="n">config</span> <span class="n">file</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">cborel</span>\<span class="n">Documents</span>\<span class="n">EMToolkit</span>\<span class="n">BLEngine</span>\<span class="n">config_local</span><span class="o">.</span><span class="n">cfg</span> <span class="k">for</span> <span class="n">versioning</span> <span class="n">convenience</span>
+
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--show</span></code> option will dump the current configuration as it is parsed (without nvm informations)</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--nvm_infos</span></code> will dump the nvm informations that has been loaded from json files</p>
+</section>
+<section id="search-or-list-available-procedure-and-packets">
+<h2>Search or list available procedure and packets<a class="headerlink" href="#search-or-list-available-procedure-and-packets" title="Link to this heading"></a></h2>
+<p>If you don’t know the name of the packet or the name of the procedure you want to execute, you can search for it with the <code class="docutils literal notranslate"><span class="pre">search</span></code> command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">blengine</span> <span class="n">search</span> <span class="n">Address</span>
+
+<span class="n">searching</span> <span class="k">for</span> <span class="n">Address</span>
+
+<span class="n">procedures</span> <span class="n">found</span><span class="p">:</span>
+
+ <span class="n">set_private_address</span>
+
+<span class="n">packets</span> <span class="n">found</span><span class="p">:</span>
+
+ <span class="mh">0x2005</span> <span class="n">LE_Set_Random_Address</span>
+ <span class="mh">0x202b</span> <span class="n">LE_Read_Peer_Resolvable_Address</span>
+ <span class="mh">0x202c</span> <span class="n">LE_Read_Local_Resolvable_Address</span>
+ <span class="mh">0x202d</span> <span class="n">LE_Set_Address_Resolution_Enable</span>
+ <span class="mh">0x202e</span> <span class="n">LE_Set_Resolvable_Private_Address_Timeout</span>
+ <span class="mh">0x2035</span> <span class="n">LE_Set_Advertising_Set_Random_Address</span>
+ <span class="mh">0xfc02</span> <span class="n">EM9304_SetPublicAddress</span>
+ <span class="mh">0xfc20</span> <span class="n">EM9304_Read_At_Address</span>
+ <span class="o">....</span>
+</pre></div>
+</div>
+<p>If you want to list all the packets and procedures available, you can use the <code class="docutils literal notranslate"><span class="pre">list</span></code> command followed by the type of item you would like to list.</p>
+<p>For example, to list all packets, type the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">blengine</span> <span class="nb">list</span> <span class="n">packets</span>
+</pre></div>
+</div>
+<p>The output should look like this:</p>
+<p><img alt="List packets" src="../_images/blengine_list_packets.png" /></p>
+<p>The above screenshot only shows few packets since the complete list is quite long!</p>
+<p>To list all available procedures, the following command can be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">blengine</span> <span class="nb">list</span> <span class="n">procedures</span>
+</pre></div>
+</div>
+<p>It should end-up with the following output:</p>
+<p><img alt="Procedures list" src="../_images/blengine_list_procedures.png" /></p>
+</section>
+<section id="repl-mode-beta">
+<h2>REPL Mode (beta)<a class="headerlink" href="#repl-mode-beta" title="Link to this heading"></a></h2>
+<p>BLEngine provide a REPL (Read-Eval-Print-Loop) Mode which enable a command-line-like interaction.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">blengine</span>  <span class="n">repl</span>
+
+ <span class="n">BLEngine</span> <span class="n">on</span> <span class="n">git</span> <span class="n">feature</span><span class="o">/</span><span class="mi">13702</span> <span class="p">(</span><span class="n">v1</span><span class="mf">.3.1</span><span class="o">-</span><span class="mi">119</span><span class="o">-</span><span class="n">g841a4c1</span><span class="p">)</span> <span class="n">by</span> <span class="n">EM</span> <span class="n">Microelectronic</span> <span class="o">-</span> <span class="n">Marin</span>
+ <span class="n">Loaded</span> <span class="mi">647</span> <span class="n">packets</span> <span class="ow">and</span> <span class="mi">59</span> <span class="n">procedures</span>
+
+<span class="n">Welcome</span> <span class="n">to</span> <span class="n">BLEngine</span> <span class="n">REPL</span> <span class="p">(</span><span class="n">beta</span><span class="p">),</span> <span class="s1">&#39;exit&#39;</span> <span class="ow">or</span> <span class="n">ctrl</span><span class="o">-</span><span class="n">c</span> <span class="n">to</span> <span class="n">quit</span><span class="o">.</span>
+
+<span class="o">&gt;</span> <span class="n">REPLEngine</span> <span class="n">started</span> <span class="n">on</span> <span class="n">COM7</span>
+
+<span class="n">REPLEngine</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Once inside the “loop” you can use it as a regular CLI interface where there are some extra commands available:</p>
+<ul class="simple">
+<li><p><strong>exit</strong> or ctrl-c will qui the REPL mode</p></li>
+<li><p><strong>start</strong> start the engine (start serial connection)</p></li>
+<li><p><strong>stop</strong> the engine (close serial connection)</p></li>
+</ul>
+</section>
+</section>
+<section id="python-module-usage">
+<h1>Python Module Usage<a class="headerlink" href="#python-module-usage" title="Link to this heading"></a></h1>
+<p>From a Python script or under the Python interpreter, BLEngine can be used by issuing the following statement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">blengine</span>
+</pre></div>
+</div>
+<p>This is actually made possible in case the BLEngine package has previously been installed like any other Python package using the <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation tool.
+Note that a python virtual enivronment might use its own variables set, specifically for PYTHONPATH and PATH variables which might be different that the systemwide Python installation.</p>
+<section id="api-examples">
+<h2>API Examples<a class="headerlink" href="#api-examples" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.\blengine\examples</span></code> folder contains some useful examples to get started on how to integrate BLEngine inside a Python script.
+In particular, the following statement shall be found at the beginning of the script depending on which part of BLEngine needs to be used.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.core</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">blengine.core.config</span> <span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">blengine.core.transport</span> <span class="kn">import</span> <span class="n">serial_from_config</span>
+<span class="kn">from</span> <span class="nn">blengine.hci.engine</span> <span class="kn">import</span> <span class="n">HciEngine</span>
+<span class="kn">from</span> <span class="nn">blengine.hci.packets</span> <span class="kn">import</span> <span class="n">hci</span>
+<span class="kn">from</span> <span class="nn">blengine</span> <span class="kn">import</span> <span class="n">enable_cli_args</span>
+</pre></div>
+</div>
+<p>Most of the examples need a configuration file located in the same directory than the example folder. However, options in this file can be passed to the cli as arguments if you want to manually provide the configuration file yourself.</p>
+<p>Running the example scripts can be done like shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># launch the helloReset example</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">examples</span><span class="o">.</span><span class="n">basics</span><span class="o">.</span><span class="n">helloReset</span>
+</pre></div>
+</div>
+<p>You are encouraged to dive into these example scripts to get a deep knowledge on how such script can be written.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="NVM-Information.html" class="btn btn-neutral float-right" title="NVM Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

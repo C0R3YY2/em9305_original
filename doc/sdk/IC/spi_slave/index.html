@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPI Slave Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Temperature Indicator Library" href="../temperature_indicator/index.html" />
+    <link rel="prev" title="SPI Master Driver" href="../spi_master/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SPI Slave Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">SPI Slave Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spi-slave-driver">
+<h1>SPI Slave Driver<a class="headerlink" href="#spi-slave-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The SPI slave driver allows to use the SPI Slave with some other peripherals
+using 4 wire SPI interface (SCK, CSN, MISO, MOSI) with flow control (RDY signal).</p>
+<p>The SPI slave interface can be configured in half-duplex mode or in full-duplex mode.</p>
+<p>Half-duplex mode is the default one for HCI communication.
+In this mode, the SPI flow control is available.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Full-duplex mode is not intended for HCI, as HCI requires flow control (RDY)</p>
+</div>
+<section id="spi-slave-and-sleep-mode">
+<h3>SPI Slave and Sleep mode<a class="headerlink" href="#spi-slave-and-sleep-mode" title="Link to this heading"></a></h3>
+<p>The SPI Slave shall be registered in order to be usable after wakeup.
+This shall be done at the time the application calls NVM_ConfigModules() function.
+Note that the configuration of this module is saved in the persistent memory.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules</span>
+<span class="w">    </span><span class="n">UART_RegisterModule</span><span class="p">();</span>
+<span class="w">    </span><span class="n">SPIS_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable UART.</span>
+<span class="w">    </span><span class="n">gUART_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Enable SPIS</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// SPI Slave config</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIS_MODE_FULL</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Check if it wakes up from sleep.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Re-initialize the QPC event pool.</span>
+<span class="w">        </span><span class="k">extern</span><span class="w"> </span><span class="kt">uint_fast8_t</span><span class="w"> </span><span class="n">QF_maxPool_</span><span class="p">;</span>
+<span class="w">        </span><span class="n">QF_maxPool_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint_fast8_t</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Initialize QPC</span>
+<span class="w">        </span><span class="n">QF_init</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Initialize the QPC event pool.</span>
+<span class="w">    </span><span class="n">Main_InitEventPool</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Disable sleep mode if JTAG debug is used.</span>
+<span class="w">    </span><span class="c1">// gPML_Config.sleepModeForbiden = true;</span>
+
+<span class="w">    </span><span class="c1">// Enable JTAG.</span>
+<span class="w">    </span><span class="c1">// GPIO_EnableJtag4Wires();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When in half duplex mode, the communication is blocked by the driver when the system comes from the sleep mode. So the application shall restart the communication when ready to communicate.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">NO_RETURN</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">NVM_ApplicationEntry</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Initialize the board support package.</span>
+<span class="w">    </span><span class="n">BSP_Init</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable interrupts (threshold set during IRQ module initialization).</span>
+<span class="w">    </span><span class="n">IRQ_EnableInterrupts</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Check if it is wake-up from sleep.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Post an event to the application task that we woke up from sleep.</span>
+<span class="w">        </span><span class="n">MyAppTask_PostEvent</span><span class="p">(</span><span class="n">BOOT_FROM_SLEEP_SIG</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Resume QPC</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">QF_resume</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Setup GPIOs.</span>
+<span class="w">        </span><span class="n">Main_SetupUartGpio</span><span class="p">();</span>
+<span class="w">        </span><span class="n">Main_SetupSpiGpio</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Configure wake up.</span>
+<span class="w">        </span><span class="n">Main_SetupWakeUpByGpio</span><span class="p">(</span><span class="n">GPIO_SPIS_CSN</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Create and start the application task.</span>
+<span class="w">        </span><span class="n">MyAppTask_Create</span><span class="p">();</span>
+<span class="w">        </span><span class="n">MyAppTask_Start</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Run QPC</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">QF_run</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Initialization failed!</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">HaltCPU</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In order to support the sleep mode, the chip select pin shall be configured to be able to wakeup
+the system.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">MyApp_PrepareNewSpiTransaction</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">SPIS_ReceiveDataEx</span><span class="p">(</span><span class="n">gInputBuffer</span><span class="p">,</span>
+<span class="w">                            </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">MyApp_Callback</span><span class="p">,</span>
+<span class="w">                            </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">SPIS_DATA_SIG</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Main_SetupWakeUpByGpio</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">gpio</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">PML_ConfigWakeUpByGpio</span><span class="p">(</span><span class="n">gpio</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="w">    </span><span class="n">PML_RegisterWakeUpAction</span><span class="p">(</span><span class="n">PML_WAKEUP_ACTION_RUN_PROT_TIM</span><span class="p">,</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">SET_BOOT_ACTION_FLAGS_GPIO</span><span class="p">(</span><span class="mi">1u</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">gpio</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">    </span><span class="n">PML_EnableWakeUpFlags</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="spis-configuration">
+<h3>SPIS Configuration<a class="headerlink" href="#spis-configuration" title="Link to this heading"></a></h3>
+<p>The following configurations for the SPIS are available, check code block for C code example.</p>
+<ul class="simple">
+<li><p>MSB First      : Set to 1 to send the most significant bits first.</p></li>
+<li><p>Clock polarity : Set to 1 for clock inactive high or 0 for clock inactive low</p></li>
+<li><p>Clock Phase    : Set to 1 for data is valid on clock falling edge or 0 for data valid on clock rising edge</p></li>
+<li><p>Duplex Mode    : Set to 1 to use full-duplex mode or 0 to use half-duplex mode</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">SPIS_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable SPIS</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// SPI Slave config</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">msbFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Enable MSB first</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">     </span><span class="c1">// Clock inactive low</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">cpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">     </span><span class="c1">// Data valid on clock rising edge</span>
+<span class="w">    </span><span class="n">gSPIS_Config</span><span class="p">.</span><span class="n">configBits</span><span class="p">.</span><span class="n">bits</span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPIS_MODE_HALF</span><span class="p">;</span><span class="w"> </span><span class="c1">// Half-duplex mode</span>
+</pre></div>
+</div>
+</section>
+<section id="spis-flow-control-management-on-rdy-signal">
+<h3>SPIS Flow control management on RDY signal<a class="headerlink" href="#spis-flow-control-management-on-rdy-signal" title="Link to this heading"></a></h3>
+<p>In half-duplex mode, SPI flow control over the RDY signal shall be managed.</p>
+<p>As described in the chapter on “SPI slave and sleep mode”, the flow control is there
+to address the control transition from Sleep mode to Active mode.
+Generally, the flow control can be used to notify the external Host that it must wait
+until EM9305 is ready for communication. Use the following code to force the RDY signal to 0:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">SPIS_BlockCommunication</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"> </span><span class="c1">// force the RDY signal to 0</span>
+</pre></div>
+</div>
+</section>
+<section id="spi-slave-usage">
+<h3>SPI Slave Usage<a class="headerlink" href="#spi-slave-usage" title="Link to this heading"></a></h3>
+<p>The SPIS can be used with or without using ISR with callback.</p>
+<p>When a callback is provided, the driver calls it at the end of each transaction.</p>
+<p>The callback function shall be defined with the following prototype:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">SPIS_TxCallback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// When callback is called, it means that all data have been sent by SPIS</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In order to send data over the SPIS, the following code could be used:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Use random data for SPI transcation</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">gRandom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">SPIS_SendDataWithCallback</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">,</span><span class="w"> </span><span class="n">SPIS_TxCallback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Data can also be sent without using a callback. In this case, there is no acknowledgement that data has been actually sent or not:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Use random data for SPI transaction</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">gRandom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">SPIS_SendData</span><span class="p">(</span><span class="n">gTxBufferSpiS</span><span class="p">,</span><span class="w"> </span><span class="n">SPI_TRANS_LENGTH</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// An error occured, it can occurs if data length is null or</span>
+<span class="w">    </span><span class="c1">// the buffer for tx operation is full.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d5/d57/group__spis"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">spis</span></span></dt>
+<dd><p>SPI slave driver. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIS_TX_FIFO_DEPTH">
+<span class="target" id="d5/d57/group__spis_1ga0d9c333e3bbb37c7ed410ea1aaa29eea"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_TX_FIFO_DEPTH</span></span></span> <span class="pre">(16)</span><a class="headerlink" href="#c.SPIS_TX_FIFO_DEPTH" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the transmit FIFO (in bytes). </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIS_RX_FIFO_DEPTH">
+<span class="target" id="d5/d57/group__spis_1gaed0e8493566d385f806322958f178563"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_RX_FIFO_DEPTH</span></span></span> <span class="pre">(16)</span><a class="headerlink" href="#c.SPIS_RX_FIFO_DEPTH" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the receive FIFO (in bytes). </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIS_DISABLE">
+<span class="target" id="d5/d57/group__spis_1ga5c0853ce967e39cc2cbe7b504934e973"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_DISABLE</span></span></span> <span class="pre">(SPIS_EN(FALSE))</span><a class="headerlink" href="#c.SPIS_DISABLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable the SPI slave module. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIS_ENABLE">
+<span class="target" id="d5/d57/group__spis_1gab958cc9d679ab33459c7a9a9c0be2087"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_ENABLE</span></span></span> <span class="pre">(SPIS_EN(TRUE))</span><a class="headerlink" href="#c.SPIS_ENABLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable the SPI slave module. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIS_MODE_HALF">
+<span class="target" id="d5/d57/group__spis_1gac08aaa81c091c97ca7c2debcd757dec0"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_MODE_HALF</span></span></span> <span class="pre">(FALSE)</span><a class="headerlink" href="#c.SPIS_MODE_HALF" title="Link to this definition"></a><br /></dt>
+<dd><p>Select the SPI slave HALF DUPLEX mode. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SPIS_MODE_FULL">
+<span class="target" id="d5/d57/group__spis_1gaacac3cab7562884eb635685d55d00027"></span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_MODE_FULL</span></span></span> <span class="pre">(TRUE)</span><a class="headerlink" href="#c.SPIS_MODE_FULL" title="Link to this definition"></a><br /></dt>
+<dd><p>Select the SPI slave FULL DUPLEX mode. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413SPIS_Enable_t">
+<span id="_CPPv313SPIS_Enable_t"></span><span id="_CPPv213SPIS_Enable_t"></span><span id="SPIS_Enable_t"></span><span class="target" id="d5/d57/group__spis_1ga3d0be99a4d8587b466769abe2c8f706f"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Enable_t</span></span></span><a class="headerlink" href="#_CPPv413SPIS_Enable_t" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI slave enable control. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv411SPIS_Mode_t">
+<span id="_CPPv311SPIS_Mode_t"></span><span id="_CPPv211SPIS_Mode_t"></span><span id="SPIS_Mode_t"></span><span class="target" id="d5/d57/group__spis_1gab852e58403da55b90082dfd14fb0d024"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Mode_t</span></span></span><a class="headerlink" href="#_CPPv411SPIS_Mode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI slave mode control. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv413SPIS_Status_t">
+<span id="_CPPv313SPIS_Status_t"></span><span id="_CPPv213SPIS_Status_t"></span><span class="target" id="d5/d57/group__spis_1ga866dfb19c8e080fe3c51e7c02cc81c37"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Status_t</span></span></span><a class="headerlink" href="#_CPPv413SPIS_Status_t" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI slave status. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Status_t7SPIS_OKE">
+<span id="_CPPv3N13SPIS_Status_t7SPIS_OKE"></span><span id="_CPPv2N13SPIS_Status_t7SPIS_OKE"></span><span class="target" id="d5/d57/group__spis_1gga866dfb19c8e080fe3c51e7c02cc81c37aa901236138c373d2c86fedea777e4fea"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_OK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N13SPIS_Status_t7SPIS_OKE" title="Link to this definition"></a><br /></dt>
+<dd><p>Success, responded with expected data. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Status_t8SPIS_BSYE">
+<span id="_CPPv3N13SPIS_Status_t8SPIS_BSYE"></span><span id="_CPPv2N13SPIS_Status_t8SPIS_BSYE"></span><span class="target" id="d5/d57/group__spis_1gga866dfb19c8e080fe3c51e7c02cc81c37a7682672810633946dc7fde1fb47b71f2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_BSY</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Status_t8SPIS_BSYE" title="Link to this definition"></a><br /></dt>
+<dd><p>Cannot perform request due to its busy state. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Status_t8SPIS_BADE">
+<span id="_CPPv3N13SPIS_Status_t8SPIS_BADE"></span><span id="_CPPv2N13SPIS_Status_t8SPIS_BADE"></span><span class="target" id="d5/d57/group__spis_1gga866dfb19c8e080fe3c51e7c02cc81c37a492d798cd00d3ab57a4b7b1b3485fc6f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_BAD</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Status_t8SPIS_BADE" title="Link to this definition"></a><br /></dt>
+<dd><p>Cannot perform request due to an error. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412SPIS_Restartv">
+<span id="_CPPv312SPIS_Restartv"></span><span id="_CPPv212SPIS_Restartv"></span><span id="SPIS_Restart__void"></span><span class="target" id="d5/d57/group__spis_1ga4f159337a9deaafc84af2b0ee14b1665"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Restart</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412SPIS_Restartv" title="Link to this definition"></a><br /></dt>
+<dd><p>Restart the SPI slave driver. </p>
+<p>
+This will flush the TX and RX FIFO and queues. This will restart the SPI slave block. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the restart was successful, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411SPIS_Enable13SPIS_Enable_t">
+<span id="_CPPv311SPIS_Enable13SPIS_Enable_t"></span><span id="_CPPv211SPIS_Enable13SPIS_Enable_t"></span><span id="SPIS_Enable__SPIS_Enable_t"></span><span class="target" id="d5/d57/group__spis_1ga65bc2037ba984deff5fb9fcefe223b9d"></span><a class="reference internal" href="#_CPPv413SPIS_Status_t" title="SPIS_Status_t"><span class="n"><span class="pre">SPIS_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Enable</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413SPIS_Enable_t" title="SPIS_Enable_t"><span class="n"><span class="pre">SPIS_Enable_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411SPIS_Enable13SPIS_Enable_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable/disable SPI slave module. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function does not do any configuration. Enabling should normally be done after initialization is done (if not enabled as part of init). </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>enable</strong> – If the module should be enabled or disabled. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>SPIS_OK if the module was successfuly enabled/disabled. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421SPIS_SetConfiguration13SPIS_Config_t7uint8_t">
+<span id="_CPPv321SPIS_SetConfiguration13SPIS_Config_t7uint8_t"></span><span id="_CPPv221SPIS_SetConfiguration13SPIS_Config_t7uint8_t"></span><span id="SPIS_SetConfiguration__SPIS_Config_t.uint8_t"></span><span class="target" id="d5/d57/group__spis_1ga1fccb27462698afb59bc16be8d4c1662"></span><a class="reference internal" href="#_CPPv413SPIS_Status_t" title="SPIS_Status_t"><span class="n"><span class="pre">SPIS_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_SetConfiguration</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413SPIS_Config_t" title="SPIS_Config_t"><span class="n"><span class="pre">SPIS_Config_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">config</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sts1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421SPIS_SetConfiguration13SPIS_Config_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Change the SPI slave configuration. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>SPI slave configuration can be changed only if the SPI slave module is not enabled. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> – Configuration structure for the SPI slave. </p></li>
+<li><p><strong>sts1</strong> – Value to set the STS1 byte to. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>SPIS_OK if the SPI slave configuration was changed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423SPIS_BlockCommunicationb">
+<span id="_CPPv323SPIS_BlockCommunicationb"></span><span id="_CPPv223SPIS_BlockCommunicationb"></span><span id="SPIS_BlockCommunication__b"></span><span class="target" id="d5/d57/group__spis_1gad461acf2a8aeec7ccecf7a41e19cfe1c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_BlockCommunication</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">blocking</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423SPIS_BlockCommunicationb" title="Link to this definition"></a><br /></dt>
+<dd><p>Block SPI slave communication by forcing RDY to 0. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blocking</strong> – Enable/disable for blocking communication. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416SPIS_InitBuffersP18SPIS_Transaction_t8uint16_tP18SPIS_Transaction_t8uint16_t">
+<span id="_CPPv316SPIS_InitBuffersP18SPIS_Transaction_t8uint16_tP18SPIS_Transaction_t8uint16_t"></span><span id="_CPPv216SPIS_InitBuffersP18SPIS_Transaction_t8uint16_tP18SPIS_Transaction_t8uint16_t"></span><span id="SPIS_InitBuffers__SPIS_Transaction_tP.uint16_t.SPIS_Transaction_tP.uint16_t"></span><span class="target" id="d5/d57/group__spis_1ga1e83c39e4bb1caf00f9a9816b61ac54d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_InitBuffers</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv418SPIS_Transaction_t" title="SPIS_Transaction_t"><span class="n"><span class="pre">SPIS_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pRxBuffer</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rxSize</span></span>, <a class="reference internal" href="#_CPPv418SPIS_Transaction_t" title="SPIS_Transaction_t"><span class="n"><span class="pre">SPIS_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pTxBuffer</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">txSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416SPIS_InitBuffersP18SPIS_Transaction_t8uint16_tP18SPIS_Transaction_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the SPI slave ring buffers. </p>
+<p>
+This method allows for changing the size of the ring buffer. Simply call this method with a different buffer location and size inside of a patch. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pRxBuffer</strong> – Pointer to the first element in the receive ring buffer. </p></li>
+<li><p><strong>rxSize</strong> – Number of elements in the receive ring buffer. </p></li>
+<li><p><strong>pTxBuffer</strong> – Pointer to the first element in the transmit ring buffer. </p></li>
+<li><p><strong>txSize</strong> – Number of elements in the transmit ring buffer.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415SPIS_SendDataExPKv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv315SPIS_SendDataExPKv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv215SPIS_SendDataExPKv8uint16_t17Driver_Callback_tPv"></span><span id="SPIS_SendDataEx__voidCP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="d5/d57/group__spis_1gad2d1fe6ccd374e329b825376a78b5f01"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_SendDataEx</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415SPIS_SendDataExPKv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Send the data to the SPI master (when the master requests it). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The data <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to send to the SPI master. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to send. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. May be NULL if a callback should not be called. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass along with the event and/or callback. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the data was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418SPIS_ReceiveDataExPv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv318SPIS_ReceiveDataExPv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv218SPIS_ReceiveDataExPv8uint16_t17Driver_Callback_tPv"></span><span id="SPIS_ReceiveDataEx__voidP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="d5/d57/group__spis_1ga7eb4223501959e10df3a7fa87312f846"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_ReceiveDataEx</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418SPIS_ReceiveDataExPv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Receive data from the SPI master (when the master sends it). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The destination <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data received from the SPI master. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to receive. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. May be NULL if a callback should not be called. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass along with the event and/or callback. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the request was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418SPIS_SetStatusByte7uint8_t">
+<span id="_CPPv318SPIS_SetStatusByte7uint8_t"></span><span id="_CPPv218SPIS_SetStatusByte7uint8_t"></span><span id="SPIS_SetStatusByte__uint8_t"></span><span class="target" id="d5/d57/group__spis_1gaa14a8d45eb41fb6c3586655a2330d889"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_SetStatusByte</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sts1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418SPIS_SetStatusByte7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the STS1 byte for the SPI transport. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sts1</strong> – Value to set the STS1 byte to. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418SPIS_GetStatusBytev">
+<span id="_CPPv318SPIS_GetStatusBytev"></span><span id="_CPPv218SPIS_GetStatusBytev"></span><span id="SPIS_GetStatusByte__void"></span><span class="target" id="d5/d57/group__spis_1gaec17a8e710a0e1ac317d1b95ad041aff"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_GetStatusByte</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418SPIS_GetStatusBytev" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the STS1 byte for the SPI transport. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Value used for the STS1 byte. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419SPIS_HasPendingDatav">
+<span id="_CPPv319SPIS_HasPendingDatav"></span><span id="_CPPv219SPIS_HasPendingDatav"></span><span id="SPIS_HasPendingData__void"></span><span class="target" id="d5/d57/group__spis_1gaa22efee20dd78ae2ce14543625df814b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_HasPendingData</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419SPIS_HasPendingDatav" title="Link to this definition"></a><br /></dt>
+<dd><p>Check if SPI slave driver has some pending data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if there are some pending data, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv419SPIS_RegisterModulev">
+<span id="_CPPv319SPIS_RegisterModulev"></span><span id="_CPPv219SPIS_RegisterModulev"></span><span id="SPIS_RegisterModule__void"></span><span class="target" id="d5/d57/group__spis_1ga8f9b3532e6870fe40a2b2570e3c146ae"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419SPIS_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the SPI slave module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425SPIS_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv325SPIS_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv225SPIS_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv"></span><span id="SPIS_SendDataWithCallback__voidCP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="d5/d57/group__spis_1gad40d66501a5e557dd6fceb3ee97b63d6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_SendDataWithCallback</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425SPIS_SendDataWithCallbackPKv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Send the data to the SPI master (when the master requests it). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The data <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to send to the SPI master. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to send. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass to the callback upon error or completion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the data was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413SPIS_SendDataPKv8uint16_t">
+<span id="_CPPv313SPIS_SendDataPKv8uint16_t"></span><span id="_CPPv213SPIS_SendDataPKv8uint16_t"></span><span id="SPIS_SendData__voidCP.uint16_t"></span><span class="target" id="d5/d57/group__spis_1gaacf49f16cb80fca286ab48cf0bbc5d22"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_SendData</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413SPIS_SendDataPKv8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Send the data to the SPI master (when the master requests it). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The data <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data to send to the SPI master. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to send. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the data was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428SPIS_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv">
+<span id="_CPPv328SPIS_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv"></span><span id="_CPPv228SPIS_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv"></span><span id="SPIS_ReceiveDataWithCallback__voidP.uint16_t.Driver_Callback_t.voidP"></span><span class="target" id="d5/d57/group__spis_1ga1836dfb555c4fb645b3764b459d60609"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_ReceiveDataWithCallback</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428SPIS_ReceiveDataWithCallbackPv8uint16_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Receive data from the SPI master (when the master sends it). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The destination <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data received from the SPI master. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to receive. </p></li>
+<li><p><strong>pCallback</strong> – Callback to call upon error or completion. </p></li>
+<li><p><strong>pUserData</strong> – Data to pass to the callback upon error or completion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the request was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416SPIS_ReceiveDataPv8uint16_t">
+<span id="_CPPv316SPIS_ReceiveDataPv8uint16_t"></span><span id="_CPPv216SPIS_ReceiveDataPv8uint16_t"></span><span id="SPIS_ReceiveData__voidP.uint16_t"></span><span class="target" id="d5/d57/group__spis_1ga057f99fa6b8331431318925974af4049"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_ReceiveData</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416SPIS_ReceiveDataPv8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Receive data from the SPI master (when the master sends it). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The destination <em>must</em> remain valid until the transmit has completed. As such, the data can’t be stored on the stack or it could be corrupted. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – Data received from the SPI master. </p></li>
+<li><p><strong>dataLength</strong> – Length (in bytes) of the data to receive. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the request was buffered, false if the buffer is full. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411SPIS_IsBusyv">
+<span id="_CPPv311SPIS_IsBusyv"></span><span id="_CPPv211SPIS_IsBusyv"></span><span id="SPIS_IsBusy__void"></span><span class="target" id="d5/d57/group__spis_1gaf34801ea9c6ecf4f72674dcc0edc6e42"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_IsBusy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411SPIS_IsBusyv" title="Link to this definition"></a><br /></dt>
+<dd><p>Check if SPI slave driver is busy. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the SPI slave is busy, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv412gSPIS_Config">
+<span id="_CPPv312gSPIS_Config"></span><span id="_CPPv212gSPIS_Config"></span><span id="gSPIS_Config__SPIS_Configuration_tV"></span><span class="target" id="d5/d57/group__spis_1ga52221d4a12e2fe66ca7d3dfe5e59c965"></span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv420SPIS_Configuration_t" title="SPIS_Configuration_t"><span class="n"><span class="pre">SPIS_Configuration_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gSPIS_Config</span></span></span><a class="headerlink" href="#_CPPv412gSPIS_Config" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI configuration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv415gSPIS_Transport">
+<span id="_CPPv315gSPIS_Transport"></span><span id="_CPPv215gSPIS_Transport"></span><span id="gSPIS_Transport__Transport_tC"></span><span class="target" id="d5/d57/group__spis_1gae6106f1c2a61590d8e192dd1e34d42fc"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Transport_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gSPIS_Transport</span></span></span><a class="headerlink" href="#_CPPv415gSPIS_Transport" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI transport configuration. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv413SPIS_Config_t">
+<span id="_CPPv313SPIS_Config_t"></span><span id="_CPPv213SPIS_Config_t"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Config_t</span></span></span><a class="headerlink" href="#_CPPv413SPIS_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;spi_slave.h&gt;</em></div>
+<p>SPI slave configuration. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Config_t10configByteE">
+<span id="_CPPv3N13SPIS_Config_t10configByteE"></span><span id="_CPPv2N13SPIS_Config_t10configByteE"></span><span id="SPIS_Config_t::configByte__uint8_t"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t_1af16dae4bf647c2dc129e030a8966f802"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configByte</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Config_t10configByteE" title="Link to this definition"></a><br /></dt>
+<dd><p>SPI slave config byte. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Config_t8msbFirstE">
+<span id="_CPPv3N13SPIS_Config_t8msbFirstE"></span><span id="_CPPv2N13SPIS_Config_t8msbFirstE"></span><span id="SPIS_Config_t::msbFirst__uint8_t"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t_1a8f042bde015519c35a973df5117dae82"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">msbFirst</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Config_t8msbFirstE" title="Link to this definition"></a><br /></dt>
+<dd><p>Send/receive data with the most significant bit (MSB) first. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Config_t4cpolE">
+<span id="_CPPv3N13SPIS_Config_t4cpolE"></span><span id="_CPPv2N13SPIS_Config_t4cpolE"></span><span id="SPIS_Config_t::cpol__uint8_t"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t_1aba906a058a36f4349ce905fcd9bbff77"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpol</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Config_t4cpolE" title="Link to this definition"></a><br /></dt>
+<dd><p>Clock polarity. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Config_t4cphaE">
+<span id="_CPPv3N13SPIS_Config_t4cphaE"></span><span id="_CPPv2N13SPIS_Config_t4cphaE"></span><span id="SPIS_Config_t::cpha__uint8_t"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t_1a81486c459124426cd4260ad8f56ebaa2"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cpha</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Config_t4cphaE" title="Link to this definition"></a><br /></dt>
+<dd><p>Clock phase. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Config_t4modeE">
+<span id="_CPPv3N13SPIS_Config_t4modeE"></span><span id="_CPPv2N13SPIS_Config_t4modeE"></span><span id="SPIS_Config_t::mode__SPIS_Mode_t"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t_1a97ac99093cd502cfb0bbee45fbc24367"></span><a class="reference internal" href="#_CPPv411SPIS_Mode_t" title="SPIS_Mode_t"><span class="n"><span class="pre">SPIS_Mode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mode</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Config_t4modeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Which SPI mode to use. </p>
+<p>Options are:<ul class="simple">
+<li><p><a class="reference internal" href="#d5/d57/group__spis_1gac08aaa81c091c97ca7c2debcd757dec0"><span class="std std-ref">SPIS_MODE_HALF</span></a> Half duplex mode limits traffic to one direction at a time. This is the required mode for HCI.</p></li>
+<li><p><a class="reference internal" href="#d5/d57/group__spis_1gaacac3cab7562884eb635685d55d00027"><span class="std std-ref">SPIS_MODE_FULL</span></a> Full duplex mode allows traffic in both directions. Note that no information is provided to the SPI master as to the status of the FIFOs. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Config_t8reservedE">
+<span id="_CPPv3N13SPIS_Config_t8reservedE"></span><span id="_CPPv2N13SPIS_Config_t8reservedE"></span><span id="SPIS_Config_t::reserved__uint8_t"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t_1a928ce2934f2f52fcc04675a5904d8eab"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Config_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Padding bits. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SPIS_Config_t4bitsE">
+<span id="_CPPv3N13SPIS_Config_t4bitsE"></span><span id="_CPPv2N13SPIS_Config_t4bitsE"></span><span class="target" id="de/dd9/union_s_p_i_s___config__t_1a62a24e01bfcd264567173f5303890194"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413SPIS_Config_t" title="SPIS_Config_t"><span class="n"><span class="pre">SPIS_Config_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bits</span></span></span><a class="headerlink" href="#_CPPv4N13SPIS_Config_t4bitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>bit access </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv418SPIS_Transaction_t">
+<span id="_CPPv318SPIS_Transaction_t"></span><span id="_CPPv218SPIS_Transaction_t"></span><span id="SPIS_Transaction_t"></span><span class="target" id="dc/dc6/struct_s_p_i_s___transaction__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Transaction_t</span></span></span><a class="headerlink" href="#_CPPv418SPIS_Transaction_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;spi_slave.h&gt;</em></div>
+<p>Data structure for an SPI slave transaction. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18SPIS_Transaction_t5pDataE">
+<span id="_CPPv3N18SPIS_Transaction_t5pDataE"></span><span id="_CPPv2N18SPIS_Transaction_t5pDataE"></span><span id="SPIS_Transaction_t::pData__uint8_tP"></span><span class="target" id="dc/dc6/struct_s_p_i_s___transaction__t_1ac2c210d5420099e8b92e01bd0d605979"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pData</span></span></span><a class="headerlink" href="#_CPPv4N18SPIS_Transaction_t5pDataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to the next byte of the data to be sent or received. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18SPIS_Transaction_t9pUserDataE">
+<span id="_CPPv3N18SPIS_Transaction_t9pUserDataE"></span><span id="_CPPv2N18SPIS_Transaction_t9pUserDataE"></span><span id="SPIS_Transaction_t::pUserData__voidP"></span><span class="target" id="dc/dc6/struct_s_p_i_s___transaction__t_1ad1a5677b1fa88739b095f0b87f97c1f4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pUserData</span></span></span><a class="headerlink" href="#_CPPv4N18SPIS_Transaction_t9pUserDataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to user defined data to provide to the callback. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18SPIS_Transaction_t9pCallbackE">
+<span id="_CPPv3N18SPIS_Transaction_t9pCallbackE"></span><span id="_CPPv2N18SPIS_Transaction_t9pCallbackE"></span><span id="SPIS_Transaction_t::pCallback__Driver_Callback_t"></span><span class="target" id="dc/dc6/struct_s_p_i_s___transaction__t_1a5af6aebfbc279073fb5341216fee92c1"></span><span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pCallback</span></span></span><a class="headerlink" href="#_CPPv4N18SPIS_Transaction_t9pCallbackE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to call inside the SPI slave ISR on an event. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18SPIS_Transaction_t10dataLengthE">
+<span id="_CPPv3N18SPIS_Transaction_t10dataLengthE"></span><span id="_CPPv2N18SPIS_Transaction_t10dataLengthE"></span><span id="SPIS_Transaction_t::dataLength__uint16_t"></span><span class="target" id="dc/dc6/struct_s_p_i_s___transaction__t_1a817e8c8238fcaff4fe736a9c52e9cea2"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dataLength</span></span></span><a class="headerlink" href="#_CPPv4N18SPIS_Transaction_t10dataLengthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of bytes remaining to be sent/received for this transaction. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18SPIS_Transaction_t8reservedE">
+<span id="_CPPv3N18SPIS_Transaction_t8reservedE"></span><span id="_CPPv2N18SPIS_Transaction_t8reservedE"></span><span id="SPIS_Transaction_t::reserved__uint8_tA"></span><span class="target" id="dc/dc6/struct_s_p_i_s___transaction__t_1a7df2eec19e526c822c01471d4941af85"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N18SPIS_Transaction_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reserved for future use. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv420SPIS_Configuration_t">
+<span id="_CPPv320SPIS_Configuration_t"></span><span id="_CPPv220SPIS_Configuration_t"></span><span id="SPIS_Configuration_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPIS_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv420SPIS_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;spi_slave.h&gt;</em></div>
+<p>SPI slave configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t12moduleConfigE">
+<span id="_CPPv3N20SPIS_Configuration_t12moduleConfigE"></span><span id="_CPPv2N20SPIS_Configuration_t12moduleConfigE"></span><span id="SPIS_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a00493b28bbec8f2c5e842040ea61de80"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t9pRxBufferE">
+<span id="_CPPv3N20SPIS_Configuration_t9pRxBufferE"></span><span id="_CPPv2N20SPIS_Configuration_t9pRxBufferE"></span><span id="SPIS_Configuration_t::pRxBuffer__SPIS_Transaction_tP"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1ac1338079e7e6f0c434905d1813493774"></span><a class="reference internal" href="#_CPPv418SPIS_Transaction_t" title="SPIS_Transaction_t"><span class="n"><span class="pre">SPIS_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pRxBuffer</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t9pRxBufferE" title="Link to this definition"></a><br /></dt>
+<dd><p>RX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t9pTxBufferE">
+<span id="_CPPv3N20SPIS_Configuration_t9pTxBufferE"></span><span id="_CPPv2N20SPIS_Configuration_t9pTxBufferE"></span><span id="SPIS_Configuration_t::pTxBuffer__SPIS_Transaction_tP"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a5ba38aa469667bf92d4de9a29693d5ea"></span><a class="reference internal" href="#_CPPv418SPIS_Transaction_t" title="SPIS_Transaction_t"><span class="n"><span class="pre">SPIS_Transaction_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pTxBuffer</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t9pTxBufferE" title="Link to this definition"></a><br /></dt>
+<dd><p>TX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t12rxBufferSizeE">
+<span id="_CPPv3N20SPIS_Configuration_t12rxBufferSizeE"></span><span id="_CPPv2N20SPIS_Configuration_t12rxBufferSizeE"></span><span id="SPIS_Configuration_t::rxBufferSize__uint16_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a33170f5721c44515736d22349780e760"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rxBufferSize</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t12rxBufferSizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the RX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t12txBufferSizeE">
+<span id="_CPPv3N20SPIS_Configuration_t12txBufferSizeE"></span><span id="_CPPv2N20SPIS_Configuration_t12txBufferSizeE"></span><span id="SPIS_Configuration_t::txBufferSize__uint16_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a27ff650e67c47a8c73a3689f0f237dde"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">txBufferSize</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t12txBufferSizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the RX transaction buffer. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t10configBitsE">
+<span id="_CPPv3N20SPIS_Configuration_t10configBitsE"></span><span id="_CPPv2N20SPIS_Configuration_t10configBitsE"></span><span id="SPIS_Configuration_t::configBits__SPIS_Config_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1ab706061c190c17b4acbdc9420fab0d52"></span><a class="reference internal" href="#_CPPv413SPIS_Config_t" title="SPIS_Config_t"><span class="n"><span class="pre">SPIS_Config_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configBits</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t10configBitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Default configuration bits for the SPI slave. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t7enabledE">
+<span id="_CPPv3N20SPIS_Configuration_t7enabledE"></span><span id="_CPPv2N20SPIS_Configuration_t7enabledE"></span><span id="SPIS_Configuration_t::enabled__SPIS_Enable_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a82dae175c1cff2bf405714bd3ba4d2d3"></span><a class="reference internal" href="#_CPPv413SPIS_Enable_t" title="SPIS_Enable_t"><span class="n"><span class="pre">SPIS_Enable_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t7enabledE" title="Link to this definition"></a><br /></dt>
+<dd><p>If the SPI slave module is enabled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t4sts1E">
+<span id="_CPPv3N20SPIS_Configuration_t4sts1E"></span><span id="_CPPv2N20SPIS_Configuration_t4sts1E"></span><span id="SPIS_Configuration_t::sts1__uint8_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a50dd6a278e1196fc685e9c16fa2e25bc"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sts1</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t4sts1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Constrols the STS1 byte of the SPI transport. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t12dmaChannelTxE">
+<span id="_CPPv3N20SPIS_Configuration_t12dmaChannelTxE"></span><span id="_CPPv2N20SPIS_Configuration_t12dmaChannelTxE"></span><span id="SPIS_Configuration_t::dmaChannelTx__uint8_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a228cbeb0683cadb33940c2134af2a7ca"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dmaChannelTx</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t12dmaChannelTxE" title="Link to this definition"></a><br /></dt>
+<dd><p>DMA channel for TX operation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20SPIS_Configuration_t12dmaChannelRxE">
+<span id="_CPPv3N20SPIS_Configuration_t12dmaChannelRxE"></span><span id="_CPPv2N20SPIS_Configuration_t12dmaChannelRxE"></span><span id="SPIS_Configuration_t::dmaChannelRx__uint8_t"></span><span class="target" id="d4/dad/struct_s_p_i_s___configuration__t_1a218ec8b466630d736764a2f4ce945177"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dmaChannelRx</span></span></span><a class="headerlink" href="#_CPPv4N20SPIS_Configuration_t12dmaChannelRxE" title="Link to this definition"></a><br /></dt>
+<dd><p>DMA channel for RX operation. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0-0">
+<h3>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>PR 9277: Removed constant keyword in pointer parameter for following functions in <cite>SPIS_GetRxData()</cite> internal function.</p></li>
+</ul>
+</section>
+<section id="version-0-2-3">
+<h3>Version 0.2.3<a class="headerlink" href="#version-0-2-3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Allow radio ISR in critical sections of SPI Slave driver.</p></li>
+</ul>
+</section>
+<section id="version-0-2-2">
+<h3>Version 0.2.2<a class="headerlink" href="#version-0-2-2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Improvement in the DMA version. The DMA channels (for TX and RX operations) can be set dynamically.</p></li>
+</ul>
+</section>
+<section id="version-0-2-1">
+<h3>Version 0.2.1<a class="headerlink" href="#version-0-2-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed a bug in the DMA version. The DMA could run twice for a same transaction if a new one is added from the callback.</p></li>
+</ul>
+</section>
+<section id="version-0-2-0">
+<h3>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed a bug in the DMA version. It was not possible to start a new transaction from the callback of a previous transaction (TX+TX or RX+RX only).</p></li>
+<li><p>Simplified the management of the transaction queue in the RX and TX interrupts.</p></li>
+<li><p>Added a parameter check to avoid starting a transaction of size 0.</p></li>
+</ul>
+</section>
+<section id="version-0-1-1">
+<h3>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Updated sphinx doc.</p></li>
+<li><p>Cleaned doxygen comments.</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../spi_master/index.html" class="btn btn-neutral float-left" title="SPI Master Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../temperature_indicator/index.html" class="btn btn-neutral float-right" title="Temperature Indicator Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

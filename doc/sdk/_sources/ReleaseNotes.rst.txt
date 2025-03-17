@@ -1,0 +1,951 @@
+
+emb Release Notes
+==============================
+
+
+EM9305 emb Version 4.2
+----------------------------------------------------------------------
+
+Latest
+------
+
+v4.2
+----
+
+Bluetooth
+^^^^^^^^^
+
+* EMB controller qualified with the constant tone extension (CTE) feature
+
+  * **Controller**
+
+    * Device number: **Q338654**
+    * Included design: **244581**
+
+* PR 9194 and 9337: New EMB Mango release version 2.2.0. Included modifications are:
+
+  * Updating to EMB "Mango" stack release.
+  * Correct issue with Minimum Number of Used Channels LLCP for both the Central and Peripheral GAP roles.
+  * New Constant Tone Extension Transmitter feature for Connection-Oriented and Connectionless modes.
+  * Radio optimizations to improve timing for Periodic Advertising, PAwR, BIS and CIS use-cases.
+  * New Constant Tone Extension Transmitter stack library and `nvm_emb_assettag` sample application added to SDK.
+  * Bluetooth LE Qualification corrections for Constant Tone Extension feature and new qualification test-cases.
+  * MISRA C Coding Style modifications to improve stack robustness.
+
+Improvements and fixes
+^^^^^^^^^^^^^^^^^^^^^^
+
+* **Drivers**
+
+  * PML
+
+    * PR 9111: Radio driver optimization when RF output power is applied for improved performances. Added bool returned type for following functions:
+
+               - `bool PML_UpdateDCDC(void);`
+               - `bool PML_SetDcdcTimingConst(…);`
+    * PR 9252: Reduce the minimum sleep time to 3 ms.
+    * PR 9274: Change the default value of the calibration correction factor (`gPML_Config.rcCalibCorrection`) to -105ppm to account for the change in LF-RC frequency between active and sleep modes.
+    * PR 9275: Set default sleep clock accuracy (SCA) value to 250 ppm with LF-RC and to 150 ppm with LF-XTAL.
+
+  * EM HW API
+
+    * PR 9277: Removed constant keyword in pointer parameter for following functions in `FIFO_GetRxData()` function.
+
+  * SPI Slave
+
+    * PR 9277: Removed constant keyword in pointer parameter for following functions in `SPIS_GetRxData()` internal function.
+
+  * HW AES
+
+    * PR 9277: Removed constant keyword in pointer parameter for following functions in `AES_ProcessBlock()` and `AES_ProcessBLockKeyContainer()` functions.
+
+  * UART
+
+    * PR 9277: Removed constant keyword in pointer parameter for following functions in `UART_GetRxData()` internal function.
+
+  * NVM Bootloader
+
+    * 8982: Fixed out-of-bound memory access and able to run nvm_bootloader test again.
+
+  * Firmware Update
+
+    * PR 8990: Added the `Get_Current_Firmware_Info` command to firmware update.
+    * PR 9056: Added `Invalidate_Firmware_Area` command to firmware update.
+    * PR 9098: Added firmware updater application to update the firmware updater.
+
+
+* **Examples**
+
+  * PR 8988: FIT sample application refactored to new application structure.
+  * PR 9058: Improve documentation on the usage of `SET_BOOT_ACTION_FLAGS_GPIO` in SPI slave sample application.
+  * PR 9203: Refactored EM Data transfer client sample application.
+  * PR 9210: Removed connection pairing from heart rate sensor (HRS) sample application.
+  * PR 9230: Refactored the `nvm_emb_controller` sample application to new application structure.
+  * PR 9257: Added asset tag sample application relying on constant tone extension (CTE) feature.
+  * PR 9335: Fixed issues with RPA generation and restoring the bonded device.
+  * PR 9342: Added a sample application to demonstrate the Apple Notification Center Service (ANCS).
+  * PR 9368: Fixed `basic_app_tutorial` sample application.
+  * PR 9369: Fixed `boot_selector` sample application.
+
+Documentation
+^^^^^^^^^^^^^
+
+* **Implementer's Guide**
+
+  * T69548 and T69550: Updated document to v2.1 (see document change log).
+
+* **Firmware Update**
+
+  * PR 9273: Clarification of the format of the EM System Firmware Update (EMSFWU) command description.
+
+Tools
+^^^^^
+
+BLEngine
+""""""""
+
+* **BLEngine v1.10**
+
+  * PR 8218, 8347 and 8790: Added dupport for 802.15.4 CHCI commands, events and tests.
+  * PR 8409, 8430, 8779, 9016, 9022, 9044, 9255 and 9356: Various EMB support updates and fixes (PTS Tests).
+  * PR 8473: Update default config with TI calibration data.
+  * PR 9204: Added support for Python 3.12.
+  * PR 9303: Fixed Bluetooth LE SC (secure connection) bug.
+  * PR 9339: Fixed EMSAS unregister bug.
+  * PR 9365: Fixed EMSMM data shift issue when writing non byte aligned Hex strings.
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+Revision history
+----------------
+
+v4.1
+----
+
+Bluetooth
+^^^^^^^^^
+
+* PR 8801 and 8731: Apple interop fix involving Conn Parameter Request LLCP with No Preferred Periodicity along with invalid Anchor Offset fields
+* PR 8857 and 8086: Added EMB Lite library
+* PR 8993 and 8942: EMB Update to indicate Advertising Operation Complete Event when enabled
+* PR 9088, PR 9084: Added the EMB audio library introducing TMAP (Telephony Media Audio Profile) and CCP (Call Control Profile) profiles
+* PR 9063 and PR 9062: Fixed `EMSRC_Transmitter_Test` command to return both the expected and the actual Tx power values.
+
+
+Improvements and fixes
+^^^^^^^^^^^^^^^^^^^^^^
+
+* **General**
+
+  * PR 8553, 8554, 8555, 8557, 8858, 8859 and 8561: Adding void statement for function prototype in header files to allow static analysis
+
+* **EM-Core**
+
+  * EM-Core standard 4.1.0
+
+    * Integrating drivers new versions:
+
+        * EM HW API driver v1.0.0
+        * Radio driver v0.9.0
+        * NVM driver v0.3.1
+
+    * PR 8454: Add support of 802.15.4 in DTM stack of EM-Core
+
+  * EM-Core custom (PR 8527, 8809 and 8808)
+
+    * In this SDK, EMCore comes with its source. It is therefore possible for a developer to generate a custom version of EMCore with new libraries or functionalities. Refer to the the SDK documentation for more information.
+
+* **Examples**
+
+  * PR 8884 and 8912: Added sample application showcasing TMAP and CCP profiles usage.
+  * PR 8855: Added sample application showcasing EMB Lite Heart Rate and Battery Service usage.
+  * PR 8627 and 8628: Refactored Temperature Indicator sample application according to new application structure.
+  * PR 8752 and 8668: Refactored Basic Application Tutorial sample application according to new application structure.
+  * PR 8535 and 8534: Refactored QPC sample application according to new application structure.
+  * PR 8526 and 8525: Refactored EMB Data Transfer Server sample application according to new application structure.
+  * PR 8545 and 8544: Refactored SPI Slave sample application according to new application structure.
+  * PR 8547 and 8546: Refactored SPI Master sample application according to new application structure.
+  * PR 8664 and 8661: Refactored RTC sample application according to new application structure.
+  * PR 8676 and 8674: Refactored EMSAS sample application according to new application structure.
+  * PR 8687 and 8686: Refactored QDEC sample application according to new application structure.
+  * PR 8949: Update HRS application for advertising complete indication event feature
+
+* **Libraries**
+
+  * Vendor specific GATT based services (emb_vs):
+
+    * PR 8524: Add EM Data Transfer server profile and service
+    * PR 8767: Add firmware update target profile and refactor service
+    * PR 8887: Doxygen Documentation update
+
+
+  * QPC:
+
+    * PR 8856, 8718 and 8719: added internal QPC hooks
+
+
+* **Drivers**
+
+  * EM HW API Driver v1.0.0:
+
+    * PR 8804 and 8802: Removed `IRQ_MaskAndSave()`` function
+
+  * NVM Driver v0.3.1:
+
+    * PR 8898: Fixed issue when less than 4 words are given as parameter to the function `NVM_ErasePages_PhysAddr()`
+    * PR 8932, 8963 and 8979 : Allow NVM operations when interrupts are disabled
+
+  * PML Driver v0.6.1:
+
+    * PR 8939: The switched capacitor doubler (SCDB) is now permanently activated to enhance system robustness in Voltage Multiplier Mode across the entire voltage range
+
+  * QDEC Driver v0.1.1:
+
+    * PR 8685: Fixed double accumulator capture issue when using `QDEC_StartSingleCapture()`
+
+  * Radio Driver v0.9.0:
+
+    * PR 7729: Added 802.15.4 support in Radio driver.
+    * PR 8618, 8619 and 8887: Documentation updated
+
+  * RTC Driver v1.1.0:
+
+    * PR 8663: Added external `gRTC_Config` declaration in `rtc.h`
+
+* **Build system:**
+
+  * PR 8850: Activated `elfdumpac` when using `MW_INSTALL_PATH` environment variable
+
+
+Documentation
+^^^^^^^^^^^^^
+
+* **Implementer's Guide**
+
+  * T67826: Updated document to v2.0 (see document change log)
+
+* **Drivers**
+
+  * AOAD:
+
+    * PR 8961: Improved driver documentation
+
+  * ADC:
+
+    * PR 8887: Updated Doxygen documentation
+
+  * GPIO:
+
+    * PR 8600 and 8601: Updated documentation for GPIO Wakeup
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+v4.0
+----
+
+Warning
+^^^^^^^
+
+The em|bleu SDK 4.x series introduces a compatibility breakdown with the previous 3.x series. The ``gPML_Config`` structure was previously called as external reference in the application code.
+This reference has been removed from the user application code. Please refer to `Migration Guide <sections/MigrationGuide.html>`_ for more details.
+
+
+Bluetooth
+^^^^^^^^^
+
+* EMB controller qualified with the isochronous channel feature
+
+  * **Controller**
+
+    * Declaration ID: **D067886**
+    * QDID: **244581**
+
+  * **Host**
+
+    * Declaration ID: **D065604**
+    * QDID: **223785**
+
+
+* PR8156: Added a new ``emb_controller_iso`` library.
+
+* PR8141: Align Connection Parameter Request validation check in LL to match Bluetooth LE specification section 5.1.7.1. Peripheral device was incorrectly rejecting connection parameter requests with no specified preferred periodicity.
+
+* PR8149: Added an anchor time callback API to notify the user application of connection events within the protocol timer domain, aiming to synchronize application events with the peripheral's time domain.
+
+* PR8169: Added new Device Manager API to enable the application to retrieve the count of missed connection events from the link Layer.
+
+* PR8188: Fixed the uncontrolled spurious periodic signal generation in connected mode when enhanced power control feature is enabled.
+
+New features
+^^^^^^^^^^^^
+
+* **Transmit power management**
+
+  * PR8068: Ensure consistency in retrieving the maximum RF output power across projects, maintaining a clean PAL.
+  * PR8070: Added the minimum and maximum RF output power management.
+  * PR8339: Added new API to set Min / Max Tx power levels at the application level, enabling specification of the range of power levels for device communication.
+
+* **Power control sample application**
+
+  * PR8210: Enhancement in the API that allow changing dynamically Tx Power in different modes in em|bleu stack when Enhanced Power Control feature is disabled.
+  * PR8326: Added power control sample application SDK and documentation showcasing changing Tx Power in different modes.
+  * PR8341: Add Tx min/max API example to power control sample application.
+
+* **EM-Core**
+
+  * EM-Core standard 4.0.0 integrating radio driver v0.8.0 and PML driver 0.6.0 (see details hereafter).
+
+
+Improvements and fixes
+^^^^^^^^^^^^^^^^^^^^^^
+
+* **EM Data Transfer (EMDTS)**
+
+  * PR8185: Enhanced the EM Data Transfer Service flow control for single and multiple connections.
+
+* **EMB HRS**
+
+  * PR7784: Refactored EMB HRS (Heart Rate Sensor) sample application according to new application structure not compatible with the previous one.
+
+* **Drivers**
+
+  * PML driver v0.6.0
+
+    * PR7933: Removed external reference to the ``gPML_Config`` structure. Now, by just including the ``pml.h`` file, the external reference to the ``gPML_Config`` is automatically added. All explicit ``external PML_Configuration_t gPML_Config`` statement shall be removed now.
+    * PR8169: Added functions to read the configured locked Tx power configuration.
+
+  * Radio driver v0.8.0
+
+    * PR7847: Fixed LNA protection switching when RF output power changes from +8dBm/+10dBm to a lower value.
+    * PR8152: Added a function to retrieve the maximum allowed output transmit power that can be configured.
+
+Documentation
+^^^^^^^^^^^^^
+
+* **Implementer's guide**
+
+  * T60919: Issuing new Implementer's Guide v1.8 version (see document's change log for details).
+
+* **Wake-up on GPIO event**
+
+  * PR7928: Added documentation to run protocol timer on GPIO wake-up.
+
+* **GPIO Open drain**
+
+  * PR8215: Fix GPIO documentation for open drain GPIOs capabilities.
+
+* **FW updater sample app**
+
+  * PR8174: Added disclaimer on the SPI transport layer usage for `firmware_updater` and `nvm_fwu_target sample` applications.
+
+
+Tools
+^^^^^
+
+BLEngine
+""""""""
+
+* **BLEngine v1.9**
+
+  * PR8228: Added source code for all procedures in the BLEngine documentation.
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+v3.2
+----
+
+Bluetooth
+^^^^^^^^^
+
+  * Created a new EMB peripheral Legacy library that incorporates the Bluetooth 4.2 feature set
+  * Enable HCI support for HCI_LE_Request_Peer_SCA command for Isochronous feature support
+  * Removed unsupported HCI local Codec commands added by the generic BLE v5.3 BT_VER
+  * Enhanced power control is disabled by default
+  * Provide run-time configuration (enable/disable) for the BLE v5.2 Enhanced Power Control feature (by default, the feature is disabled)
+  * Fixed exception caused by division by zero in the "V_DivZeroHandler()" function within the `lctrConnServicePowerMonitor` module
+  * Added function to allow user changing dynamically Tx power in different modes when enhanced power control (LEPC feature) is disabled
+
+New features
+^^^^^^^^^^^^
+
+* **Firmware updater**
+
+  * Firmware update over BLE and SPI functionality added
+
+    * Added a library to perform NVM operations when the system is idle.
+    * Added support for firmware update section code type app in NVM Bootloader.
+    * Added cryptographic and signature functionality for firmware update over BLE and SPI.
+    * Added a linker script for the firmware updater applications.
+    * Added a sample application to be used as a target app to be updated using the firmware update process.
+
+* **NVM EMB RPA application**
+
+  * Added a sample application that showcases the resolvable private address (RPA) functionality
+
+* **NVM EMB FIT application**
+
+  * Added example of code in the EMB FIT sample application to showcase how to set a custom device name in the GAP device.
+
+* **Temperature indicator**
+
+  * Added temperature indicator driver with two points calibration processing
+
+* **Bonding information storage**
+
+  * Added NVM database for persistent bonding keys storage
+  * Added constants for NVM Main starting/ending addresses, and NVM word size constant
+
+
+Improvements and fixes
+^^^^^^^^^^^^^^^^^^^^^^
+
+* **EM-Core V3.5.0**
+
+  * Ensure EMSRC_ReceiverTestEnd sends the correct information when the receiver test has not been initiated.
+  * The version has been updated to align with the last version of EM-Core integrated libraries.
+
+* **Drivers**
+
+  * IRQ management
+
+    * Improving documentation related to interruption management
+    * T33096 - Enabling division by zero exception during the boot process
+
+  * Radio
+
+    * SPIM Radio Clock set to 24 MHz, LNA Protection for (+8 and +10 dBm only), cached register for LNA prot
+    * Adjust MAC timing for 24 MHz SPI to radio IP communication
+
+  * i2s driver
+
+    * Rework DMA accesses to prevent audio glitches from high priority interrupts
+    * Updated I2S sample application to use refactored I2S driver
+
+  * Power Management (PML)
+
+    * Added support for a 2.2µH coil
+
+* **Examples**
+
+  * EMB Data Transfer Server
+
+    * EMB Data Transfer Server documentation updated with no pairing capabilities
+
+  * PAwR Advertiser/Synchronizer Examples
+
+    * Applications demonstrates broadcasting advertising packets with relevant data, enabling device synchronization and response.
+
+  * NVM EMB Tag application
+
+    * New build option added to the tag example project demonstrating how to use a Resolvable Private Address.
+
+Tools
+^^^^^
+
+* **BLEngine**
+
+  * Updated to BLEngine v1.8 with new procedures dedicated to firmware update process.
+  * Added firmware package generator tool `fpg.py`
+  * BLEngine.exe is now available and can be installed system-wide. Refer to `BLEngine installation guide <../blengine/index.html>`_ for more information.
+
+
+Documentation
+^^^^^^^^^^^^^
+
+* **em|bleu Bluetooth documentation**
+
+  * Integration of Application Framework (AF) and Device Manager (DM) documentation
+  * EMB Data Transfer Server documentation updated with no pairing capabilities
+
+* **Implementer's guide**
+
+  * Updated to version 1.7
+
+* **Application notes**
+
+  * Added application note on temperature indicator calibration process
+  * Added application note on how to obtain sleep clock accuracy
+
+* **Firmware update**
+
+  * Added entries in SDK's documentation on the following topics:
+
+    * Firmware update
+    * Firmware update package generator
+    * Firmware update step-by-step guide
+    * Firmware update service
+
+v3.1
+----
+
+Bluetooth
+^^^^^^^^^
+
+Bluetooth Low Energy 5.4 qualification.
+
+* **Controller**
+
+  * Declaration ID: D067145
+  * QDID: 231806
+
+* **Host**
+
+  * Declaration ID: D065604
+  * QDID: 223785
+
+
+This SDK version comes with the following qualified Bluetooth features:
+
+* **LE Advertising Extensions (5.0)**
+
+  * Enables longer advertising messages, allowing more information to be conveyed, and supports multiple advertising channels.
+
+* **Periodic Advertising Sync Transfer (5.1)**
+
+  * Facilitates synchronization between a scanner and an advertiser, enabling the scanner to receive periodic advertising packets at the correct time.
+
+* **LE Power Control (5.2)**
+
+  * Dynamically adjust the power level of advertising and data transmissions based on the link quality and data rate requirements, minimizing power consumption and extending battery life.
+
+* **LE Enhanced Connection Update (5.3)**
+
+  *	Introduces new connection parameters, such as minimum connection interval and maximum latency, that provide fine-grained control over the connection, improving responsiveness and reducing latency for time-sensitive applications.
+
+* **Connection Subrating (5.3)**
+
+  * Enables faster switching between low and high duty cycle connections, allowing for more efficient data transfer and reduced latency for applications that require real-time data transfers.
+
+* **LE Periodic Advertising with Response (5.4)**
+
+  * Introduces a new type of periodic advertising that allows a device to act as a server, receiving responses from clients that are interested in its periodic advertisements.
+
+
+New features
+^^^^^^^^^^^^
+
+* **RTC library**
+
+  * F27273 - Introduced the RTC (real time clock) library for system time management along with application example and comprehensive documentation.
+
+* **NVM EMB Tag application**
+
+  * Added a tag management application example
+
+* **Data transfer client example application**
+
+  * Added an example application on how to implement a data transfer client
+
+* **SPI slave sample application**
+
+  * Added a sample application showcasing how to setup the EM9305 device as a SPI slave device
+
+* **Periodic Advertising with Response (PAwR)**
+
+  * Added a sample application that showcases the PAwR
+
+Improvements and fixes
+^^^^^^^^^^^^^^^^^^^^^^
+
+* **EM|bleu Bluetooth LE stack**
+
+  * Fixed logic error causing certain BIS subevents to be incorrectly skipped.
+  * Enabled power control feature to be built into all EMB libraries.
+  * Fixed reception of BIS control subevents under specific conditions.
+  * Correction to limit the maximum transmit output power by module type.
+  * Fix to radio scheduling considerations when scheduling PAwR operations with CTE present but not enabled.
+  * EMSRC_ReceiverTestEnd command returns a two bytes for the RSSI average value.
+  * LL/DDI/SCN/BV-91 coded PHY link layer fix integration
+  * Bugfix for Connection Subrating Feature to correct handling of received subrate information from peer.
+
+* **Data transfer server sample application**
+
+  * Fixed issue in the extended advertising configuration structure
+  * Added support for up to 3 simultaneous connections
+
+* **Boot-up process**
+
+  * T33096 - Enabled division by zero exception within the application startup process.
+
+* **EM-Core V3.4.0**
+
+  * Integrate radio libraries with fixes listed under `Drivers/Radio` section hereafter.
+  * T32172 - Ensure EMSRC_ReceiverTestEnd sends the correct information when the receiver test has not been initiated.
+
+* **Drivers**
+
+  * Radio:
+
+    * Radio transmitter control improvement for power consumption optimization.
+    * Power consumption improvement (removed parasitic Tx pulse).
+    * CTE functions moved to AoA / AoD library for direction finding.
+    * Set Rx Max PDU length (BLE Audio fix for BIS).
+    * T31459 - Added RF power mode bypass function to meet timing on extended scanning operations.
+
+  * I2C, SPI Master, UART:
+
+    * Critical Section allow execution of radio driver ISR with maximum priority.
+
+  * NVM:
+
+    * Refactoring some NVM driver functions so they can be executed from an interrupt context to avoid creating deadlock situations.
+    * Adding NVM write and erase function with physical address parameters.
+
+  * Common:
+
+    * Changing switch name `UNIT_TESTS_BUILD` to `TEST_CODE` to get access to static variables/functions.
+
+  * PML:
+
+    * PR5437 - In voltage multiplier mode, increase output voltage to improve NVM operations speed and reduce power consumption during boot-up sequence.
+
+* **QP/C**
+
+  * T33210 - Enabled division by zero exception
+
+* **Build flow**
+
+  * Support for EM-Core 3.4.0
+  * The memory report generated by the build process now overwrites any previously generated report, instead of being appended.
+
+Tools
+^^^^^
+* **BLEngine 1.7**
+
+  * Refer to `BLEngine documentation <../blengine/index.html>`_
+
+
+Documentation
+^^^^^^^^^^^^^
+
+* **Implementer's guide**
+
+  * Updated to v1.4
+
+.. note::
+
+  To get more details on the modifications, please check the history table in the document.
+
+* **Application notes**
+
+  * EM-Core Standard Model: updated to v1.1
+  * IRAM0 remap to DRAM: updated to v1.0
+  * Firmware failsafe update: updated to v1.5
+  * Interrupt management: updated to v1.0
+  * ROM v3 release notes: updated to v1.0
+
+v3.0
+----
+
+Bluetooth
+^^^^^^^^^
+
+Bluetooth 4.2 & 5.3 (mandatory only) features are available in this SDK.
+
+
+Qualification Status
+^^^^^^^^^^^^^^^^^^^^
+
+* **Controller**
+
+  * Declaration ID: D059329
+  * QDID: 186498
+
+* **Host**
+
+  * Declaration ID: D060670
+  * QDID: 191704
+
+
+
+Improvements / Fix
+^^^^^^^^^^^^^^^^^^
+
+* **ROM**
+
+  * Support for ROM v3.0 added (target DI05)
+
+* **Build flow**
+
+  * Support for DI05 added
+  * Support for EM-Core V3.1.0
+
+* **EM-Core V3.1.0**
+
+  * Integrate QP/C Third-Party Library update (see below).
+  * Integrate new radio libraries with fixes listed below.
+
+* **Third-Party Libraries**
+
+  * Improve the previous fix regarding STATUS content when task switching in QP/C by setting or retaining only required bits U, DZ, SC, AD and US according to compilation definitions.
+
+* **Bluetooth**
+
+  * Implement EMSRC Transmitter Test and Receiver Test V2: Allows to specify the frequency channel, transmit power level, set modulation index and payload length for the test. It transmits packets on the specified channel with the specified power level and payload length
+  * Implement EMSRC Transmitter Test and receiver Test V3: Extends Test v2. It enables testing and configuration of the BLE transmitter's characteristics.
+
+* **Power Management**
+
+  * In voltage multiplier mode, increase output voltage to improve NVM operations speed and reduce power consumption during boot-up sequence.
+
+* **Drivers**
+
+  * Radio:
+
+    * Introduce +8 and +10 dBm RF Output Power
+
+  * ADC:
+
+    * Add calibration for ADC which can be located in EM and / or User info page.
+    * Correction formula to compute Vin of ADC.
+    * Remove the offset of 50 mV for GPIO5 input source with sample & hold.
+
+  * QDEC
+
+    * Add QDEC driver to configure the Quadrature Decoder peripheral and reads movements from mechanical or optical encoder.
+
+  * NVM
+
+    * Implement functions NVM_Write_PhysAddr() and NVM_ErasePages_PhysAddr() in NVM driver
+
+* **Examples:**
+
+  * Update ADC continuous example to display if the ADC use calibration data or not.
+  * Add QDEC example to show the usage of the QDEC driver using mechanical sensor connected on phase A & B of the peripheral
+
+* **Documentation**
+
+  * Documentation general improvement.
+
+
+Tools
+^^^^^
+* **BLEngine 1.6**
+
+  * Refer to `BLEngine documentation <../blengine/index.html>`_
+
+* **Lifecycle_Ctrl**
+
+  * Lifecycle_Ctrl script is now integrated in BLEngine tool (See `EM9305 Lifecycle Control <./sections/Lifecycle.html>`_ page)
+
+
+Known limitations
+^^^^^^^^^^^^^^^^^
+
+**Radio control commands**
+
+* EMSRC Set RF Activity (0xFCC3) command returns unknown HCI command error from the nvm_emb_controller firmware.
+* EMSRC Set Receiver Test End (0xFCC6) command returns invalid Average RSSI (255).
+
+
+Features to be added
+^^^^^^^^^^^^^^^^^^^^
+
+* Firmware Update over the Air (FOTA)
+
+
+v2.1
+----
+
+Improvements / Fix
+^^^^^^^^^^^^^^^^^^
+
+* **General**
+
+  * Application memory footprint improvement to save up to 8KB (1 NVM page)
+
+* **Third parties libraries**
+
+  * Restoring full STATUS register content during task switching under QP/C control.
+    With this new version, all the bits in the status register keep the value they have before the task switch.
+  * Printf library
+    The ``printf`` library replaced by https://githup.com/mpaland/printf due to licensing issue.
+
+
+
+* **Application examples prebuild**
+
+  * The prebuilt versions of the example applications have been removed.
+    They were built with a specific compiler version that might not be the one the end user will actually use. This
+    means that this SDK version does not preclude what is the installed toolchain on the end user
+    side, but automatically search for it. Then, the end user has to rebuild the application examples
+    with his own toolchain version.
+
+* **Toolchain selection**
+
+  * Metaware toolchain automatic selection.
+    By default, the SDK automatically searches for the installed Metaware toolchain in the system path.
+
+  * Metaware build libraries for EM9305 SoC automatic selection
+    According to the detected Metaware toolchain, the build process will link any application with either the Metaware libraries
+    provided in the SDK for toolchain generic version, or link to the libraries provided in the EM specific Metaware toolchain.
+
+
+* **ROM**
+
+  * Support for ROM v2.0 added (target DI04)
+
+
+* **Bluetooth**
+
+  * Refer to :ref:`bluetooth` section
+
+
+* **Build flow**
+
+  * Support for DI04 added (now SDK only supports DI03 & DI04)
+  * Support for DI01 removed
+  * Support for EM-Core v2.6.0 (refer to EM-Core changelog)
+
+* **Drivers:**
+
+  * General
+
+    * Fix endless loop in protocol timer related by sleep manager when trying to enter sleep mode.
+    * Fix nvm_bootloader issue when starting the application: PML bits configuration value 0x3 used to start the customer application.
+    * Update nvm_bootloader to allow the deactivation of the firmware CRC check.
+
+  * ADC (Analog to Digital Converter)
+
+    * Support for continuous sampling mode with transfers to RAM using DMA.
+    * ADC application example using continuous mode added.
+
+  * GPIO
+
+    * Add API to configure GPIOs in open drain
+
+  * PML
+
+    * Improving sleep manager when entering sleep mode.
+    * Adjust the SCDB Mode Multiplier to double when the supply goes from 1.5 to 1.1v to avoid Brownout reset.
+
+  * Radio
+
+    * Adding +4dBm and +5dBm into Tx power configuration.
+
+  * USB
+
+    * Add support of USB Drivers
+
+* **EM-Core V2.6.0**
+
+  * Bug fix in Transmitter Test command
+
+    * Return an error when packet length overtake the maximum allowed size for test packets in DTM mode only.
+
+  * Improvement of Transmitter and Receiver Test
+
+    * Add parameter check for the lower boundaries
+    * Radio driver initialization done only once during EM-Core initialization
+  * Fix RSSI value computation in Direct Test Mode (DTM)
+  * DI04 support added
+  * Introduction of the standard version of EM-Core (see :ref:`emcore` section)
+  * Enabling pull-down configuration on GPIO6 & GPIO7
+  * EM-Core includes new test commands used at wafer level.
+
+    * EMSS_LE_Decrypt, EMSS_LE_Decrypt_KC and EMSS_Encrypt_KC (Key Container).
+    * EMSMM_Read_At_Address and EMSMM_Write_At_Address available in EM-Core for production purpose.
+    * EMSG_Set_Sleep_Options command available in EM-Core for production purpose.
+
+  * EM-Core Radio Test commands have also been updated to improve wafer test sequence.
+
+    * EMSRC_Start_ADV_Pattern starts advertising immediately after the command is received.
+
+* **Build system:**
+
+  * Add IMAGE_CRC_CHECK cmake variable to deactivate the firmware CRC check.
+  * Remove unnecessary parts in the Cmake files.
+
+* **Examples:**
+
+  * Fix the EM Data Transfer service example: remove printf from the BLE host stack callbacks to avoid deadlocks due to the non-reentrant printf library.
+  * Move GPIO_EnableJtag4Wires() to NVM_ConfigModules() to allow using Metaware Debugger when PmlJtag4wEn and PmlJtag2wEn are set to 0 in info pages.
+  * Example of ADC Driver in continuous mode using DMA
+  * Bluetooth Link Layer Controller over USB example
+  * Bluetooth HID (Mouse / Keyboard) Device Application
+  * Bluetooth HID Client as USB Dongle Application
+  * I2C Master example application to read/write EEPROM
+
+* **Documentation:**
+
+  * Documentation general improvement
+
+Tools
+^^^^^
+
+* **BLEngine 1.4**
+
+  * See dedicated release notes for additional information.
+  * Note that the script program_nvm_main.py is deprecated. It is recommended to use the built-in BLEngine procedure emsystem_prog.
+
+* **Lifecycle_Ctrl v1.2**
+
+  * Includes a set of commands to assist production and development
+
+* **Build Toolchain**
+
+  * new tool to handle firmware header (headerstuffer.exe)
+
+
+Licenses
+^^^^^^^^
+
+* SDK Software License Agreement update
+
+
+Known limitations
+^^^^^^^^^^^^^^^^^
+
+**Radio control commands**
+
+* EMSRC Set RF Activity (0xFCC3) command returns unknown HCI command error from the nvm_emb_controller firmware.
+* EMSRC Set Receiver Test End (0xFCC6) command returns invalid Average RSSI (255).
+
+**Current profile**
+
+* At reset, the current profile shows a higher consumption than the regular values listed in the datasheet
+  during the first 200 ms after the device start-up in both step-down and in voltage multiplier modes.
+  However, this behavior does not happen when resuming from a sleep period. The device start-up power
+  consumption will be optimized.
+
+
+v1.0 (Internal)
+---------------
+
+Improvements / Fix
+^^^^^^^^^^^^^^^^^^
+
+* **Build flow**
+
+  * Support for DI03 added
+  * Support for DI02 removed
+  * Support for EM-Core V1.0.0 (see dedicated section)
+
+* **Drivers:**
+
+  * Radio
+
+    * Robustness improvements (Frequent CRC Error identified which was due to turning the radio OFF too early)
+  * UART
+
+    * Bug fixed in RX/TX when speed was set to either 1200 or 2400 bauds.
+  * Sleep Manager and Power Management Logic
+
+    * Power consumption improvement: LF RC Calibration sequence
+  * Power Management Logic
+
+    * New bit field definition added to detect CRC error to support failsafe firmware update
+  * Documentation update in all drivers
+
+* **EM-Core V1.0.0**
+
+  * Support for EMSRC Transmitter (0xFCC1) and Receiver (0xFCC5) Tests (Supports limited DTM packet function and Continuous Modulation operations)
+  * Support for EMCore versioning (ability to build an application for an older EM-Core version)
+  * All improvements and bug fixes done in the drivers listed above
+
+* **Examples:**
+
+  * EM Data Transfer Server sample application to show how to create custom GATT-based services.

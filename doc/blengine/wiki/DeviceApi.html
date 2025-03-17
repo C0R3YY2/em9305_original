@@ -1,0 +1,1342 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Device API &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Device API</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="device-api">
+<h1>Device API<a class="headerlink" href="#device-api" title="Link to this heading"></a></h1>
+<p>The Bluetooth Device Module you need.</p>
+<section id="device-api-summary">
+<h2>Device API Summary<a class="headerlink" href="#device-api-summary" title="Link to this heading"></a></h2>
+<p>Theses Classes implement a high-level representation of a Bluetooth Device, it
+provide abstraction on top of Gatt and Gap Layers.</p>
+<p>A device must implement <code class="docutils literal notranslate"><span class="pre">BLEDevice</span></code> class which provide basic bluetooth related fucntions.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">BLEDevice</span></code> have the following abilities:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>* Standard GAP set/get commands (name, mode, role, etc…).
+
+
+* The ability to read and write a characteristic value.
+
+
+* Discover (read) Gatt services and characterisitcs on the devices.
+
+
+* Enable notifications / indications for the devices.
+</pre></div>
+</div>
+<p>To work with local device (dongles), a <code class="docutils literal notranslate"><span class="pre">BLELocalDevice</span></code> instance can be used.
+This class inherit BLEDevice and have specific functions and attributes to work
+with. It retain a list of remotes devices, automagically created and updated when
+the device perform a scan.</p>
+<p>Abilities:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>* Scan / Observe for devices.
+
+
+* Filter and sorting of remote devices list.
+
+
+* Manage Services and Characteristics (Add/Remove).
+
+
+* Perform a reset.
+</pre></div>
+</div>
+<p>The remotes devices class instances <code class="docutils literal notranslate"><span class="pre">BLERemoteDevices</span></code> created by a local device
+implement all the functions related to a remote device from the local one,
+it actually use the engine of the local device to send commands by itself.</p>
+<section id="an-advertisiemnts-packets-list">
+<h3>- An advertisiemnts packets list.()<a class="headerlink" href="#an-advertisiemnts-packets-list" title="Link to this heading"></a></h3>
+</section>
+<section id="the-device-mode">
+<h3>- The device mode.()<a class="headerlink" href="#the-device-mode" title="Link to this heading"></a></h3>
+</section>
+<section id="rssi-and-interval-moving-average">
+<h3>- RSSI and Interval moving average.()<a class="headerlink" href="#rssi-and-interval-moving-average" title="Link to this heading"></a></h3>
+<p>Abilities:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>* Connect and Disconnect To/from itself.
+
+
+* Automatically update (attributes, averages, etc…) on advertisement.
+
+
+* Compute averages between advertisements packets
+</pre></div>
+</div>
+</section>
+<section id="class-blengine-host-devices-bledevice-engine-bd-addr-none-name-none-conn-handle-none">
+<h3>class blengine.host.devices.BLEDevice(engine, bd_addr=None, name=None, conn_handle=None)<a class="headerlink" href="#class-blengine-host-devices-bledevice-engine-bd-addr-none-name-none-conn-handle-none" title="Link to this heading"></a></h3>
+<p>A BLE Device represent a Generic Bluetooth Device that can manipulate an
+Engine.</p>
+<p>The constructor set the following:</p>
+<ul class="simple">
+<li><p><strong>Variables</strong></p>
+<ul>
+<li><p><strong>engine</strong> – A reference to the actual <code class="docutils literal notranslate"><span class="pre">blengine.hci.engine.HCIEngine</span></code>
+engine used to communicate with the device</p></li>
+<li><p><strong>bd_addr</strong> – optional, the actual bluetooth MAC Address of the device</p></li>
+<li><p><strong>name</strong> – optional, the common name used for the device, it’s a convience attribute,
+defaulted to the bd_addr or noname by default.</p></li>
+<li><p><strong>conn_handle</strong> – optional, the connection handle used in many layers of the bluetooth</p></li>
+</ul>
+</li>
+</ul>
+<p>The others attributes provided by this class are</p>
+<ul class="simple">
+<li><p><strong>Variables</strong></p>
+<ul>
+<li><p><strong>bd_addr_type</strong> – The type of the bd_addr, defaulted to 0x00</p></li>
+<li><p><strong>type</strong> – String, defaulted to “Generic BLE Device”</p></li>
+<li><p><strong>services</strong> – List of <code class="docutils literal notranslate"><span class="pre">blengine.host.gatt.BLEService</span></code> instances</p></li>
+<li><p><strong>mode</strong> – Bluetooth mode</p></li>
+<li><p><strong>role</strong> – Bluetooth role</p></li>
+<li><p><strong>is_client</strong> – Is the device client or not</p></li>
+<li><p><strong>conn_handle</strong> – The device conn_handle</p></li>
+<li><p><strong>logger</strong> – Device logger (the name is the same as the device)</p></li>
+</ul>
+</li>
+</ul>
+<section id="disable-indication-char">
+<h4>disable_indication(char)<a class="headerlink" href="#disable-indication-char" title="Link to this heading"></a></h4>
+<p>Disable notification for this device</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>char</strong> – The characteristic</p>
+</li>
+</ul>
+</section>
+<section id="disable-notification-char">
+<h4>disable_notification(char)<a class="headerlink" href="#disable-notification-char" title="Link to this heading"></a></h4>
+<p>Disable notification for this device</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>char</strong> – The characteristic</p>
+</li>
+</ul>
+</section>
+<section id="discover-services">
+<h4>discover_services()<a class="headerlink" href="#discover-services" title="Link to this heading"></a></h4>
+<p>Discover GATT Server services for this device, this includes
+characteristics, descriptors, etc…. It will fill the <code class="docutils literal notranslate"><span class="pre">self.services</span></code>
+attribute and return it anyway</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="enable-indication-char">
+<h4>enable_indication(char)<a class="headerlink" href="#enable-indication-char" title="Link to this heading"></a></h4>
+<p>Enable notification on this device for the specified characteristic</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>char</strong> – The characteristic</p>
+</li>
+</ul>
+</section>
+<section id="enable-notification-char">
+<h4>enable_notification(char)<a class="headerlink" href="#enable-notification-char" title="Link to this heading"></a></h4>
+<p>Enable notification on this device for the specified characteristic</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>char</strong> – The characteristic</p>
+</li>
+</ul>
+</section>
+<section id="get-char-by-handle-handle">
+<h4>get_char_by_handle(handle)<a class="headerlink" href="#get-char-by-handle-handle" title="Link to this heading"></a></h4>
+<p>find a characteristics by handle (int) or value_handle (int)</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>handle</strong> – The handle</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>The characteristic by handle or None</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>Characteristic</p>
+</li>
+</ul>
+</section>
+<section id="get-conn-handle">
+<h4>get_conn_handle()<a class="headerlink" href="#get-conn-handle" title="Link to this heading"></a></h4>
+<p>Get the GAP Connection handle for this device.</p>
+<p>This will also update the conn_handle attribute.</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>The connection handle.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>int</p>
+</li>
+</ul>
+</section>
+<section id="get-service-uuid-none-name-none">
+<h4>get_service(uuid=None, name=None)<a class="headerlink" href="#get-service-uuid-none-name-none" title="Link to this heading"></a></h4>
+<p>return a service by uuid or search among string name</p>
+<p>filters are exclusive</p>
+</section>
+<section id="on-indication-pkt">
+<h4>on_indication(pkt)<a class="headerlink" href="#on-indication-pkt" title="Link to this heading"></a></h4>
+<p>indication callback</p>
+</section>
+<section id="on-notification-pkt">
+<h4>on_notification(pkt)<a class="headerlink" href="#on-notification-pkt" title="Link to this heading"></a></h4>
+<p>Default Notification Callback</p>
+<p>This callback, triggers on notification or observation,
+will parse the notification packet and try to find a corresponding characteristic
+in the device services.</p>
+<p>If so, The value is parsed with the characteristic parse function.</p>
+<p>Finally two events are triggered on this device, one with the uuid object
+as key and one with the uuid name.</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>pkt</strong> – The packet</p>
+</li>
+</ul>
+</section>
+<section id="read-all-values-services-none">
+<h4>read_all_values(services=None)<a class="headerlink" href="#read-all-values-services-none" title="Link to this heading"></a></h4>
+<p>Read value for each characteristics</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>services</strong> – The services</p>
+</li>
+</ul>
+</section>
+<section id="register-role-name-none-mode-none-is-client-false">
+<h4>register(role, name=None, mode=None, is_client=False)<a class="headerlink" href="#register-role-name-none-mode-none-is-client-false" title="Link to this heading"></a></h4>
+<p>Convenience Function to register a device, the minimum requirement</p>
+<p>Role and Mode can be the same input format as the corresponding procedures</p>
+<p>The order of execution is the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>call self.set_role() then</p></li>
+</ul>
+</div></blockquote>
+<blockquote>
+<div><ul class="simple">
+<li><p>call self.set_mode() then</p></li>
+</ul>
+</div></blockquote>
+<blockquote>
+<div><ul class="simple">
+<li><p>call self.set_name() then</p></li>
+</ul>
+</div></blockquote>
+<blockquote>
+<div><ul class="simple">
+<li><p>call self.set_register_client()</p></li>
+</ul>
+</div></blockquote>
+<p>It can be constraining so feel free to use the atomic functions.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>role</strong> (<em>str</em>* or *<em>int</em>) – The role</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name</p></li>
+<li><p><strong>mode</strong> (<em>str</em>* or *<em>int</em>) – The mode</p></li>
+<li><p><strong>is_client</strong> (<em>bool</em>) – register as client or not</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="register-client-set-client-true">
+<h4>register_client(set_client=True)<a class="headerlink" href="#register-client-set-client-true" title="Link to this heading"></a></h4>
+<p>Register or deregister this device as a client.</p>
+<p>If nothing has to be done (e.g. already registered as client),
+this function do nothing and return <code class="docutils literal notranslate"><span class="pre">(true,</span> <span class="pre">&quot;Done</span> <span class="pre">Nothing&quot;)</span></code> tuple</p>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.register_client()</span></code>
+and <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.unregister_client()</span></code></p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>set_client</strong> (<em>bool</em>) – Register or not (default to True)</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>procedure return value or <code class="docutils literal notranslate"><span class="pre">(true,</span> <span class="pre">&quot;Done</span> <span class="pre">Nothing&quot;)</span></code></p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>tuple(bool, str)</p>
+</li>
+</ul>
+</section>
+<section id="set-mode-mode">
+<h4>set_mode(mode)<a class="headerlink" href="#set-mode-mode" title="Link to this heading"></a></h4>
+<p>Sets the Bluetooth Mode.</p>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.set_mode()</span></code></p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>mode</strong> (<em>int</em>* or *<em>string</em>) – mode</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>procedure return value</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>tuple(bool, str)</p>
+</li>
+</ul>
+</section>
+<section id="set-name-name">
+<h4>set_name(name)<a class="headerlink" href="#set-name-name" title="Link to this heading"></a></h4>
+<p>Set the name of the bluetooth device.</p>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.set_name()</span></code></p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>name</strong> – The name</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>procedure return value</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>tuple(bool, str)</p>
+</li>
+</ul>
+</section>
+<section id="set-role-role">
+<h4>set_role(role)<a class="headerlink" href="#set-role-role" title="Link to this heading"></a></h4>
+<p>Sets the Bluetooth role.</p>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.set_role()</span></code></p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>role</strong> (<em>int</em>* or *<em>string</em>) – the Role</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>procedure return</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>tuple(bool, str)</p>
+</li>
+</ul>
+</section>
+<section id="write-char-value-timeout-1">
+<h4>write(char, value, timeout=1)<a class="headerlink" href="#write-char-value-timeout-1" title="Link to this heading"></a></h4>
+<p>write a value to a characteristic</p>
+<p>TODO: manage errors (permissions, etc…)</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>char</strong> – The character</p></li>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="exception-blengine-host-devices-bledeviceexception">
+<h3>exception blengine.host.devices.BLEDeviceException()<a class="headerlink" href="#exception-blengine-host-devices-bledeviceexception" title="Link to this heading"></a></h3>
+</section>
+<section id="class-blengine-host-devices-blelocaldevice-engine-bd-addr-none-name-none-conn-handle-0">
+<h3>class blengine.host.devices.BLELocalDevice(engine, bd_addr=None, name=None, conn_handle=0)<a class="headerlink" href="#class-blengine-host-devices-blelocaldevice-engine-bd-addr-none-name-none-conn-handle-0" title="Link to this heading"></a></h3>
+<p>A Local device represent a bluetooth chip directly connected to the computer (a dongle)</p>
+<p>the conn_handle of a local device is always 0, obviously the same engine cannot be used by more than one LocalDevice</p>
+<ul class="simple">
+<li><p><strong>Variables</strong></p>
+<ul>
+<li><p><strong>dyn_attrs</strong> – Define by names the attributes wich have dynamic sizes</p></li>
+<li><p><strong>remote_devices</strong> – A List of <code class="docutils literal notranslate"><span class="pre">BLERemoteDevice</span></code> remotes bluetooth devices: list</p></li>
+<li><p><strong>attributes_sizes</strong> – Attributes size defined by this device, see <code class="docutils literal notranslate"><span class="pre">get_attribute_size()</span></code></p></li>
+</ul>
+</li>
+</ul>
+<section id="disconnect">
+<h4>disconnect()<a class="headerlink" href="#disconnect" title="Link to this heading"></a></h4>
+<p>see <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.disconnect()</span></code></p>
+</section>
+<section id="add-device-bd-addr">
+<h4>add_device(bd_addr)<a class="headerlink" href="#add-device-bd-addr" title="Link to this heading"></a></h4>
+<p>Adds a device, return existing instance if it exist already.</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>bd_addr</strong> (<em>{ type_description }</em>) – The bd address</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>A Device</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>BleRemoteDevice</p>
+</li>
+</ul>
+</section>
+<section id="allocate-memory-size-persistent-false">
+<h4>allocate_memory(size, persistent=False)<a class="headerlink" href="#allocate-memory-size-persistent-false" title="Link to this heading"></a></h4>
+<p>Allocate some Memory (EMSHI)</p>
+<p>TODO: transform it to a procedure</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>size</strong> – The size</p></li>
+<li><p><strong>persistent</strong> – The persistent</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>the starting address or None</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>int</p>
+</li>
+</ul>
+</section>
+<section id="cancel-scan">
+<h4>cancel_scan()<a class="headerlink" href="#cancel-scan" title="Link to this heading"></a></h4>
+<p>Call CancelInquiry, do not wait on response</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>Always True</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="connect-by-addr-bd-addr-addr-type-0-retry-3-scan-interval-ms-30-scan-window-ms-30-conn-interval-ms-7-5-conn-timeout-ms-1000-timeout-0-5">
+<h4>connect_by_addr(bd_addr, addr_type=0, retry=3, scan_interval_ms=30, scan_window_ms=30, conn_interval_ms=7.5, conn_timeout_ms=1000, timeout=0.5)<a class="headerlink" href="#connect-by-addr-bd-addr-addr-type-0-retry-3-scan-interval-ms-30-scan-window-ms-30-conn-interval-ms-7-5-conn-timeout-ms-1000-timeout-0-5" title="Link to this heading"></a></h4>
+<p>Connect to a device with the mac addr, for convenience when you already
+know the mac address of the remote device, or your name is André.</p>
+<p>if the diven bd addr is not in the remote devices, it create a remote
+device and conect to it.</p>
+<p>This function call be called without the need to call scan()
+before-hand.</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>addr_type</strong> – The address type</p></li>
+<li><p><strong>retry</strong> – The retry</p></li>
+<li><p><strong>scan_interval_ms</strong> – The scan interval milliseconds</p></li>
+<li><p><strong>scan_window_ms</strong> – The scan window milliseconds</p></li>
+<li><p><strong>conn_interval_ms</strong> – The connection interval milliseconds</p></li>
+<li><p><strong>conn_timeout_ms</strong> – The connection timeout milliseconds</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>The device if connected successfully, otherwise None</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>BLERemoteDevice or None</p>
+</li>
+</ul>
+</section>
+<section id="filter-devices-bd-addr-none-name-none-uuid-none-min-rssi-none-max-rssi-none">
+<h4>filter_devices(bd_addr=None, name=None, uuid=None, min_rssi=None, max_rssi=None)<a class="headerlink" href="#filter-devices-bd-addr-none-name-none-uuid-none-min-rssi-none-max-rssi-none" title="Link to this heading"></a></h4>
+<p>Filter devices list as specified, many parameters can be defined,
+if so it filter non-exclusively with the non-null parameters.</p>
+<p>Available filters:</p>
+<ul class="simple">
+<li><p>bd_addr: MAC Addr of the device (must be an bytearray)</p></li>
+<li><p>name : search a string in the device name</p></li>
+<li><p>uuid: search in the device service list (uuid format)</p></li>
+<li><p>max_rssi and min_rssi : define an rssi range in dBm (int)</p></li>
+</ul>
+<p>max_rssi and min_rssi are defaulted to 20 and -127 respectively</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>name</strong> – The name</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>min_rssi</strong> – The minimum rssi</p></li>
+<li><p><strong>max_rssi</strong> – The maximum rssi</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>A device list</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>An array of device, maybe empty</p>
+</li>
+</ul>
+</section>
+<section id="get-attributes-size">
+<h4>get_attributes_size()<a class="headerlink" href="#get-attributes-size" title="Link to this heading"></a></h4>
+<p>Populate the attributes sizes dynamically following special
+Attribute_Size command</p>
+</section>
+<section id="get-device-bd-addr-none-name-none-uuid-none-min-rssi-none-max-rssi-none">
+<h4>get_device(bd_addr=None, name=None, uuid=None, min_rssi=None, max_rssi=None)<a class="headerlink" href="#get-device-bd-addr-none-name-none-uuid-none-min-rssi-none-max-rssi-none" title="Link to this heading"></a></h4>
+<p>Get a unique remote device, if many are found, return the first one</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>name</strong> – The name</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>min_rssi</strong> – The minimum rssi</p></li>
+<li><p><strong>max_rssi</strong> – The maximum rssi</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>The device.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>BleRemoteDevice</p>
+</li>
+</ul>
+</section>
+<section id="get-nearest-device">
+<h4>get_nearest_device()<a class="headerlink" href="#get-nearest-device" title="Link to this heading"></a></h4>
+<p>get the nearest of remote devices</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>The nearest device.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>BleRemoteDevice</p>
+</li>
+</ul>
+</section>
+<section id="program-file">
+<h4>program(file)<a class="headerlink" href="#program-file" title="Link to this heading"></a></h4>
+<p>program the device with a given file</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>file</strong> – The file</p>
+</li>
+</ul>
+</section>
+<section id="register-characteristic-char-start-address-none">
+<h4>register_characteristic(char, start_address=None)<a class="headerlink" href="#register-characteristic-char-start-address-none" title="Link to this heading"></a></h4>
+<p>register the given characteristic at a given address if provided.</p>
+<p>If no address is provided it will allocate some memory.</p>
+<p>the provided must have a parent service which is already registered</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>char</strong> – The character</p></li>
+<li><p><strong>start_address</strong> – The start address</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>Operation Successful</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>boolean</p>
+</li>
+<li><p><strong>Raises</strong></p>
+<p><strong>Exception</strong> – The characteristic cannot be registered</p>
+</li>
+</ul>
+</section>
+<section id="register-service-service-start-address-none">
+<h4>register_service(service, start_address=None)<a class="headerlink" href="#register-service-service-start-address-none" title="Link to this heading"></a></h4>
+<p>Add a particular service to this device</p>
+<p>see <code class="docutils literal notranslate"><span class="pre">gatt.register_service</span></code> procedure</p>
+</section>
+<section id="register-services-services-none">
+<h4>register_services(services=None)<a class="headerlink" href="#register-services-services-none" title="Link to this heading"></a></h4>
+<p>compute memory map and add all the services to this device.</p>
+<p>this will auto-allocate some memory.</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>services</strong> – The services</p>
+</li>
+</ul>
+</section>
+<section id="remove-all-services">
+<h4>remove_all_services()<a class="headerlink" href="#remove-all-services" title="Link to this heading"></a></h4>
+<p>Remove all services.</p>
+</section>
+<section id="remove-attribute-attribute">
+<h4>remove_attribute(attribute)<a class="headerlink" href="#remove-attribute-attribute" title="Link to this heading"></a></h4>
+<p>remove an Attribute</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>attribute</strong> – The attribute</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>operatoin successfull</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>boolean</p>
+</li>
+</ul>
+</section>
+<section id="remove-service-service">
+<h4>remove_service(service)<a class="headerlink" href="#remove-service-service" title="Link to this heading"></a></h4>
+<p>remove a service instance from this device</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>service</strong> – The service</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>Success or not</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>bool</p>
+</li>
+</ul>
+</section>
+<section id="reset">
+<h4>reset()<a class="headerlink" href="#reset" title="Link to this heading"></a></h4>
+<p>Perform a ARC Reset</p>
+</section>
+<section id="scan-kwargs">
+<h4>scan(**kwargs)<a class="headerlink" href="#scan-kwargs" title="Link to this heading"></a></h4>
+<p>call gap.scan and populate self.remote_devices with BLERemoteDevices</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>kwargs</strong> – The keywords arguments</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>status</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>bool</p>
+</li>
+</ul>
+</section>
+<section id="sort-devices-key-str">
+<h4>sort_devices(key: str)<a class="headerlink" href="#sort-devices-key-str" title="Link to this heading"></a></h4>
+<p>Sort the devices list by attribute name,
+to sort it by name <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;name&quot;)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;rssi&quot;)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;interval&quot;)</span></code></p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>key</strong> (<em>str</em>) – The key</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="class-blengine-host-devices-bleremotedevice-engine-bd-addr-name-none">
+<h3>class blengine.host.devices.BLERemoteDevice(engine, bd_addr, name=None)<a class="headerlink" href="#class-blengine-host-devices-bleremotedevice-engine-bd-addr-name-none" title="Link to this heading"></a></h3>
+<p>A Remote Device is any device that is usable by a local device.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>engine</strong> – A HCIengine</p></li>
+<li><p><strong>bd_addr</strong> – The mac address of the device</p></li>
+<li><p><strong>name</strong> – A default name</p></li>
+</ul>
+</li>
+</ul>
+<section id="compute-interval-segment-none-method">
+<h4>compute_interval(segment=None, method=<function median>)<a class="headerlink" href="#compute-interval-segment-none-method" title="Link to this heading"></a></h4>
+<p>compute intervals and compute the mean of it, on the given segment if
+advertisments packets recevied, via the given method</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(<beginnnig>,<end>,<interval>)</p></li>
+<li><p><strong>method</strong> – The statistics function to process the rssi’s
+array default to <code class="docutils literal notranslate"><span class="pre">statistics.median</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>The interval.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>float</p>
+</li>
+</ul>
+</section>
+<section id="compute-rssi-segment-none-method">
+<h4>compute_rssi(segment=None, method=<function median>)<a class="headerlink" href="#compute-rssi-segment-none-method" title="Link to this heading"></a></h4>
+<p>compute a mean of rssi’s on the given segment of advertisments</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(<beginnnig>,<end>,<interval>)</p></li>
+<li><p><strong>method</strong> – The statistics function to process the rssi’s
+array default to <code class="docutils literal notranslate"><span class="pre">statistics.median</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>The rssi.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>Number</p>
+</li>
+</ul>
+</section>
+<section id="connect-retry-3-scan-interval-ms-30-scan-window-ms-30-conn-interval-ms-7-5-conn-timeout-ms-1000-timeout-1-bd-addr-type-none">
+<h4>connect(retry=3, scan_interval_ms=30, scan_window_ms=30, conn_interval_ms=7.5, conn_timeout_ms=1000, timeout=1, bd_addr_type=None)<a class="headerlink" href="#connect-retry-3-scan-interval-ms-30-scan-window-ms-30-conn-interval-ms-7-5-conn-timeout-ms-1000-timeout-1-bd-addr-type-none" title="Link to this heading"></a></h4>
+<p>connect to this remote device.</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>retry</strong> – The retry</p></li>
+<li><p><strong>scan_interval_ms</strong> – The scan interval milliseconds</p></li>
+<li><p><strong>scan_window_ms</strong> – The scan window milliseconds</p></li>
+<li><p><strong>conn_interval_ms</strong> – The connection interval milliseconds</p></li>
+<li><p><strong>conn_timeout_ms</strong> – The connection timeout milliseconds</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+<li><p><strong>bd_addr_type</strong> – The bd address type</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>connection successful flag</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>bool</p>
+</li>
+</ul>
+</section>
+<section id="id1">
+<h4>disconnect()<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>disconnect this device</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>status</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>bool</p>
+</li>
+</ul>
+</section>
+<section id="id2">
+<h4>discover_services()<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>Overload the standard discover_service to change the interval to 7.5 ms
+then make it like before.</p>
+</section>
+<section id="get-intervals-segment-none-filter-func-none-resolution-ms-1">
+<h4>get_intervals(segment=None, filter_func=None, resolution_ms=1)<a class="headerlink" href="#get-intervals-segment-none-filter-func-none-resolution-ms-1" title="Link to this heading"></a></h4>
+<p>Return an array of float representing the intervals betweem
+advertisements packet given segment and filtered by filter_func
+function, at the given resolution (default to 1ms).</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(<beginnnig>,<end>,<interval>)</p></li>
+<li><p><strong>filter_func</strong> – the function used to filter the
+adverstisements</p></li>
+<li><p><strong>resolution_ms</strong> – The resolution milliseconds</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>The intervals.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>Array of intervals numbers</p>
+</li>
+</ul>
+</section>
+<section id="on-advertising-pkt-adv-pkt">
+<h4>on_advertising_pkt(adv_pkt)<a class="headerlink" href="#on-advertising-pkt-adv-pkt" title="Link to this heading"></a></h4>
+<p>This function is triggered by the local device linked to this device on each advertising packet received,
+AD Packet Callback will update varying things on this device :</p>
+<ul class="simple">
+<li><p>mean interval</p></li>
+<li><p>mean rssi</p></li>
+<li><p>local name</p></li>
+<li><p>address</p></li>
+<li><p>mode</p></li>
+</ul>
+<p>Also, for each Advertising Data Packet decoded this function will trig a named event
+that have the same name as the Advertising Data packet.
+Ref Needed (see GAP_AD_Struct class in blengine.host.packets.gap)</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>adv_pkt</strong> – The advertising packet</p>
+</li>
+</ul>
+</section>
+<section id="on-disconnect-pkt">
+<h4>on_disconnect(pkt)<a class="headerlink" href="#on-disconnect-pkt" title="Link to this heading"></a></h4>
+<p>disconnect callback</p>
+</section>
+</section>
+</section>
+<section id="the-gatt-module">
+<h2>the Gatt module<a class="headerlink" href="#the-gatt-module" title="Link to this heading"></a></h2>
+<p>This module implement essentials element of the Bluetooth GATT Layer and provide some basic GATT Procedures.</p>
+<p>There is a lot in here, consider splitting it up !
+The first part of this listing define the implementations then the
+Device Characteristics and Descriptors objects</p>
+<p>Not many comments on implementations, Core Spec knowledge assumed.</p>
+<section id="class-blengine-host-gatt-blecharacteristic-uuid-properties-permission-0-handle-none-parent-service-none-value-none-value-handle-none-description-none-max-size-32">
+<h3>class blengine.host.gatt.BLECharacteristic(uuid, properties, permission=0, handle=None, parent_service=None, value=None, value_handle=None, description=None, max_size=32)<a class="headerlink" href="#class-blengine-host-gatt-blecharacteristic-uuid-properties-permission-0-handle-none-parent-service-none-value-none-value-handle-none-description-none-max-size-32" title="Link to this heading"></a></h3>
+<p>This class define a Characteristic as in the Bluletooth GATT Layer.</p>
+<p>It provide read() and write() functions which directly send a gatt command.</p>
+<p>It implement UserDict which provide a dict-like access for this class,
+it is not used internally but it is saved/restored, it provide a convenient way to
+manipulate custom fields
+by interacting directly with the Characteristic. It is used mainly in the parse()
+function to write to some custom fields when decoding complex characteristics.
+The goal is to have the same fields names as in the bluetooth specs.</p>
+<p>The class attributes are:</p>
+<ul class="simple">
+<li><p><strong>Variables</strong></p>
+<ul>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>properties</strong> – The characteristics properties</p></li>
+<li><p><strong>permission</strong> – The permission</p></li>
+<li><p><strong>handle</strong> – The handle</p></li>
+<li><p><strong>parent_service</strong> – The parent service</p></li>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>value_handle</strong> – The value handle</p></li>
+<li><p><strong>description</strong> – The description</p></li>
+<li><p><strong>max_size</strong> – The maximum size</p></li>
+<li><p><strong>descriptors</strong> – list of BLEDescriptors</p></li>
+</ul>
+</li>
+</ul>
+<p>Constructs a new instance.</p>
+<p>The properties can be entered as a string of comma-separated properties.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>properties</strong> – The properties as int or string</p></li>
+<li><p><strong>permission</strong> – The permission</p></li>
+<li><p><strong>handle</strong> – The handle</p></li>
+<li><p><strong>parent_service</strong> – The parent service</p></li>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>value_handle</strong> – The value handle</p></li>
+<li><p><strong>description</strong> – The description</p></li>
+<li><p><strong>max_size</strong> – The maximum size</p></li>
+</ul>
+</li>
+</ul>
+<section id="static-from-dict-dct">
+<h4>static from_dict(dct)<a class="headerlink" href="#static-from-dict-dct" title="Link to this heading"></a></h4>
+<p>Create a instance from a dictionary entry</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>dct</strong> – The dct</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>BLECharacteristic instance</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="full-size">
+<h4>full_size()<a class="headerlink" href="#full-size" title="Link to this heading"></a></h4>
+<p>this function is deprecated use self.size() insitead</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="get-descriptor-uuid">
+<h4>get_descriptor(uuid)<a class="headerlink" href="#get-descriptor-uuid" title="Link to this heading"></a></h4>
+<p>get a particular descriptor by name</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>uuid</strong> – The uuid</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>The descriptor.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>BLEDescriptor</p>
+</li>
+</ul>
+</section>
+<section id="get-properties">
+<h4>get_properties()<a class="headerlink" href="#get-properties" title="Link to this heading"></a></h4>
+<p>Return properties list as a comma separated string</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>The properties.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="parse-value-length-none">
+<h4>parse(value, length=None)<a class="headerlink" href="#parse-value-length-none" title="Link to this heading"></a></h4>
+<p>the default parse function, it will fill the value field.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>length</strong> – The length</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="read-device-none-parser-none">
+<h4>read(device=None, parser=None)<a class="headerlink" href="#read-device-none-parser-none" title="Link to this heading"></a></h4>
+<p>Read this characteristics value.</p>
+<p>If the device is not provided it will get the parent service device.</p>
+<p>plese refer to <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.read_value()</span></code></p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>device</strong> – The device</p></li>
+<li><p><strong>parser</strong> – The parser</p></li>
+</ul>
+</li>
+<li><p><strong>Raises</strong></p>
+<p><strong>Exception</strong> – No value handle for this characteristic</p>
+</li>
+</ul>
+</section>
+<section id="classmethod-register-uuid">
+<h4>classmethod register(uuid)<a class="headerlink" href="#classmethod-register-uuid" title="Link to this heading"></a></h4>
+<p>register this characteristic in the characteristic register</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>cls</strong> – The cls</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="to-dict">
+<h4>to_dict()<a class="headerlink" href="#to-dict" title="Link to this heading"></a></h4>
+<p>Returns a dictionary representation of the object.</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>Dictionary representation of the object.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>dict</p>
+</li>
+</ul>
+</section>
+<section id="write-value-none-device-none-timeout-1">
+<h4>write(value=None, device=None, timeout=1)<a class="headerlink" href="#write-value-none-device-none-timeout-1" title="Link to this heading"></a></h4>
+<p>write a value for this characteristic to a device, if device is not provided,
+it will use the device from this characteristic service.</p>
+<p>plese refer to <code class="docutils literal notranslate"><span class="pre">blengine.host.procedures.gatt.write_value()</span></code></p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>value</strong> – The value</p></li>
+<li><p><strong>device</strong> – The device</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>status</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>bool</p>
+</li>
+<li><p><strong>Raises</strong></p>
+<p><strong>Exception</strong> – This characteristic value handle is not set</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="class-blengine-host-gatt-bledescriptor-handle-uuid">
+<h3>class blengine.host.gatt.BLEDescriptor(handle, uuid)<a class="headerlink" href="#class-blengine-host-gatt-bledescriptor-handle-uuid" title="Link to this heading"></a></h3>
+<p>Describe a Descriptor as in the Bluetooth GATT Layer</p>
+<section id="id3">
+<h4>static from_dict(dct)<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>construct an instance from a dictionary</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>dct</strong> – The dct</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>a new instance</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>BLEDescriptor</p>
+</li>
+</ul>
+</section>
+<section id="id4">
+<h4>to_dict()<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<p>Returns a dictionary representation of the object.</p>
+</section>
+</section>
+<section id="class-blengine-host-gatt-bleprimaryservice-uuid-handle-start-0-handle-end-0">
+<h3>class blengine.host.gatt.BLEPrimaryService(uuid, handle_start=0, handle_end=0)<a class="headerlink" href="#class-blengine-host-gatt-bleprimaryservice-uuid-handle-start-0-handle-end-0" title="Link to this heading"></a></h3>
+<p>Convenience class to define a Primary service</p>
+<p>see <code class="docutils literal notranslate"><span class="pre">BLEService</span></code></p>
+<p>Constructs a new instance.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>uuid</strong> (<em>UUID</em>) – the service uuid</p></li>
+<li><p><strong>handle_start</strong> (<em>int</em>) – the start handle of the service</p></li>
+<li><p><strong>handle_end</strong> (<em>int</em>) – the end handle of the service</p></li>
+<li><p><strong>uuid_type</strong> (<em>UUID</em>) – the type UUID</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="class-blengine-host-gatt-blesecondaryservice-uuid-handle-start-0-handle-end-0">
+<h3>class blengine.host.gatt.BLESecondaryService(uuid, handle_start=0, handle_end=0)<a class="headerlink" href="#class-blengine-host-gatt-blesecondaryservice-uuid-handle-start-0-handle-end-0" title="Link to this heading"></a></h3>
+<p>Convenience class to define a secondary service</p>
+<p>see <code class="docutils literal notranslate"><span class="pre">BLEService</span></code></p>
+<p>Constructs a new instance.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>uuid</strong> (<em>UUID</em>) – the service uuid</p></li>
+<li><p><strong>handle_start</strong> (<em>int</em>) – the start handle of the service</p></li>
+<li><p><strong>handle_end</strong> (<em>int</em>) – the end handle of the service</p></li>
+<li><p><strong>uuid_type</strong> (<em>UUID</em>) – the type UUID</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="class-blengine-host-gatt-bleservice-uuid-handle-start-int-handle-end-int-uuid-type">
+<h3>class blengine.host.gatt.BLEService(uuid, handle_start: int, handle_end: int, uuid_type)<a class="headerlink" href="#class-blengine-host-gatt-bleservice-uuid-handle-start-int-handle-end-int-uuid-type" title="Link to this heading"></a></h3>
+<p>Define a Service as in the Bluetooth GATT Layer.</p>
+<p>The others attributes provided by this class are</p>
+<ul class="simple">
+<li><p><strong>Variables</strong></p>
+<ul>
+<li><p><strong>characteristics</strong> – The type of the bd_addr defaulted to 0x00</p></li>
+<li><p><strong>included_services</strong> – Services Included in this one</p></li>
+<li><p><strong>device</strong> – the device who own this service</p></li>
+</ul>
+</li>
+</ul>
+<p>Constructs a new instance.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>uuid</strong> (<em>UUID</em>) – the service uuid</p></li>
+<li><p><strong>handle_start</strong> (<em>int</em>) – the start handle of the service</p></li>
+<li><p><strong>handle_end</strong> (<em>int</em>) – the end handle of the service</p></li>
+<li><p><strong>uuid_type</strong> (<em>UUID</em>) – the type UUID</p></li>
+</ul>
+</li>
+</ul>
+<section id="id5">
+<h4>static from_dict(dct)<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<p>Create a Service instance fform the object</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>dct</strong> – The dct</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="id6">
+<h4>full_size()<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>return the size of this service plus the the sizes of each of this
+service characteristic’s</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="get-uuid">
+<h4>get(uuid)<a class="headerlink" href="#get-uuid" title="Link to this heading"></a></h4>
+<p>return a characteristic or a included service</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>uuid</strong> – The uuid</p>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>characteristic or service</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>BLECharacteristic or BLEService</p>
+</li>
+</ul>
+</section>
+<section id="include-service-service">
+<h4>include_service(service)<a class="headerlink" href="#include-service-service" title="Link to this heading"></a></h4>
+<p>Include another service into this one</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<p><strong>service</strong> – The service</p>
+</li>
+</ul>
+</section>
+<section id="size">
+<h4>size()<a class="headerlink" href="#size" title="Link to this heading"></a></h4>
+<p>return this service size, not the characteristics.</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="id7">
+<h4>to_dict()<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<p>Returns a dictionary representation of the object.</p>
+<ul>
+<li><p><strong>Returns</strong></p>
+<p>Dictionary representation of the object.</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>dict</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="exception-blengine-host-gatt-characteristicpropertynotfoundexception">
+<h3>exception blengine.host.gatt.CharacteristicPropertyNotFoundException()<a class="headerlink" href="#exception-blengine-host-gatt-characteristicpropertynotfoundexception" title="Link to this heading"></a></h3>
+</section>
+<section id="exception-blengine-host-gatt-serviceexception">
+<h3>exception blengine.host.gatt.ServiceException()<a class="headerlink" href="#exception-blengine-host-gatt-serviceexception" title="Link to this heading"></a></h3>
+</section>
+<section id="blengine-host-gatt-discover-all-characteristics-engine-conn-handle-service-handle-handle-start-handle-end-timeout-2">
+<h3>blengine.host.gatt.discover_all_characteristics(engine, conn_handle, service_handle, handle_start, handle_end, timeout=2)<a class="headerlink" href="#blengine-host-gatt-discover-all-characteristics-engine-conn-handle-service-handle-handle-start-handle-end-timeout-2" title="Link to this heading"></a></h3>
+<p>discover all characteristics for a given services</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>service_handle</strong> – The service handle</p></li>
+<li><p><strong>handle_start</strong> – The handle start</p></li>
+<li><p><strong>handle_end</strong> – The handle end</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="blengine-host-gatt-discover-all-services-engine-conn-handle-include-chars-true-timeout-2">
+<h3>blengine.host.gatt.discover_all_services(engine, conn_handle, include_chars=True, timeout=2)<a class="headerlink" href="#blengine-host-gatt-discover-all-services-engine-conn-handle-include-chars-true-timeout-2" title="Link to this heading"></a></h3>
+<p>Discover a Device Services and Characteristics.</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>include_chars</strong> – The include characters</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="blengine-host-gatt-discover-relationships-engine-conn-handle-service-handle-handle-start-handle-end-timeout-2">
+<h3>blengine.host.gatt.discover_relationships(engine, conn_handle, service_handle, handle_start, handle_end, timeout=2)<a class="headerlink" href="#blengine-host-gatt-discover-relationships-engine-conn-handle-service-handle-handle-start-handle-end-timeout-2" title="Link to this heading"></a></h3>
+<p>discover all characteristics for a given service</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>service_handle</strong> – The service handle</p></li>
+<li><p><strong>handle_start</strong> – The handle start</p></li>
+<li><p><strong>handle_end</strong> – The handle end</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="blengine-host-gatt-get-descriptors-engine-conn-handle-services-timeout-2">
+<h3>blengine.host.gatt.get_descriptors(engine, conn_handle, services, timeout=2)<a class="headerlink" href="#blengine-host-gatt-get-descriptors-engine-conn-handle-services-timeout-2" title="Link to this heading"></a></h3>
+<p>Gets the descriptors.</p>
+<ul class="simple">
+<li><p><strong>Parameters</strong></p>
+<ul>
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>conn_handle</strong> – The connection handle</p></li>
+<li><p><strong>services</strong> – The services</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="blengine-host-gatt-register-characteristic-engine-char-start-address">
+<h3>blengine.host.gatt.register_characteristic(engine, char, start_address)<a class="headerlink" href="#blengine-host-gatt-register-characteristic-engine-char-start-address" title="Link to this heading"></a></h3>
+<p>{ function_description }</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>char</strong> – The character</p></li>
+<li><p><strong>start_address</strong> – The start address</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="blengine-host-gatt-register-relationship-engine-service">
+<h3>blengine.host.gatt.register_relationship(engine, service)<a class="headerlink" href="#blengine-host-gatt-register-relationship-engine-service" title="Link to this heading"></a></h3>
+<p>{ function_description }</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>service</strong> – The service</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+<section id="blengine-host-gatt-register-service-engine-service-start-address-include-chars-true">
+<h3>blengine.host.gatt.register_service(engine, service, start_address, include_chars=True)<a class="headerlink" href="#blengine-host-gatt-register-service-engine-service-start-address-include-chars-true" title="Link to this heading"></a></h3>
+<p>Add a particular service to this device</p>
+<ul>
+<li><p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>engine</strong> – The engine</p></li>
+<li><p><strong>service</strong> – The service</p></li>
+<li><p><strong>start_address</strong> – The start address</p></li>
+<li><p><strong>include_chars</strong> – The include characters</p></li>
+</ul>
+</li>
+<li><p><strong>Returns</strong></p>
+<p>{ description_of_the_return_value }</p>
+</li>
+<li><p><strong>Return type</strong></p>
+<p>{ return_type_description }</p>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

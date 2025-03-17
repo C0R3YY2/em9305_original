@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES Counter mode(CTR) &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AES CMAC" href="AES_CMAC.html" />
+    <link rel="prev" title="AES Cipher Block Chaining mode (CBC)" href="AES_CBC.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="AESModes.html">AES modes and MAC</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html">AES Electronic Code Book mode (ECB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html">AES Cipher Block Chaining mode (CBC)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AES Counter mode(CTR)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-counter-mode-ctr">The Counter mode (CTR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#aes-type">AES Type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#aes-key-size-in-bits">AES Key size in bits</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#explicit-key-or-key-container">Explicit key or key container</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#error-status">Error status</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ctr-initctx">AES_CTR_InitCtx</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#prototype">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ctr-encrypt">AES_CTR_Encrypt</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ctr-decrypt">AES_CTR_Decrypt</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id5">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id6">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id7">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id8">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performances">Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html">AES CMAC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html">AES CCM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html">AES GCM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="AESModes.html">AES modes and MAC</a> &raquo;</li>
+      <li>AES Counter mode(CTR)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aes-counter-mode-ctr">
+<span id="aes-ctr-label"></span><h1>AES Counter mode(CTR)<a class="headerlink" href="#aes-counter-mode-ctr" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] NIST SP 800-38A: Recommendation for Block Cipher Modes of Operation</p>
+<p><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf">NIST SP800-38A</a>: <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this chapter is to describe the functionality of the library <strong>AES CTR</strong>.</p>
+<dl class="simple">
+<dt>This chapter:</dt><dd><ul class="simple">
+<li><p>describes the API, including the prototype, the parameters, the error codes etc…</p></li>
+<li><p>provides the performances of the function.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="the-counter-mode-ctr">
+<h2>The Counter mode (CTR)<a class="headerlink" href="#the-counter-mode-ctr" title="Permalink to this headline"></a></h2>
+<p>This library implements AES CTR algorithm according to the specification NIST SP 800-38A[1].</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The CTR mode is a mode that encrypts or decrypts messages.</p></li>
+<li><p>CTR mode can encrypt and decrypt data of any size.</p></li>
+<li><p>In CTR encryption, AES is invoked on each counter block, and the resulting output blocks are XORed with the corresponding plaintext blocks to produce the ciphertext blocks</p></li>
+<li><p>In CTR decryption, AES is invoked on each counter block, and the resulting output blocks are XORed with the corresponding ciphertext blocks to produce the plaintext blocks</p></li>
+</ul>
+</div></blockquote>
+<p>Next figure shows the encryption process. For each block of 16 bytes, the counter is encrypted with AES in encryption mode. The plaintext block is then XORed with the encryption of the counter to produce the ciphertext. The counter is incremented by one for each block.</p>
+<img alt="_images/AES_CTR_Enc.png" src="_images/AES_CTR_Enc.png" />
+<p>Next figure shows the decryption process. For each block of 16 bytes, the counter is encrypted with AES in encryption mode. The ciphertext block is then XORed with the encryption of the counter to retrieve the plaintext block. The counter is incremented by one for each block.</p>
+<img alt="_images/AES_CTR_Dec.png" src="_images/AES_CTR_Dec.png" />
+<p>Because the ciphertext is produced XORing byte by byte the plaintext, the encryption granularity is one byte.</p>
+</section>
+<section id="underlying-aes">
+<h2>Underlying AES<a class="headerlink" href="#underlying-aes" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>EM9305 embeds:</dt><dd><ul class="simple">
+<li><p>A software AES that manages the key sizes (128, 192 and 256).</p></li>
+<li><p>A hardware AES that only manages 128-bit key size.</p></li>
+</ul>
+</dd>
+<dt>The hardware AES can be invoked:</dt><dd><ul class="simple">
+<li><p>either with a key given explicitly</p></li>
+<li><p>or with a key stored in a key container. In this case, the ID of the key is provided to the AES.</p></li>
+</ul>
+</dd>
+</dl>
+<p>AES CTR APIs interface both the AES Software and the AES hardware. When AES hardware is used, the APIs allow the use of an explicit key or the use of a key container.</p>
+<p>Next figure shows which AES is executed, according to the various options.</p>
+<blockquote>
+<div><img alt="_images/AES_Select.png" src="_images/AES_Select.png" />
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<section id="aes-type">
+<h4>AES Type<a class="headerlink" href="#aes-type" title="Permalink to this headline"></a></h4>
+<p>The underlying algorithm is chosen with the following macro: <a class="reference internal" href="AES.html#aes-hw-sw-label"><span class="std std-ref">AES type</span></a></p>
+</section>
+<section id="aes-key-size-in-bits">
+<h4>AES Key size in bits<a class="headerlink" href="#aes-key-size-in-bits" title="Permalink to this headline"></a></h4>
+<p>The key size is chosen with the macro defined here: <a class="reference internal" href="AES.html#aes-key-size-bits-label"><span class="std std-ref">AES Key size in bits</span></a></p>
+</section>
+<section id="explicit-key-or-key-container">
+<h4>Explicit key or key container<a class="headerlink" href="#explicit-key-or-key-container" title="Permalink to this headline"></a></h4>
+<p>The choice between a key provided by value or implicitly with a key container ID is given by the following enumeration:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv417AES_CTR_KeyType_t">
+<span id="_CPPv317AES_CTR_KeyType_t"></span><span id="_CPPv217AES_CTR_KeyType_t"></span><span class="target" id="group___a_e_s___c_t_r_1ga50ac3eb0b09ea9282970094065f26eb4"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_KeyType_t</span></span></span><a class="headerlink" href="#_CPPv417AES_CTR_KeyType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Select if the key is passed by value(explicitly) or if the key is contained in a key container. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_CTR_KeyType_t17AES_CTR_KEY_VALUEE">
+<span id="_CPPv3N17AES_CTR_KeyType_t17AES_CTR_KEY_VALUEE"></span><span id="_CPPv2N17AES_CTR_KeyType_t17AES_CTR_KEY_VALUEE"></span><span class="target" id="group___a_e_s___c_t_r_1gga50ac3eb0b09ea9282970094065f26eb4a772fb9ab5300a5983cc4bf0bd0f3b835"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_KEY_VALUE</span></span></span><a class="headerlink" href="#_CPPv4N17AES_CTR_KeyType_t17AES_CTR_KEY_VALUEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provided explicitly by value. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_CTR_KeyType_t14AES_CTR_KEY_IDE">
+<span id="_CPPv3N17AES_CTR_KeyType_t14AES_CTR_KEY_IDE"></span><span id="_CPPv2N17AES_CTR_KeyType_t14AES_CTR_KEY_IDE"></span><span class="target" id="group___a_e_s___c_t_r_1gga50ac3eb0b09ea9282970094065f26eb4a75af1c08d74ff879f03f4c8142fa6dc4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_KEY_ID</span></span></span><a class="headerlink" href="#_CPPv4N17AES_CTR_KeyType_t14AES_CTR_KEY_IDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provied by its ID. The key is in a key container. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="error-status">
+<h4>Error status<a class="headerlink" href="#error-status" title="Permalink to this headline"></a></h4>
+<p>The API error status is given by:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv419AES_CTR_Lib_error_t">
+<span id="_CPPv319AES_CTR_Lib_error_t"></span><span id="_CPPv219AES_CTR_Lib_error_t"></span><span class="target" id="group___a_e_s___c_t_r_1ga9bb38aa0f5d485f89dd8b4c9c0d10216"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv419AES_CTR_Lib_error_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Error status words for AES CTR mode. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CTR_Lib_error_t15AES_CTR_SUCCESSE">
+<span id="_CPPv3N19AES_CTR_Lib_error_t15AES_CTR_SUCCESSE"></span><span id="_CPPv2N19AES_CTR_Lib_error_t15AES_CTR_SUCCESSE"></span><span class="target" id="group___a_e_s___c_t_r_1gga9bb38aa0f5d485f89dd8b4c9c0d10216a6a0166fcf05a9b0cecb298bb87946cdc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CTR_Lib_error_t15AES_CTR_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES CTR computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CTR_Lib_error_t30AES_CTR_INCOMPATIBLE_PARAMETERE">
+<span id="_CPPv3N19AES_CTR_Lib_error_t30AES_CTR_INCOMPATIBLE_PARAMETERE"></span><span id="_CPPv2N19AES_CTR_Lib_error_t30AES_CTR_INCOMPATIBLE_PARAMETERE"></span><span class="target" id="group___a_e_s___c_t_r_1gga9bb38aa0f5d485f89dd8b4c9c0d10216a907ac7c34b78aa421ea52d8a68eba2c8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_INCOMPATIBLE_PARAMETER</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CTR_Lib_error_t30AES_CTR_INCOMPATIBLE_PARAMETERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incompatible key size with key type and AES type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CTR_Lib_error_t24AES_CTR_INCORRECT_LENGTHE">
+<span id="_CPPv3N19AES_CTR_Lib_error_t24AES_CTR_INCORRECT_LENGTHE"></span><span id="_CPPv2N19AES_CTR_Lib_error_t24AES_CTR_INCORRECT_LENGTHE"></span><span class="target" id="group___a_e_s___c_t_r_1gga9bb38aa0f5d485f89dd8b4c9c0d10216ab20ca8b2f7deb903ad55936d127e55bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_INCORRECT_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CTR_Lib_error_t24AES_CTR_INCORRECT_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incorrect length- Data must be 16 bytes long. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CTR_Lib_error_t28AES_CTR_INCORRECT_KEY_LENGTHE">
+<span id="_CPPv3N19AES_CTR_Lib_error_t28AES_CTR_INCORRECT_KEY_LENGTHE"></span><span id="_CPPv2N19AES_CTR_Lib_error_t28AES_CTR_INCORRECT_KEY_LENGTHE"></span><span class="target" id="group___a_e_s___c_t_r_1gga9bb38aa0f5d485f89dd8b4c9c0d10216a20fca7b36b4cefed43fa8d40fe2b7a6b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_INCORRECT_KEY_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CTR_Lib_error_t28AES_CTR_INCORRECT_KEY_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key length is incorrect.It shall be 128,192 or 256. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_CTR_Lib_error_t32AES_CTR_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N19AES_CTR_Lib_error_t32AES_CTR_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N19AES_CTR_Lib_error_t32AES_CTR_INCORRECT_RESULT_POINTERE"></span><span class="target" id="group___a_e_s___c_t_r_1gga9bb38aa0f5d485f89dd8b4c9c0d10216a62ab355a12b0a68c238cc2d9f8f209fa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N19AES_CTR_Lib_error_t32AES_CTR_INCORRECT_RESULT_POINTERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="context">
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h3>
+<p>A context that contains the key size, the underlying AES , the key type , the key value \ key ID  and the current counter is defined as follows.</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv411AES_CTR_CTX">
+<span id="_CPPv311AES_CTR_CTX"></span><span id="_CPPv211AES_CTR_CTX"></span><span id="AES_CTR_CTX"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_CTX</span></span></span><a class="headerlink" href="#_CPPv411AES_CTR_CTX" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES CTR context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CTR_CTX7keySizeE">
+<span id="_CPPv3N11AES_CTR_CTX7keySizeE"></span><span id="_CPPv2N11AES_CTR_CTX7keySizeE"></span><span id="AES_CTR_CTX::keySize__AES_key_size_bit_t"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x_1aa120642770995f63b38ae3e3fcf8c284"></span><a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keySize</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CTR_CTX7keySizeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CTR_CTX7AESTypeE">
+<span id="_CPPv3N11AES_CTR_CTX7AESTypeE"></span><span id="_CPPv2N11AES_CTR_CTX7AESTypeE"></span><span id="AES_CTR_CTX::AESType__AES_Select_t"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x_1a4ec20892ec6355b4c7fa31e31b8206df"></span><a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AESType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CTR_CTX7AESTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES Type: Either AES_HARDWARE or AES_SOFTWARE. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CTR_CTX7keyTypeE">
+<span id="_CPPv3N11AES_CTR_CTX7keyTypeE"></span><span id="_CPPv2N11AES_CTR_CTX7keyTypeE"></span><span id="AES_CTR_CTX::keyType__AES_CTR_KeyType_t"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x_1a9846017efab0bb98ee63ee44fd98a6c1"></span><a class="reference internal" href="#_CPPv417AES_CTR_KeyType_t" title="AES_CTR_KeyType_t"><span class="n"><span class="pre">AES_CTR_KeyType_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keyType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CTR_CTX7keyTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key type. Either KEY_ID or KEY_VALUE </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CTR_CTX3keyE">
+<span id="_CPPv3N11AES_CTR_CTX3keyE"></span><span id="_CPPv2N11AES_CTR_CTX3keyE"></span><span id="AES_CTR_CTX::key__uint8_tA"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x_1ad824426ab05619115c9f1fa621202fa3"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CTR_CTX3keyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The key value or the key index </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CTR_CTX7counterE">
+<span id="_CPPv3N11AES_CTR_CTX7counterE"></span><span id="_CPPv2N11AES_CTR_CTX7counterE"></span><span id="AES_CTR_CTX::counter__uint8_tA"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x_1a2af9ae2e46bb162a7915ddeec32302be"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">counter</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CTR_CTX7counterE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Current Counter Value </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CTR_CTX6bufferE">
+<span id="_CPPv3N11AES_CTR_CTX6bufferE"></span><span id="_CPPv2N11AES_CTR_CTX6bufferE"></span><span id="AES_CTR_CTX::buffer__uint8_tA"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x_1a18f75658f6d830a96ebd530251758440"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">buffer</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_CTR_CTX6bufferE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Current AES result-Accumulation buffer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_CTR_CTX11nbByteReadyE">
+<span id="_CPPv3N11AES_CTR_CTX11nbByteReadyE"></span><span id="_CPPv2N11AES_CTR_CTX11nbByteReadyE"></span><span id="AES_CTR_CTX::nbByteReady__uint8_t"></span><span class="target" id="struct_a_e_s___c_t_r___c_t_x_1a5f61e8f9c781c865387ca48745fec9af"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nbByteReady</span></span></span><a class="headerlink" href="#_CPPv4N11AES_CTR_CTX11nbByteReadyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Indicate how many bytes in the buffer are available to encrypt/decrypt the message before executing a new AES </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="aes-ctr-initctx">
+<h3>AES_CTR_InitCtx<a class="headerlink" href="#aes-ctr-initctx" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>This function initializes an AES context with the different options: key size, underlying AES and key type. It also sets the key and the initial counter value.</p>
+</section>
+<section id="prototype">
+<h4>Prototype<a class="headerlink" href="#prototype" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_CTR_InitCtxP11AES_CTR_CTX12AES_Select_t17AES_CTR_KeyType_t18AES_key_size_bit_tP7uint8_tP7uint8_t">
+<span id="_CPPv315AES_CTR_InitCtxP11AES_CTR_CTX12AES_Select_t17AES_CTR_KeyType_t18AES_key_size_bit_tP7uint8_tP7uint8_t"></span><span id="_CPPv215AES_CTR_InitCtxP11AES_CTR_CTX12AES_Select_t17AES_CTR_KeyType_t18AES_key_size_bit_tP7uint8_tP7uint8_t"></span><span id="AES_CTR_InitCtx__AES_CTR_CTXP.AES_Select_t.AES_CTR_KeyType_t.AES_key_size_bit_t.uint8_tP.uint8_tP"></span><span class="target" id="group___a_e_s___c_t_r_1gad79a8c3ac8ff7d9e85049d83547ed2a4"></span><a class="reference internal" href="#_CPPv419AES_CTR_Lib_error_t" title="AES_CTR_Lib_error_t"><span class="n"><span class="pre">AES_CTR_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_InitCtx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CTR_CTX" title="AES_CTR_CTX"><span class="n"><span class="pre">AES_CTR_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <a class="reference internal" href="#_CPPv417AES_CTR_KeyType_t" title="AES_CTR_KeyType_t"><span class="n"><span class="pre">AES_CTR_KeyType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keySize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">initialCounter</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_CTR_InitCtxP11AES_CTR_CTX12AES_Select_t17AES_CTR_KeyType_t18AES_key_size_bit_tP7uint8_tP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initialize an AES CTR context. Choose the underlying AES, the key type and key size. Set the key value. Set the initial value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[out]</strong> AES CTR context to set </p></li>
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> The underlying AES. Either AES_HARDWARE or AES_SOFTWARE </p></li>
+<li><p><strong>keyType</strong> – <strong>[in]</strong> The type of the key: Either KEY_VALUE for explicitly key value or KEY_ID for a key in a key container </p></li>
+<li><p><strong>keySize</strong> – <strong>[in]</strong> The size of the key in bits : AES_KEY_128,AES_KEY_192 or AES_KEY_256 </p></li>
+<li><p><strong>initialCounter</strong> – <strong>[in]</strong> The 16-byte initial counter value </p></li>
+<li><p><strong>key</strong> – <strong>[in]</strong> The key value(16 to 32 bytes) or the key ID (first byte)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CTR_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_CTR_INCORRECT_KEY_LENGTH</strong> – Incorrect key length </p></li>
+<li><p><strong>AES_CTR_INCOMPATIBLE_PARAMETER</strong> – Hardware/software selection is not compatible with the key length </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CTR context to initialize</p></li>
+<li><p><strong>AESSelect</strong>: Select the AES hardware or the AES software</p></li>
+<li><p><strong>keyType</strong> : Select if the key is given explicitly by value or if it refers by its key container ID.</p></li>
+<li><p><strong>keySize</strong> : Key size in bits</p></li>
+<li><p><strong>initialCounter</strong> : 16-byte initial counter value</p></li>
+<li><dl class="simple">
+<dt><strong>key</strong>:</dt><dd><ul>
+<li><p>When the key is given explicitly: 16, 24 or 32 bytes representing the key value.</p></li>
+<li><p>When the key is given by its ID: 1 byte with the key ID.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CTR_SUCCESS</p></td>
+<td><p>Initialization successful</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CTR_INCORRECT_KEY_LENGTH</p></td>
+<td><p>Incorrect key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CTR_INCOMPATIBLE_PARAMETER</p></td>
+<td><p>Hardware AES is not compatible with this key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ctr-encrypt">
+<h3>AES_CTR_Encrypt<a class="headerlink" href="#aes-ctr-encrypt" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Goal of the function<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>This function encrypts a message in CTR mode.</p>
+</section>
+<section id="id2">
+<h4>Prototype<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_CTR_EncryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv315AES_CTR_EncryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv215AES_CTR_EncryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="AES_CTR_Encrypt__AES_CTR_CTXP.uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="group___a_e_s___c_t_r_1ga968ac91084c3c3ffdf2c241cc76d4162"></span><a class="reference internal" href="#_CPPv419AES_CTR_Lib_error_t" title="AES_CTR_Lib_error_t"><span class="n"><span class="pre">AES_CTR_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_Encrypt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CTR_CTX" title="AES_CTR_CTX"><span class="n"><span class="pre">AES_CTR_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeInBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_CTR_EncryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Encrypt data in CTR mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CTR context </p></li>
+<li><p><strong>plainText</strong> – <strong>[in]</strong> Pointer on data to encrypt. It should be sizeInBytes long </p></li>
+<li><p><strong>cipherText</strong> – <strong>[out]</strong> Pointer on the result. It should be sizeInBytes long </p></li>
+<li><p><strong>sizeInBytes</strong> – <strong>[in]</strong> Size of the plaintext=Size of the cipher text in bytes. It can be any size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CTR_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_CTR_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CTR context</p></li>
+<li><p><strong>plainText</strong>: Message to encrypt</p></li>
+<li><p><strong>cipherText</strong>: Encrypted message.</p></li>
+<li><p><strong>sizeInBytes</strong>: Size of the message to encrypt in bytes.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Granularity of CTR mode is 1 byte. There is no constraint on the size of the message to encrypt.</p></li>
+<li><p>The ciphertext size is the same as the plaintext size.</p></li>
+<li><p>Several calls of AES_CTR_Encrypt  can be performed consecutively.</p></li>
+<li><p>In addition, several AES CTR computations with different contexts can be interlaced.</p></li>
+<li><p>When encrypting data shorter than 16 bytes, it may be possible that the counter encryption has been performed in a previous call. In that case, the execution time of this function will be faster.</p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id4">
+<h4>Return values<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CTR_SUCCESS</p></td>
+<td><p>Successful encryption</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CTR_INCORRECT_RESULT_POINTER</p></td>
+<td><p>Ciphertext pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CTR_INCORRECT_LENGTH</p></td>
+<td><p>The size in bytes of the plaintext is not a multiple of 16</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ctr-decrypt">
+<h3>AES_CTR_Decrypt<a class="headerlink" href="#aes-ctr-decrypt" title="Permalink to this headline"></a></h3>
+<section id="id5">
+<h4>Goal of the function<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
+<p>This function decrypts a message in CTR mode.</p>
+</section>
+<section id="id6">
+<h4>Prototype<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_CTR_DecryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv315AES_CTR_DecryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv215AES_CTR_DecryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="AES_CTR_Decrypt__AES_CTR_CTXP.uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="group___a_e_s___c_t_r_1ga7a04eb1311172456f9c71c6898a24b44"></span><a class="reference internal" href="#_CPPv419AES_CTR_Lib_error_t" title="AES_CTR_Lib_error_t"><span class="n"><span class="pre">AES_CTR_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CTR_Decrypt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_CTR_CTX" title="AES_CTR_CTX"><span class="n"><span class="pre">AES_CTR_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeInBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_CTR_DecryptP11AES_CTR_CTXP7uint8_tP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Decrypt data in CTR mode. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using key container, the key must be typed either AES_HW_ENC_DEC or AES_HW_ENC_ONLY. This is due to the fact that, in CTR mode, the underlying AES performs an encryption even to decrypt. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CTR context </p></li>
+<li><p><strong>cipherText</strong> – <strong>[in]</strong> Pointer on data to decrypt. It should be sizeInBytes long </p></li>
+<li><p><strong>plainText</strong> – <strong>[out]</strong> Pointer on the result. It should be sizeInBytes long </p></li>
+<li><p><strong>sizeInBytes</strong> – <strong>[in]</strong> Size of the cipherText=Size of the cipher text in bytes. It can be any size.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CTR_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_CTR_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CTR context</p></li>
+<li><p><strong>cipherText</strong>: Message to decrypt</p></li>
+<li><p><strong>plainText</strong> : Decrypted message.</p></li>
+<li><p><strong>sizeInBytes</strong> : Size of the message to decrypt in bytes.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Granularity of CTR mode is 1 byte. There is no constraint on the size of the message to decrypt.</p></li>
+<li><p>The plaintext size is the same as the cipherText size.</p></li>
+<li><p>Several calls of AES_CTR_Encrypt can be performed consecutively.</p></li>
+<li><p>In addition, several AES CTR computations with different contexts can be interlaced.</p></li>
+<li><p>When decrypting data shorter than 16 bytes, it may be possible that the counter encryption has been performed in a previous call. In that case, the execution time of this function will be faster.</p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). <strong>AES_DEC_ONLY(Decryption)</strong> would <strong>not</strong> work since the AES CTR mode only uses the AES core algorithm in encryption mode. The key must not have been invalidated. In case those conditions are not respected, this function returns an error of AES_Error_t.</p>
+</div>
+</section>
+<section id="id8">
+<h4>Return values<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CTR_SUCCESS</p></td>
+<td><p>Successful decryption</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CTR_INCORRECT_RESULT_POINTER</p></td>
+<td><p>Plaintext pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CTR_INCORRECT_LENGTH</p></td>
+<td><p>The size in bytes of the plaintext is not a multiple of 16</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="performances">
+<h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>328 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No usage of global RAM except the AES_CTR_CTX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>128 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="execution-time">
+<h3>Execution time<a class="headerlink" href="#execution-time" title="Permalink to this headline"></a></h3>
+<p>The execution time clearly depends on the size of the message, the key size and the underlying algorithm. In next table, we provide the average figure for one block (16 bytes).
+(in that case, only one AES encryption is performed)</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CTR_InitCtx</p></td>
+<td><p>Any</p></td>
+<td><p>Any</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CTR_Encrypt</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CTR_Encrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>115</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CTR_Encrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>141</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CTR_Encrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>159</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CTR_Decrypt</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CTR_Decrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>115</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CTR_Decrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>141</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CTR_Decrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>159</p></td>
+</tr>
+</tbody>
+</table>
+<p>Naturally, as AES is alwayas performed in encryption mode, the CTR encryption and decryption times are identical.</p>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<p>AES CTR lib depends on the AES lib.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>Next code shows basic examples:</dt><dd><ul class="simple">
+<li><p>using the AES hardware with an explicit key</p></li>
+<li><p>using the AES hardware with key stored in key containers</p></li>
+<li><p>using the AES software</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @file       ExampleAES_CTR.c</span>
+<span class="c1">///</span>
+<span class="c1">///</span>
+<span class="c1">/// @brief   	Example of use of AES CTR</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @copyright Copyright (C) 2022 EM Microelectronic</span>
+<span class="c1">/// @cond</span>
+<span class="c1">///</span>
+<span class="c1">/// All rights reserved.</span>
+<span class="c1">///</span>
+<span class="c1">/// Redistribution and use in source and binary forms, with or without</span>
+<span class="c1">/// modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">/// 1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer.</span>
+<span class="c1">/// 2. Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1">/// and/or other materials provided with the distribution.</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="c1">/// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="c1">/// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="c1">/// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span>
+<span class="c1">/// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span>
+<span class="c1">/// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<span class="c1">/// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<span class="c1">/// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="c1">/// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<span class="c1">/// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="c1">/// POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">/// @endcond</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;hw_aes.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES_CTR.h&quot;</span><span class="cp"></span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">ExampleAES_CTR</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY128</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0x76</span><span class="p">,</span><span class="mh">0x91</span><span class="p">,</span><span class="mh">0xBE</span><span class="p">,</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x5E</span><span class="p">,</span><span class="mh">0x50</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0xA8</span><span class="p">,</span><span class="mh">0xAC</span><span class="p">,</span><span class="mh">0x6E</span><span class="p">,</span><span class="mh">0x61</span><span class="p">,</span><span class="mh">0x85</span><span class="p">,</span><span class="mh">0x29</span><span class="p">,</span><span class="mh">0xF9</span><span class="p">,</span><span class="mh">0xA0</span><span class="p">,</span><span class="mh">0xDC</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">counter</span><span class="p">[</span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0xE0</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x7B</span><span class="p">,</span><span class="mh">0x27</span><span class="p">,</span><span class="mh">0x77</span><span class="p">,</span><span class="mh">0x7F</span><span class="p">,</span><span class="mh">0x3F</span><span class="p">,</span><span class="mh">0x4A</span><span class="p">,</span><span class="mh">0x17</span><span class="p">,</span><span class="mh">0x86</span><span class="p">,</span><span class="mh">0xF0</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x01</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//messages of any size can be encrypted with CTR mode.The result size is the same</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">plaintext</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x05</span><span class="p">,</span><span class="mh">0x06</span><span class="p">,</span><span class="mh">0x07</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x0A</span><span class="p">,</span><span class="mh">0x0B</span><span class="p">,</span><span class="mh">0x0C</span><span class="p">,</span><span class="mh">0x0D</span><span class="p">,</span><span class="mh">0x0E</span><span class="p">,</span><span class="mh">0x0F</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x11</span><span class="p">,</span><span class="mh">0x12</span><span class="p">,</span><span class="mh">0x13</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x15</span><span class="p">,</span><span class="mh">0x16</span><span class="p">,</span><span class="mh">0x17</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0x19</span><span class="p">,</span><span class="mh">0x1A</span><span class="p">,</span><span class="mh">0x1B</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x1D</span><span class="p">,</span><span class="mh">0x1E</span><span class="p">,</span><span class="mh">0x1F</span><span class="p">,</span><span class="mh">0x20</span><span class="p">,</span><span class="mh">0x21</span><span class="p">,</span><span class="mh">0x22</span><span class="p">,</span><span class="mh">0x23</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0xC1</span><span class="p">,</span><span class="mh">0xCF</span><span class="p">,</span><span class="mh">0x48</span><span class="p">,</span><span class="mh">0xA8</span><span class="p">,</span><span class="mh">0x9F</span><span class="p">,</span><span class="mh">0x2F</span><span class="p">,</span><span class="mh">0xFD</span><span class="p">,</span><span class="mh">0xD9</span><span class="p">,</span><span class="mh">0xCF</span><span class="p">,</span><span class="mh">0x46</span><span class="p">,</span><span class="mh">0x52</span><span class="p">,</span><span class="mh">0xE9</span><span class="p">,</span><span class="mh">0xEF</span><span class="p">,</span><span class="mh">0xDB</span><span class="p">,</span><span class="mh">0x72</span><span class="p">,</span><span class="mh">0xD7</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x40</span><span class="p">,</span><span class="mh">0xA4</span><span class="p">,</span><span class="mh">0x2B</span><span class="p">,</span><span class="mh">0xDE</span><span class="p">,</span><span class="mh">0x6D</span><span class="p">,</span><span class="mh">0x78</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0xD5</span><span class="p">,</span><span class="mh">0x9A</span><span class="p">,</span><span class="mh">0x5C</span><span class="p">,</span><span class="mh">0xEA</span><span class="p">,</span><span class="mh">0xAE</span><span class="p">,</span><span class="mh">0xF3</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x53</span><span class="p">,</span><span class="mh">0x25</span><span class="p">,</span><span class="mh">0xB2</span><span class="p">,</span><span class="mh">0x07</span><span class="p">,</span><span class="mh">0x2F</span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key256</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY256</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0xF6</span><span class="p">,</span><span class="mh">0xD6</span><span class="p">,</span><span class="mh">0x6D</span><span class="p">,</span><span class="mh">0x6B</span><span class="p">,</span><span class="mh">0xD5</span><span class="p">,</span><span class="mh">0x2D</span><span class="p">,</span><span class="mh">0x59</span><span class="p">,</span><span class="mh">0xBB</span><span class="p">,</span><span class="mh">0x07</span><span class="p">,</span><span class="mh">0x96</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x58</span><span class="p">,</span><span class="mh">0x79</span><span class="p">,</span><span class="mh">0xEF</span><span class="p">,</span><span class="mh">0xF8</span><span class="p">,</span><span class="mh">0x86</span><span class="p">,</span><span class="mh">0xC6</span><span class="p">,</span><span class="mh">0x6D</span><span class="p">,</span><span class="mh">0xD5</span><span class="p">,</span><span class="mh">0x1A</span><span class="p">,</span><span class="mh">0x5B</span><span class="p">,</span><span class="mh">0x6A</span><span class="p">,</span><span class="mh">0x99</span><span class="p">,</span><span class="mh">0x74</span><span class="p">,</span><span class="mh">0x4B</span><span class="p">,</span><span class="mh">0x50</span><span class="p">,</span><span class="mh">0x59</span><span class="p">,</span><span class="mh">0x0C</span><span class="p">,</span><span class="mh">0x87</span><span class="p">,</span><span class="mh">0xA2</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x84</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">counter256</span><span class="p">[</span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0xFA</span><span class="p">,</span><span class="mh">0xAC</span><span class="p">,</span><span class="mh">0x24</span><span class="p">,</span><span class="mh">0xC1</span><span class="p">,</span><span class="mh">0x58</span><span class="p">,</span><span class="mh">0x5E</span><span class="p">,</span><span class="mh">0xF1</span><span class="p">,</span><span class="mh">0x5A</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0xD8</span><span class="p">,</span><span class="mh">0x75</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x01</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">plaintext256</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x01</span><span class="p">,</span><span class="mh">0x02</span><span class="p">,</span><span class="mh">0x03</span><span class="p">,</span><span class="mh">0x04</span><span class="p">,</span><span class="mh">0x05</span><span class="p">,</span><span class="mh">0x06</span><span class="p">,</span><span class="mh">0x07</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="mh">0x09</span><span class="p">,</span><span class="mh">0x0A</span><span class="p">,</span><span class="mh">0x0B</span><span class="p">,</span><span class="mh">0x0C</span><span class="p">,</span><span class="mh">0x0D</span><span class="p">,</span><span class="mh">0x0E</span><span class="p">,</span><span class="mh">0x0F</span><span class="p">,</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0x11</span><span class="p">,</span><span class="mh">0x12</span><span class="p">,</span><span class="mh">0x13</span><span class="p">,</span><span class="mh">0x14</span><span class="p">,</span><span class="mh">0x15</span><span class="p">,</span><span class="mh">0x16</span><span class="p">,</span><span class="mh">0x17</span><span class="p">,</span><span class="mh">0x18</span><span class="p">,</span><span class="mh">0x19</span><span class="p">,</span><span class="mh">0x1A</span><span class="p">,</span><span class="mh">0x1B</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">,</span><span class="mh">0x1D</span><span class="p">,</span><span class="mh">0x1E</span><span class="p">,</span><span class="mh">0x1F</span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ciphertext256</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mh">0xF0</span><span class="p">,</span><span class="mh">0x5E</span><span class="p">,</span><span class="mh">0x23</span><span class="p">,</span><span class="mh">0x1B</span><span class="p">,</span><span class="mh">0x38</span><span class="p">,</span><span class="mh">0x94</span><span class="p">,</span><span class="mh">0x61</span><span class="p">,</span><span class="mh">0x2C</span><span class="p">,</span><span class="mh">0x49</span><span class="p">,</span><span class="mh">0xEE</span><span class="p">,</span><span class="mh">0x00</span><span class="p">,</span><span class="mh">0x0B</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x4E</span><span class="p">,</span><span class="mh">0xB2</span><span class="p">,</span><span class="mh">0xA9</span><span class="p">,</span><span class="mh">0xB8</span><span class="p">,</span><span class="mh">0x30</span><span class="p">,</span><span class="mh">0x6B</span><span class="p">,</span><span class="mh">0x50</span><span class="p">,</span><span class="mh">0x8F</span><span class="p">,</span><span class="mh">0x83</span><span class="p">,</span><span class="mh">0x9D</span><span class="p">,</span><span class="mh">0x6A</span><span class="p">,</span><span class="mh">0x55</span><span class="p">,</span><span class="mh">0x30</span><span class="p">,</span><span class="mh">0x83</span><span class="p">,</span><span class="mh">0x1D</span><span class="p">,</span><span class="mh">0x93</span><span class="p">,</span><span class="mh">0x44</span><span class="p">,</span><span class="mh">0xAF</span><span class="p">,</span><span class="mh">0x1C</span><span class="p">};</span><span class="w"></span>
+
+
+<span class="w">	</span><span class="n">AES_CTR_CTX</span><span class="w"> </span><span class="n">Ctx</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">AES_CTR_Lib_error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">result</span><span class="p">[</span><span class="mi">36</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">keyId</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// First example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CTR with a 128-bit key in encryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware but not the crypto containers.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We encrypt all the block in a unique call</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CTR_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">counter</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//encrypt the data</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Encrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">plaintext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">36</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">36</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Second example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CTR with a 128-bit key in decryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We decrypt first 10 bytes then 12 and we complete with 36-12-10=14 bytes</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CTR_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">counter</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt the first block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt the second block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">result</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt the third block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">result</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">36</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Third example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CTR with a 128-bit key in encryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware and the crypto container</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We encrypt all the block in a unique call</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">//A priori the key has been written previously in a key container.</span>
+<span class="w">	</span><span class="c1">//Here we write the key in container 0x12</span>
+<span class="w">	</span><span class="n">AES_SetKeyContainer</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HW_ENC_ONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">keyId</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x12</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CTR_KEY_ID</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">counter</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">keyId</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//encrypt the data</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Encrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">plaintext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">36</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">36</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// fourth example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CTR with a 128-bit key in decryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware and the crypto container</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We decrypt the blocks in two steps</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//reinitialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CTR_KEY_ID</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">counter</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">keyId</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//decrypt 22 bytes</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="mi">22</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt 1 block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">result</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">36</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// fifth example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CTR with a 128-bit key in decryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware and the crypto container</span>
+<span class="w">	</span><span class="c1">// but we set the key as AES_HW_ENC_ONLY.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The decryption function returns an error as the AES hardware needs</span>
+<span class="w">	</span><span class="c1">// to be executed in encryption mode but the key is only decryption</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">//A priori the key has been written previously in a key container.</span>
+<span class="w">	</span><span class="c1">//Here we write the key in container 0x14.</span>
+<span class="w">	</span><span class="c1">//Purposely for this example we set the key as AES_HW_DEC_ONLY</span>
+<span class="w">	</span><span class="n">AES_SetKeyContainer</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HW_DEC_ONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">keyId</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x14</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//reinitialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CTR_KEY_ID</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">counter</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">keyId</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//decrypt 22 bytes</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="mi">22</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_HW_ERROR</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// sixth example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CTR with a 256-bit key in encryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We necessarily use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We encrypt in one call</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CTR_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_256</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">counter256</span><span class="p">,</span><span class="w"> </span><span class="n">key256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//encrypt the first block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CTR_Encrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">plaintext256</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CTR_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ciphertext256</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="AES_CBC.html" class="btn btn-neutral float-left" title="AES Cipher Block Chaining mode (CBC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="AES_CMAC.html" class="btn btn-neutral float-right" title="AES CMAC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

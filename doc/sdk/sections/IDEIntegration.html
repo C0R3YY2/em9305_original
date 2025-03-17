@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetaWare IDE Integration &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CMake and build procedure" href="CMakeBuild.html" />
+    <link rel="prev" title="Migration guide" href="MigrationGuide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MetaWare IDE Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setup-metaware-ide">Setup MetaWare IDE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#program-the-dvk">Program the DVK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#start-the-debugger">Start the Debugger</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MetaWare IDE Integration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="metaware-ide-integration">
+<h1>MetaWare IDE Integration<a class="headerlink" href="#metaware-ide-integration" title="Link to this heading"></a></h1>
+<section id="setup-metaware-ide">
+<h2>Setup MetaWare IDE<a class="headerlink" href="#setup-metaware-ide" title="Link to this heading"></a></h2>
+<p>First, make sure you did the initialization of the SDK with the init.bat script.</p>
+<p>.cproject and .project files are generated in the root of the SDK.</p>
+<p>Then edit <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\tools\blengine\config.cfg</span></code> and modify the COM port to match the COM port of your DVK.</p>
+<p>Open MIDE MetaWare Development Toolkit.</p>
+<p>Select a folder for your workspace.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Your workspace folder should not be the SDK root. In this case, the SDK and subprojects will not be imported correctly.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you move the SDK folder, run again the script init.bat to update the paths.</p>
+</div>
+<p>You should see this:</p>
+<a class="reference internal image-reference" href="../_images/MIDE_welcome.png"><img alt="MIDE Welcome" class="align-center" src="../_images/MIDE_welcome.png" style="width: 505.0px; height: 380.5px;" /></a>
+<p>You can close the Welcome page.</p>
+<p>Go to File-&gt;import</p>
+<p>In General, Select “Existing Projects into Workspace” and click on the button “next”.</p>
+<a class="reference internal image-reference" href="../_images/MIDE_import.png"><img alt="MIDE Import" class="align-center" src="../_images/MIDE_import.png" style="width: 357.7px; height: 378.7px;" /></a>
+<p>Click on “Browse” and select the root directory of the SDK.</p>
+<a class="reference internal image-reference" href="../_images/MIDE_import2.png"><img alt="MIDE Import" class="align-center" src="../_images/MIDE_import2.png" style="width: 357.7px; height: 477.4px;" /></a>
+<p>Click on “Finish”.</p>
+<p>We will now import the launcher configuration.</p>
+<p>Again File-&gt;import</p>
+<a class="reference internal image-reference" href="../_images/MIDE_launcher_import.png"><img alt="MIDE Launcher Import" class="align-center" src="../_images/MIDE_launcher_import.png" style="width: 357.7px; height: 380.09999999999997px;" /></a>
+<p>Click “Next”</p>
+<p>Browse to <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\tools\ide</span></code> and click “OK”</p>
+<p>Check the ide folder (on the left) and 6 launchers should be displayed and checked.</p>
+<a class="reference internal image-reference" href="../_images/MIDE_launcher_import2.png"><img alt="MIDE Launcher Import" class="align-center" src="../_images/MIDE_launcher_import2.png" style="width: 357.7px; height: 380.09999999999997px;" /></a>
+<p>Click “Finish”</p>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>At this point you should see this:</p>
+<a class="reference internal image-reference" href="../_images/MIDE_project.png"><img alt="MIDE Project" class="align-center" src="../_images/MIDE_project.png" style="width: 505.0px; height: 380.5px;" /></a>
+<p>There is a virtual folder called “[Targets]” in the Project Explorer.</p>
+<p>Select (click) printf_example_diXX ([exe] printf_example_diXX).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each time you wand to build, program or debug, you should first select the target in Targets (for example [exe] printf_example_diXX).</p>
+</div>
+<a class="reference internal image-reference" href="../_images/MIDE_build.png"><img alt="MIDE Project" class="align-center" src="../_images/MIDE_build.png" style="width: 504.5px; height: 380.5px;" /></a>
+<p>Then, click on the little arrow of the Run button to open the list of launchers.</p>
+<p>Click on “Build”</p>
+<a class="reference internal image-reference" href="../_images/MIDE_build2.png"><img alt="MIDE Project" class="align-center" src="../_images/MIDE_build2.png" style="width: 505.0px; height: 380.5px;" /></a>
+<p>The printf_example_diXX should build and you should see this in the Console:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="w"> </span><span class="m">50</span>%<span class="o">]</span><span class="w"> </span>Building<span class="w"> </span>C<span class="w"> </span>object<span class="w"> </span>projects/printf_example/CMakeFiles/printf_example_diXX.dir/nvm_main.c.obj
+<span class="o">[</span><span class="m">100</span>%<span class="o">]</span><span class="w"> </span>Linking<span class="w"> </span>C<span class="w"> </span>executable<span class="w"> </span>printf_example_diXX.elf
+Generating<span class="w"> </span>printf_example_diXX.ihex
+Generating<span class="w"> </span>printf_example_diXX.asm
+Memory<span class="w"> </span>usage<span class="w"> </span><span class="k">for</span><span class="w"> </span>printf_example_diXX.elf
+IROM:<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">65536</span>,<span class="w"> </span><span class="nv">used</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">free</span><span class="o">=</span><span class="m">65536</span>
+NVM:<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">524288</span>,<span class="w"> </span><span class="nv">used</span><span class="o">=</span><span class="m">12322</span>,<span class="w"> </span><span class="nv">free</span><span class="o">=</span><span class="m">511966</span>
+NVMINFO:<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">32768</span>,<span class="w"> </span><span class="nv">used</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">free</span><span class="o">=</span><span class="m">32768</span>
+PRAM:<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">45056</span>,<span class="w"> </span><span class="nv">used</span><span class="o">=</span><span class="m">1732</span>,<span class="w"> </span><span class="nv">free</span><span class="o">=</span><span class="m">43324</span>
+POOL:<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">61440</span>,<span class="w"> </span><span class="nv">used</span><span class="o">=</span><span class="m">50168</span>,<span class="w"> </span><span class="nv">free</span><span class="o">=</span><span class="m">11272</span>
+NPRAM:<span class="w"> </span><span class="nv">size</span><span class="o">=</span><span class="m">16384</span>,<span class="w"> </span><span class="nv">used</span><span class="o">=</span><span class="m">5112</span>,<span class="w"> </span><span class="nv">free</span><span class="o">=</span><span class="m">11272</span>
+<span class="o">[</span><span class="m">100</span>%<span class="o">]</span><span class="w"> </span>Built<span class="w"> </span>target<span class="w"> </span>printf_example_diXX
+</pre></div>
+</div>
+</section>
+<section id="program-the-dvk">
+<h2>Program the DVK<a class="headerlink" href="#program-the-dvk" title="Link to this heading"></a></h2>
+<p>The printf_example_diXX is built. We can program it on the DVK.</p>
+<p>Make sure “[exe] printf_example_diXX” is still selected.</p>
+<p>Make sure your DVK is connected and the COM port was previously configured in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\tools\blengine\config.cfg</span></code>.</p>
+<a class="reference internal image-reference" href="../_images/MIDE_program.png"><img alt="MIDE Program" class="align-center" src="../_images/MIDE_program.png" style="width: 505.5px; height: 381.0px;" /></a>
+<p>The DVK should now be programmed and the selected target should be running on the DVK.</p>
+</section>
+<section id="start-the-debugger">
+<h2>Start the Debugger<a class="headerlink" href="#start-the-debugger" title="Link to this heading"></a></h2>
+<p>The printf_example_diXX is built, programmed and running on the DVK.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not every examples are debuggable as is. To be able to debug, the CPU can’t go into sleep mode and the JTAG need to be enabled.</p>
+</div>
+<p>Make sure “[exe] printf_example_diXX” is still selected.</p>
+<p>Click on the little arrow of the bug logo and click on Debug.</p>
+<a class="reference internal image-reference" href="../_images/MIDE_debug.png"><img alt="MIDE Debug" class="align-center" src="../_images/MIDE_debug.png" style="width: 505.5px; height: 381.5px;" /></a>
+<p>The MetaWare debugger is starting. Click on “OK”.</p>
+<p>The printf_example_diXX is now ready to be debugged.</p>
+<a class="reference internal image-reference" href="../_images/MW_debugger.png"><img alt="MetaWare Debugger" class="align-center" src="../_images/MW_debugger.png" style="width: 593.5px; height: 397.0px;" /></a>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MigrationGuide.html" class="btn btn-neutral float-left" title="Migration guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CMakeBuild.html" class="btn btn-neutral float-right" title="CMake and build procedure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

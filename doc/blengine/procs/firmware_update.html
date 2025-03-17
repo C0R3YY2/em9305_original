@@ -1,0 +1,890 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>firmware_update Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gap Procedures" href="gap.html" />
+    <link rel="prev" title="ble Procedures" href="ble.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html">authentication Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ble.html">ble Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">firmware_update Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-get-firmware-update-information">fwu_get_firmware_update_information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-get-firmware-area-count">fwu_get_firmware_area_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-get-firmware-info">fwu_get_firmware_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-crypto-engine-init">fwu_crypto_engine_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-crypto-engine-upload-signature-material">fwu_crypto_engine_upload_signature_material</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-firmware-upload-init">fwu_firmware_upload_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-firmware-write-data-block">fwu_firmware_write_data_block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-store-firmware-block">fwu_store_firmware_block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-validate-firmware-update">fwu_validate_firmware_update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fwu-reboot">fwu_reboot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-update">firmware_update</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">gap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">gatt Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci.html">hci Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">l2cap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sm.html">sm Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">firmware_update Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-procedures">
+<h1>firmware_update Procedures<a class="headerlink" href="#firmware-update-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="fwu-get-firmware-update-information">
+<span id="proc-fwu-get-firmware-update-information"></span><h2><a class="reference internal" href="#fwu-get-firmware-update-information">fwu_get_firmware_update_information</a><a class="headerlink" href="#fwu-get-firmware-update-information" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Request the firmware update information such as firmware update firmware version, target hardware, etc.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_get_firmware_update_information</span>
+
+<span class="n">fwu_get_firmware_update_information</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_get_firmware_update_information</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Request the firmware update information such as firmware update firmware version, target hardware, etc.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_get_firmware_update_info&quot;</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;IC_Family_ID&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Silicon_Version&quot;</span><span class="p">),</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Firmware_Type&quot;</span><span class="p">),</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Firmware_Version&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-get-firmware-area-count">
+<span id="proc-fwu-get-firmware-area-count"></span><h2><a class="reference internal" href="#fwu-get-firmware-area-count">fwu_get_firmware_area_count</a><a class="headerlink" href="#fwu-get-firmware-area-count" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Retrieve the number of firmware area</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_get_firmware_area_count</span>
+
+<span class="n">fwu_get_firmware_area_count</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_get_firmware_area_count</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Retrieve the number of firmware area</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_get_firmware_area_count&quot;</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Firmware_Area_Counter&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-get-firmware-info">
+<span id="proc-fwu-get-firmware-info"></span><h2><a class="reference internal" href="#fwu-get-firmware-info">fwu_get_firmware_info</a><a class="headerlink" href="#fwu-get-firmware-info" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Get the firmware header corresponding to the index</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_get_firmware_info</span>
+
+<span class="n">fwu_get_firmware_info</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dump</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>fwu_get_firmware_info<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-idx<span class="w"> </span>INDEX<span class="o">]</span><span class="w"> </span><span class="o">[</span>-d<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-idx INDEX, –index INDEX</dt><dd><p>Index of the firmware</p>
+</dd>
+</dl>
+<dl class="option-list">
+<dt><kbd><span class="option">-d</span>, <span class="option">--dump</span></kbd></dt>
+<dd><p>Show the decoded header</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_get_firmware_info</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dump</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the firmware header corresponding to the index</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_get_firmware_info&quot;</span><span class="p">,</span> <span class="n">Index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">decode_fw_header</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Firmware_Header&quot;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">dump</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">header</span> <span class="ow">or</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-crypto-engine-init">
+<span id="proc-fwu-crypto-engine-init"></span><h2><a class="reference internal" href="#fwu-crypto-engine-init">fwu_crypto_engine_init</a><a class="headerlink" href="#fwu-crypto-engine-init" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Initialize the firmware update crypto engine</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_crypto_engine_init</span>
+
+<span class="n">fwu_crypto_engine_init</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">encryption_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">initialization_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>fwu_crypto_engine_init<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-enc<span class="w"> </span>ENCRYPTION_TYPE<span class="o">]</span>
+<span class="w">                               </span><span class="o">[</span>-init<span class="w"> </span>INITIALIZATION_DATA<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-enc ENCRYPTION_TYPE, –encryption_type ENCRYPTION_TYPE</dt><dd><p>Encrytion Type</p>
+</dd>
+<dt>-init INITIALIZATION_DATA, –initialization_data INITIALIZATION_DATA</dt><dd><p>Crypto Engine Initialization Data (not present or 16
+bytes long)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_crypto_engine_init</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">encryption_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">initialization_data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Initialize the firmware update crypto engine</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># if it&#39;s a string, decode it</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">initialization_data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">encryption_type</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">encryption_type</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+    <span class="c1"># if it&#39;s a encryption_type Packet take the bytes</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">encryption_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">GenericPacket</span><span class="p">:</span>
+        <span class="n">encryption_type</span> <span class="o">=</span> <span class="n">encryption_type</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">if</span> <span class="n">initialization_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">initialization_data</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">initialization_data</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">16</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;The size of the initialization data (0x</span><span class="si">%x</span><span class="s2">) is not 16&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">initialization_data</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_crypto_engine_init&quot;</span><span class="p">,</span> <span class="n">Encryption_Type</span><span class="o">=</span><span class="n">encryption_type</span><span class="p">,</span> <span class="n">Initialization_Data</span><span class="o">=</span><span class="n">initialization_data</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-crypto-engine-upload-signature-material">
+<span id="proc-fwu-crypto-engine-upload-signature-material"></span><h2><a class="reference internal" href="#fwu-crypto-engine-upload-signature-material">fwu_crypto_engine_upload_signature_material</a><a class="headerlink" href="#fwu-crypto-engine-upload-signature-material" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Initialize the firmware update crypto engine</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_crypto_engine_upload_signature_material</span>
+
+<span class="n">fwu_crypto_engine_upload_signature_material</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">signature_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signature_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">digest</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>fwu_crypto_engine_upload_signature_material<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-x<span class="w"> </span>SIGNATURE_X<span class="o">]</span>
+<span class="w">                                                    </span><span class="o">[</span>-y<span class="w"> </span>SIGNATURE_Y<span class="o">]</span>
+<span class="w">                                                    </span><span class="o">[</span>-dig<span class="w"> </span>DIGEST<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-x <var>SIGNATURE_X</var></span>, <span class="option">--signature_x <var>SIGNATURE_X</var></span></kbd></dt>
+<dd><p>X coordinate of the signature</p>
+</dd>
+<dt><kbd><span class="option">-y <var>SIGNATURE_Y</var></span>, <span class="option">--signature_y <var>SIGNATURE_Y</var></span></kbd></dt>
+<dd><p>Y coordinate of the signature</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-dig DIGEST, –digest DIGEST</dt><dd><p>Digest</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_crypto_engine_upload_signature_material</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">signature_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">signature_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">digest</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Initialize the firmware update crypto engine</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># if it&#39;s a string, decode it</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">signature_x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">signature_x</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">signature_x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+    <span class="c1"># if it&#39;s a signature_x Packet take the bytes</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">signature_x</span><span class="p">)</span> <span class="o">==</span> <span class="n">GenericPacket</span><span class="p">:</span>
+        <span class="n">signature_x</span> <span class="o">=</span> <span class="n">signature_x</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">if</span> <span class="n">signature_x</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature_x</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;The size of the signature_x data (0x</span><span class="si">%x</span><span class="s2">) is not 32&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature_x</span><span class="p">)</span>
+
+    <span class="c1"># if it&#39;s a string, decode it</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">signature_y</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">signature_y</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">signature_y</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+    <span class="c1"># if it&#39;s a signature_y Packet take the bytes</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">signature_y</span><span class="p">)</span> <span class="o">==</span> <span class="n">GenericPacket</span><span class="p">:</span>
+        <span class="n">signature_y</span> <span class="o">=</span> <span class="n">signature_y</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">if</span> <span class="n">signature_y</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature_y</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;The size of the signature_y data (0x</span><span class="si">%x</span><span class="s2">) is not 32&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature_y</span><span class="p">)</span>
+
+    <span class="c1"># if it&#39;s a string, decode it</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">digest</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">digest</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+    <span class="c1"># if it&#39;s a digest Packet take the bytes</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span> <span class="o">==</span> <span class="n">GenericPacket</span><span class="p">:</span>
+        <span class="n">digest</span> <span class="o">=</span> <span class="n">digest</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">if</span> <span class="n">digest</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">32</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;The size of the digest data (0x</span><span class="si">%x</span><span class="s2">) is not 32&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_crypto_engine_upload_signature_material&quot;</span><span class="p">,</span> <span class="n">Signature_X</span><span class="o">=</span><span class="n">signature_x</span><span class="p">,</span> <span class="n">Signature_Y</span><span class="o">=</span><span class="n">signature_y</span><span class="p">,</span> <span class="n">digest</span><span class="o">=</span><span class="n">digest</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-firmware-upload-init">
+<span id="proc-fwu-firmware-upload-init"></span><h2><a class="reference internal" href="#fwu-firmware-upload-init">fwu_firmware_upload_init</a><a class="headerlink" href="#fwu-firmware-upload-init" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Init the upload of a firmware package</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_firmware_upload_init</span>
+
+<span class="n">fwu_firmware_upload_init</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>fwu_firmware_upload_init<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-hdr<span class="w"> </span>HEADER<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>-hdr HEADER, –header HEADER</dt><dd><p>Header to send for initialization (hex format:
+0x12345678)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_firmware_upload_init</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Init the upload of a firmware package</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># if it&#39;s a string, decode it</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+    <span class="c1"># if it&#39;s a Header Packet take the bytes</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">==</span> <span class="n">GenericPacket</span><span class="p">:</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x28</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;The size of the header (0x</span><span class="si">%x</span><span class="s2">) is not the size of a header&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+
+    <span class="n">crc_check</span> <span class="o">=</span> <span class="n">decode_fw_header</span><span class="p">(</span><span class="n">header</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;header_crc_ctrl&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">crc_check</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;OK&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;CRC Error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">crc_check</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_firmware_upload_init&quot;</span><span class="p">,</span> <span class="n">Header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Block_Size&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-firmware-write-data-block">
+<span id="proc-fwu-firmware-write-data-block"></span><h2><a class="reference internal" href="#fwu-firmware-write-data-block">fwu_firmware_write_data_block</a><a class="headerlink" href="#fwu-firmware-write-data-block" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Write data block of the firmware</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_firmware_write_data_block</span>
+
+<span class="n">fwu_firmware_write_data_block</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>fwu_firmware_write_data_block<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-d<span class="w"> </span>DATA<span class="o">]</span><span class="w"> </span><span class="o">[</span>-c<span class="w"> </span>CHUNK_SIZE<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DATA</var></span>, <span class="option">--data <var>DATA</var></span></kbd></dt>
+<dd><p>Data to write</p>
+</dd>
+<dt><kbd><span class="option">-c <var>CHUNK_SIZE</var></span>, <span class="option">--chunk_size <var>CHUNK_SIZE</var></span></kbd></dt>
+<dd><p>Size of chunk</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_firmware_write_data_block</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="mi">255</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Write data block of the firmware</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Convert the string in bytes</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">chunk_size</span><span class="p">)</span>
+
+    <span class="c1"># divide the data block into chunk</span>
+    <span class="c1"># for i in range(0, len(data), chunk_size):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">blocks</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">chunk_size</span><span class="p">:</span><span class="n">i</span><span class="o">*</span><span class="n">chunk_size</span><span class="o">+</span><span class="n">chunk_size</span><span class="p">]</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_Data_Chunk&quot;</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">,</span> <span class="n">wait_ack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Success, sent&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-store-firmware-block">
+<span id="proc-fwu-store-firmware-block"></span><h2><a class="reference internal" href="#fwu-store-firmware-block">fwu_store_firmware_block</a><a class="headerlink" href="#fwu-store-firmware-block" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Store the firmware block</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_store_firmware_block</span>
+
+<span class="n">fwu_store_firmware_block</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_store_firmware_block</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Store the firmware block</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_store_firmware_block&quot;</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-validate-firmware-update">
+<span id="proc-fwu-validate-firmware-update"></span><h2><a class="reference internal" href="#fwu-validate-firmware-update">fwu_validate_firmware_update</a><a class="headerlink" href="#fwu-validate-firmware-update" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Validate the firmware update uploaded</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_validate_firmware_update</span>
+
+<span class="n">fwu_validate_firmware_update</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_validate_firmware_update</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Validate the firmware update uploaded</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_validate_firmware_update&quot;</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="fwu-reboot">
+<span id="proc-fwu-reboot"></span><h2><a class="reference internal" href="#fwu-reboot">fwu_reboot</a><a class="headerlink" href="#fwu-reboot" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Reboot in a given Mode</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">fwu_reboot</span>
+
+<span class="n">fwu_reboot</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_dump</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>fwu_reboot<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span>MODE<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-m <var>MODE</var></span>, <span class="option">--mode <var>MODE</var></span></kbd></dt>
+<dd><p>Reboot Mode</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fwu_reboot</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_dump</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Reboot in a given Mode</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;EM_FWU_reboot&quot;</span><span class="p">,</span> <span class="n">Mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">_send_cmd</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">pkt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwu_status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="firmware-update">
+<span id="proc-firmware-update"></span><h2><a class="reference internal" href="#firmware-update">firmware_update</a><a class="headerlink" href="#firmware-update" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Main function for Firmware Update</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.firmware_update</span> <span class="kn">import</span> <span class="n">firmware_update</span>
+
+<span class="n">firmware_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">package_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="s1">&#39;BLE&#39;</span><span class="p">,</span> <span class="n">target_mac</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_name</span><span class="o">=</span><span class="s1">&#39;EM9305_FWU&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>firmware_update<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span>TARGET_MAC<span class="o">]</span><span class="w"> </span><span class="o">[</span>-n<span class="w"> </span>TARGET_NAME<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>-t<span class="w"> </span>TRANSPORT<span class="o">]</span>
+<span class="w">                        </span>package_file
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">package_file<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the package file</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-m <var>TARGET_MAC</var></span>, <span class="option">--target-mac <var>TARGET_MAC</var></span></kbd></dt>
+<dd><p>Mac Address of target, format (XX:XX:XX:XX:XX:XX)</p>
+</dd>
+<dt><kbd><span class="option">-n <var>TARGET_NAME</var></span>, <span class="option">--target-name <var>TARGET_NAME</var></span></kbd></dt>
+<dd><p>Name of Target</p>
+</dd>
+<dt><kbd><span class="option">-t <var>TRANSPORT</var></span>, <span class="option">--transport <var>TRANSPORT</var></span></kbd></dt>
+<dd><p>Transport mode. Support only “BLE” for now</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">firmware_update</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">package_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transport</span><span class="o">=</span><span class="s2">&quot;BLE&quot;</span><span class="p">,</span> <span class="n">target_mac</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_name</span> <span class="o">=</span> <span class="s2">&quot;EM9305_FWU&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Main function for Firmware Update</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;FWU&quot;</span><span class="p">)</span>
+
+    <span class="n">target</span> <span class="o">=</span> <span class="n">engine</span>
+    <span class="n">icfe</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s2">&quot;EM9305&quot;</span><span class="p">}</span>
+
+    <span class="n">fte</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;FW Updater&quot;</span><span class="p">,</span>
+           <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;EM-Core&quot;</span><span class="p">,</span>
+           <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;User App&quot;</span><span class="p">,</span>
+           <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Customer Bootloader&quot;</span><span class="p">}</span>
+
+    <span class="n">mode</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Firmware Update over </span><span class="si">{</span><span class="n">transport</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">transport</span> <span class="o">==</span> <span class="s2">&quot;BLE&quot;</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;FW Updater&quot;</span><span class="p">:</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">BLELocalDevice</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Configuring Updater Device&quot;</span><span class="p">)</span>
+
+            <span class="n">device</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+            <span class="c1"># set as server/ peripheral</span>
+
+            <span class="c1"># make a register function that merge the three following calls ?</span>
+
+            <span class="n">device</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s2">&quot;FIRMWARE_UPDATER&quot;</span><span class="p">)</span>
+
+            <span class="n">device</span><span class="o">.</span><span class="n">set_role</span><span class="p">(</span><span class="s2">&quot;Central&quot;</span><span class="p">)</span>
+
+            <span class="n">device</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="s2">&quot;NOT_CONNECTABLE,NOT_DISCOVERABLE&quot;</span><span class="p">)</span>
+
+            <span class="n">device</span><span class="o">.</span><span class="n">register_client</span><span class="p">()</span>
+
+            <span class="n">device</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Write_Suggested_Default_Data_Length&quot;</span><span class="p">,</span> <span class="n">Suggested_Max_TX_Octets</span><span class="o">=</span><span class="mi">251</span><span class="p">,</span> <span class="n">Suggested_Max_TX_Time</span><span class="o">=</span><span class="mh">0x0848</span><span class="p">)</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Searching for target </span><span class="si">{</span><span class="n">target_mac</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">target_name</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+
+            <span class="n">device</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">duration_ms</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+
+
+            <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">target_mac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">bd_addr</span> <span class="o">=</span> <span class="n">mac</span><span class="p">(</span><span class="n">target_mac</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">target_name</span><span class="p">)</span>
+
+            <span class="c1"># connect directly to the ceoncerneed device since we know the MAC Address...</span>
+            <span class="c1">#target = device.connect_by_addr(mac(target_mac), conn_interval_ms=200)</span>
+
+            <span class="k">assert</span> <span class="n">target</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Device to update </span><span class="si">{</span><span class="n">target_mac</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">target_name</span><span class="si">}</span><span class="s2"> not found.&quot;</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Device </span><span class="si">{</span><span class="n">target_name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">bd_addr</span><span class="si">}</span><span class="s2">) found, connecting...&quot;</span><span class="p">)</span>
+
+            <span class="n">target</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">conn_interval_ms</span><span class="o">=</span><span class="mf">7.5</span><span class="p">)</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Services Discovery...&quot;</span><span class="p">)</span>
+
+            <span class="n">target</span><span class="o">.</span><span class="n">discover_services</span><span class="p">()</span>
+
+            <span class="n">target</span><span class="o">.</span><span class="n">read_all_values</span><span class="p">()</span>
+
+            <span class="n">dut_fwu_service</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="n">uuid</span><span class="o">=</span><span class="n">uuids</span><span class="o">.</span><span class="n">EM</span><span class="o">.</span><span class="n">FWU_SERVICE</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="k">assert</span> <span class="n">dut_fwu_service</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Firmware Update Service not found&quot;</span>
+
+            <span class="n">dut_fwu_char</span> <span class="o">=</span> <span class="n">dut_fwu_service</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuids</span><span class="o">.</span><span class="n">EM</span><span class="o">.</span><span class="n">FWU_CMD_CHAR</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="k">assert</span> <span class="n">dut_fwu_char</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Firmware update command characteristic not found&quot;</span>
+
+            <span class="n">dut_fwu_char_desc</span> <span class="o">=</span> <span class="n">dut_fwu_char</span><span class="o">.</span><span class="n">get_descriptor</span><span class="p">(</span><span class="n">uuids</span><span class="o">.</span><span class="n">Gatt</span><span class="o">.</span><span class="n">CLIENT_CHARACTERISTIC_CONFIGURATION</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">dut_fwu_char_desc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Firmware update command characteristic descriptor not found&quot;</span>
+
+            <span class="n">dut_fw_data_char</span> <span class="o">=</span> <span class="n">dut_fwu_service</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuids</span><span class="o">.</span><span class="n">EM</span><span class="o">.</span><span class="n">FWU_FWDATA_CHAR</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="k">assert</span> <span class="n">dut_fwu_char</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Firmware data characteristic not found&quot;</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Service Discovery complete.&quot;</span><span class="p">)</span>
+
+            <span class="n">target</span><span class="o">.</span><span class="n">enable_indication</span><span class="p">(</span><span class="n">dut_fwu_char</span><span class="p">),</span> <span class="s2">&quot;Fail to enable indications&quot;</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Service Configuration complete.&quot;</span><span class="p">)</span>
+            <span class="n">status</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">di</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">fwv</span> <span class="o">=</span> <span class="n">fwu_get_firmware_update_information</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to get firmware update information (</span><span class="si">{</span><span class="n">ic</span><span class="si">}</span><span class="s2">).&quot;</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">fte</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;User App&quot;</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;User Application detected. Restarting in FW Updater&quot;</span><span class="p">)</span>
+                <span class="n">status</span><span class="p">,</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">fwu_reboot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">)</span> <span class="c1"># Customer Bootloader selected.</span>
+                <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">txt</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Target restarting...&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">transport</span> <span class="o">==</span> <span class="s2">&quot;SPI&quot;</span><span class="p">:</span>
+        <span class="n">status</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">di</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">fwv</span> <span class="o">=</span> <span class="n">fwu_get_firmware_update_information</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to get firmware update information (</span><span class="si">{</span><span class="n">ic</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">fte</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;User App&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;User Application detected. Restarting in FW Updater&quot;</span><span class="p">)</span>
+            <span class="n">status</span><span class="p">,</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">fwu_reboot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="mh">0x03</span><span class="p">)</span> <span class="c1"># Customer Bootloader selected.</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">txt</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Target restarting...&quot;</span><span class="p">)</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+            <span class="n">status</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">di</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">fwv</span> <span class="o">=</span> <span class="n">fwu_get_firmware_update_information</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to get firmware update information (</span><span class="si">{</span><span class="n">ic</span><span class="si">}</span><span class="s2">).&quot;</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">fte</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;FW Updater&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unable to start firmware updater (</span><span class="si">{</span><span class="n">ic</span><span class="si">}</span><span class="s2">).&quot;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Unknown transport </span><span class="si">{</span><span class="n">transport</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Update Started.&quot;</span><span class="p">)</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Getting Target Informations.&quot;</span><span class="p">)</span>
+
+    <span class="n">status</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">di</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">fwv</span> <span class="o">=</span> <span class="n">fwu_get_firmware_update_information</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="n">ic</span>
+
+    <span class="c1"># The current DI05 Reference Design have been tested with DI04 test program for Info Page 3.</span>
+    <span class="c1"># When reading Product Information, then the wrong DI is returned (DI04 instead of DI05).</span>
+    <span class="c1"># It is therefore not a good thing. To avoid confustion at our customer, we don&#39;t display this</span>
+    <span class="c1"># information.</span>
+    <span class="c1"># log.info(f&quot;Target Information: Family ID {icfe[ic]} (DI{di:02})&quot;)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target Information: Family ID </span><span class="si">{</span><span class="n">icfe</span><span class="p">[</span><span class="n">ic</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Firmware Version: </span><span class="si">{</span><span class="n">fwv</span><span class="si">}</span><span class="s2">; Firmware Type: </span><span class="si">{</span><span class="n">fte</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">ft</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+    <span class="n">status</span><span class="p">,</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">fwu_get_firmware_area_count</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="n">counter</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;FW Count: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">counter</span><span class="p">)</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">status</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">fwu_get_firmware_info</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">status</span><span class="p">,</span> <span class="n">header</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;fw hdr: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">header</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processing Firmware Package </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">package_file</span><span class="p">)</span>
+
+    <span class="n">fw_package</span> <span class="o">=</span> <span class="n">fwp_codec</span><span class="o">.</span><span class="n">FW_Package</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">package_file</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">fw_package</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> Firmwares found in package.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">fw_package</span><span class="o">.</span><span class="n">fw_elements</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">fw_element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fw_package</span><span class="o">.</span><span class="n">fw_elements</span><span class="p">):</span>
+
+        <span class="c1">#log.info(f&quot;{n} - Uploading Firmware {fw_element.section_code}.&quot;)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">fte</span><span class="p">[</span><span class="n">fw_element</span><span class="o">.</span><span class="n">fw_hdr</span><span class="o">.</span><span class="n">section_code</span><span class="p">]</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Crypto Init.&quot;</span><span class="p">)</span>
+
+        <span class="n">status</span><span class="p">,</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">fwu_crypto_engine_init</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">enc_type</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">crypto_init_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">txt</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">)  &gt; </span><span class="si">{</span><span class="n">txt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Crypto Upload.&quot;</span><span class="p">)</span>
+
+        <span class="n">status</span><span class="p">,</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">fwu_crypto_engine_upload_signature_material</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">fw_signature</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">fw_signature</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">digest</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">txt</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Upload Init.&quot;</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">)   &gt; </span><span class="si">{</span><span class="n">txt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Firmware Upload Init&quot;</span><span class="p">)</span>
+
+        <span class="n">status</span><span class="p">,</span> <span class="n">block_size</span> <span class="o">=</span> <span class="n">fwu_firmware_upload_init</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">fw_hdr_raw</span><span class="o">.</span><span class="n">hex</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">block_size</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) : - Block Size </span><span class="si">{</span><span class="n">block_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Firmware Upload&quot;</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Upload Start.&quot;</span><span class="p">)</span>
+
+        <span class="n">_show_prct</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">fw_hdr</span><span class="o">.</span><span class="n">fw_size</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+
+            <span class="n">prct</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">fw_hdr</span><span class="o">.</span><span class="n">fw_size</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">prct</span> <span class="o">&gt;=</span> <span class="n">_show_prct</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - </span><span class="si">{</span><span class="n">prct</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+                <span class="n">_show_prct</span> <span class="o">=</span> <span class="n">prct</span> <span class="o">+</span> <span class="mi">13</span>
+
+            <span class="n">status</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">fwu_firmware_write_data_block</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">fw_element</span><span class="o">.</span><span class="n">fw_code_raw</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">block_size</span><span class="p">]</span><span class="o">.</span><span class="n">hex</span><span class="p">(),</span> <span class="mi">200</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">text</span>
+
+            <span class="n">status</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">fwu_store_firmware_block</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">text</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Upload Complete.&quot;</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Validation&quot;</span><span class="p">)</span>
+
+        <span class="c1"># status = False</span>
+        <span class="n">status</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="n">fwu_validate_firmware_update</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">text</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">)  &gt; </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">) - Firmware Uploaded.&quot;</span><span class="p">)</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target Reboot.&quot;</span><span class="p">)</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">status</span><span class="p">,</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">fwu_reboot</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="mh">0x02</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">txt</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">package_file</span><span class="si">}</span><span class="s2"> Uploaded Successfully&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ble.html" class="btn btn-neutral float-left" title="ble Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gap.html" class="btn btn-neutral float-right" title="gap Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

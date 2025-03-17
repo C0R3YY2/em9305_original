@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The GPIOs are standard input/output structures with high-drive, pull-up or pull-down capability.</p>
+<p>An optional input debouncer is clocked by the LF RC oscillator divided by a selectable value between 16 and 2048. Any GPIO can interrupt the CPU on any input value and
+are maskable.</p>
+<section id="gpio-configuration-structure">
+<h2>GPIO configuration structure<a class="headerlink" href="#gpio-configuration-structure" title="Link to this heading"></a></h2>
+<p>The GPIO module is always used and is initialized before NVM_ApplicationEntry function call.</p>
+<p>The GPIO configuration structure is saved in persistent memory before sleep. It is restored after a wake up.</p>
+<p>The default configuration of the GPIOs is:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Initial GPIO configuration</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>GPIO</p></th>
+<th class="head"><p>Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPIO0</p></td>
+<td><p>SPI slave CSN</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIO1</p></td>
+<td><p>SPI slave SCK</p></td>
+</tr>
+<tr class="row-even"><td><p>GPIO2</p></td>
+<td><p>SPI slave MISO</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIO3</p></td>
+<td><p>SPI slave MOSI</p></td>
+</tr>
+<tr class="row-even"><td><p>GPIO4</p></td>
+<td><p>SPI slave RDY</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIO5-11</p></td>
+<td><p>Not used</p></td>
+</tr>
+</tbody>
+</table>
+<p>In more details, the default configuration structure of the GPIO driver is:</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Default GPIO configuration structure (gGPIO_Config.hardwareState)</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 50.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOCfgDeb.regs.</div>
+<div class="line">GPIODebEn</div>
+</div>
+</td>
+<td><p>Debouncer enabled</p></td>
+<td><p>0, Disabled for all GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOCfgDeb.regs.</div>
+<div class="line">GPIODebClock</div>
+</div>
+</td>
+<td><p>Debouncer prescaler / time</p></td>
+<td><p>GPIO_DEBOUNCE_PRESCALER_16</p></td>
+</tr>
+<tr class="row-even"><td><p>RegGPIOInputEn.r32</p></td>
+<td><p>Input enable</p></td>
+<td><div class="line-block">
+<div class="line">GPIO_MASK_SPIS_CSN |</div>
+<div class="line">GPIO_MASK_SPIS_SCK |</div>
+<div class="line">GPIO_MASK_SPIS_MOSI</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>RegGPIOOutputEn.r32</p></td>
+<td><p>Output enable</p></td>
+<td><div class="line-block">
+<div class="line">GPIO_MASK_SPIS_MISO |</div>
+<div class="line">GPIO_MASK_SPIS_RDY</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>RegGPIOPuEn.r32</p></td>
+<td><p>Pull-up enable</p></td>
+<td><p>0, Disabled for all GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><p>RegGPIOPdEn.r32</p></td>
+<td><p>Pull-down enable</p></td>
+<td><p>0, Disabled for all GPIO</p></td>
+</tr>
+<tr class="row-even"><td><p>RegGPIOOdEn.r32</p></td>
+<td><p>Open-drain enable</p></td>
+<td><p>0, Disabled for all GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOOutSel0.regs.</div>
+<div class="line">GPIOOutSel0</div>
+</div>
+</td>
+<td><p>Output selection 0</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOOutSel0.regs.</div>
+<div class="line">GPIOOutSel1</div>
+</div>
+</td>
+<td><p>Output selection 1</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOOutSel0.regs.</div>
+<div class="line">GPIOOutSel2</div>
+</div>
+</td>
+<td><p>Output selection 2</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_SPIS_MISO</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOOutSel0.regs.</div>
+<div class="line">GPIOOutSel3</div>
+</div>
+</td>
+<td><p>Output selection 3</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOOutSel1.regs.</div>
+<div class="line">GPIOOutSel4</div>
+</div>
+</td>
+<td><p>Output selection 4</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_SPIS_RDY</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOOutSel1.regs.</div>
+<div class="line">GPIOOutSel5</div>
+</div>
+</td>
+<td><p>Output selection 5</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOOutSel1.regs.</div>
+<div class="line">GPIOOutSel6</div>
+</div>
+</td>
+<td><p>Output selection 6</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOOutSel1.regs.</div>
+<div class="line">GPIOOutSel7</div>
+</div>
+</td>
+<td><p>Output selection 7</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOOutSel2.regs.</div>
+<div class="line">GPIOOutSel8</div>
+</div>
+</td>
+<td><p>Output selection 8</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOOutSel2.regs.</div>
+<div class="line">GPIOOutSel9</div>
+</div>
+</td>
+<td><p>Output selection 9</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOOutSel2.regs.</div>
+<div class="line">GPIOOutSel10</div>
+</div>
+</td>
+<td><p>Output selection 10</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOOutSel2.regs.</div>
+<div class="line">GPIOOutSel11</div>
+</div>
+</td>
+<td><p>Output selection 11</p></td>
+<td><p>GPIO_PIN_FUNC_OUT_GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel0.regs.</div>
+<div class="line">GPIOInSelSSCSN</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">SPI slave CSN</div>
+</div>
+</td>
+<td><p>GPIO_PIN_SPIS_CSN</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOInpSel0.regs.</div>
+<div class="line">GPIOInSelSSSCK</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">SPI slave SCK</div>
+</div>
+</td>
+<td><p>GPIO_PIN_SPIS_SCK</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel0.regs.</div>
+<div class="line">GPIOInSelSSMOSI</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">SPI slave MOSI</div>
+</div>
+</td>
+<td><p>GPIO_PIN_SPIS_MOSI</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOInpSel0.regs.</div>
+<div class="line">GPIOInSelSMMISO</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">SPI master MISO</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel1.regs.</div>
+<div class="line">GPIOInSelUARTRDX</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">UART RX</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOInpSel1.regs.</div>
+<div class="line">GPIOInSelUARTCTS</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">UART CTS</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel1.regs.</div>
+<div class="line">GPIOInSelTim2Start</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">Timer2 start</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOInpSel1.regs.</div>
+<div class="line">GPIOInSelTim2Cap</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">Timer2 cap</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel2.regs.</div>
+<div class="line">GPIOInSelTim3Start</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">Timer3 start</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOInpSel2.regs.</div>
+<div class="line">GPIOInSelTim3Cap</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">Timer3 cap</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel2.regs.</div>
+<div class="line">GPIOInSelTim2Clk</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">Timer2 clk</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOInpSel2.regs.</div>
+<div class="line">GPIOInSelTim3Clk</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">Timer3 clk</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel3.regs.</div>
+<div class="line">GPIOInSelI2sSClk</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">I2S sclk</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">RegGPIOInpSel3.regs.</div>
+<div class="line">GPIOInSelI2sFsync</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">I2S fsync</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">RegGPIOInpSel3.regs.</div>
+<div class="line">GPIOInSelI2sSData</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Input function selection</div>
+<div class="line">I2S sdata</div>
+</div>
+</td>
+<td><p>GPIO_FUNCTION_NOT_MAPPED</p></td>
+</tr>
+<tr class="row-even"><td><p>RegGPIOCfg.r32</p></td>
+<td><p>Configuration register</p></td>
+<td><p>REG_GPIO_CFG_RESET_VALUE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="configure-the-gpios">
+<h2>Configure the GPIOs<a class="headerlink" href="#configure-the-gpios" title="Link to this heading"></a></h2>
+<p>There are 2 ways to configure the GPIOs:</p>
+<ul class="simple">
+<li><p>Modify the default configuration structure in NVM_ConfigModules.</p></li>
+<li><p>Use the GPIO API to modify the configuration.</p></li>
+</ul>
+<p>If you choose to modify the default configuration, the GPIOs will be set after the NVM_ConfigModules function call.</p>
+<p>This default configuration has to be modified only once because the GPIO config is kept in persistent memory.
+You can update it only after a POR (power on reset).</p>
+<p>Here is an example (copied from printf_example) of how to access directly the GPIO config to update
+the default configuration (in this case UART TX on GPIO7):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Register the modules.</span>
+<span class="w">    </span><span class="n">UART_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable UART.</span>
+<span class="w">    </span><span class="n">gUART_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Do not modify the GPIO config after a wake-up from sleep because</span>
+<span class="w">    </span><span class="c1">// the configuration is kept in persistent memory.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Update the GPIO default configuration</span>
+
+<span class="w">        </span><span class="c1">// Disable all inputs</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInputEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mh">0x000</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Enable outputs on GPIO7 for UART TX,</span>
+<span class="w">        </span><span class="c1">// disable output on other pins</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutputEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Disable pull-downs on all pins</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOPdEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mh">0x000</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Enable pull-up on GPIO7 only</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOPuEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Set the UART TX output function on GPIO7</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOOutSel7</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_FUNC_OUT_UART_TXD</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Disable the UART RX input function</span>
+<span class="w">        </span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInpSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOInSelUARTRDX</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_FUNCTION_NOT_MAPPED</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The configuration of the GPIOs may be different from the default configuration. It depends on
+which driver module is registered and enabled.</p>
+<p>During the module initialization, the other drivers configure the GPIOs they are using.</p>
+</div>
+<p>If you want to use the GPIO driver API to update the GPIO configuration, you can do it where you want except
+in NVM_ConfigModules (because the configuration is overwritten by the default configuration).</p>
+<p>Here is an example (copied from timer_example) of how to modify the GPIO configuration with the GPIO API
+(the config is done in a QPC task, it is setting 2 GPIOs to be GPIO output):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Configure TIMER1_GPIO</span>
+<span class="n">GPIO_DisablePullDown</span><span class="p">(</span><span class="n">TIMER1_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="n">TIMER1_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_DisableInput</span><span class="p">(</span><span class="n">TIMER1_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_DisableOpenDrain</span><span class="p">(</span><span class="n">TIMER1_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_EnableOutput</span><span class="p">(</span><span class="n">TIMER1_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_SetOutputPinFunction</span><span class="p">(</span><span class="n">TIMER1_GPIO</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PIN_FUNC_OUT_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_SetLow</span><span class="p">(</span><span class="n">TIMER1_GPIO</span><span class="p">);</span>
+
+<span class="c1">// Configure TIMER2_GPIO</span>
+<span class="n">GPIO_DisablePullDown</span><span class="p">(</span><span class="n">TIMER2_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="n">TIMER2_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_DisableInput</span><span class="p">(</span><span class="n">TIMER2_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_DisableOpenDrain</span><span class="p">(</span><span class="n">TIMER2_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_EnableOutput</span><span class="p">(</span><span class="n">TIMER2_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_SetOutputPinFunction</span><span class="p">(</span><span class="n">TIMER2_GPIO</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PIN_FUNC_OUT_GPIO</span><span class="p">);</span>
+<span class="n">GPIO_SetLow</span><span class="p">(</span><span class="n">TIMER2_GPIO</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>In this section, simple examples are provided in order to demonstrate how to use the GPIO driver.</p>
+<p><strong>GPIO output:</strong></p>
+<p>Set the value of a GPIO configured as output.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Configure GPIO8</span>
+
+<span class="c1">// Disable pull-down on GPIO8</span>
+<span class="n">GPIO_DisablePullDown</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Disable pull-up on GPIO8</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Disable open-drain on GPIO8</span>
+<span class="n">GPIO_DisableOpenDrain</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Set GPIO8 function to GPIO</span>
+<span class="n">GPIO_SetOutputPinFunction</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PIN_FUNC_OUT_GPIO</span><span class="p">);</span>
+<span class="c1">// Disable input on GPIO8</span>
+<span class="n">GPIO_DisableInput</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Set GPIO8 low</span>
+<span class="n">GPIO_SetLow</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Enable output on GPIO8</span>
+<span class="n">GPIO_EnableOutput</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+
+
+<span class="c1">// Examples</span>
+
+<span class="c1">// Set GPIO8 high</span>
+<span class="n">GPIO_SetHigh</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Set GPIO8 low</span>
+<span class="n">GPIO_SetLow</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Toggle GPIO8</span>
+<span class="n">GPIO_Toggle</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>GPIO input:</strong></p>
+<p>Read the value of a GPIO configured as input.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Configure GPIO8</span>
+
+<span class="c1">// Enable pull-down on GPIO8</span>
+<span class="n">GPIO_EnablePullDown</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Disable pull-up on GPIO8</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Disable open-drain on GPIO8</span>
+<span class="n">GPIO_DisableOpenDrain</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Set GPIO8 function to GPIO</span>
+<span class="n">GPIO_SetOutputPinFunction</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PIN_FUNC_OUT_GPIO</span><span class="p">);</span>
+<span class="c1">// Disable output on GPIO8</span>
+<span class="n">GPIO_DisableOutput</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Enable input on GPIO8</span>
+<span class="n">GPIO_EnableInput</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+
+<span class="c1">// Wait minimum 4 clock cycles before reading the value</span>
+<span class="c1">// of GPIO8</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// Example</span>
+
+<span class="c1">// Get GPIO8 value</span>
+<span class="k">if</span><span class="p">(</span><span class="n">GPIO_GetValue</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// GPIO8 is 1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>GPIO interrupt:</strong></p>
+<p>Configure a rising interrupt on a GPIO and capture the callback.</p>
+<p>This example is using QPC. It sends a QPC event when an interrupt on GPIO8 is catched.</p>
+<p>The callback:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">IRQUserHandler_GPIO</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">gpio</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">QK_ISR_ENTRY</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">gpio</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Post an event to the task.</span>
+<span class="w">        </span><span class="n">QEventParams</span><span class="w"> </span><span class="o">*</span><span class="n">pEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">QEventParams</span><span class="o">*</span><span class="p">)</span><span class="n">Q_NEW</span><span class="p">(</span><span class="n">QEventParams</span><span class="p">,</span><span class="w"> </span><span class="n">SIG_GPIO_INT</span><span class="p">);</span>
+<span class="w">        </span><span class="n">QACTIVE_POST</span><span class="p">(</span><span class="o">&amp;</span><span class="n">AO_Task</span><span class="p">.</span><span class="n">super</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">QEvt</span><span class="o">*</span><span class="p">)</span><span class="n">pEvent</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">QK_ISR_EXIT</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The configuration of GPIO8 to catch interrupts and wake up the EM9305:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Enable pull down only</span>
+<span class="n">GPIO_DisablePullUp</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="n">GPIO_EnablePullDown</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="n">GPIO_DisableOpenDrain</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+
+<span class="c1">// Set polarity rising, ISR will be triggered in active mode</span>
+<span class="c1">// when a rising edge is detected.</span>
+<span class="n">GPIO_SetPolarityRising</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="c1">// Enable input</span>
+<span class="n">GPIO_EnableInput</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+
+<span class="c1">// Set the callback for user ISR</span>
+<span class="n">IRQ_SetIRQUserHandlerGPIO</span><span class="p">(</span><span class="n">IRQUserHandler_GPIO</span><span class="p">);</span>
+
+<span class="c1">// GPIO 8 wake-up configuration.</span>
+<span class="c1">// Set wakePolarity to true to wake up EM9305 on GPIO high (level sensitive).</span>
+<span class="c1">// Set wakeEnable to true to enable wake-up on GPIO.</span>
+<span class="c1">// Set irqEnable to true to generate an ISR in active mode when GPIO sensitive edge is triggered.</span>
+<span class="n">PML_ConfigWakeUpByGpio</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+
+<span class="c1">// Configure the HF XTAL to run as a wake-up action (if required).</span>
+<span class="n">PML_RegisterWakeUpAction</span><span class="p">(</span><span class="n">PML_WAKEUP_ACTION_RUN_HF_XTAL</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_MASK</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+
+<span class="c1">// The protocol timer must be started after wakeup if you are using a BLE</span>
+<span class="c1">// stack or anything that requires the protocol timer to run. If not, this</span>
+<span class="c1">// line can be removed.</span>
+<span class="n">PML_RegisterWakeUpAction</span><span class="p">(</span><span class="n">PML_WAKEUP_ACTION_RUN_PROT_TIM</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_MASK</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

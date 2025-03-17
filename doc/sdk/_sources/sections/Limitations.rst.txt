@@ -1,0 +1,82 @@
+###############################
+Known limitations & constraints
+###############################
+
+
+===========================
+Command EMSMM NVM Lock Page
+===========================
+
+*OpCode = 0xFD09*
+
+This command is used to lock any page in flash memory against erase and write operations. However, it is important to mention
+that it only locks pages temporarily until a power on reset occurs. The lock bits are not permanently written
+in flash memory.
+
+In case of power on reset, then the previously enabled lock bits are reset meaning that the pages are not
+locked any longer.
+
+If it is not possible to do a power on reset mainly because the battery is sealed within the device, then the page
+is definitely locked since it is not possible to revert a lock bit from 1 to 0. Only transition from 0 to 1 are possible.
+
+Otherwise, if a power on reset is still possible and in order to permanently write the lock bits in flash memory, the following procedure shall be applied:
+
+1. using the BLEngine tool provided in the SDK, read the user page from the flash memory and export data into a file.
+2. modify the content of the file by activating lock bits.
+3. write back the modified file into the flash memory.
+
+.. warning::
+
+    Locking a page shall always be considered with caution since it might lead to completly lock a device with no possibilities
+    to fallback to a failsafe situation.
+
+===========================
+NVM Information Area
+===========================
+
+For more information on how to permanently lock a flash memory page, refer to the HowTo documentation provided in this SDK.
+
+
+===========================
+Write and Read HCI commands
+===========================
+
+*OpCode = 0xFD01 (ReadAtAddress)*
+
+*OpCode = 0xFD03 (WriteAtAddress)*
+
+The 'address' parameter of the HCI commands 'Write At Address' and 'Read At Address' has to be aligned to
+4 bytes. This means that the address LSB half byte can only be a value amongst the following: 0, 4, 8, C.
+The 'data' parameter either provided to the write command or returned by the read command should be a 4 bytes
+data word aligned to 4 bytes.
+
+.. warning::
+
+    It is strongly recommended to only use addresses and data aligned to 4 bytes. While using non aligned
+    addresses and/or data might work in some cases, using aligned parameters shall be the general rule.
+
+========================================
+em|bleu Bluetooth LE stack documentation
+========================================
+
+This SDK includes the latest version of the Bluetooth LE stack documentation. Moreover, some
+complete application examples using this stack are provided to showcase how this stack can be used to achieve some specific functionalities. They are located in the ``projects``.
+
+For a complete comprehensive list of all available examples provided in this SDK, please refer to the
+:ref:`examples` page.
+
+=============================================
+AES security functions reentrancy limitations
+=============================================
+
+Since the hardware AES engine does not support concurrent access, and some of the security libraries relying on it do not provide any protection against re-entrancy, such libraries shall be used with care in a multi-tasking and in interruption environment. That is, it is the end user application responsibility to design such an architecture that ensures no concurrent access to these hardware resources will take place.
+
+This limitation concerns the following security libraries:
+
+    - AES ECB
+    - AES CBC
+    - AES CTR
+    - AES CMAC
+    - AES CCM
+    - AES GCM
+    - PRNG

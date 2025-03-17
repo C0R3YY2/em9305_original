@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Printf Example &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Links" href="../../sections/Links.html" />
+    <link rel="prev" title="Unit test example" href="../nvm_unit_test/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Examples.html">Sample Applications</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples/drivers.html">EM9305 Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/bluetooth.html">Bluetooth Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/firmware_update.html">Firmware Update Sample Applications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../examples/misc.html">Miscellaneous Sample Applications</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../basic_app_tutorial/index.html">Basic Application Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../boot_selector/index.html">Boot Selector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bootloader/index.html">Bootloader example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_emsas_example/index.html">EM System Application Specific (EMSAS) example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_qpc_example/index.html">QPC example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_unit_test/index.html">Unit test example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Printf Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-details">Implementation details</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run">Run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Examples.html">Sample Applications</a></li>
+          <li class="breadcrumb-item"><a href="../examples/misc.html">Miscellaneous Sample Applications</a></li>
+      <li class="breadcrumb-item active">Printf Example</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="printf-example">
+<h1>Printf Example<a class="headerlink" href="#printf-example" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The purpose of this example is to show how to use the printf library which is mainly used for debugging.</p>
+<p>This example simply prints a counter over UART using the printf library. It is possible to reset the counter by pressing any key on the keyboard.</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>The input (Rx UART signal) is on GPIO6 and the output (Tx UART signal) is on GPIO7. This signal can be accessed from two header connectors (see picture below).</p>
+<a class="reference internal image-reference" href="../../_images/UART_Tx_GPIO7_connection21.jpg"><img alt="Rx/GPIO6 and Tx/GPIO7 electrical connection :align: center" src="../../_images/UART_Tx_GPIO7_connection21.jpg" style="width: 652.1999999999999px; height: 457.8px;" /></a>
+<p>You can then connect a USB to UART device to GPIO6 and GPIO7 and use a terminal software (for example docklight, PuTTy, …) to connect to the COM port of your device.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Double check you connected the jumpers D+(07) and D-(06) on the DVK.
+The GPIO6 and GPIO7 pins are connected by default to the USB connector.</p>
+</div>
+<p>The printf application example increments a counter every second. This counter is reset when a key of the keyboard is pressed.</p>
+</section>
+<section id="implementation-details">
+<h2>Implementation details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<p>This code snippet shows two functions.</p>
+<p>The function <em>NVM_ConfigModules()</em> is called each time the CPU starts either from a cold/warm reset or after a period of sleep.
+It is the place where the GPIO configuration is setup through updating the dedicated global reserved structure <em>gGPIO_Config</em>.</p>
+<p>After the execution of the function, this structure will then be used to actually modify the content of the CPU registers.
+However, it shall be noted that this structure is filled in only once after a reset. If the CPU starts from a sleep period,
+there is no need to do this configuration again.</p>
+<p>This is achieved by calling the function <em>PML_DidBootFromSleep()</em> which returns <em>true</em> if the CPU execution resumes from a
+sleep period, and <em>false</em> otherwise.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Did the CPU start after a cold/warm reset (and not resuming from a sleep period)?</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="c1">// Do any actions if not resuming from sleep period.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The ‘PML’ prefix means ‘Power Management Logic’.</p>
+</div>
+<p>Since the structure <em>gGPIO_Config</em> is permanently stored, there is no need to update it after a sleep period because it has been
+done at startup after a cold/warm reset.</p>
+<p>Then, knowing that the GPIO7 is going to be used by the UART, a set of actions need to be done to achieve the right configuration.</p>
+<p>First, the GPIO06 and GPIO7 are enabled:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInputEn</span><span class="p">.</span><span class="n">r32</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_6</span><span class="p">;</span>
+<span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutputEn</span><span class="p">.</span><span class="n">r32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that in this statement, all other GPIOs are disabled.</p>
+<p>Second, the TX output is forwarded to GPIO7:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOOutSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOOutSel7</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_FUNC_OUT_UART_TXD</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>and third, the RX input is forwarded to GPIO6:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">gGPIO_Config</span><span class="p">.</span><span class="n">hardwareState</span><span class="p">.</span><span class="n">RegGPIOInpSel1</span><span class="p">.</span><span class="n">regs</span><span class="p">.</span><span class="n">GPIOInSelUARTRDX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_UART_RXD</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>And that’s it for the <em>NVM_ConfigModules()</em> function.</p>
+<p>The function <em>NVM_ApplicationEntry()</em> is the entry point of the customer application.</p>
+<p>This is where the application logic takes place and it is split in two parts.</p>
+<p>The first part contains some initializations including the initializion of the <em>printf</em> library by a call to the <em>printf_init()</em> function. It also execute the <em>UART_ReceiveDataWithCallback()</em> function to detect if some data are received on the UART line.</p>
+<p>Then comes the infinite loop:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Infinite loop</span>
+<span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="c1">//</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In this example, in the main loop, the CPU actively waits for one second by calling the following function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Wait 1 sec</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This is an active wait, meaning that the CPU is not put into sleep mode in this specific case.
+After one second, the CPU will send the message “counter=XXXXX” to the TX line.
+Then, it will loop again.</p>
+<p>If during these loops, a key is pressed on the keyboard, the callback given in <em>UART_ReceiveDataWithCallback()</em> parameter is called. The counter is then reset and the <em>UART_ReceiveDataWithCallback()</em> function is called again to detect some new data on the UART line.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As this example is not going to sleep and the JTAG is enabled, you can start the debugger and debug it.</p>
+</div>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>The build target of this example is: <strong>printf_example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>printf_example
+</pre></div>
+</div>
+</section>
+<section id="run">
+<h2>Run<a class="headerlink" href="#run" title="Link to this heading"></a></h2>
+<p>To program and run the example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\p</span>rintf_example<span class="se">\p</span>rintf_example.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).</p>
+<img alt="../../_images/printf_programmed.png" src="../../_images/printf_programmed.png" />
+<p>Then, launch your terminal software and connect to the DVK (UART port) using the second COM port dynamically created
+at connection. Note that this port is different than the one used to program the application into the flash memory.</p>
+<p>Once you have identified the right COM port, then in your terminal software, configure the speed to be 115200 bit/s
+and open the connection.</p>
+<p>You will then see the counter messages on your terminal like shown in screenshot below.</p>
+<img alt="../../_images/Terminal_counter.png" class="align-center" src="../../_images/Terminal_counter.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../nvm_unit_test/index.html" class="btn btn-neutral float-left" title="Unit test example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../sections/Links.html" class="btn btn-neutral float-right" title="Links" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+List of EM-Core Variants
+========================
+
+This SDK provides a standard EM-Core configuration with the above listed built-in libraries.
+
+.. csv-table:: EM-Core Variant
+   :header: "Command", "Description"
+   :widths: 30, 50
+
+   "standard", "Standard Version of EM-Core"
+
+Each *EM-Core* variant comes with an additional target which name contains the suffix `_no_crc_check` (e.g. `emcore_standard_no_crc_check.ihex`). Such variant includes the exact same functionalities than the variant without this suffix provides except that the image integrity (CRC check) is not verified at power on reset.
+
+Depending on the lifecycle and production flow, CRC may be verified by other means. Therefore, this functionality may save boot time and energy in some specific contexts.
+
+Custom EM-Core
+--------------
+
+Instead of using the provided default *EM-Core*, the end user has the possibility to build his/her own homebrewed *EM-Core* by adding new custom items or by removing uneeded items. This customized flavor can then be linked against the end user application to create the final application that relies onto this custom *EM-Core*.
+
+.. warning::
+
+   In case a customized *EM-Core* is created and used, it shall be programmed in the NVM along with the end user application that makes use of it. Even if the both the custom *EM-Core* flavor and the standard one have the same
+   source code, a standard *EM-Core* must not be mixed with a sample application designed to run with the custom flavor,
+   and inversely. In such a case of mixed configuration, the sample application might not be able to start.
+
+|
+
+The following picture shows the custom *EM-Core* folder in the SDK.
+
+.. image:: EM-Core_custom_folder_content.png
+   :scale: 100%
+   :align: center
+
+|
+
+The source code and all build configuration files are provided in the ``emcore/custom`` folder. The ``emcore/bin`` folder contains the standard default binary version provided in the SDK along with the ``NVM_Bootloader``.
+
+The *EM-Core* source code is located in both the ``emcore/custom/includes`` and in ``emcore/custom/source`` folders.
+It corresponds to the standard default *EM-Core*.
+
+Building the custom *EM-Core* flavor distributed in the SDK
+===========================================================
+
+To showcase how to build a custom *EM-Core* flavor, a custom version of *EM-Core* is provided within the SDK. Its name is *my_flavor*.
+
+First run the command to create the build environment within the SDK:
+
+.. code:: bash
+
+   $ cd <sdk>
+   $ ./init.bat
+
+Then build this *EM-Core* flavor named ``my_flavor``:
+
+.. code:: bash
+
+   $ cd build
+   $ cmake --build . --target emcore_custom_my_flavor
+
+After build, all files are installed within the following folder:
+
+.. code:: bash
+
+   <sdk>/emcore/bin/v4.1/my_flavor
+
+
+Defining a custom flavor
+========================
+
+Beyond using the *EM-Core* flavor provided in the SDK, the user has the possibility to create his own version of *EM-Core*. The following steps show how this can be done.
+
+The file ``emcore/custom/custom_emcore_def.cmake`` is where the name of the user flavor’s name is defined.
+
+.. code:: cmake
+
+   SET(CUSTOM_EMCORE_FLAVORS my_flavor:15)
+
+The name "*my_flavor*"" shall be replaced by any name relevant to the user defined configuration, with the exception to the "*standard*" name.
+
+.. code:: cmake
+
+   SET(CUSTOM_EMCORE_FLAVORS custom_flavor:1234)
+
+
+
+Tweaking the ``.cmake`` file
+============================
+
+The file ``emcore/custom/custom_emcore.cmake`` is the actual file that will be processed by ``CMake`` to create the custom *EM-Core*. This is also the place where the user can list his/her own source files and/or libraries.
+Generally speaking, the user will tweak the content of this file to customize his/her own *EM-Core* flavor. This requires having a quite good knowledge of ``CMake`` files syntax, but nothing fancy here.
+
+Any reference to the "*my_flavor*" pattern shall be changed to match with the user defined flavor’s name.
+
+Let’s consider a new '*custom_flavor*' version. The following statements shall be changed in the file.
+
+First, set the name of the custom *EM-Core* library. This will define the name of the output file for this specific *EM-Core* in the ``<sdk>/build/emcore/custom`` folder.
+
+.. code:: cmake
+
+   SET(CUSTOM_EMCORE_LIBS
+      emcore_information_custom_flavor
+      # Add the libraries you want to include to your custom EM-Core
+   )
+
+
+Then, change the name of the variable that contains the list of header files to include:
+
+.. code:: cmake
+
+   SET(CUSTOM_EMCORE_INCLUDES__custom_flavor
+      ${CUSTOM_EMCORE_INCLUDES_COMMON}
+   )
+
+Then, the variable that lists the libraries to link against shall also have its name changed for this flavor:
+
+.. code:: cmake
+
+   SET(CUSTOM_EMCORE_LIBS__custom_flavor
+      ${CUSTOM_EMCORE_LIBS_COMMON}
+      ${CUSTOM_EMCORE_LIBS}
+   )
+
+Note that for all these modifications, only the suffix is changed:
+
+   ``_my_flavor`` ==> ``_custom_flavor``
+
+
+
+Adding a missing library
+========================
+
+Whenever the standard *EM-Core* does not contain a library that is needed, it can be easily added.
+
+Let’s take the `unitimer` example to be added in a custom flavor of *EM-Core*. Still in the ``custom_emcore.cmake`` file, the include folder where the ``unitimer`` header file is located is introduced by adding it to the ``CUSTOM_EMCORE_INCLUDES__custom_flavor`` variable:
+
+.. code:: cmake
+
+    SET(CUSTOM_EMCORE_INCLUDES__custom_flavor
+      ${CUSTOM_EMCORE_INCLUDES_COMMON}
+      ${LIBS_DIR}/unitimer/includes
+    )
+
+This statement is mandatory to get access to the ``unitimer`` header file.
+
+Then, to successfully link the *EM-Core* with this library, the following statement shall be added in the variable ``CUSTOM_EMCORE_LIBS__custom_flavor``:
+
+.. code:: cmake
+
+    SET(CUSTOM_EMCORE_LIBS__custom_flavor
+      ${CUSTOM_EMCORE_LIBS_COMMON}
+      ${CUSTOM_EMCORE_LIBS}
+      unitimer
+    )
+
+And that’s it. The next step is to build this *EM-Core* flavor as shown in the next step.
+
+Building the *EM-Core* custom flavor
+====================================
+
+Re-execute the *init.bat* script to recreate the build environment:
+
+.. code:: bash
+
+   $ cd <sdk>
+   $ ./init.bat
+
+Note that this command will erase a previously built ``build`` folder. This step is mandatory to create the specific user defined *EM-Core* target so it can be built.
+
+Then, building the *EM-Core* custom flavor is done by issuing the following command:
+
+.. code:: bash
+
+   $ cd build
+   $ cmake --build . --target custom_emcore_custom_flavor
+
+The target name starts with ``custom_emcore_`` and is followed by the name of the flavor to be built.
+
+Building the application and linking with user *EM-Core*
+========================================================
+
+The last step to complete is to instruct the build system to link with the user defined *EM-Core* when building an app instead of linking with the standard one.
+
+Let’s take the ``nvm_emb_hrs`` sample application as an example.
+
+Looking at its ``CMakeLists.txt`` file, the following lines are where the magic takes place:
+
+.. code:: cmake
+
+   SET(targets_emcore_flavor "standard")
+   APP_IN_NVM()
+   ARC_EXECUTABLE(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS})
+   ARC_LINK_LIBRARIES(${PROJECT_NAME} ${${PROJECT_NAME}_LIBS})
+   ARC_INCLUDE_DIRECTORIES(${PROJECT_NAME} ${${PROJECT_NAME}_INCLUDES})
+   GENERATE_EMCORE_APPLICATION(${PROJECT_NAME}_emcore "${targets_emcore_flavor}"
+      "${${PROJECT_NAME}_SRCS}" "${${PROJECT_NAME}_INCLUDES}"
+      "-DNO_FLINT_ERRORS"
+      "${${PROJECT_NAME}_EMCORE_LIBS}"
+   )
+
+As it can be seen, the variable ``targets_emcore_flavor`` defines the *EM-Core* flavor that shall be used. The user defined flavor shall be written here instead of *standard*.
+
+.. code:: cmake
+
+   SET(targets_emcore_flavor "custom_flavor")
+
+Optionally, the first parameter of the ``GENERATE_EMCORE_APPLICATION`` macro can be change to be more representative of the user define version of the application. Consequently, the suffix *_emcore* can be changed to something else. But this modification is not mandatory.
+
+Then, the application can be built by issuing the following command in the SDK folder:
+
+.. code:: bash
+
+   $ cd build
+   $ cmake --build . --target nvm_emb_hrs_emcore
+
+Note that this command instructs to build the new *EM-Core* flavor. But the exact version (or name) is specified within the ``.cmake`` file.
+
+And that’s it!
+
+The generated *EM-Core* is located in the ``<sdk>/build/emcore/custom`` and the generated files are shown in the screenshot below:
+
+.. image:: Custom_emcore_generated.png
+   :scale: 100%
+   :align: center
+
+In particular, the file ``custom_emcore_custom_flavor_di05.ihex`` is the one that shall be programmed in the NVM.
+
+And the ``nvm_emb_hrs_emcore`` application that uses this custom flavor has been built in ``<sdk>/build/projects/nvm_emb_hrs`` as shown in the following screenshot:
+
+.. image:: nvm_emb_hrs_emcore_generated.png
+   :scale: 100%
+   :align: center
+
+Same as above, the ``.ihex`` file is the one to use to program in the NVM.

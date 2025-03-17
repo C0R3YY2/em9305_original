@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update - A Step by Step process &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Update Service - FWUS" href="FirmwareUpdateService.html" />
+    <link rel="prev" title="Firmware Package Generator" href="FirmwarePackageGenerator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../FirmwareUpdate.html">Firmware Update</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateGeneral.html">Firmware Update Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwarePackageGenerator.html">Firmware Package Generator</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Firmware Update - A Step by Step process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">1 Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initial-setup">2 Initial setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites-for-firmware-update-over-spi">2.1 Prerequisites for Firmware Update over SPI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites-for-firmware-update-over-bluetooth-le">2.2 Prerequisites for Firmware Update over Bluetooth LE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#target-initial-configuration">2.3 Target initial configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#provider-initial-configuration">2.4 Provider initial configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#step-by-step-procedure-for-firmware-package-generation">3 Step-by-step procedure for Firmware Package Generation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-packages-generation">3.1 Firmware packages generation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#preparing-the-target">3.2 Preparing the target</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#initial-firmware-programming-v1">3.3 Initial firmware programming v1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#firmware-update-programming-v2">3.4 Firmware update programming v2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateService.html">Firmware Update Service - FWUS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FirmwareUpdateCommands.html">Firmware Update Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../FirmwareUpdate.html">Firmware Update</a></li>
+      <li class="breadcrumb-item active">Firmware Update - A Step by Step process</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-a-step-by-step-process">
+<h1>Firmware Update - A Step by Step process<a class="headerlink" href="#firmware-update-a-step-by-step-process" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>1 Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This pages shows the step-by-step process to setup and use the EM9305 SoC firmware update process.</p>
+<p>The sample application provided in this SDK support the Firmware Update functionality over
+Bluetooth LE and SPI.</p>
+<p>The figure below depicts the sequence of this Step-by-Step guide.</p>
+<p>In order to properly execute the Firmware Update procedure, the initial configuration of the FWU Target consists
+of programming AES key in Key Container index 7 (Info Page 0) and the ECDSA Public Key for signature verification
+in Information Page 2 (User reserved Information Page area).</p>
+<p>The AES symetric key and ECDSA asymetric key used in this step-by-step guide are provided in the SDK as test keys.
+These keys shall not be used in real product.</p>
+<p>Refer to the <a class="reference external" href="FirmwarePackageGenerator.html">Firmware Package Generator</a> for keys generation procedures.</p>
+<p>Then, when the Firmware Updater application is running, the version 1 of the FWU Target sample application is programmed
+in the FWU Target.</p>
+<p>Once this is done, it is possible to update the firmware by programming the FWU Target V2 in the FWU Target device.</p>
+<a class="reference internal image-reference" href="../../_images/firmware-update-sequence.png"><img alt="Firmware Update - Step-by-Step Guide - Sequence" class="align-center" src="../../_images/firmware-update-sequence.png" style="width: 607.75px; height: 293.25px;" /></a>
+</section>
+<section id="initial-setup">
+<h2>2 Initial setup<a class="headerlink" href="#initial-setup" title="Link to this heading"></a></h2>
+<section id="prerequisites-for-firmware-update-over-spi">
+<h3>2.1 Prerequisites for Firmware Update over SPI<a class="headerlink" href="#prerequisites-for-firmware-update-over-spi" title="Link to this heading"></a></h3>
+<p>One EM9305 DVK is needed for this demonstration.</p>
+<a class="reference internal image-reference" href="../../_images/firmware-update-test-setup-spi.png"><img alt="Firmware Update over SPI" class="align-center" src="../../_images/firmware-update-test-setup-spi.png" style="width: 544.85px; height: 264.34999999999997px;" /></a>
+<p>This scenario does not require Step 2.4 to be executed.</p>
+</section>
+<section id="prerequisites-for-firmware-update-over-bluetooth-le">
+<h3>2.2 Prerequisites for Firmware Update over Bluetooth LE<a class="headerlink" href="#prerequisites-for-firmware-update-over-bluetooth-le" title="Link to this heading"></a></h3>
+<p>Two DVKs are needed for this demonstration. One DVK is acting as the Firmware Update Target (the “Target”). The second DVK is acting as the Firmware Update Provider (the “Provider”).</p>
+<a class="reference internal image-reference" href="../../_images/firmware-update-test-setup.png"><img alt="Firmware Update over Bluetooth LE" class="align-center" src="../../_images/firmware-update-test-setup.png" style="width: 536.35px; height: 357.84999999999997px;" /></a>
+<p>In this page, COM_A is used to refer to the COM port of the host computer connected to the Firmware Update Target device while COM_B is used to refer to the COM port of host computer connected to the Firmware Update Provider.</p>
+<p>The following table summarizes the COM port identifications and the device connected to it.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Port</p></th>
+<th class="head"><p>Device</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>COM_A</p></td>
+<td><p>Target</p></td>
+</tr>
+<tr class="row-odd"><td><p>COM_B</p></td>
+<td><p>Provider</p></td>
+</tr>
+</tbody>
+</table>
+<p>The Firmware Update Provider acts as the GATT Client. It initiates a connection to the Firmware Update target and proceeds with the firmware update.</p>
+<p>BLEngine can be installed at system level using <code class="docutils literal notranslate"><span class="pre">&lt;SDK_ROOT&gt;/tools/blengine/installer/setup.ps1</span></code>. This makes <code class="docutils literal notranslate"><span class="pre">blengine.exe</span></code> available system-wide and replaces the <code class="docutils literal notranslate"><span class="pre">blengine_cli.py</span></code>.
+As an example, the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>produces the same output as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;from anywhere in the system&quot;</span>
+blengine.exe<span class="w"> </span>--version
+</pre></div>
+</div>
+</section>
+<section id="target-initial-configuration">
+<h3>2.3 Target initial configuration<a class="headerlink" href="#target-initial-configuration" title="Link to this heading"></a></h3>
+<p>The Target device shall be programmed with the following binary files:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvm_bootloader_base.ihex</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">firmware_updater.ihex</span></code></p></li>
+</ol>
+<p>When the application is running, the advertising procedure is started with the Complete Local Name set to “EM9305_FWU” in the Scan Response.</p>
+<p>In order to use the cryptographic toolbox provided with the firmware update feature, the AES secret key shall be programmed in the Key Container index 7. This is done on the host computer connected to the Target by issuing the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_A<span class="w"> </span>run<span class="w"> </span>write_key<span class="w"> </span>--index<span class="o">=</span><span class="m">7</span><span class="w"> </span>--secret_key<span class="o">=</span><span class="s2">&quot;0xdc43496ddc7b4eb046f470054a14cb8d&quot;</span>
+</pre></div>
+</div>
+<p>Furthermore, the firmware signature requires the ECDSA signature public key to be programmed in NVM Information Page number 2 (User Info Page).</p>
+<p>Test keys are available in the <code class="docutils literal notranslate"><span class="pre">&lt;SDK_ROOT&gt;/tools/fw_update/myP2.json</span></code> file and can be programmed as follow:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_A<span class="w"> </span>run<span class="w"> </span>nvm_write<span class="w"> </span>--in_file<span class="w"> </span>..<span class="se">\f</span>w_update<span class="se">\m</span>yP2.json<span class="w"> </span>--page<span class="w"> </span>user
+</pre></div>
+</div>
+<p>The AES symetric key and ECDSA asymetric key used in this step-by-step guide are provided in the SDK as test keys.
+These keys shall not be used in real product.</p>
+<p>Refer to the <a class="reference external" href="FirmwarePackageGenerator.html">Firmware Package Generator</a> for keys generation procedures.</p>
+</section>
+<section id="provider-initial-configuration">
+<h3>2.4 Provider initial configuration<a class="headerlink" href="#provider-initial-configuration" title="Link to this heading"></a></h3>
+<p>This section applies to Firmware Update over Bluetooth and is not required for Firmware Update over SPI.</p>
+<p>The Provider device shall be programmed with the special ready to be used firmware <code class="docutils literal notranslate"><span class="pre">prj_emshi.ihex</span></code> which is provided in <code class="docutils literal notranslate"><span class="pre">&lt;SDK_ROOT&gt;\tools\fw_update</span></code>.
+Its goal is to provide an API that abstracts the Bluetooth Host.
+Such Bluetooth Host can therefore be controlled via Vendor Specific commands over HCI.</p>
+<p>Programming this firmware can be achieved with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_B<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\f</span>w_update<span class="se">\p</span>rj_emshi.ihex
+</pre></div>
+</div>
+</section>
+</section>
+<section id="step-by-step-procedure-for-firmware-package-generation">
+<h2>3 Step-by-step procedure for Firmware Package Generation<a class="headerlink" href="#step-by-step-procedure-for-firmware-package-generation" title="Link to this heading"></a></h2>
+<section id="firmware-packages-generation">
+<h3>3.1 Firmware packages generation<a class="headerlink" href="#firmware-packages-generation" title="Link to this heading"></a></h3>
+<p>In this example, two firmware packages are generated. They are listed hereafter:</p>
+<ul class="simple">
+<li><p>the file <code class="docutils literal notranslate"><span class="pre">fp_app_v1.pack</span></code> that includes the <code class="docutils literal notranslate"><span class="pre">nvm_fwu_target</span></code> firmware.
+This firmware can be built from the SDK and it is located in the <code class="docutils literal notranslate"><span class="pre">projects\nvm_fwu_target</span> <span class="pre">folder</span></code>. When this firmware is executed, the advertising procedure is started with the Complete Local name set to “<cite>FWU_TARGET</cite>” in the Scan Response.</p></li>
+<li><p>the file <code class="docutils literal notranslate"><span class="pre">fp_app_v2.pack</span></code> that includes the <code class="docutils literal notranslate"><span class="pre">nvm_fwu_target_v2</span></code> firmware version 2.
+This firmware can be built from the SDK and it is located in the <code class="docutils literal notranslate"><span class="pre">projects\nvm_fwu_target</span> <span class="pre">folder</span></code>. When this firmware is executed, the advertising procedure is started with the Complete Local name set to “<cite>FWU_TARGET_V2</cite>” in the Scan Response.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Firmware Build:</span>
+<span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>nvm_fwu_target_v2
+<span class="c1"># Firmware package generation</span>
+<span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\f</span>w_update<span class="se">\</span>
+<span class="c1"># Make sure all python package are installed</span>
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+python<span class="w"> </span>fpg.py<span class="w"> </span>generate_fw_package<span class="w"> </span>-k<span class="w"> </span>aes0.txt<span class="w"> </span>-e<span class="w"> </span>AES_CTR<span class="w"> </span>-s<span class="w"> </span>ecdsa0_pri.pem<span class="w"> </span>-f<span class="w"> </span>fp_app_v1.pack<span class="w"> </span>--ihex<span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\n</span>vm_fwu_target<span class="se">\n</span>vm_fwu_target.ihex
+python<span class="w"> </span>fpg.py<span class="w"> </span>generate_fw_package<span class="w"> </span>-k<span class="w"> </span>aes0.txt<span class="w"> </span>-e<span class="w"> </span>AES_CTR<span class="w"> </span>-s<span class="w"> </span>ecdsa0_pri.pem<span class="w"> </span>-f<span class="w"> </span>fp_app_v2.pack<span class="w"> </span>--ihex<span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\n</span>vm_fwu_target<span class="se">\n</span>vm_fwu_target_v2.ihex
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note: the keys provided with the Firmware package Generator are used for testing purpose and shall not be used for firmware package generation of a real application. Refer to the Firmware Package Generator section for more information on key generation.</p>
+</div>
+<p>The firmware package generator embeds a procedure to verify and display various information related to a firmware package.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>fpg.py<span class="w"> </span>verify_fw_package<span class="w"> </span>-k<span class="w"> </span>aes0.txt<span class="w"> </span>-s<span class="w"> </span>ecdsa0_pub.pem<span class="w"> </span>-f<span class="w"> </span>fp_app_v1.pack
+FW<span class="w"> </span>Package<span class="w"> </span>Count:<span class="w"> </span><span class="m">1</span>
+Firmware<span class="w"> </span>package<span class="w"> </span>generation<span class="w"> </span><span class="k">for</span><span class="w"> </span>EM9305<span class="w"> </span><span class="o">(</span>EM9305-DI05<span class="o">)</span>
+FW<span class="w"> </span>Element<span class="w"> </span><span class="m">1</span>
+<span class="w">      </span>FW<span class="w"> </span>Header
+<span class="w">              </span>Length:<span class="w"> </span><span class="m">40</span>
+<span class="w">              </span>Section<span class="w"> </span>Code:<span class="w"> </span>CustomerApp
+<span class="w">              </span>Firmware<span class="w"> </span>Start<span class="w"> </span>Address:<span class="w"> </span>0x302028
+<span class="w">              </span>Firmware<span class="w"> </span>Size:<span class="w"> </span><span class="m">140088</span>
+<span class="w">              </span>Firmware<span class="w"> </span>CRC:<span class="w"> </span>0x3cb41d
+<span class="w">              </span>EM-Core<span class="w"> </span>CRC:<span class="w"> </span>0xffffff
+<span class="w">              </span>Firmware<span class="w"> </span>Version:<span class="w"> </span><span class="m">0</span>
+<span class="w">              </span>Firmware<span class="w"> </span>Execute<span class="w"> </span>Address:<span class="w"> </span>0x302028
+<span class="w">              </span>Firmware<span class="w"> </span>Header<span class="w"> </span>CRC:<span class="w"> </span>0xeab2b0
+<span class="w">      </span>FW<span class="w"> </span>Code:
+<span class="w">              </span>Encrypted<span class="w"> </span>Length:<span class="w"> </span><span class="m">140088</span>
+<span class="w">              </span>Decrypted<span class="w"> </span>Length:<span class="w"> </span><span class="m">140088</span>
+<span class="w">      </span>Encryption<span class="w"> </span>Type:<span class="w"> </span>AES_CTR
+<span class="w">      </span>FW<span class="w"> </span>Signature
+<span class="w">              </span>X:<span class="w"> </span>09623a5fbb43ac16c8817ecb5fe6b83be195d2b4e9f8c14692dbebaec7e12593
+<span class="w">              </span>Y:<span class="w"> </span>93797a08a33f6a14b3a4126b2e9fa1941974310a610914bfcbdb37f8a240fb83
+<span class="w">              </span>Digest:<span class="w"> </span>ee59504e70301a3a4fb44bc89478d9b067ef5d9523f96c3b56e1dc75b26dda9c
+<span class="w">      </span>Crypto<span class="w"> </span>Initialization<span class="w"> </span>Vector:<span class="w"> </span>0xdd0d2e0392effb18d9226895f4d477fc
+
+<span class="w">      </span>Signature<span class="w"> </span>Verification
+<span class="w">      </span>Digest:<span class="w"> </span>0xee59504e70301a3a4fb44bc89478d9b067ef5d9523f96c3b56e1dc75b26dda9c
+<span class="w">      </span>Public<span class="w"> </span>Key:<span class="w"> </span><span class="o">(</span>can<span class="w"> </span>be<span class="w"> </span>used<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">in</span><span class="w"> </span>JSON<span class="w"> </span>file<span class="o">)</span>
+<span class="w">              </span>Public<span class="w"> </span>Key<span class="w"> </span>x:<span class="w"> </span>0x2bc75b235b18c989796e6dca744036c37eb94f49a1b2c74fe4a426fa329d93e0
+<span class="w">              </span>Public<span class="w"> </span>Key<span class="w"> </span>y:<span class="w"> </span>0x9352f7ebef08e699390888c1671d121167fa23dbffce9ab4ddbfad0eadd2a516
+<span class="w">      </span>Signature<span class="w"> </span>verified<span class="w"> </span>successfully
+</pre></div>
+</div>
+<p>Firmware packages can also be generated with multiple ihex files. For instance, an initial firmware package that includes the original application compiled for EM-Core with its corresponding EM-Core can be generated. The update would then include the application v2 compiled for EM-Core but without EM-Core. Consequently the update procedure would be significantly faster since EM-Core does not need to be reprogrammed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Firmware Build:</span>
+<span class="n">cd</span> <span class="o">&lt;</span><span class="n">SDK_ROOT</span><span class="o">&gt;</span>\<span class="n">build</span>
+<span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="o">.</span> <span class="o">--</span><span class="n">target</span> <span class="n">nvm_fwu_target_emcore</span>
+<span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="o">.</span> <span class="o">--</span><span class="n">target</span> <span class="n">nvm_fwu_target_v2_emcore</span>
+<span class="c1"># Firmware package generation</span>
+<span class="n">cd</span> <span class="o">&lt;</span><span class="n">SDK_ROOT</span><span class="o">&gt;</span>\<span class="n">tools</span>\<span class="n">fw_update</span>\
+<span class="n">python</span> <span class="n">fpg</span><span class="o">.</span><span class="n">py</span> <span class="n">generate_fw_package</span> <span class="o">-</span><span class="n">k</span> <span class="n">aes0</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">e</span> <span class="n">AES_CTR</span> <span class="o">-</span><span class="n">s</span> <span class="n">ecdsa0_pri</span><span class="o">.</span><span class="n">pem</span> <span class="o">-</span><span class="n">f</span> <span class="n">fp_app_v1_emcore</span><span class="o">.</span><span class="n">pack</span> <span class="o">--</span><span class="n">ihex</span> <span class="o">&lt;</span><span class="n">SDK_ROOT</span><span class="o">&gt;</span>\<span class="n">build</span>\<span class="n">projects</span>\<span class="n">nvm_fwu_target</span>\<span class="n">nvm_fwu_target_emcore</span><span class="o">.</span><span class="n">ihex</span> <span class="o">&lt;</span><span class="n">SDK_ROOT</span><span class="o">&gt;</span>\<span class="n">emcore</span>\<span class="nb">bin</span>\<span class="n">vA</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">C</span>\<span class="n">standard</span>\<span class="n">emcore_standard</span><span class="o">.</span><span class="n">ihex</span>
+<span class="n">python</span> <span class="n">fpg</span><span class="o">.</span><span class="n">py</span> <span class="n">generate_fw_package</span> <span class="o">-</span><span class="n">k</span> <span class="n">aes0</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">e</span> <span class="n">AES_CTR</span> <span class="o">-</span><span class="n">s</span> <span class="n">ecdsa0_pri</span><span class="o">.</span><span class="n">pem</span> <span class="o">-</span><span class="n">f</span> <span class="n">fp_app_v2_emcore</span><span class="o">.</span><span class="n">pack</span> <span class="o">--</span><span class="n">ihex</span> <span class="o">&lt;</span><span class="n">SDK_ROOT</span><span class="o">&gt;</span>\<span class="n">build</span>\<span class="n">projects</span>\<span class="n">nvm_fwu_target</span>\<span class="n">nvm_fwu_target_v2_emcore</span><span class="o">.</span><span class="n">ihex</span>
+</pre></div>
+</div>
+<p>With A.B.C = the version of EMCore.</p>
+</section>
+<section id="preparing-the-target">
+<h3>3.2 Preparing the target<a class="headerlink" href="#preparing-the-target" title="Link to this heading"></a></h3>
+<p>As already mentioned earlier, the target shall contain at least the two following firmware images for the firmware update process to be operational:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvm_bootloader_base.ihex</span></code></p>
+<ul>
+<li><p>The bootloader which will detect the presence of the firmware update application at the end of the NVM and pass execution to it.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">firmware_updater.ihex</span></code></p>
+<ul>
+<li><p>The firmware update application that can receive a new firmware image over SPI or BLE transport and write it into the NVM.</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvm_bootloader_base.ihex</span></code> file content will be stored at the beginning of the NVM memory (&#64; 0x300000) where the device startup process will jump. It shall be however noted that this firmware is mandatory in any case for the device to be able to startup any application which can be the firmware updater in this example, or the end user application.
+This file is directly provided in the SDK in the <code class="docutils literal notranslate"><span class="pre">&lt;SDK_ROOT&gt;\emcore\bin\nvm_bootloader</span></code> folder and is ready to be programmed. It cannot be built.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">firmware_updater.ihex</span></code> file content will be stored at the end of the NVM memory. This specific application firmware is the one that will actually implement the firmware image update over BLE. Its source code is provided in the SDK meaning it can be built in the SDK’s context and can also be used by an end user as a baseline to implement his own firmware updater.</p>
+<p>The following diagram shows how the NVM is organized for the firmware update process to work.</p>
+<a class="reference internal image-reference" href="../../_images/FW_updater_memory_map.png"><img alt="Firmware update NVM memory map" class="align-center" src="../../_images/FW_updater_memory_map.png" style="width: 400.0px; height: 558.0px;" /></a>
+<p>Building this firmware can be achieved within the SDK environment with the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>firmware_updater
+</pre></div>
+</div>
+<p>The following output should be observed:</p>
+<a class="reference internal image-reference" href="../../_images/firmware-updater-compilation.png"><img alt="Building the firmware updater application" class="align-center" src="../../_images/firmware-updater-compilation.png" style="width: 774.0px; height: 434.0px;" /></a>
+<p>Then the <cite>ihex</cite> file should be located in the <code class="docutils literal notranslate"><span class="pre">&lt;SDK_ROOT&gt;\build\projects\firmware_updater</span></code> folder as depicted in the following picture:</p>
+<a class="reference internal image-reference" href="../../_images/firmware-updater-ihex-file.png"><img alt="Firmware updater application ihex file" class="align-center" src="../../_images/firmware-updater-ihex-file.png" style="width: 866.15px; height: 331.5px;" /></a>
+<p>Programming the two above mentioned firmware images shall be done in the right order which is given by the command line sequence below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_A<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\f</span>irmware_updater<span class="se">\f</span>irmware_updater.ihex
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_A<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\e</span>mcore<span class="se">\b</span>in<span class="se">\n</span>vm_bootloader<span class="se">\n</span>vm_bootloader_base.ihex
+</pre></div>
+</div>
+<p>At this point, the Firmware Update target is running the firmware updater application.
+It is advertising with the Complete Local Name “EM9305_FWU” in its scan response data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is always possible to force the device to restart in <cite>Firmware Updater</cite> mode with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_A<span class="w"> </span>run<span class="w"> </span>restart<span class="w"> </span>--mode<span class="w"> </span>bootloader
+</pre></div>
+</div>
+</div>
+</section>
+<section id="initial-firmware-programming-v1">
+<h3>3.3 Initial firmware programming v1<a class="headerlink" href="#initial-firmware-programming-v1" title="Link to this heading"></a></h3>
+<p>The following command lines instruct the Provider to initiate the firmware update procedure to update the target firmware with the file <code class="docutils literal notranslate"><span class="pre">fp_app_v1.pack</span></code> as the new image to update and using different transport layers.</p>
+<section id="firmware-update-programming-v1-over-spi">
+<h4>3.3.1 Firmware update programming v1 over SPI<a class="headerlink" href="#firmware-update-programming-v1-over-spi" title="Link to this heading"></a></h4>
+<p>If a direct SPI connection to the device is available, then one can force using this transport to update the image as it is shown in the following command line example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_A<span class="w"> </span>run<span class="w"> </span>firmware_update<span class="w"> </span>..<span class="se">\f</span>w_update<span class="se">\f</span>p_app_v1.pack<span class="w"> </span>--transport<span class="w"> </span>SPI
+</pre></div>
+</div>
+<p>Note the <code class="docutils literal notranslate"><span class="pre">--transport</span> <span class="pre">SPI</span></code> command line option.</p>
+</section>
+<section id="firmware-update-programming-v1-over-bluetooth-le">
+<h4>3.3.2 Firmware update programming v1 over Bluetooth LE<a class="headerlink" href="#firmware-update-programming-v1-over-bluetooth-le" title="Link to this heading"></a></h4>
+<p>Programming the firmware image version 1 over BLE can be done by issuing the following command line on the host computer:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_B<span class="w"> </span>run<span class="w"> </span>firmware_update<span class="w"> </span>..<span class="se">\f</span>w_update<span class="se">\f</span>p_app_v1.pack<span class="w"> </span>--target-mac<span class="w"> </span><span class="m">10</span>:9D:9C:0C:99:6A
+</pre></div>
+</div>
+<p>This line instructs BLEngine to execute the <code class="docutils literal notranslate"><span class="pre">firmware_update</span></code> command using the <code class="docutils literal notranslate"><span class="pre">fp_app_v1.pack</span></code> firmware image to send to the device.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--target_mac</span></code> option introduces the MAC address of the target device in case there are more than one device in the Bluetooth environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The MAC address exposed in the above command line is just an example. It has to be replaced by the actual MAC address to use.</p>
+</div>
+<p>The following extract showcases an example of a complete firmware update image over the BLE transport. At the end, if the operation is successful, it shows <cite>SUCCESS</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_B<span class="w"> </span>run<span class="w"> </span>firmware_update<span class="w"> </span>..<span class="se">\f</span>w_update<span class="se">\f</span>p_app_v1.pack<span class="w"> </span>--target-mac<span class="w"> </span><span class="m">10</span>:9D:9C:0C:99:6A
+
+&gt;<span class="w"> </span>standard<span class="w"> </span>blengine<span class="w"> </span>cli,<span class="w">  </span>-h<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nb">help</span>
+&gt;<span class="w"> </span>searching<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>config<span class="w"> </span>file...
+&gt;<span class="w"> </span>config<span class="w"> </span>file<span class="w"> </span>loaded:<span class="w"> </span>BLEngine/config.cfg
+&gt;<span class="w"> </span><span class="nb">local</span><span class="w"> </span>config<span class="w"> </span>file<span class="w"> </span>loaded:<span class="w"> </span>BLEngine/config_local.cfg
+&gt;<span class="w"> </span>Transport<span class="w"> </span>will<span class="w"> </span>use<span class="w"> </span>device<span class="w"> </span>cli_port_arg<span class="w"> </span><span class="o">(</span>/dev/ttyEM9305-WORK-1<span class="o">)</span>
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:32,535<span class="w"> </span>blengine.EM9305.Engine<span class="w">         </span>INFO<span class="w">  </span>:<span class="w"> </span>engine<span class="w"> </span>starting<span class="w"> </span>up...
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:32,544<span class="w"> </span>blengine./dev/ttyEM9305-WORK-1<span class="w"> </span>INFO<span class="w">  </span>:<span class="w"> </span>Serial<span class="w"> </span>port<span class="w"> </span>/dev/ttyEM9305-WORK-1<span class="w"> </span>opened@115200
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:32,570<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Firmware<span class="w"> </span>Update<span class="w"> </span>ovre<span class="w"> </span>BLE
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:32,578<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Configuring<span class="w"> </span>Updater<span class="w"> </span>Device
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:32,657<span class="w"> </span>blengine.EM9305.Engine<span class="w">         </span>INFO<span class="w">  </span>:<span class="w"> </span>Device<span class="w"> </span>mode<span class="w"> </span>changed<span class="w"> </span>to<span class="w"> </span>active
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:32,657<span class="w"> </span>blengine.EM9305.Engine<span class="w">         </span>INFO<span class="w">  </span>:<span class="w"> </span>Device<span class="w"> </span>mode<span class="w"> </span>changed<span class="w"> </span>to<span class="w"> </span>emshi
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:32,711<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Searching<span class="w"> </span><span class="k">for</span><span class="w"> </span>target<span class="w"> </span><span class="m">10</span>:9D:9C:0C:99:6A...
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:34,821<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Device<span class="w"> </span>EM9305_FWU<span class="w"> </span><span class="o">(</span><span class="m">10</span>:9D:9C:0C:99:6A<span class="o">)</span><span class="w"> </span>found,<span class="w"> </span>connecting...
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:35,169<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Services<span class="w"> </span>Discovery...
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,125<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Service<span class="w"> </span>Discovery<span class="w"> </span>complete.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,147<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Service<span class="w"> </span>Configuration<span class="w"> </span>complete.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,147<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Update<span class="w"> </span>Started.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,147<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Getting<span class="w"> </span>Target<span class="w"> </span>Informations.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,176<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Target<span class="w"> </span>Information:<span class="w"> </span>Family<span class="w"> </span>ID<span class="w"> </span>EM9305<span class="w"> </span><span class="o">(</span>DI04<span class="o">)</span>
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,176<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Firmware<span class="w"> </span>Version:<span class="w"> </span><span class="m">1</span><span class="p">;</span><span class="w"> </span>Firmware<span class="w"> </span>Type:<span class="w"> </span>FW<span class="w"> </span>Updater<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span>
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,237<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Processing<span class="w"> </span>Firmware<span class="w"> </span>Package<span class="w"> </span>../Firmware_Package_Generator/fp_app_v1.pack.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,238<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span><span class="m">1</span><span class="w"> </span>Firmwares<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>package.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,466<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span>Upload<span class="w"> </span>Init.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,737<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span>Upload<span class="w"> </span>Start.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:36,924<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">1</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:38,626<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">14</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:40,276<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">27</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:42,010<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">40</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:43,638<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">54</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:45,371<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">67</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:47,027<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">80</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:48,767<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span><span class="m">93</span>%
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:49,623<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span>Upload<span class="w"> </span>Complete.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:49,653<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>User<span class="w"> </span>App<span class="w"> </span><span class="o">(</span><span class="m">0</span><span class="o">)</span><span class="w"> </span>-<span class="w"> </span>Firmware<span class="w"> </span>Uploaded.
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:49,653<span class="w"> </span>blengine.FWU<span class="w">                   </span>INFO<span class="w">  </span>:<span class="w"> </span>Target<span class="w"> </span>Reboot.
+
+&gt;<span class="w"> </span>Procedure<span class="w"> </span>returned<span class="w"> </span>SUCCESS:
+
+../fw_update/fp_app_v1.pack<span class="w"> </span>Uploaded<span class="w"> </span>Successfully
+
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:49,697<span class="w"> </span>blengine./dev/ttyEM9305-WORK-1<span class="w"> </span>INFO<span class="w">  </span>:<span class="w"> </span>Serial<span class="w"> </span>port<span class="w"> </span>/dev/ttyEM9305-WORK-1<span class="w"> </span>closed
+<span class="m">2024</span>-02-26<span class="w"> </span><span class="m">16</span>:52:49,697<span class="w"> </span>blengine.EM9305.Engine<span class="w">         </span>INFO<span class="w">  </span>:<span class="w"> </span>Engine<span class="w"> </span>Stopped,<span class="w"> </span>duration<span class="w"> </span><span class="m">17</span>.15<span class="w"> </span>s
+</pre></div>
+</div>
+</section>
+</section>
+<section id="firmware-update-programming-v2">
+<h3>3.4 Firmware update programming v2<a class="headerlink" href="#firmware-update-programming-v2" title="Link to this heading"></a></h3>
+<p>At this point, the firmware v1 is the application running in the target. In order to update this application to a new version (e.g. the v2), a reboot in Firmware Update mode is required first.</p>
+<p>Two options are available to restart the system in the desired mode:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>This can be done with BLEngine via the EM9305 DVK:</p></li>
+</ol>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Restart the system in Configuration Mode (USR button on the DVK)</p></li>
+<li><p>Restart the system in Firmware Updater Mode (same boot mode selection as the customer bootloader)</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>Use the BLEngine firmware update procedure which automatically restarts the Target in the firmware update mode via Bluetooth.</p></li>
+</ol>
+</div></blockquote>
+<section id="firmware-update-programming-v2-over-spi">
+<h4>3.4.1 Firmware update programming v2 over SPI<a class="headerlink" href="#firmware-update-programming-v2-over-spi" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_A<span class="w"> </span>run<span class="w"> </span>firmware_update<span class="w"> </span>..<span class="se">\f</span>w_update<span class="se">\f</span>p_app_v2.pack<span class="w"> </span>--transport<span class="w"> </span>SPI
+</pre></div>
+</div>
+</section>
+<section id="firmware-update-programming-v2-over-bluetooth-le">
+<h4>3.4.2 Firmware update programming v2 over Bluetooth LE<a class="headerlink" href="#firmware-update-programming-v2-over-bluetooth-le" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;SDK_ROOT&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine<span class="se">\</span>
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COM_B<span class="w"> </span>run<span class="w"> </span>firmware_update<span class="w"> </span>..<span class="se">\f</span>w_update<span class="se">\f</span>p_app_v2.pack<span class="w"> </span>--target-mac<span class="w"> </span><span class="m">10</span>:9D:9C:0C:99:6A
+</pre></div>
+</div>
+<p>At this point, the Firmware Update Target advertises with the Complete Local name “FWU_TARGET_V2” in its scan response data.</p>
+<p>The following screenshot shows a complete firmware update over BLE captured using the Ellisys tool.</p>
+<img alt="../../_images/firmware-update-cycle-capture.png" src="../../_images/firmware-update-cycle-capture.png" />
+<p>In the datagram, the first line shows the advertising packets with the name FWU_TARGET. Then, a new firmware image is uploaded to the device. After it is complete, the new image is started. It then advertises with the name FWU_TARGET_V2 showing that the version 2 of the image has been properly updated and is working.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="FirmwarePackageGenerator.html" class="btn btn-neutral float-left" title="Firmware Package Generator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="FirmwareUpdateService.html" class="btn btn-neutral float-right" title="Firmware Update Service - FWUS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

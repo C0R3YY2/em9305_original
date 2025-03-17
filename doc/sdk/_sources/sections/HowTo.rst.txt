@@ -1,0 +1,82 @@
+######
+How to
+######
+
+
+
+Measure the current consumption on the DVK
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To measure the current consumption on the DVK, 2 python scripts are provided.
+
+.. note::
+
+  The measure is not precise but can be used to determine if the EM9305 is going to sleep correctly for example.
+
+The scripts are available in **tools/blengine**.
+
+* **dvk_current_calibration.py** is used for calibration. It will measure an offset to add to the current measurement.
+
+* **dvk_current_measure.py** will measure the current. The measure is done on 20ms 10 times (10 measures in the script).
+
+.. code-block:: bash
+
+  cd tools/blengine
+  python dvk_current_calibration.py --port=COMYY
+  python dvk_current_measure.py --port=COMYY
+
+With YY = the COM port number of your DVK.
+
+
+
+Read/Write the NVM information area
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To read and write the NVM information area, BLEngine tool can be used.
+
+.. note::
+
+    It's recommended to be in **Configuration Mode** to read/write the memory.
+
+    The device shall be unlocked to be able to read/write the memory.
+    It is automatically the case unless the **Authentication Required Flag** is set in the NVM information area.
+
+BLEngine allows to perform the following actions:
+
+1. **erase**: Erase a NVM information page.
+
+2. **read**: Read the content of a NVM information page.
+
+3. **write**: Write the content of a NVM configuration page (erase is automatically performed first).
+
+Arguments:
+
+* **-\-page {em,user}** or **-p {em,user}**: NVM information page selection, default: **em**
+
+* **-in <file>**: output file for read action, input file for write action
+
+Usage:
+
+.. code-block:: bash
+
+  python blengine_cli.py --port COMYY run nvm_erase -p user
+  python blengine_cli.py --port COMYY run nvm_read -p user -out config.json
+  python blengine_cli.py --port COMYY run nvm_write -p user -in config.json
+
+With YY = the COM port number of your DVK.
+
+Input and output files are in JSON format.
+
+.. note::
+
+    A good practice is to do **read-modify-write operation**.
+    By doing the read operation, you get a JSON template that you can fill with the new configuration.
+    Then, you can write this new configuration in the NVM information area.
+
+.. warning::
+
+    The NVM information **em** page contains some device specific information that should not be erased or overwritten!
+    It's recommended to update only the **user** page.
+
+
+.. include::    LockingNVMPages.rst

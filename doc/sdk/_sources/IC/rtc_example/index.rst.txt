@@ -1,0 +1,152 @@
+=========================================================================
+RTC Example
+=========================================================================
+
+
+Overview
+--------
+
+This sample code shows how to use the RTC library with date and time
+and alarm feature using events provided by callback.
+
+This sample code show how to get and set the time using time elapsed
+from 1.1.2000 or using a date and time structure.
+
+This library also support the week day number and the first day of the
+week can be configured to sunday or monday.
+
+There is two type of alarms, short and standard. In case of short alarm,
+the time can be configured from 1 ms to max 1 day with a 1 ms resolution.
+This kind of alarm can be one shot or periodic.
+
+The second alarm type, is an alarm with the elapsed time in second from
+the reference time (1.1.2000) or with a date and time.
+
+Only one short alarm and one alarm can be set.
+
+The library provide also an event (callback) for the end of the day.
+This RTC library use the sleep timer which can be clocked by LF-RC
+or LF-XTAL.
+
+By default the sample code is compiled using LF-RC clock for the sleep timer.
+
+If the two definition are kept commented, the sample app will use LF-RC clock.
+
+In order to use LF-XTAL with calibration, uncomment USE_LF_XTAL_WITH_CALIBRATION
+definition.
+
+In order to use LF-XTAL without calibration, uncomment USE_LF_XTAL definition.
+
+.. code-block:: bash
+
+  // Use LF-XTAL with calibration
+  #define USE_LF_XTAL_WITH_CALIBRATION
+
+  // Use LF-XTAL without calibration
+  #define USE_LF_XTAL
+
+This code configure the settings for the PML for LF-XTAL clock source.
+
+.. code-block:: bash
+
+  #ifdef USE_LF_XTAL
+  // configure PML for using LF XTAL
+  // Use LF-XTAL without calibration
+      gPML_Config.lfClkSourceType     = (uint8_t)PML_LF_CLK_XTAL_EN;
+      gPML_Config.lfClkFreqRatioHf    = 46875;    // 48MHz & 32.768kHz
+      gPML_Config.lfClkFreqRatioLf    = 64;
+      gPML_Config.lfClkSourceAccuracy = 150;      // 150ppm
+      gPML_Config.rcCalibSkip         = true;     // Disable calibration
+  #ifdef USE_LF_XTAL_WITH_CALIBRATION
+  // configure PML for specifically using LF XTAL with calibration
+  // Use LF-XTAL with calibration
+      gPML_Config.lfClkSourceAccuracy = 50;       // 50ppm
+      gPML_Config.rcCalibSkip         = false;    // Do not skip calibration
+      gPML_Config.rcCalibHfLimit      = 0;
+      gPML_Config.rcCalibLfLimit      = 38;       // 1.2 ms @32 kHz
+      gPML_Config.rcCalibPeriod       = 16384;    // 500ms @32kHz
+      gPML_Config.rcCalibCorrection   = 0;        // 0ppm
+  #endif
+  #endif
+
+How it works
+------------
+
+RTC library is registered in NVM_ConfigModules() function. A callback shall be provided
+in the RTC configuration structure to be notified when an event occurs like RTC Ready,
+Alarm, End of day, ...
+
+A sleep timer channel shall also be provided (0 to 3) for the sleep timer comparator.
+
+.. code-block:: bash
+
+  void NVM_ConfigModules(void)
+  {
+    RTC_RegisterModule();
+
+    // Configure RTC
+    gRTC_Config.callback = Main_RtcCallback;
+    gRTC_Config.sleepTimerChannel = SLEEP_TIMER_CHANNEL_3;
+
+The prototype of the callback to be notified when a RTC event occurs.
+
+.. code-block:: bash
+
+  static void Main_RtcCallback(RTC_CallbackReason_t reason)
+  {
+      QK_ISR_ENTRY();
+
+      // Post an event to the task.
+      MyAppTask_PostEvent(RTC_EVENT_SIG, (void*)reason);
+
+      QK_ISR_EXIT();
+  }
+
+When QPC start, the RTC can be enabled. This function enable the sleep timer
+comparator on the selected channel and register the wakeup action.
+
+.. code-block:: bash
+
+  case MY_APP_INIT_SIG:
+  {
+      printf("EM Microelectronic\r\n");
+
+      printf("EM9305 RTC Demo\r\n");
+
+      RTC_Enable();
+
+      /* Write your application initialization code here. */
+  }
+  break;
+
+Then the RTC Demo show the different features of the RTC library
+by printing on the UART (GPIO 7) what it does and provide
+informations when a RTC event occurs.
+
+Setup
+-----
+
+Connect the UART on GPIO 7 (Tx) and open a serial terminal like Putty
+with a speed of 115200 bauds.
+
+Build
+-----
+
+The build target of this example is: **rtc_example**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target rtc_example
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\rtc_example\rtc_example.ihex --progress
+
+With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).

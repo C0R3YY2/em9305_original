@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES Electronic Code Book mode (ECB) &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AES Cipher Block Chaining mode (CBC)" href="AES_CBC.html" />
+    <link rel="prev" title="AES modes and MAC" href="AESModes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="AESModes.html">AES modes and MAC</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AES Electronic Code Book mode (ECB)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-electronic-codebook-mode-ecb">The Electronic Codebook Mode (ECB)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#aes-type">AES Type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#aes-key-size-in-bits">AES Key size in bits</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#explicit-key-or-key-container">Explicit key or key container</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#error-status">Error status</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ecb-initctx">AES_ECB_InitCtx</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#prototype">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ecb-encrypt">AES_ECB_Encrypt</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ecb-decrypt">AES_ECB_Decrypt</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id5">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id6">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id7">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id8">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performances">Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html">AES Cipher Block Chaining mode (CBC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html">AES Counter mode(CTR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html">AES CMAC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html">AES CCM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html">AES GCM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="AESModes.html">AES modes and MAC</a> &raquo;</li>
+      <li>AES Electronic Code Book mode (ECB)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aes-electronic-code-book-mode-ecb">
+<span id="aes-ecb-label"></span><h1>AES Electronic Code Book mode (ECB)<a class="headerlink" href="#aes-electronic-code-book-mode-ecb" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] NIST SP 800-38A: Recommendation for Block Cipher Modes of Operation</p>
+<p><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf">NIST SP800-38A</a>: <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this chapter is to describe the functionality of the library <strong>AES ECB</strong>.</p>
+<dl class="simple">
+<dt>This chapter:</dt><dd><ul class="simple">
+<li><p>describes the API, including the prototype, the parameters, the error codes etc…</p></li>
+<li><p>provides the performances of the function.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="the-electronic-codebook-mode-ecb">
+<h2>The Electronic Codebook Mode (ECB)<a class="headerlink" href="#the-electronic-codebook-mode-ecb" title="Permalink to this headline"></a></h2>
+<p>This library implements AES ECB algorithm according to the specification NIST SP 800-38A[1].</p>
+<dl class="simple">
+<dt>In a nutshell,</dt><dd><ul class="simple">
+<li><p>ECB mode is a mode that <strong>encrypts</strong> or <strong>decrypts</strong> messages.</p></li>
+<li><p>ECB mode encrypts or decrypts <strong>16-byte blocks</strong> individually. Blocks are not chained.</p></li>
+<li><p>ECB mode encrypts or decrypts messages of size a multiple of 16 bytes.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Next figure shows the encryption process. Each 16-byte block of plaintext is encrypted individually using AES in encryption mode.</p>
+<img alt="_images/AES_ECB_Enc.png" src="_images/AES_ECB_Enc.png" />
+<p>Next figure shows the decryption process. Each 16-byte block of ciphertext is decrypted individually using AES in decryption mode.</p>
+<img alt="_images/AES_ECB_Dec.png" src="_images/AES_ECB_Dec.png" />
+</section>
+<section id="underlying-aes">
+<h2>Underlying AES<a class="headerlink" href="#underlying-aes" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>EM9305 embeds:</dt><dd><ul class="simple">
+<li><p>A software AES that manages the key sizes(128, 192 and 256).</p></li>
+<li><p>A hardware AES that only manages 128-bit key size.</p></li>
+</ul>
+</dd>
+<dt>The hardware AES can be invoked:</dt><dd><ul class="simple">
+<li><p>either with a key given explicitly</p></li>
+<li><p>or with a key stored in a key container. In this case, the ID of the key is provided to the AES.</p></li>
+</ul>
+</dd>
+</dl>
+<p>AES ECB APIs interface both the AES Software and the AES hardware. When AES hardware is used, the APIs allows the use of an explicit key or the use of a key container.</p>
+<p>Next figure shows which AES is executed, according to the various options.</p>
+<blockquote>
+<div><img alt="_images/AES_Select.png" src="_images/AES_Select.png" />
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<section id="aes-type">
+<h4>AES Type<a class="headerlink" href="#aes-type" title="Permalink to this headline"></a></h4>
+<p>The underlying algorithm is chosen with the following macro: <a class="reference internal" href="AES.html#aes-hw-sw-label"><span class="std std-ref">AES type</span></a></p>
+</section>
+<section id="aes-key-size-in-bits">
+<h4>AES Key size in bits<a class="headerlink" href="#aes-key-size-in-bits" title="Permalink to this headline"></a></h4>
+<p>The key size is chosen with the macro defined here: <a class="reference internal" href="AES.html#aes-key-size-bits-label"><span class="std std-ref">AES Key size in bits</span></a></p>
+</section>
+<section id="explicit-key-or-key-container">
+<h4>Explicit key or key container<a class="headerlink" href="#explicit-key-or-key-container" title="Permalink to this headline"></a></h4>
+<p>The choice between a key provided by value or implicitly  with a key container ID is given by the following enumeration:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv417AES_ECB_KeyType_t">
+<span id="_CPPv317AES_ECB_KeyType_t"></span><span id="_CPPv217AES_ECB_KeyType_t"></span><span class="target" id="group___a_e_s___e_c_b_1gab14370de5ee46084dd73c853476f92d3"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></span><a class="headerlink" href="#_CPPv417AES_ECB_KeyType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Select if the key is passed by value(explicitly) or if the key is contained in a key container. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE">
+<span id="_CPPv3N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE"></span><span id="_CPPv2N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE"></span><span class="target" id="group___a_e_s___e_c_b_1ggab14370de5ee46084dd73c853476f92d3a39e9b3584892d29d41c31fee14a0638c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_KEY_VALUE</span></span></span><a class="headerlink" href="#_CPPv4N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provided explicitly by value. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE">
+<span id="_CPPv3N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE"></span><span id="_CPPv2N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE"></span><span class="target" id="group___a_e_s___e_c_b_1ggab14370de5ee46084dd73c853476f92d3aabd8c14d98a3c3b07cfb5e1f1593f10d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_KEY_ID</span></span></span><a class="headerlink" href="#_CPPv4N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provided by its ID. The key is in a key container. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="error-status">
+<h4>Error status<a class="headerlink" href="#error-status" title="Permalink to this headline"></a></h4>
+<p>The API error status are given by:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv419AES_ECB_Lib_error_t">
+<span id="_CPPv319AES_ECB_Lib_error_t"></span><span id="_CPPv219AES_ECB_Lib_error_t"></span><span class="target" id="group___a_e_s___e_c_b_1ga4c2af81e0d247b6b4790993cf7f2fb70"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv419AES_ECB_Lib_error_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Error status words for AES ECB mode. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE"></span><span class="target" id="group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a716dcf2b9e84b3f3283134d2956a919b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES ECB computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE"></span><span class="target" id="group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a66076750e3e8e773816534395ff7adb0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCOMPATIBLE_PARAMETER</span></span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incompatible key size with key type and AES type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE"></span><span class="target" id="group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a1d5710255b99db98428e3ef8333094a0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCORRECT_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incorrect length- Data must be 16 bytes long. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE"></span><span class="target" id="group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70ab73102bfea61bdb23ac72ed450dd52fa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCORRECT_KEY_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key length is incorrect.It shall be 128,192 or 256. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE"></span><span class="target" id="group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a5d3a971e5e9644973c7dda53238fe1f7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="context">
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h3>
+<p>A context that contains the key size, the underlying AES , the key type and the key value \ key ID is defined as follows:</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv411AES_ECB_CTX">
+<span id="_CPPv311AES_ECB_CTX"></span><span id="_CPPv211AES_ECB_CTX"></span><span id="AES_ECB_CTX"></span><span class="target" id="struct_a_e_s___e_c_b___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_CTX</span></span></span><a class="headerlink" href="#_CPPv411AES_ECB_CTX" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES ECB context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX7keySizeE">
+<span id="_CPPv3N11AES_ECB_CTX7keySizeE"></span><span id="_CPPv2N11AES_ECB_CTX7keySizeE"></span><span id="AES_ECB_CTX::keySize__AES_key_size_bit_t"></span><span class="target" id="struct_a_e_s___e_c_b___c_t_x_1a55a894fb05526391d3f5b6ea3d220004"></span><a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keySize</span></span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX7keySizeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX7AESTypeE">
+<span id="_CPPv3N11AES_ECB_CTX7AESTypeE"></span><span id="_CPPv2N11AES_ECB_CTX7AESTypeE"></span><span id="AES_ECB_CTX::AESType__AES_Select_t"></span><span class="target" id="struct_a_e_s___e_c_b___c_t_x_1a81e4c20cf15ec854fdc69b9508a5f398"></span><a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AESType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX7AESTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES Type: Either AES_HARDWARE or AES_SOFTWARE. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX7keyTypeE">
+<span id="_CPPv3N11AES_ECB_CTX7keyTypeE"></span><span id="_CPPv2N11AES_ECB_CTX7keyTypeE"></span><span id="AES_ECB_CTX::keyType__AES_ECB_KeyType_t"></span><span class="target" id="struct_a_e_s___e_c_b___c_t_x_1a1c1bda3bcda253495b7b2f4bc3a2be14"></span><a class="reference internal" href="#_CPPv417AES_ECB_KeyType_t" title="AES_ECB_KeyType_t"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keyType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX7keyTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key type. Either KEY_ID or KEY_VALUE </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX3keyE">
+<span id="_CPPv3N11AES_ECB_CTX3keyE"></span><span id="_CPPv2N11AES_ECB_CTX3keyE"></span><span id="AES_ECB_CTX::key__uint8_tA"></span><span class="target" id="struct_a_e_s___e_c_b___c_t_x_1a680f5c5aed809484805f4558ae95028a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX3keyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The key value or the key index </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="aes-ecb-initctx">
+<h3>AES_ECB_InitCtx<a class="headerlink" href="#aes-ecb-initctx" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>This function initializes an AES context with the different options: key size, underlying AES and key type. It also sets the key.</p>
+</section>
+<section id="prototype">
+<h4>Prototype<a class="headerlink" href="#prototype" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t">
+<span id="_CPPv315AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t"></span><span id="_CPPv215AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t"></span><span id="AES_ECB_InitCtx__AES_ECB_CTXP.AES_Select_t.AES_ECB_KeyType_t.AES_key_size_bit_t.uint8_tP"></span><span class="target" id="group___a_e_s___e_c_b_1gae143885636bed4379ad08ba9b1ef1250"></span><a class="reference internal" href="#_CPPv419AES_ECB_Lib_error_t" title="AES_ECB_Lib_error_t"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_InitCtx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_ECB_CTX" title="AES_ECB_CTX"><span class="n"><span class="pre">AES_ECB_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <a class="reference internal" href="#_CPPv417AES_ECB_KeyType_t" title="AES_ECB_KeyType_t"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keySize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initialize an AES ECB context. Choose the underlying AES, the key type and key size. Set the key value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[out]</strong> AES ECB context to set </p></li>
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> The underlying AES: Either AES_HARDWARE or AES_SOFTWARE </p></li>
+<li><p><strong>keyType</strong> – <strong>[in]</strong> The type of the key: Either KEY_VALUE for explicitly key value or KEY_ID for a key in a key container </p></li>
+<li><p><strong>keySize</strong> – <strong>[in]</strong> The size of the key in bits : AES_KEY_128,AES_KEY_192 or AES_KEY_256 </p></li>
+<li><p><strong>key</strong> – <strong>[in]</strong> The key value(16 to 32 bytes) or the key ID (first byte)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_ECB_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_ECB_INCORRECT_KEY_LENGTH</strong> – Incorrect key length </p></li>
+<li><p><strong>AES_ECB_INCOMPATIBLE_PARAMETER</strong> – Hardware/software selection is not compatible with the key length </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES ECB context to initialize</p></li>
+<li><p><strong>AESSelect</strong>: Select the AES hardware or the AES software</p></li>
+<li><p><strong>keyType</strong> : Select if the key is given explicitly by value or if it is referred by its key container ID.</p></li>
+<li><p><strong>keySize</strong> : Key size in bits</p></li>
+<li><dl class="simple">
+<dt><strong>key</strong>:</dt><dd><ul>
+<li><p>When the key is given explicitly: 16, 24 or 32 bytes representing the key value.</p></li>
+<li><p>When the key is given by its ID: 1 byte with the key ID.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_ECB_SUCCESS</p></td>
+<td><p>Initialization successful</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_ECB_INCORRECT_KEY_LENGTH</p></td>
+<td><p>Incorrect key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_ECB_INCOMPATIBLE_PARAMETER</p></td>
+<td><p>Hardware AES is not compatible with this key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ecb-encrypt">
+<h3>AES_ECB_Encrypt<a class="headerlink" href="#aes-ecb-encrypt" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Goal of the function<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>This function encrypts a message in ECB mode.</p>
+</section>
+<section id="id2">
+<h4>Prototype<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv315AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv215AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="AES_ECB_Encrypt__AES_ECB_CTXP.uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="group___a_e_s___e_c_b_1ga1f975a6c49b088fd086bd2af2357aa00"></span><a class="reference internal" href="#_CPPv419AES_ECB_Lib_error_t" title="AES_ECB_Lib_error_t"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_Encrypt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_ECB_CTX" title="AES_ECB_CTX"><span class="n"><span class="pre">AES_ECB_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeInBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Encrypt data in ECB mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES ECB context </p></li>
+<li><p><strong>plainText</strong> – <strong>[in]</strong> Pointer on data to encrypt. It should be sizeInBytes long </p></li>
+<li><p><strong>cipherText</strong> – <strong>[out]</strong> Pointer on the result. It should be sizeInBytes long </p></li>
+<li><p><strong>sizeInBytes</strong> – <strong>[in]</strong> Size of the plaintext=Size of the cipher text in bytes. It must be a multiple of 16.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_ECB_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_ECB_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized </p></li>
+<li><p><strong>AES_ECB_INCORRECT_LENGTH</strong> – Length is not a multiple of 16 </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES ECB context</p></li>
+<li><p><strong>plainText</strong>: Message to encrypt</p></li>
+<li><p><strong>cipherText</strong> : Encrypted message.</p></li>
+<li><p><strong>sizeInBytes</strong> : Size of the message to encrypt in bytes.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Since ECB mode acts on block of 16 bytes, <em>sizeInBytes</em> must be a multiple of 16. If the message size is not a multiple of 16, the caller must previously pad the message. The padding scheme is the choice of the user.</p></li>
+<li><p>The ciphertext size is the same as the plaintext size.</p></li>
+<li><p>Several calls of AES_ECB_Encrypt  can be performed consecutively.</p></li>
+<li><p>In addition, several AES ECB computations with different contexts can be interlaced.</p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id4">
+<h4>Return values<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_ECB_SUCCESS</p></td>
+<td><p>Successful encryption</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_ECB_INCORRECT_RESULT_POINTER</p></td>
+<td><p>Ciphertext pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_ECB_INCORRECT_LENGTH</p></td>
+<td><p>The size in bytes of the plaintext is not a multiple of 16</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-ecb-decrypt">
+<h3>AES_ECB_Decrypt<a class="headerlink" href="#aes-ecb-decrypt" title="Permalink to this headline"></a></h3>
+<section id="id5">
+<h4>Goal of the function<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
+<p>This function decrypts a message in ECB mode.</p>
+</section>
+<section id="id6">
+<h4>Prototype<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv315AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv215AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="AES_ECB_Decrypt__AES_ECB_CTXP.uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="group___a_e_s___e_c_b_1gadfe1a5af26cb987622df20251f79e163"></span><a class="reference internal" href="#_CPPv419AES_ECB_Lib_error_t" title="AES_ECB_Lib_error_t"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_Decrypt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_ECB_CTX" title="AES_ECB_CTX"><span class="n"><span class="pre">AES_ECB_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeInBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Decrypt data in ECB mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES ECB context </p></li>
+<li><p><strong>cipherText</strong> – <strong>[in]</strong> Pointer on data to decrypt. It should be sizeInBytes long </p></li>
+<li><p><strong>plainText</strong> – <strong>[out]</strong> Pointer on the result. It should be sizeInBytes long </p></li>
+<li><p><strong>sizeInBytes</strong> – <strong>[in]</strong> Size of the cipher text=Size of the plaintex in bytes. It must be a multiple of 16.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_ECB_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_ECB_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized </p></li>
+<li><p><strong>AES_ECB_INCORRECT_LENGTH</strong> – Length is not a multiple of 16 </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES ECB context</p></li>
+<li><p><strong>cipherText</strong>: Message to decrypt</p></li>
+<li><p><strong>plainText</strong> : Decrypted message.</p></li>
+<li><p><strong>sizeInBytes</strong> : Size of the message to decrypt in bytes.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Since ECB mode acts on block of 16 bytes, <em>sizeInBytes</em> must be a multiple of 16.</p></li>
+<li><p>The last decrypted plaintext may include padding bytes. The user is in charge of removing it when applicable.</p></li>
+<li><p>The plaintext size is the same as the ciphertext size.</p></li>
+<li><p>Several calls of AES_ECB_Decrypt  can be performed consecutively.</p></li>
+<li><p>In addition, several AES ECB computations with different contexts can be interlaced.</p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or AES_DEC_ONLY(Decryption). The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id8">
+<h4>Return values<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_ECB_SUCCESS</p></td>
+<td><p>Successful decryption</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_ECB_INCORRECT_RESULT_POINTER</p></td>
+<td><p>Plaintext pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_ECB_INCORRECT_LENGTH</p></td>
+<td><p>The size in bytes of the ciphertext is not a multiple of 16</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="performances">
+<h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>324 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No usage of global RAM except the AES_ECB_CTX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>128 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="execution-time">
+<h3>Execution time<a class="headerlink" href="#execution-time" title="Permalink to this headline"></a></h3>
+<p>The execution time clearly depends on the size of the message, the key size and the underlying algorithm. In next table, we provide the average time for one block (16 bytes).</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_ECB_InitCtx</p></td>
+<td><p>Any</p></td>
+<td><p>Any</p></td>
+<td><p>5s</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_ECB_Encrypt</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>46</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_ECB_Encrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_ECB_Encrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>136</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_ECB_Encrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>155</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_ECB_Decrypt</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_ECB_Decrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>139</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_ECB_Decrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>177</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_ECB_Decrypt</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>198</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<p>AES ECB lib depends on the AES lib.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>Next code shows basic examples:</dt><dd><ul class="simple">
+<li><p>using the AES hardware with an explicit key</p></li>
+<li><p>using the AES hardware with key stored in key containers</p></li>
+<li><p>using the AES software</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @file       ExampleAES_ECB.c</span>
+<span class="c1">///</span>
+<span class="c1">///</span>
+<span class="c1">/// @brief   	Example of use of AES ECB</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @copyright Copyright (C) 2022 EM Microelectronic</span>
+<span class="c1">/// @cond</span>
+<span class="c1">///</span>
+<span class="c1">/// All rights reserved.</span>
+<span class="c1">///</span>
+<span class="c1">/// Redistribution and use in source and binary forms, with or without</span>
+<span class="c1">/// modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">/// 1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer.</span>
+<span class="c1">/// 2. Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1">/// and/or other materials provided with the distribution.</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="c1">/// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="c1">/// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="c1">/// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span>
+<span class="c1">/// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span>
+<span class="c1">/// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<span class="c1">/// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<span class="c1">/// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="c1">/// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<span class="c1">/// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="c1">/// POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">/// @endcond</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;hw_aes.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES_ECB.h&quot;</span><span class="cp"></span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">ExampleAES_ECB</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY128</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3a</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x8b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbf</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe1</span><span class="p">,</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12</span><span class="p">,</span><span class="w"> </span><span class="mh">0x35</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">plaintext</span><span class="p">[</span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x1b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb7</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbc</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x53</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0xce</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcf</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfa</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x32</span><span class="p">,</span><span class="w"> </span><span class="mh">0x31</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x90</span><span class="p">,</span><span class="w"> </span><span class="mh">0xce</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x13</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf1</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x79</span><span class="p">,</span><span class="w"> </span><span class="mh">0xba</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x54</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0e</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">[</span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xad</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x95</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x15</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x82</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="mh">0x87</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0x52</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x47</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7a</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xb1</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63</span><span class="p">,</span><span class="w"> </span><span class="mh">0x31</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x59</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xff</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xb0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x82</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf6</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key256</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xf9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x84</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x34</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfc</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x59</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0xab</span><span class="p">,</span><span class="w"> </span><span class="mh">0x83</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf2</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x5f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x59</span><span class="p">,</span><span class="w"> </span><span class="mh">0x47</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x45</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x35</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc3</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">plaintext256</span><span class="p">[</span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x35</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x91</span><span class="p">,</span><span class="w"> </span><span class="mh">0x22</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x83</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x40</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x44</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x18</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x22</span><span class="p">,</span><span class="w"> </span><span class="mh">0x17</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0x38</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x54</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf1</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x6b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x79</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x52</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x85</span><span class="p">,</span><span class="w"> </span><span class="mh">0x65</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1b</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xa8</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x31</span><span class="p">,</span><span class="w"> </span><span class="mh">0x98</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2f</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x74</span><span class="p">,</span><span class="w"> </span><span class="mh">0x36</span><span class="p">,</span><span class="w"> </span><span class="mh">0x31</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x75</span><span class="p">,</span><span class="w"> </span><span class="mh">0x24</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xca</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x35</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1a</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xc2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x35</span><span class="p">,</span><span class="w"> </span><span class="mh">0x46</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x78</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ciphertext256</span><span class="p">[</span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x8b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="mh">0x98</span><span class="p">,</span><span class="w"> </span><span class="mh">0x18</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x85</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8f</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xa5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x43</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3d</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2a</span><span class="p">,</span><span class="w"> </span><span class="mh">0xff</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xec</span><span class="p">,</span><span class="w"> </span><span class="mh">0x61</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd6</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa0</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xa7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x81</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x24</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x49</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8c</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xef</span><span class="p">,</span><span class="w"> </span><span class="mh">0x74</span><span class="p">,</span><span class="w"> </span><span class="mh">0x61</span><span class="p">,</span><span class="w"> </span><span class="mh">0xad</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"> </span><span class="mh">0x60</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcf</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x44</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb7</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x4f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x86</span><span class="p">,</span><span class="w"> </span><span class="mh">0x54</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x21</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x64</span><span class="p">,</span><span class="w"> </span><span class="mh">0x30</span><span class="p">,</span><span class="w"> </span><span class="mh">0xef</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfb</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">AES_ECB_CTX</span><span class="w"> </span><span class="n">Ctx</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">AES_ECB_Lib_error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">result</span><span class="p">[</span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">keyId</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// First example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES ECB with a 128-bit key in encryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware but not the crypto containers.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We encrypt all the block in a unique call</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_ECB_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//encrypt the data</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_Encrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">plaintext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Second example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES ECB with a 128-bit key in decryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We decrypt the blocks one by one</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_ECB_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt the first block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt the second block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">result</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Third example</span>
+
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES ECB with a 128-bit key in encryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware and the crypto container</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We encrypt all the block in a unique call</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">//A priori the key has been written previously in a key container.</span>
+<span class="w">	</span><span class="c1">//Here we write the key in container 0x02</span>
+<span class="w">	</span><span class="n">AES_SetKeyContainer</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HW_ENC_DEC</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">keyId</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x02</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_ECB_KEY_ID</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">keyId</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//encrypt the data</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_Encrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">plaintext</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Fourth example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES ECB with a 256-bit key in decryption mode</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We necessarily use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We decrypt the 4 blocks with two unbalanced calls.</span>
+<span class="w">	</span><span class="c1">// One deals with 3 blocks, the other with one</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_ECB_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_256</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt the first block</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext256</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//decrypt the 3 next blocks</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_ECB_Decrypt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">ciphertext256</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">result</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_ECB_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">AES_BLOCK_SIZE_BYTE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">plaintext256</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="AESModes.html" class="btn btn-neutral float-left" title="AES modes and MAC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="AES_CBC.html" class="btn btn-neutral float-right" title="AES Cipher Block Chaining mode (CBC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

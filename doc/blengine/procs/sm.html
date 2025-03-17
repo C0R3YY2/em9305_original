@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sm Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="unity Procedures" href="unity.html" />
+    <link rel="prev" title="nvm_info Procedures" href="nvm_info.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html">authentication Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ble.html">ble Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firmware_update.html">firmware_update Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">gap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">gatt Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci.html">hci Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">l2cap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">sm Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sm-initiate-pairing">sm.initiate_pairing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sm-accept-pairing">sm.accept_pairing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sm-set-passkey">sm.set_passkey</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sm-remove-bonding">sm.remove_bonding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sm-is-device-bonded">sm.is_device_bonded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sm-initiate-encryption">sm.initiate_encryption</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sm-set-oob">sm.set_oob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sm-send-security-request">sm.send_security_request</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">sm Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sm-procedures">
+<h1>sm Procedures<a class="headerlink" href="#sm-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="sm-initiate-pairing">
+<span id="proc-sm-initiate-pairing"></span><h2><a class="reference internal" href="#sm-initiate-pairing">sm.initiate_pairing</a><a class="headerlink" href="#sm-initiate-pairing" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Initiate pairing (sending Pairing Request) to a peer device</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">initiate_pairing</span>
+
+<span class="n">initiate_pairing</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">iocap</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bonding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mitm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keypress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ini_key_dist_enc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ini_key_dist_id</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ini_key_dist_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rsp_key_dist_enc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rsp_key_dist_id</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rsp_key_dist_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">oob_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.initiate_pairing<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--io_cap<span class="w"> </span>IO_CAP<span class="o">]</span><span class="w"> </span><span class="o">[</span>--oob<span class="w"> </span>OOB<span class="o">]</span>
+<span class="w">                            </span><span class="o">[</span>--bonding<span class="w"> </span>BONDING<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mitm<span class="w"> </span>MITM<span class="o">]</span><span class="w"> </span><span class="o">[</span>--sc<span class="w"> </span>SC<span class="o">]</span>
+<span class="w">                            </span><span class="o">[</span>--keypress<span class="w"> </span>KEYPRESS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--oob_data<span class="w"> </span>OOB_DATA<span class="o">]</span>
+<span class="w">                            </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--io_cap <var>IO_CAP</var></span></kbd></dt>
+<dd><p>IO Capability</p>
+</dd>
+<dt><kbd><span class="option">--oob <var>OOB</var></span></kbd></dt>
+<dd><p>OOB data flag</p>
+</dd>
+<dt><kbd><span class="option">--bonding <var>BONDING</var></span></kbd></dt>
+<dd><p>Bonding Flags</p>
+</dd>
+<dt><kbd><span class="option">--mitm <var>MITM</var></span></kbd></dt>
+<dd><p>MITM protection</p>
+</dd>
+<dt><kbd><span class="option">--sc <var>SC</var></span></kbd></dt>
+<dd><p>LE Secure Connections pairing</p>
+</dd>
+<dt><kbd><span class="option">--keypress <var>KEYPRESS</var></span></kbd></dt>
+<dd><p>Keypress</p>
+</dd>
+<dt><kbd><span class="option">--oob_data <var>OOB_DATA</var></span></kbd></dt>
+<dd><p>Peer OOB data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">initiate_pairing_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">initiate_pairing</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                    <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">iocap</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span>
+                    <span class="n">oob</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                    <span class="n">bonding</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                    <span class="n">mitm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">sc</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                    <span class="n">keypress</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                    <span class="n">ini_key_dist_enc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">ini_key_dist_id</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">ini_key_dist_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">rsp_key_dist_enc</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">rsp_key_dist_id</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">rsp_key_dist_sign</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">oob_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Initiate pairing (sending Pairing Request) to a peer device</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">minKeyLen</span><span class="o">=</span><span class="mi">7</span>
+        <span class="n">maxKeyLen</span><span class="o">=</span><span class="mi">16</span>
+
+        <span class="c1"># First, let&#39;s calculate the value of auth parameter</span>
+        <span class="k">if</span> <span class="n">bonding</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">=</span> <span class="mh">0x01</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSetLocalCsrk&quot;</span><span class="p">,</span> <span class="n">Csrk</span><span class="o">=</span><span class="mh">0x11223344556677881122334455667788</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">mitm</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">sc</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">=</span> <span class="mh">0x08</span>
+            <span class="n">minKeyLen</span><span class="o">=</span><span class="mi">16</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecGenerateEccKeyReq&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">keypress</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_KP_FLAG</span> <span class="o">=</span> <span class="mh">0x10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_KP_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_KP_FLAG</span>
+
+        <span class="c1"># Calculate value of initiator and responder key distribution parameters</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_enc</span><span class="p">:</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_id</span><span class="p">:</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="mh">0x02</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_sign</span><span class="p">:</span>
+            <span class="n">ini_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_enc</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_id</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="mh">0x02</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_sign</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="n">iKeyDist</span> <span class="o">=</span> <span class="n">ini_key_dist_enc</span> <span class="o">+</span> <span class="n">ini_key_dist_id</span> <span class="o">+</span> <span class="n">ini_key_dist_sign</span>
+        <span class="n">rKeyDist</span> <span class="o">=</span> <span class="n">rsp_key_dist_enc</span> <span class="o">+</span> <span class="n">rsp_key_dist_id</span> <span class="o">+</span> <span class="n">rsp_key_dist_sign</span>
+
+        <span class="k">def</span> <span class="nf">on_OOB_request</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSetOob&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">Config</span><span class="o">=</span><span class="n">oob_data</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecAuthRsp&quot;</span><span class="p">,</span>
+                    <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                    <span class="n">authDataLen</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+                    <span class="n">AuthData</span><span class="o">=</span><span class="n">oob_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">oob</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_DM_SEC_AUTH_REQ_IND&quot;</span><span class="p">,</span> <span class="n">on_OOB_request</span><span class="p">)</span>
+
+        <span class="c1"># Set Security configuration</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrjSecConfig&quot;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">iKeyDist</span><span class="o">=</span><span class="n">iKeyDist</span><span class="p">,</span> <span class="n">rKeyDist</span><span class="o">=</span><span class="n">rKeyDist</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="n">oob</span><span class="p">,</span> <span class="n">initiateSec</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Set IO Capabilities</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrjSmpConfig&quot;</span><span class="p">,</span>
+                    <span class="n">attemptTimeout</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                    <span class="n">ioCap</span><span class="o">=</span><span class="n">iocap</span><span class="p">,</span>
+                    <span class="n">minKeyLen</span><span class="o">=</span><span class="n">minKeyLen</span><span class="p">,</span>
+                    <span class="n">maxKeyLen</span><span class="o">=</span><span class="n">maxKeyLen</span><span class="p">,</span>
+                    <span class="n">maxAttempts</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+                    <span class="n">maxAttemptTimeout</span><span class="o">=</span><span class="mi">64000</span><span class="p">,</span>
+                    <span class="n">attemptDecTimeout</span><span class="o">=</span><span class="mi">64000</span><span class="p">,</span>
+                    <span class="n">attemptExp</span><span class="o">=</span><span class="mi">2</span>
+                    <span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecPairReq&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="n">oob</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">iKeyDist</span><span class="o">=</span><span class="n">iKeyDist</span><span class="p">,</span> <span class="n">rKeyDist</span><span class="o">=</span><span class="n">rKeyDist</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Alpwise stack</span>
+        <span class="k">if</span> <span class="n">oob</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_SetOobData&quot;</span><span class="p">,</span> <span class="n">OobData</span><span class="o">=</span><span class="n">oob_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mitm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_ForceLocalMITMReq&quot;</span><span class="p">,</span> <span class="n">localMITMUsed</span><span class="o">=</span><span class="n">mitm</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sc</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="c1"># Force LE SC pairing</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_ForcePairingMode&quot;</span><span class="p">,</span> <span class="n">localPairingMode</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_SetIOCapability&quot;</span><span class="p">,</span> <span class="n">IoCapability</span><span class="o">=</span><span class="n">iocap</span><span class="p">)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_InitiatePairing&quot;</span><span class="p">,</span> <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">Bond</span><span class="o">=</span><span class="n">bonding</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="sm-accept-pairing">
+<span id="proc-sm-accept-pairing"></span><h2><a class="reference internal" href="#sm-accept-pairing">sm.accept_pairing</a><a class="headerlink" href="#sm-accept-pairing" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set the engine to accept pairing request sent from the remote</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">accept_pairing</span>
+
+<span class="n">accept_pairing</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">iocap</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bonding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mitm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keypress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ini_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ini_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ini_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rsp_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rsp_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rsp_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">oob_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.accept_pairing<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--io_cap<span class="w"> </span>IO_CAP<span class="o">]</span><span class="w"> </span><span class="o">[</span>--oob<span class="w"> </span>OOB<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--bonding<span class="w"> </span>BONDING<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mitm<span class="w"> </span>MITM<span class="o">]</span><span class="w"> </span><span class="o">[</span>--sc<span class="w"> </span>SC<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--conn_handle<span class="w"> </span>CONN_HANDLE<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--io_cap <var>IO_CAP</var></span></kbd></dt>
+<dd><p>IO Capability</p>
+</dd>
+<dt><kbd><span class="option">--oob <var>OOB</var></span></kbd></dt>
+<dd><p>OOB data flag</p>
+</dd>
+<dt><kbd><span class="option">--bonding <var>BONDING</var></span></kbd></dt>
+<dd><p>Bonding Flags</p>
+</dd>
+<dt><kbd><span class="option">--mitm <var>MITM</var></span></kbd></dt>
+<dd><p>MITM protection</p>
+</dd>
+<dt><kbd><span class="option">--sc <var>SC</var></span></kbd></dt>
+<dd><p>LE Secure Connections pairing</p>
+</dd>
+<dt><kbd><span class="option">--conn_handle <var>CONN_HANDLE</var></span></kbd></dt>
+<dd><p>Connection Handle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">accept_pairing_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">accept_pairing</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                   <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                   <span class="n">iocap</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span>
+                   <span class="n">oob</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                   <span class="n">bonding</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                   <span class="n">mitm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">sc</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                   <span class="n">keypress</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                   <span class="n">ini_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">ini_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">ini_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">rsp_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">rsp_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">rsp_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">oob_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set the engine to accept pairing request sent from the remote</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">minKeyLen</span><span class="o">=</span><span class="mi">7</span>
+        <span class="n">maxKeyLen</span><span class="o">=</span><span class="mi">16</span>
+
+        <span class="c1"># First, let&#39;s calculate the value of auth parameter</span>
+        <span class="k">if</span> <span class="n">bonding</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">=</span> <span class="mh">0x01</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSetLocalCsrk&quot;</span><span class="p">,</span> <span class="n">Csrk</span><span class="o">=</span><span class="mh">0x11223344556677881122334455667788</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">mitm</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">sc</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">=</span> <span class="mh">0x08</span>
+            <span class="n">minKeyLen</span><span class="o">=</span><span class="mi">16</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecGenerateEccKeyReq&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">keypress</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_KP_FLAG</span> <span class="o">=</span> <span class="mh">0x10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_KP_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_KP_FLAG</span>
+
+        <span class="c1"># Calculate value of initiator and responder key distribution parameters</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_enc</span><span class="p">:</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_id</span><span class="p">:</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="mh">0x02</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_sign</span><span class="p">:</span>
+            <span class="n">ini_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_enc</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_id</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="mh">0x02</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_sign</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="n">iKeyDist</span> <span class="o">=</span> <span class="n">ini_key_dist_enc</span> <span class="o">+</span> <span class="n">ini_key_dist_id</span> <span class="o">+</span> <span class="n">ini_key_dist_sign</span>
+        <span class="n">rKeyDist</span> <span class="o">=</span> <span class="n">rsp_key_dist_enc</span> <span class="o">+</span> <span class="n">rsp_key_dist_id</span> <span class="o">+</span> <span class="n">rsp_key_dist_sign</span>
+
+        <span class="k">if</span> <span class="n">oob</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSetOob&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">Config</span><span class="o">=</span><span class="n">oob_data</span><span class="p">)</span> <span class="c1">## How to provide oob_data?</span>
+
+        <span class="c1"># Set Security configuration</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrjSecConfig&quot;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">iKeyDist</span><span class="o">=</span><span class="n">iKeyDist</span><span class="p">,</span> <span class="n">rKeyDist</span><span class="o">=</span><span class="n">rKeyDist</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="n">oob</span><span class="p">,</span> <span class="n">initiateSec</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Set IO Capabilities</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrjSmpConfig&quot;</span><span class="p">,</span>
+                    <span class="n">attemptTimeout</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                    <span class="n">ioCap</span><span class="o">=</span><span class="n">iocap</span><span class="p">,</span>
+                    <span class="n">minKeyLen</span><span class="o">=</span><span class="n">minKeyLen</span><span class="p">,</span>
+                    <span class="n">maxKeyLen</span><span class="o">=</span><span class="n">maxKeyLen</span><span class="p">,</span>
+                    <span class="n">maxAttempts</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                    <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+                    <span class="n">maxAttemptTimeout</span><span class="o">=</span><span class="mi">64000</span><span class="p">,</span>
+                    <span class="n">attemptDecTimeout</span><span class="o">=</span><span class="mi">64000</span><span class="p">,</span>
+                    <span class="n">attemptExp</span><span class="o">=</span><span class="mi">4</span>
+                    <span class="p">)</span>
+
+        <span class="c1"># pkt = engine.send(&quot;EMSHI_DM_SecPairRsp&quot;, connId=conn_handle, oob=oob, auth=auth, iKeyDist=iKeyDist, rKeyDist=rKeyDist)</span>
+
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">oob</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_SetOobData&quot;</span><span class="p">,</span> <span class="n">OobData</span><span class="o">=</span><span class="n">oob_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mitm</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_ForceLocalMITMReq&quot;</span><span class="p">,</span> <span class="n">localMITMUsed</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sc</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="c1"># Force LE SC pairing</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_ForcePairingMode&quot;</span><span class="p">,</span> <span class="n">localPairingMode</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_SetIOCapability&quot;</span><span class="p">,</span> <span class="n">IoCapability</span><span class="o">=</span><span class="n">iocap</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="sm-set-passkey">
+<span id="proc-sm-set-passkey"></span><h2><a class="reference internal" href="#sm-set-passkey">sm.set_passkey</a><a class="headerlink" href="#sm-set-passkey" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set the passkey required during pairing process</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">set_passkey</span>
+
+<span class="n">set_passkey</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">passkey</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.set_passkey<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle<span class="w"> </span>passkey
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">passkey<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>6-digit passkey to be used in Passkey or Numeric Comparison</dt><dd><p>Pairing methods</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_passkey_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_passkey</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">passkey</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set the passkey required during pairing process</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">Passkey</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">passkey</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s2">&quot;little&quot;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecAuthRsp&quot;</span><span class="p">,</span>
+                    <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                    <span class="n">authDataLen</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">AuthData</span><span class="o">=</span><span class="n">Passkey</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_ConfirmPasskey&quot;</span><span class="p">,</span>
+                                <span class="n">ConnHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                                <span class="n">Passkey</span><span class="o">=</span><span class="n">passkey</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="sm-remove-bonding">
+<span id="proc-sm-remove-bonding"></span><h2><a class="reference internal" href="#sm-remove-bonding">sm.remove_bonding</a><a class="headerlink" href="#sm-remove-bonding" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Remove existing bonding (stored keys) with a given address</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">remove_bonding</span>
+
+<span class="n">remove_bonding</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.remove_bonding<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Address of the device to be unbonded</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">remove_bonding_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">remove_bonding</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Remove existing bonding (stored keys) with a given address</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_RemoveBonding&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_UnBond&quot;</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="sm-is-device-bonded">
+<span id="proc-sm-is-device-bonded"></span><h2><a class="reference internal" href="#sm-is-device-bonded">sm.is_device_bonded</a><a class="headerlink" href="#sm-is-device-bonded" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Retrieve bonding status of a remote device</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">is_device_bonded</span>
+
+<span class="n">is_device_bonded</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.is_device_bonded<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>address<span class="w"> </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Address of the device to be unbonded</p>
+</dd>
+<dt class="field-even">address<span class="colon">:</span></dt>
+<dd class="field-even"><p>Local device role</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">is_device_bonded_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">is_device_bonded</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Retrieve bonding status of a remote device</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_IsBonded&quot;</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_SM_IsDeviceBonded&quot;</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="sm-initiate-encryption">
+<span id="proc-sm-initiate-encryption"></span><h2><a class="reference internal" href="#sm-initiate-encryption">sm.initiate_encryption</a><a class="headerlink" href="#sm-initiate-encryption" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Send Security Encryption Request</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">initiate_encryption</span>
+
+<span class="n">initiate_encryption</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">secLevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">key_ltk</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.initiate_encryption<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--conn_handle<span class="w"> </span>CONN_HANDLE<span class="o">]</span>
+<span class="w">                               </span><span class="o">[</span>--secLevel<span class="w"> </span>SECLEVEL<span class="o">]</span><span class="w"> </span><span class="o">[</span>--key_ltk<span class="w"> </span>KEY_LTK<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--conn_handle <var>CONN_HANDLE</var></span></kbd></dt>
+<dd><p>Connection Handle</p>
+</dd>
+<dt><kbd><span class="option">--secLevel <var>SECLEVEL</var></span></kbd></dt>
+<dd><p>Security Level</p>
+</dd>
+<dt><kbd><span class="option">--key_ltk <var>KEY_LTK</var></span></kbd></dt>
+<dd><p>Remote LTK</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">initiate_encryption_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">initiate_encryption</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">secLevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">key_ltk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Send Security Encryption Request</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecEncryptReq&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">secLevel</span><span class="o">=</span><span class="n">secLevel</span><span class="p">,</span> <span class="n">Ltk</span><span class="o">=</span><span class="n">key_ltk</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">initiate_pairing</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">iocap</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span> <span class="n">bonding</span><span class="o">=</span><span class="mh">0x01</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="sm-set-oob">
+<span id="proc-sm-set-oob"></span><h2><a class="reference internal" href="#sm-set-oob">sm.set_oob</a><a class="headerlink" href="#sm-set-oob" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set OOB Confirm and OOB Random value for SC OOB Pairing</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">set_oob</span>
+
+<span class="n">set_oob</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">oob_confirm</span><span class="p">,</span> <span class="n">oob_random</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.set_oob<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle<span class="w"> </span>oob_confirm<span class="w"> </span>oob_random
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">oob_confirm<span class="colon">:</span></dt>
+<dd class="field-even"><p>Peer’s OOB Confirm value (16 bytes)</p>
+</dd>
+<dt class="field-odd">oob_random<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Peer’s OOB Random value (16 bytes)</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_oob_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_oob</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">oob_confirm</span><span class="p">,</span> <span class="n">oob_random</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set OOB Confirm and OOB Random value for SC OOB Pairing</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSetOob&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">localRandom</span><span class="o">=</span><span class="n">oob_random</span><span class="p">,</span> <span class="n">localConfirm</span><span class="o">=</span><span class="n">oob_confirm</span><span class="p">,</span> <span class="n">peerRandom</span><span class="o">=</span><span class="n">oob_random</span><span class="p">,</span> <span class="n">peerConfirm</span><span class="o">=</span><span class="n">oob_confirm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="sm-send-security-request">
+<span id="proc-sm-send-security-request"></span><h2><a class="reference internal" href="#sm-send-security-request">sm.send_security_request</a><a class="headerlink" href="#sm-send-security-request" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Peripheral initiated Security Request</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.sm</span> <span class="kn">import</span> <span class="n">send_security_request</span>
+
+<span class="n">send_security_request</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">iocap</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bonding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mitm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">keypress</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ini_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ini_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ini_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rsp_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rsp_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rsp_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">oob_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>SM.send_security_request<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--io_cap<span class="w"> </span>IO_CAP<span class="o">]</span><span class="w"> </span><span class="o">[</span>--oob<span class="w"> </span>OOB<span class="o">]</span>
+<span class="w">                                 </span><span class="o">[</span>--bonding<span class="w"> </span>BONDING<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mitm<span class="w"> </span>MITM<span class="o">]</span>
+<span class="w">                                 </span><span class="o">[</span>--sc<span class="w"> </span>SC<span class="o">]</span><span class="w"> </span><span class="o">[</span>--keypress<span class="w"> </span>KEYPRESS<span class="o">]</span>
+<span class="w">                                 </span><span class="o">[</span>--oob_data<span class="w"> </span>OOB_DATA<span class="o">]</span>
+<span class="w">                                 </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--io_cap <var>IO_CAP</var></span></kbd></dt>
+<dd><p>IO Capability</p>
+</dd>
+<dt><kbd><span class="option">--oob <var>OOB</var></span></kbd></dt>
+<dd><p>OOB data flag</p>
+</dd>
+<dt><kbd><span class="option">--bonding <var>BONDING</var></span></kbd></dt>
+<dd><p>Bonding Flags</p>
+</dd>
+<dt><kbd><span class="option">--mitm <var>MITM</var></span></kbd></dt>
+<dd><p>MITM protection</p>
+</dd>
+<dt><kbd><span class="option">--sc <var>SC</var></span></kbd></dt>
+<dd><p>LE Secure Connections pairing</p>
+</dd>
+<dt><kbd><span class="option">--keypress <var>KEYPRESS</var></span></kbd></dt>
+<dd><p>Keypress</p>
+</dd>
+<dt><kbd><span class="option">--oob_data <var>OOB_DATA</var></span></kbd></dt>
+<dd><p>Peer OOB data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;SM.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">send_security_request_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">send_security_request</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                          <span class="n">conn_handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                          <span class="n">iocap</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span>
+                          <span class="n">oob</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                          <span class="n">bonding</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                          <span class="n">mitm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">sc</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                          <span class="n">keypress</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                          <span class="n">ini_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">ini_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">ini_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">rsp_key_dist_enc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">rsp_key_dist_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">rsp_key_dist_sign</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">oob_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Peripheral initiated Security Request</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="c1"># First, let&#39;s calculate the value of auth parameter</span>
+        <span class="k">if</span> <span class="n">bonding</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">=</span> <span class="mh">0x01</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSetLocalCsrk&quot;</span><span class="p">,</span> <span class="n">Csrk</span><span class="o">=</span><span class="mh">0x11223344556677881122334455667788</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">mitm</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">sc</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">=</span> <span class="mh">0x08</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecGenerateEccKeyReq&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">keypress</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">SM_AUTH_KP_FLAG</span> <span class="o">=</span> <span class="mh">0x10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">SM_AUTH_KP_FLAG</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">SM_AUTH_BOND_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_MITM_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_SC_FLAG</span> <span class="o">+</span> <span class="n">SM_AUTH_KP_FLAG</span>
+
+        <span class="c1"># Calculate value of initiator and responder key distribution parameters</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_enc</span><span class="p">:</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_id</span><span class="p">:</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="mh">0x02</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_id</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">ini_key_dist_sign</span><span class="p">:</span>
+            <span class="n">ini_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ini_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_enc</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x01</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_enc</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_id</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="mh">0x02</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_id</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="k">if</span> <span class="n">rsp_key_dist_sign</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x04</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rsp_key_dist_sign</span> <span class="o">=</span> <span class="mh">0x00</span>
+
+        <span class="n">iKeyDist</span> <span class="o">=</span> <span class="n">ini_key_dist_enc</span> <span class="o">+</span> <span class="n">ini_key_dist_id</span> <span class="o">+</span> <span class="n">ini_key_dist_sign</span>
+        <span class="n">rKeyDist</span> <span class="o">=</span> <span class="n">rsp_key_dist_enc</span> <span class="o">+</span> <span class="n">rsp_key_dist_id</span> <span class="o">+</span> <span class="n">rsp_key_dist_sign</span>
+
+        <span class="k">def</span> <span class="nf">on_OOB_request</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSetOob&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">Config</span><span class="o">=</span><span class="n">oob_data</span><span class="p">)</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecAuthRsp&quot;</span><span class="p">,</span>
+                    <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                    <span class="n">authDataLen</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+                    <span class="n">AuthData</span><span class="o">=</span><span class="n">oob_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">oob</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">:</span>
+            <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_DM_SEC_AUTH_REQ_IND&quot;</span><span class="p">,</span> <span class="n">on_OOB_request</span><span class="p">)</span>
+
+        <span class="c1"># Set Security configuration</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrjSecConfig&quot;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span> <span class="n">iKeyDist</span><span class="o">=</span><span class="n">iKeyDist</span><span class="p">,</span> <span class="n">rKeyDist</span><span class="o">=</span><span class="n">rKeyDist</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="n">oob</span><span class="p">,</span> <span class="n">initiateSec</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Set IO Capabilities</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_PrjSmpConfig&quot;</span><span class="p">,</span>
+                    <span class="n">attemptTimeout</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                    <span class="n">ioCap</span><span class="o">=</span><span class="n">iocap</span><span class="p">,</span>
+                    <span class="n">minKeyLen</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                    <span class="n">maxKeyLen</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+                    <span class="n">maxAttempts</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+                    <span class="n">maxAttemptTimeout</span><span class="o">=</span><span class="mi">64000</span><span class="p">,</span>
+                    <span class="n">attemptDecTimeout</span><span class="o">=</span><span class="mi">64000</span><span class="p">,</span>
+                    <span class="n">attemptExp</span><span class="o">=</span><span class="mi">2</span>
+                    <span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_DM_SecSlaveReq&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">initiate_pairing</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">iocap</span><span class="o">=</span><span class="n">iocap</span><span class="p">,</span> <span class="n">mitm</span><span class="o">=</span><span class="n">mitm</span><span class="p">,</span> <span class="n">bonding</span><span class="o">=</span><span class="n">bonding</span><span class="p">,</span> <span class="n">oob</span><span class="o">=</span><span class="n">oob</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">status</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="nvm_info.html" class="btn btn-neutral float-left" title="nvm_info Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="unity.html" class="btn btn-neutral float-right" title="unity Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

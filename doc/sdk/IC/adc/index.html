@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADC Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AOAD Driver" href="../aoad/index.html" />
+    <link rel="prev" title="Security libraries" href="../security/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ADC Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c/index.html">I2C Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">ADC Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="adc-driver">
+<h1>ADC Driver<a class="headerlink" href="#adc-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The ADC driver allows to configure the peripheral and retrieve samples
+in blocking mode (waiting on sample) or in a asynchronous way using interrupt
+with callback function.</p>
+<p>The ADC has 4 source of measurement with different features.</p>
+<p>Input source</p>
+<ul class="simple">
+<li><p>VBAT1</p></li>
+<li><p>VCC</p></li>
+<li><p>GPIO5 with Sample &amp; Hold</p></li>
+<li><p>GPIO5 without Sample &amp; Hold</p></li>
+</ul>
+<p>Input range</p>
+<dl class="simple">
+<dt>VBAT1 input source</dt><dd><ul class="simple">
+<li><p>1.8 V to 3.6 V</p></li>
+</ul>
+</dd>
+<dt>VCC input source</dt><dd><ul class="simple">
+<li><p>0.95 V to 1.9 V</p></li>
+</ul>
+</dd>
+<dt>GPIO5 input source with sample &amp; hold feature</dt><dd><ul class="simple">
+<li><p>0.05 V to 0.5 V</p></li>
+<li><p>0.05 V to 1 V</p></li>
+<li><p>0.05 V to 2 V</p></li>
+</ul>
+</dd>
+<dt>GPIO5 input source without sample &amp; hold feature</dt><dd><ul class="simple">
+<li><p>0.95 V to 1.9 V if Vhi is disabled</p></li>
+<li><p>1.8 V to 3.6 V if Vhi is enabled</p></li>
+</ul>
+</dd>
+</dl>
+<p>When a source without Sample &amp; Hold is selected, the sampling rate can be
+configured from 88’888 Hz to 120’000 Hz.</p>
+<p>When the source from GPIO5 with Sample &amp; Hold is selected, the sampling rate
+can be configured from 60’000 Hz to 85714 Hz.</p>
+<p>The ADC driver implements a feature to recover configuration after wakeup.</p>
+<section id="adc-configuration">
+<h3>ADC Configuration<a class="headerlink" href="#adc-configuration" title="Link to this heading"></a></h3>
+<p>If VBAT1 input is selected, clock config shall be done to select the sampling frequency of the ADC.
+The ADC can be also configured as 8 bits / 9 bits resolution. By default the ADC has a 9 bits resolution.</p>
+<p>Example with 120 kHz sampling frequency and 9 bits resolution.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from VBAT1</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_VBAT1</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If VCC input is selected, clock config shall be done to select the sampling frequency of the ADC.
+The ADC can be also configured as 8 or 9 bits resolution.</p>
+<p>Example with 120 kHz sampling frequency and 9 bits resolution.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from VCC</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_VCC</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If GPIO5 with Sample &amp; Hold feature is selected as input source, the configuration
+given in the code snippet below shall be done. With this input source,
+the Sample &amp; Hold feature can be enabled or disabled.
+In case of S&amp;H disabled, there is no need to configure the Sample &amp; Hold clock config.</p>
+<img alt="../../_images/sh_clock_config.png" src="../../_images/sh_clock_config.png" />
+<p>Example with Sample &amp; Hold feature enabled at 60 kHz of sampling frequency,
+range from 0.05 V to 0.5V and 9 bits of resolution.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from GPIO5 with Sample &amp; Hold</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_GPIO5_WITH_SH</span><span class="p">);</span>
+
+<span class="c1">// Set Range from 0.05 V to 0.5 V</span>
+<span class="n">ADC_SetRange</span><span class="p">(</span><span class="n">ADC_RANGE_0_05V_TO_0_5V</span><span class="p">);</span>
+
+<span class="c1">// Enable Sample &amp; Hold</span>
+<span class="n">ADC_EnableSampleAndHold</span><span class="p">();</span>
+
+<span class="c1">// Set Sample &amp; Hold clock config</span>
+<span class="n">ADC_SetSHClockConfig</span><span class="p">(</span><span class="n">ADC_SH_CLOCK_60000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If GPIO5 wihtout Sample &amp; Hold feature is selected as input source, the following configuration
+should be done.</p>
+<p>Example with sampling frequency at 120 kHz and Vhi enabled with a range of 1.8 V to 3.6 V</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from GPIO5 without Sample &amp; Hold</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_GPIO5_WITHOUT_SH</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Enable Vhi for range from 1.8 V to 3.6 V instead</span>
+<span class="c1">// of range from 0.95 V to 1.9 V</span>
+<span class="n">ADC_EnableVhi</span><span class="p">();</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="enabling-adc">
+<h3>Enabling ADC<a class="headerlink" href="#enabling-adc" title="Link to this heading"></a></h3>
+<p>The ADC shall be first configured and then enabled prior use.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// ADC Configuration</span>
+<span class="p">...</span>
+
+<span class="c1">// Enable ADC peripheral</span>
+<span class="n">ADC_Enable</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The hardware of ADC need 50 us to be operational after enable.
+The ADC_Enable() and ADC_Resume() functions include a wait
+of 50 us to ensure proper usage.</p>
+</div>
+<p>There is no need to register the module because it doesn’t need any memory
+allocation by the system.</p>
+</section>
+<section id="adc-initialization-and-sleep-mode">
+<h3>ADC initialization and Sleep mode<a class="headerlink" href="#adc-initialization-and-sleep-mode" title="Link to this heading"></a></h3>
+<p>The ADC shall be initialized at power and resumed (reconfigured) after wakeup.
+This shall be done at the time the application checks if it resumes from sleep mode.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">NO_RETURN</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">NVM_ApplicationEntry</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Initialize the board support package.</span>
+<span class="w">    </span><span class="n">BSP_Init</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable interrupts (threshold set during IRQ module initialization).</span>
+<span class="w">    </span><span class="n">IRQ_EnableInterrupts</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Check if it is wake-up from sleep.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Resume ADC</span>
+<span class="w">        </span><span class="n">ADC_Resume</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Resume QPC</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">QF_resume</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Init ADC</span>
+<span class="w">        </span><span class="n">ADC_Init</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="adc-conversion-with-blocking-function">
+<h3>ADC Conversion with blocking function<a class="headerlink" href="#adc-conversion-with-blocking-function" title="Link to this heading"></a></h3>
+<p>The StartBlocking() API start an ADC conversion and wait for the result.
+It also check errors on ADC conversion. In this case the API
+returns false if the operation fails.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Start conversion for ADC.</span>
+<span class="cm">* @note This function start the conversion and wait for the result (blocking).</span>
+<span class="cm">* @retval true in case of sucessful operation</span>
+<span class="cm">* @retval false in case of timeout on conversion running</span>
+<span class="cm">*/</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">ADC_StartBlocking</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function does not return back any sample value. Consequently, the function below
+should be called to obtain the ADC raw value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Get ADC measurement</span>
+<span class="cm">*</span>
+<span class="cm">* @param result uint16_t value with 8 or 9 bits resolution</span>
+<span class="cm">* @retval true in case of data valid</span>
+<span class="cm">* @retval false in case of overrun</span>
+<span class="cm">*/</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">ADC_GetValue</span><span class="p">(</span><span class="kt">uint16_t</span><span class="o">*</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In case of overrun on the ADC, the function return false. Overrun means that a previous
+ADC conversion was done and not read before the new conversion has been started.</p>
+</section>
+<section id="adc-conversion-with-asynchronous-function">
+<h3>ADC Conversion with asynchronous function<a class="headerlink" href="#adc-conversion-with-asynchronous-function" title="Link to this heading"></a></h3>
+<p>First in order to use ISR mechanism for ADC conversion, a callback shall be
+registered to the driver.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Set ISR callback when the user want to use</span>
+<span class="cm">* conversion with interrupt</span>
+<span class="cm">*</span>
+<span class="cm">* @param callbackFunction callback function for interrupt</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ADC_RegisterCallback</span><span class="p">(</span><span class="n">Driver_Callback_t</span><span class="w"> </span><span class="n">callbackFunction</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The prototype of the callback shall be</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">ADC_ISR_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note : When using QPC, a signal shall be posted to the task to read the ADC value.</p>
+<p>Then a conversion can be started by calling the following function. It returns
+immediatly after having started the conversion.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ADC_StartWithCallback</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>After the conversion delay of the ADC following the sampling frequency, the callback
+will be called.</p>
+<p>As explained before, it is not recommended to read the ADC data from the callback which
+is called by the ISR. In the case of QPC, post a signal to the task and when the task receive
+the signal, the following code can be executed to read the ADC value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">adc</span><span class="p">;</span>
+
+<span class="c1">// Get data from ADC register</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ADC_GetValue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">adc</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Valid data</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Overrun error on ADC</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="adc-convertion-in-continuous-mode-using-dma">
+<h3>ADC Convertion in Continuous mode using DMA<a class="headerlink" href="#adc-convertion-in-continuous-mode-using-dma" title="Link to this heading"></a></h3>
+<p>The ADC can be used in continuous mode, it means the ADC will sample the voltage at the sampling
+frequency. In order to offload the CPU, the DMA controller is used to transfer all the samples
+in the provided buffer. When the number of samples is acquired, the DMA controller generate an IRQ
+and the ADC library call the callback.</p>
+<p>The first thing is to configure the ADC.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from VBAT1</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_VBAT1</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+
+<span class="c1">// Enable ADC</span>
+<span class="n">ADC_Enable</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Then a callback shall be provided to the API. This callback will be called when the DMA
+raise the ISR when all samples have been transfered to the buffer.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">DMA_ISR_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// All samples from the ADC have been acquired and transfered to the buffer</span>
+<span class="p">}</span>
+
+<span class="c1">// Register the callback for the end of DMA operation</span>
+<span class="n">ADC_RegisterCallback</span><span class="p">(</span><span class="n">DMA_ISR_Callback</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>At this time, the ADC in continuous mode can be used.
+A memory buffer for the DMA shall be declared.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// For 9 bits ADC, the buffer shall be 16 bits size</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">aligned</span><span class="p">(</span><span class="mi">4</span><span class="p">)));</span>
+
+<span class="c1">// For 8 Bits ADC, the buffer shall be 8 bits size</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">aligned</span><span class="p">(</span><span class="mi">4</span><span class="p">)));</span>
+</pre></div>
+</div>
+<p>Then the ADC can be started in continuous mode. The buffer shall be provided to the API
+and the number of samples to acquire (same as buffer size). A free DMA channel shall be
+also provided for the DMA transfer.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Start the ADC in continuous mode, the function is asynchronous</span>
+<span class="n">ADC_StartContinuousWithCallback</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="adc-calibration">
+<h3>ADC Calibration<a class="headerlink" href="#adc-calibration" title="Link to this heading"></a></h3>
+<p>The ADC can be factory calibrated or by the customer.</p>
+<p>The calibration data is stored in either the EM Info Page or the User Info Page.
+The User Info Page takes precedence over the EM Info Page.</p>
+<p>During system power-on, the ADC driver verifies the calibration data CRC for each input source.
+This verification occurs when the ADC_Init() function is called and is only performed once
+at power-on because it is time-consuming and the calibration data remains unchanged.</p>
+<p>If no calibration data is available or if it is corrupted (with a bad CRC),
+the driver will still continue working but without any calibration applied.</p>
+</section>
+<section id="adc-driver-thread-safety">
+<h3>ADC Driver thread safety<a class="headerlink" href="#adc-driver-thread-safety" title="Link to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The ADC API is not thread safe, it means that it is not recommended to access the ADC
+from multiple task. If it’s absolutly needed, the access to the driver shall be protected
+at application level.</p>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d8/d42/group__adc"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">adc</span></span></dt>
+<dd><p>Driver for the ADC. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv417ADC_ClockConfig_t">
+<span id="_CPPv317ADC_ClockConfig_t"></span><span id="_CPPv217ADC_ClockConfig_t"></span><span class="target" id="d8/d42/group__adc_1gaab42c851e9eb8a9bacfd9e66c94025af"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_ClockConfig_t</span></span></span><a class="headerlink" href="#_CPPv417ADC_ClockConfig_t" title="Link to this definition"></a><br /></dt>
+<dd><p>ADC Clock Configuration which determine the sampling frequency of the ADC without sample &amp; hold. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t17ADC_CLK_120000_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t17ADC_CLK_120000_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t17ADC_CLK_120000_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afa80681774759f124903152e07823fdbd4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_120000_HZ</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t17ADC_CLK_120000_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t17ADC_CLK_114285_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t17ADC_CLK_114285_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t17ADC_CLK_114285_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afa51da8e8b0d9004e31cc3e40967e7be18"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_114285_HZ</span></span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t17ADC_CLK_114285_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t17ADC_CLK_109090_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t17ADC_CLK_109090_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t17ADC_CLK_109090_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afa66be744012f521698970359c7b17b8e9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_109090_HZ</span></span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t17ADC_CLK_109090_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t17ADC_CLK_104348_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t17ADC_CLK_104348_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t17ADC_CLK_104348_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afaed80a3b2d27fdd2c0d90902da42d8b1a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_104348_HZ</span></span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t17ADC_CLK_104348_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t17ADC_CLK_100000_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t17ADC_CLK_100000_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t17ADC_CLK_100000_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afadfa39c7b1f7b9baa387fc85349aeb27f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_100000_HZ</span></span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t17ADC_CLK_100000_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t16ADC_CLK_96000_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t16ADC_CLK_96000_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t16ADC_CLK_96000_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afa378dfa25efc6a64ce6a879a59be53ae5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_96000_HZ</span></span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t16ADC_CLK_96000_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t16ADC_CLK_92307_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t16ADC_CLK_92307_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t16ADC_CLK_92307_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afa4d13515beb3c66a6fb3d75a3504af2ed"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_92307_HZ</span></span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t16ADC_CLK_92307_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17ADC_ClockConfig_t16ADC_CLK_88888_HZE">
+<span id="_CPPv3N17ADC_ClockConfig_t16ADC_CLK_88888_HZE"></span><span id="_CPPv2N17ADC_ClockConfig_t16ADC_CLK_88888_HZE"></span><span class="target" id="d8/d42/group__adc_1ggaab42c851e9eb8a9bacfd9e66c94025afa59580131ea48fa8d8051b41b949273be"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_CLK_88888_HZ</span></span></span><a class="headerlink" href="#_CPPv4N17ADC_ClockConfig_t16ADC_CLK_88888_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv416ADC_Resolution_t">
+<span id="_CPPv316ADC_Resolution_t"></span><span id="_CPPv216ADC_Resolution_t"></span><span class="target" id="d8/d42/group__adc_1ga0fb5023402d8d5ba54b15757fbc88b39"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_Resolution_t</span></span></span><a class="headerlink" href="#_CPPv416ADC_Resolution_t" title="Link to this definition"></a><br /></dt>
+<dd><p>ADC resolution for measurement. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16ADC_Resolution_t10ADC_9_BITSE">
+<span id="_CPPv3N16ADC_Resolution_t10ADC_9_BITSE"></span><span id="_CPPv2N16ADC_Resolution_t10ADC_9_BITSE"></span><span class="target" id="d8/d42/group__adc_1gga0fb5023402d8d5ba54b15757fbc88b39ac9f1ef417956494dd21de8d2757fae41"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_9_BITS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N16ADC_Resolution_t10ADC_9_BITSE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16ADC_Resolution_t10ADC_8_BITSE">
+<span id="_CPPv3N16ADC_Resolution_t10ADC_8_BITSE"></span><span id="_CPPv2N16ADC_Resolution_t10ADC_8_BITSE"></span><span class="target" id="d8/d42/group__adc_1gga0fb5023402d8d5ba54b15757fbc88b39aa9c34a65810fe90f367e3471058c1a3a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_8_BITS</span></span></span><a class="headerlink" href="#_CPPv4N16ADC_Resolution_t10ADC_8_BITSE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv412ADC_Source_t">
+<span id="_CPPv312ADC_Source_t"></span><span id="_CPPv212ADC_Source_t"></span><span class="target" id="d8/d42/group__adc_1ga1be295fdc4457ddc173fa5dc6892f81a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_Source_t</span></span></span><a class="headerlink" href="#_CPPv412ADC_Source_t" title="Link to this definition"></a><br /></dt>
+<dd><p>ADC source selection. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12ADC_Source_t24ADC_SOURCE_GPIO5_WITH_SHE">
+<span id="_CPPv3N12ADC_Source_t24ADC_SOURCE_GPIO5_WITH_SHE"></span><span id="_CPPv2N12ADC_Source_t24ADC_SOURCE_GPIO5_WITH_SHE"></span><span class="target" id="d8/d42/group__adc_1gga1be295fdc4457ddc173fa5dc6892f81aae9e1a7ff3a1579763dafddfad0b656e8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SOURCE_GPIO5_WITH_SH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N12ADC_Source_t24ADC_SOURCE_GPIO5_WITH_SHE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12ADC_Source_t27ADC_SOURCE_GPIO5_WITHOUT_SHE">
+<span id="_CPPv3N12ADC_Source_t27ADC_SOURCE_GPIO5_WITHOUT_SHE"></span><span id="_CPPv2N12ADC_Source_t27ADC_SOURCE_GPIO5_WITHOUT_SHE"></span><span class="target" id="d8/d42/group__adc_1gga1be295fdc4457ddc173fa5dc6892f81aa01f301af13670cb65baa78f21c959993"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SOURCE_GPIO5_WITHOUT_SH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N12ADC_Source_t27ADC_SOURCE_GPIO5_WITHOUT_SHE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12ADC_Source_t14ADC_SOURCE_VCCE">
+<span id="_CPPv3N12ADC_Source_t14ADC_SOURCE_VCCE"></span><span id="_CPPv2N12ADC_Source_t14ADC_SOURCE_VCCE"></span><span class="target" id="d8/d42/group__adc_1gga1be295fdc4457ddc173fa5dc6892f81aa3d2d001c9a59c3c8b972fbc4839a6f7b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SOURCE_VCC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N12ADC_Source_t14ADC_SOURCE_VCCE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12ADC_Source_t16ADC_SOURCE_VBAT1E">
+<span id="_CPPv3N12ADC_Source_t16ADC_SOURCE_VBAT1E"></span><span id="_CPPv2N12ADC_Source_t16ADC_SOURCE_VBAT1E"></span><span class="target" id="d8/d42/group__adc_1gga1be295fdc4457ddc173fa5dc6892f81aa16780136d59c3fb530c9c35a7206d4bc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SOURCE_VBAT1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N12ADC_Source_t16ADC_SOURCE_VBAT1E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv420ADC_SH_ClockConfig_t">
+<span id="_CPPv320ADC_SH_ClockConfig_t"></span><span id="_CPPv220ADC_SH_ClockConfig_t"></span><span class="target" id="d8/d42/group__adc_1ga5d277452726cdf04282773167892740d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SH_ClockConfig_t</span></span></span><a class="headerlink" href="#_CPPv420ADC_SH_ClockConfig_t" title="Link to this definition"></a><br /></dt>
+<dd><p>ADC Sample &amp; Hold Clock Configuration. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_85714_HZE">
+<span id="_CPPv3N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_85714_HZE"></span><span id="_CPPv2N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_85714_HZE"></span><span class="target" id="d8/d42/group__adc_1gga5d277452726cdf04282773167892740da70ee4eb9f30301faeb12ed591c82f666"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SH_CLOCK_85714_HZ</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_85714_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_75000_HZE">
+<span id="_CPPv3N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_75000_HZE"></span><span id="_CPPv2N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_75000_HZE"></span><span class="target" id="d8/d42/group__adc_1gga5d277452726cdf04282773167892740da5070d9e917b34e45ae6fb0f726e206ba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SH_CLOCK_75000_HZ</span></span></span><a class="headerlink" href="#_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_75000_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_66666_HZE">
+<span id="_CPPv3N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_66666_HZE"></span><span id="_CPPv2N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_66666_HZE"></span><span class="target" id="d8/d42/group__adc_1gga5d277452726cdf04282773167892740da0ce40fc14cfd2e3c78eb361ee491680c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SH_CLOCK_66666_HZ</span></span></span><a class="headerlink" href="#_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_66666_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_60000_HZE">
+<span id="_CPPv3N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_60000_HZE"></span><span id="_CPPv2N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_60000_HZE"></span><span class="target" id="d8/d42/group__adc_1gga5d277452726cdf04282773167892740da1f7837ced4e026e4fbe91e7f09843405"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SH_CLOCK_60000_HZ</span></span></span><a class="headerlink" href="#_CPPv4N20ADC_SH_ClockConfig_t21ADC_SH_CLOCK_60000_HZE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv411ADC_Range_t">
+<span id="_CPPv311ADC_Range_t"></span><span id="_CPPv211ADC_Range_t"></span><span class="target" id="d8/d42/group__adc_1ga24ee3f4de0f25202f947d0fa4973472b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_Range_t</span></span></span><a class="headerlink" href="#_CPPv411ADC_Range_t" title="Link to this definition"></a><br /></dt>
+<dd><p>ADC Range of Voltage measurement. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11ADC_Range_t23ADC_RANGE_0_05V_TO_0_5VE">
+<span id="_CPPv3N11ADC_Range_t23ADC_RANGE_0_05V_TO_0_5VE"></span><span id="_CPPv2N11ADC_Range_t23ADC_RANGE_0_05V_TO_0_5VE"></span><span class="target" id="d8/d42/group__adc_1gga24ee3f4de0f25202f947d0fa4973472bad564cbbc6302f2736f15a8f2c5490455"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_RANGE_0_05V_TO_0_5V</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N11ADC_Range_t23ADC_RANGE_0_05V_TO_0_5VE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11ADC_Range_t21ADC_RANGE_0_05V_TO_1VE">
+<span id="_CPPv3N11ADC_Range_t21ADC_RANGE_0_05V_TO_1VE"></span><span id="_CPPv2N11ADC_Range_t21ADC_RANGE_0_05V_TO_1VE"></span><span class="target" id="d8/d42/group__adc_1gga24ee3f4de0f25202f947d0fa4973472ba9ae8d5aa76a04313542e296e21cc55a8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_RANGE_0_05V_TO_1V</span></span></span><a class="headerlink" href="#_CPPv4N11ADC_Range_t21ADC_RANGE_0_05V_TO_1VE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11ADC_Range_t21ADC_RANGE_0_05V_TO_2VE">
+<span id="_CPPv3N11ADC_Range_t21ADC_RANGE_0_05V_TO_2VE"></span><span id="_CPPv2N11ADC_Range_t21ADC_RANGE_0_05V_TO_2VE"></span><span class="target" id="d8/d42/group__adc_1gga24ee3f4de0f25202f947d0fa4973472bab2c6ff1620791d4fac634ca88c55717a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_RANGE_0_05V_TO_2V</span></span></span><a class="headerlink" href="#_CPPv4N11ADC_Range_t21ADC_RANGE_0_05V_TO_2VE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv48ADC_Initv">
+<span id="_CPPv38ADC_Initv"></span><span id="_CPPv28ADC_Initv"></span><span id="ADC_Init__void"></span><span class="target" id="d8/d42/group__adc_1ga5137b551f1b83b0f4d8df7d071a3d3a6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_Init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48ADC_Initv" title="Link to this definition"></a><br /></dt>
+<dd><p>Module initialization function. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410ADC_Enablev">
+<span id="_CPPv310ADC_Enablev"></span><span id="_CPPv210ADC_Enablev"></span><span id="ADC_Enable__void"></span><span class="target" id="d8/d42/group__adc_1ga4267de5bc303060b4dfd2997c078c602"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_Enable</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410ADC_Enablev" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable ADC peripheral. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411ADC_Disablev">
+<span id="_CPPv311ADC_Disablev"></span><span id="_CPPv211ADC_Disablev"></span><span id="ADC_Disable__void"></span><span class="target" id="d8/d42/group__adc_1gaa256af5b8a253bdc3f6aacaa29830e64"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_Disable</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411ADC_Disablev" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable ADC peripheral. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410ADC_IsBusyv">
+<span id="_CPPv310ADC_IsBusyv"></span><span id="_CPPv210ADC_IsBusyv"></span><span id="ADC_IsBusy__void"></span><span class="target" id="d8/d42/group__adc_1ga758293aaeb7647368402abe813dd307f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_IsBusy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410ADC_IsBusyv" title="Link to this definition"></a><br /></dt>
+<dd><p>Check if ADC is running (sample convertion in progress) in Single or Continuous mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if convertion is running </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410ADC_Resumev">
+<span id="_CPPv310ADC_Resumev"></span><span id="_CPPv210ADC_Resumev"></span><span id="ADC_Resume__void"></span><span class="target" id="d8/d42/group__adc_1ga72cbda12435855c3b93727882bd828d9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_Resume</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410ADC_Resumev" title="Link to this definition"></a><br /></dt>
+<dd><p>Resume ADC after exiting sleep mode. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function shall be called in NVM_ApplicationEntry when the CPU resumes from sleep mode (checked by PML_DidBootFromSleep function). In this case the ADC shall be resumed to be operational. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417ADC_StartBlockingv">
+<span id="_CPPv317ADC_StartBlockingv"></span><span id="_CPPv217ADC_StartBlockingv"></span><span id="ADC_StartBlocking__void"></span><span class="target" id="d8/d42/group__adc_1ga2359b2e204598769e1ecabcbe33dabf0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_StartBlocking</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417ADC_StartBlockingv" title="Link to this definition"></a><br /></dt>
+<dd><p>Start conversion for ADC. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function start the conversion and wait for the result (blocking). </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>true</strong> – in case of sucessful operation </p></li>
+<li><p><strong>false</strong> – in case of timeout on conversion running </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421ADC_StartWithCallbackv">
+<span id="_CPPv321ADC_StartWithCallbackv"></span><span id="_CPPv221ADC_StartWithCallbackv"></span><span id="ADC_StartWithCallback__void"></span><span class="target" id="d8/d42/group__adc_1ga5750f35856b1c23103c57a6a50153841"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_StartWithCallback</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421ADC_StartWithCallbackv" title="Link to this definition"></a><br /></dt>
+<dd><p>Start single conversion for ADC using Interruption (asynchronous). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function start the conversion and return immediatly, the callback will be called when ADC generate ISR for data ready. The callback shall be set prior this call with <a class="reference internal" href="#d8/d42/group__adc_1gafc7a75fd467e0b175fc2b0ab152eac3d"><span class="std std-ref">ADC_RegisterCallback()</span></a></p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv431ADC_StartContinuousWithCallbackPv8uint16_t7uint8_t">
+<span id="_CPPv331ADC_StartContinuousWithCallbackPv8uint16_t7uint8_t"></span><span id="_CPPv231ADC_StartContinuousWithCallbackPv8uint16_t7uint8_t"></span><span id="ADC_StartContinuousWithCallback__voidP.uint16_t.uint8_t"></span><span class="target" id="d8/d42/group__adc_1gae2703ac38a55f09f66819b27bb971c72"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_StartContinuousWithCallback</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buffer</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nb_samples</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dma_channel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431ADC_StartContinuousWithCallbackPv8uint16_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Start continuous mode for ADC using DMA (asynchronous). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function start the continuous mode and return immediatly, the callback will be called when the DMA generate ISR for data transfer ready. The callback shall be set prior this call with ADC_RegisterCallabck() </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buffer</strong> – buffer for all samples acquired in continuous mode using DMA </p></li>
+<li><p><strong>nb_samples</strong> – number of samples for acquisition </p></li>
+<li><p><strong>dma_channel</strong> – dma channel used for ADC in continuous mode </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ADC_RegisterCallback17Driver_Callback_t">
+<span id="_CPPv320ADC_RegisterCallback17Driver_Callback_t"></span><span id="_CPPv220ADC_RegisterCallback17Driver_Callback_t"></span><span id="ADC_RegisterCallback__Driver_Callback_t"></span><span class="target" id="d8/d42/group__adc_1gafc7a75fd467e0b175fc2b0ab152eac3d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_RegisterCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ADC_RegisterCallback17Driver_Callback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set ISR callback when the user want to use conversion with interrupt. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callbackFunction</strong> – callback function for interrupt </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418ADC_SetClockConfig17ADC_ClockConfig_t">
+<span id="_CPPv318ADC_SetClockConfig17ADC_ClockConfig_t"></span><span id="_CPPv218ADC_SetClockConfig17ADC_ClockConfig_t"></span><span id="ADC_SetClockConfig__ADC_ClockConfig_t"></span><span class="target" id="d8/d42/group__adc_1gac9fed7340de8762d56c18aa6ad2a6586"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SetClockConfig</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv417ADC_ClockConfig_t" title="ADC_ClockConfig_t"><span class="n"><span class="pre">ADC_ClockConfig_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418ADC_SetClockConfig17ADC_ClockConfig_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set Clock config to set sampling rate. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function has effect only when sample &amp; hold is disabled</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – samplig rate </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417ADC_SetResolution16ADC_Resolution_t">
+<span id="_CPPv317ADC_SetResolution16ADC_Resolution_t"></span><span id="_CPPv217ADC_SetResolution16ADC_Resolution_t"></span><span id="ADC_SetResolution__ADC_Resolution_t"></span><span class="target" id="d8/d42/group__adc_1ga0f4061c06a23d592ba9dc41a9cea0260"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SetResolution</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416ADC_Resolution_t" title="ADC_Resolution_t"><span class="n"><span class="pre">ADC_Resolution_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">resolution</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417ADC_SetResolution16ADC_Resolution_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set resolution of ADC, can be 8 or 9 bits. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resolution</strong> – resolution of ADC </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422ADC_SetSourceSelection12ADC_Source_t">
+<span id="_CPPv322ADC_SetSourceSelection12ADC_Source_t"></span><span id="_CPPv222ADC_SetSourceSelection12ADC_Source_t"></span><span id="ADC_SetSourceSelection__ADC_Source_t"></span><span class="target" id="d8/d42/group__adc_1gab93a819f17b7bc74bcdf78a28d2af23a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SetSourceSelection</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412ADC_Source_t" title="ADC_Source_t"><span class="n"><span class="pre">ADC_Source_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">source</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422ADC_SetSourceSelection12ADC_Source_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set source for ADC measurement can be VBAT1, VCC, GPIO5 with S&amp;H, GPIO5 without S&amp;H. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>source</strong> – source of measurement </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423ADC_EnableSampleAndHoldv">
+<span id="_CPPv323ADC_EnableSampleAndHoldv"></span><span id="_CPPv223ADC_EnableSampleAndHoldv"></span><span id="ADC_EnableSampleAndHold__void"></span><span class="target" id="d8/d42/group__adc_1ga4562045257d657e7ab4472e08c39ec5e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_EnableSampleAndHold</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423ADC_EnableSampleAndHoldv" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable Sample &amp; Hold. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function enables the sample and hold on the GPIO5 input source. It has no effect on other input source. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424ADC_DisableSampleAndHoldv">
+<span id="_CPPv324ADC_DisableSampleAndHoldv"></span><span id="_CPPv224ADC_DisableSampleAndHoldv"></span><span id="ADC_DisableSampleAndHold__void"></span><span class="target" id="d8/d42/group__adc_1ga4ca4eaa2ca169f8df734489756b34c75"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_DisableSampleAndHold</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424ADC_DisableSampleAndHoldv" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable Sample &amp; Hold. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function disables the sample and hold on the GPIO5 input source. It has no effect on other input source. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ADC_SetSHClockConfig20ADC_SH_ClockConfig_t">
+<span id="_CPPv320ADC_SetSHClockConfig20ADC_SH_ClockConfig_t"></span><span id="_CPPv220ADC_SetSHClockConfig20ADC_SH_ClockConfig_t"></span><span id="ADC_SetSHClockConfig__ADC_SH_ClockConfig_t"></span><span class="target" id="d8/d42/group__adc_1ga48018dc10197e9108318628d900cd3b6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SetSHClockConfig</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv420ADC_SH_ClockConfig_t" title="ADC_SH_ClockConfig_t"><span class="n"><span class="pre">ADC_SH_ClockConfig_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">clock</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ADC_SetSHClockConfig20ADC_SH_ClockConfig_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set Sample &amp; Hold duration. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function set the sample &amp; hold clock config when GPIO5 is selected as input source. It has no effect on other input source.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>clock</strong> – clock config for sample &amp; hold </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412ADC_SetRange11ADC_Range_t">
+<span id="_CPPv312ADC_SetRange11ADC_Range_t"></span><span id="_CPPv212ADC_SetRange11ADC_Range_t"></span><span id="ADC_SetRange__ADC_Range_t"></span><span class="target" id="d8/d42/group__adc_1gaace3c731d8e8e3af06cc420d7eff0db9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_SetRange</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411ADC_Range_t" title="ADC_Range_t"><span class="n"><span class="pre">ADC_Range_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">range</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412ADC_SetRange11ADC_Range_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set range of voltage measurement. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function set the range of voltage measurement on GPIO5 source with sample &amp; hold. It has no effect on other input source.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>range</strong> – range of voltage measurement </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv413ADC_EnableVhiv">
+<span id="_CPPv313ADC_EnableVhiv"></span><span id="_CPPv213ADC_EnableVhiv"></span><span id="ADC_EnableVhi__void"></span><span class="target" id="d8/d42/group__adc_1ga894ab3f16d3628e15d8061da5879a877"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_EnableVhi</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv413ADC_EnableVhiv" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable Vhi when source is on GPIO5 without sample &amp; hold. It allow to change the voltage range for this input source. When Vhi is enabled, the range is 1.8V to 3.6V When Vhi is disabled, the range is 0.95V to 1.9V. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It has no effect on other input source. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414ADC_DisableVhiv">
+<span id="_CPPv314ADC_DisableVhiv"></span><span id="_CPPv214ADC_DisableVhiv"></span><span id="ADC_DisableVhi__void"></span><span class="target" id="d8/d42/group__adc_1gaf9c29713d62f8674626433aee676a8a0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_DisableVhi</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414ADC_DisableVhiv" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable Vhi when source is on GPIO5 without sample &amp; hold It allow to change the voltage range for this input source. When Vhi is enabled, the range is 1.8V to 3.6V When Vhi is disabled, the range is 0.95V to 1.9V. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It has no effect on other input source. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412ADC_GetValueP8uint16_t">
+<span id="_CPPv312ADC_GetValueP8uint16_t"></span><span id="_CPPv212ADC_GetValueP8uint16_t"></span><span id="ADC_GetValue__uint16_tP"></span><span class="target" id="d8/d42/group__adc_1ga6d92928863a34d6ecc84493d090d0076"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_GetValue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">result</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412ADC_GetValueP8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get ADC measurement. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> – uint16_t value with 8 or 9 bits resolution </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>true</strong> – in case of data valid </p></li>
+<li><p><strong>false</strong> – in case of overrun </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ADC_ValueToMillivolt8uint16_t">
+<span id="_CPPv320ADC_ValueToMillivolt8uint16_t"></span><span id="_CPPv220ADC_ValueToMillivolt8uint16_t"></span><span id="ADC_ValueToMillivolt__uint16_t"></span><span class="target" id="d8/d42/group__adc_1ga4003edc4909dae6b430ac03a212e6e17"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_ValueToMillivolt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">raw</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ADC_ValueToMillivolt8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert ADC raw value to voltage in mV following the selected source and configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>raw</strong> – adc raw value </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>16 bits unsigned Voltage in mV converted from raw value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416ADC_IsCalibratedv">
+<span id="_CPPv316ADC_IsCalibratedv"></span><span id="_CPPv216ADC_IsCalibratedv"></span><span id="ADC_IsCalibrated__void"></span><span class="target" id="d8/d42/group__adc_1ga119c75ca6bb34360f65b746eb573a477"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADC_IsCalibrated</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416ADC_IsCalibratedv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return true if the current selected source use calibration data. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Calibration data are valid in User or EM info page for the selected source. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if calibration data are used. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-2-0">
+<h3>Version 0.2.0<a class="headerlink" href="#version-0-2-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Add calibration for ADC which can be located in EM and / or User info page.</p></li>
+<li><p>Correction formula to compute Vin of ADC.</p></li>
+<li><p>Remove the offset of 50 mV for GPIO5 input source with sample &amp; hold.</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../security/index.html" class="btn btn-neutral float-left" title="Security libraries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../aoad/index.html" class="btn btn-neutral float-right" title="AOAD Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

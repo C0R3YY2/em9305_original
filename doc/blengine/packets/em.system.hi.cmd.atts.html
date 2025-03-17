@@ -1,0 +1,2241 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>em.system.hi.cmd.atts &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="em.system.hi.cmd.dm" href="em.system.hi.cmd.dm.html" />
+    <link rel="prev" title="em.system.hi.cmd.attc" href="em.system.hi.cmd.attc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../packets.html">HCI Packets List</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aci.em.hci.html">aci.em.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.9304.system.cmd.html">em.9304.system.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.bridge.cmd.html">em.bridge.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.dvk.cmd.html">em.dvk.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.event.unity.html">em.event.unity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.em.html">em.system.em</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.fwu.html">em.system.fwu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.general.html">em.system.general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.arc.html">em.system.hi.cmd.arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.att.html">em.system.hi.cmd.att</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.attc.html">em.system.hi.cmd.attc</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">em.system.hi.cmd.atts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-init">EMSHI_ATTS_Init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-indinit">EMSHI_ATTS_IndInit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-signinit">EMSHI_ATTS_SignInit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-addgroup">EMSHI_ATTS_AddGroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-removegroup">EMSHI_ATTS_RemoveGroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-setattr">EMSHI_ATTS_SetAttr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-getattr">EMSHI_ATTS_GetAttr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-handlevalueind">EMSHI_ATTS_HandleValueInd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-handlevaluentf">EMSHI_ATTS_HandleValueNtf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-cccregister">EMSHI_ATTS_CccRegister</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-cccget">EMSHI_ATTS_CccGet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-cccset">EMSHI_ATTS_CccSet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-setcsrk">EMSHI_ATTS_SetCsrk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-setsigncounter">EMSHI_ATTS_SetSignCounter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-dyninit">EMSHI_ATTS_DynInit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-dyncreategroup">EMSHI_ATTS_DynCreateGroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-dyndeletegroup">EMSHI_ATTS_DynDeleteGroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-dynaddattr">EMSHI_ATTS_DynAddAttr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-dynaddattrconst">EMSHI_ATTS_DynAddAttrConst</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-allocatememoryforattributes">EMSHI_ATTS_AllocateMemoryForAttributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-addservice">EMSHI_ATTS_AddService</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-addcharacteristic">EMSHI_ATTS_AddCharacteristic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-addcharvalue">EMSHI_ATTS_AddCharValue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-addcccd">EMSHI_ATTS_AddCCCD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-addcustomattrgroup">EMSHI_ATTS_AddCustomAttrGroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emshi-atts-getattrhandle">EMSHI_ATTS_GetAttrHandle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.dm.html">em.system.hi.cmd.dm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gap.html">em.system.hi.cmd.gap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gatt.html">em.system.hi.cmd.gatt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gpio.html">em.system.hi.cmd.gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.hci.html">em.system.hi.cmd.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.l2cap.html">em.system.hi.cmd.l2cap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.rtc.html">em.system.hi.cmd.rtc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.sm.html">em.system.hi.cmd.sm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smp.html">em.system.hi.cmd.smp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpi.html">em.system.hi.cmd.smpi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpr.html">em.system.hi.cmd.smpr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.whitelist.html">em.system.hi.cmd.whitelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.event.html">em.system.hi.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.mm.html">em.system.mm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pc.html">em.system.pc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pm.html">em.system.pm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rc.html">em.system.rc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rm.html">em.system.rm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.security.html">em.system.security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.ut.html">em.system.ut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.wt.html">em.system.wt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.html">hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.cmd.html">hci.aci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.event.html">hci.aci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.hci.event.html">hci.aci.hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.acl.html">hci.acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.ble.event.html">hci.ble.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd.html">hci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd_802_15_4.html">hci.cmd_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.data_802_15_4.html">hci.data_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.html">hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.vs.html">hci.event.vs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event_802_15_4.html">hci.event_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.iso.html">hci.iso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">HCI Packets Index by ID</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../packets.html">HCI Packets List</a></li>
+      <li class="breadcrumb-item active">em.system.hi.cmd.atts</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="em-system-hi-cmd-atts">
+<h1>em.system.hi.cmd.atts<a class="headerlink" href="#em-system-hi-cmd-atts" title="Link to this heading"></a></h1>
+<nav class="contents local" id="index">
+<p class="topic-title">Index</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#emshi-atts-init" id="id28">EMSHI_ATTS_Init</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-indinit" id="id29">EMSHI_ATTS_IndInit</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-signinit" id="id30">EMSHI_ATTS_SignInit</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-addgroup" id="id31">EMSHI_ATTS_AddGroup</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-removegroup" id="id32">EMSHI_ATTS_RemoveGroup</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-setattr" id="id33">EMSHI_ATTS_SetAttr</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-getattr" id="id34">EMSHI_ATTS_GetAttr</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-handlevalueind" id="id35">EMSHI_ATTS_HandleValueInd</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-handlevaluentf" id="id36">EMSHI_ATTS_HandleValueNtf</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-cccregister" id="id37">EMSHI_ATTS_CccRegister</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-cccget" id="id38">EMSHI_ATTS_CccGet</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-cccset" id="id39">EMSHI_ATTS_CccSet</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-setcsrk" id="id40">EMSHI_ATTS_SetCsrk</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-setsigncounter" id="id41">EMSHI_ATTS_SetSignCounter</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-dyninit" id="id42">EMSHI_ATTS_DynInit</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-dyncreategroup" id="id43">EMSHI_ATTS_DynCreateGroup</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-dyndeletegroup" id="id44">EMSHI_ATTS_DynDeleteGroup</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-dynaddattr" id="id45">EMSHI_ATTS_DynAddAttr</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-dynaddattrconst" id="id46">EMSHI_ATTS_DynAddAttrConst</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-allocatememoryforattributes" id="id47">EMSHI_ATTS_AllocateMemoryForAttributes</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-addservice" id="id48">EMSHI_ATTS_AddService</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-addcharacteristic" id="id49">EMSHI_ATTS_AddCharacteristic</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-addcharvalue" id="id50">EMSHI_ATTS_AddCharValue</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-addcccd" id="id51">EMSHI_ATTS_AddCCCD</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-addcustomattrgroup" id="id52">EMSHI_ATTS_AddCustomAttrGroup</a></p></li>
+<li><p><a class="reference internal" href="#emshi-atts-getattrhandle" id="id53">EMSHI_ATTS_GetAttrHandle</a></p></li>
+</ul>
+</nav>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div>
+<div id="count">26 Packets</div><section id="emshi-atts-init">
+<span id="pkt-emshi-atts-init"></span><h2><a class="reference internal" href="#emshi-atts-init">EMSHI_ATTS_Init</a><a class="headerlink" href="#emshi-atts-init" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_Init&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_Init</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d03</p>
+</dd>
+</dl>
+<p>Initialize ATT server.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x03</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-indinit">
+<span id="pkt-emshi-atts-indinit"></span><h2><a class="reference internal" href="#emshi-atts-indinit">EMSHI_ATTS_IndInit</a><a class="headerlink" href="#emshi-atts-indinit" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_IndInit&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_IndInit</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d04</p>
+</dd>
+</dl>
+<p>Initialize ATT server for indications/notifications.</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x04</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-signinit">
+<span id="pkt-emshi-atts-signinit"></span><h2><a class="reference internal" href="#emshi-atts-signinit">EMSHI_ATTS_SignInit</a><a class="headerlink" href="#emshi-atts-signinit" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_SignInit&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_SignInit</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d05</p>
+</dd>
+</dl>
+<p>Initialize ATT server for data signing.</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x05</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-addgroup">
+<span id="pkt-emshi-atts-addgroup"></span><h2><a class="reference internal" href="#emshi-atts-addgroup">EMSHI_ATTS_AddGroup</a><a class="headerlink" href="#emshi-atts-addgroup" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_AddGroup&quot;,</span> <span class="pre">svc_id=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_AddGroup</span> <span class="pre">--svc_id=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d06</p>
+</dd>
+</dl>
+<p>Add an attribute group to the attribute server.</p>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x06</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>svc_id</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Service Id between 0 till 23</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-removegroup">
+<span id="pkt-emshi-atts-removegroup"></span><h2><a class="reference internal" href="#emshi-atts-removegroup">EMSHI_ATTS_RemoveGroup</a><a class="headerlink" href="#emshi-atts-removegroup" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_RemoveGroup&quot;,</span> <span class="pre">startHandle=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_RemoveGroup</span> <span class="pre">--startHandle=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d07</p>
+</dd>
+</dl>
+<p>Remove an attribute group from the attribute server.</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x07</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>startHandle</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Start handle of attribute group to be removed.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-setattr">
+<span id="pkt-emshi-atts-setattr"></span><h2><a class="reference internal" href="#emshi-atts-setattr">EMSHI_ATTS_SetAttr</a><a class="headerlink" href="#emshi-atts-setattr" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_SetAttr&quot;,</span> <span class="pre">handle=0xXx,valueLen=0xXx,pValue=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_SetAttr</span> <span class="pre">--handle=0xXx</span> <span class="pre">--valueLen=0xXx</span> <span class="pre">--pValue=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d08</p>
+</dd>
+</dl>
+<p>Set an attribute value in the attribute server.</p>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id6" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x08</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>handle</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Attribute handle.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>valueLen</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Attribute length.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>pValue</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Attribute value.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-getattr">
+<span id="pkt-emshi-atts-getattr"></span><h2><a class="reference internal" href="#emshi-atts-getattr">EMSHI_ATTS_GetAttr</a><a class="headerlink" href="#emshi-atts-getattr" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_GetAttr&quot;,</span> <span class="pre">handle=0xXx,Len=0xXx,Value=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_GetAttr</span> <span class="pre">--handle=0xXx</span> <span class="pre">--Len=0xXx</span> <span class="pre">--Value=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d09</p>
+</dd>
+</dl>
+<p>Get an attribute value in the attribute server.</p>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x09</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>handle</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Attribute handle.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Len</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Returned attribute length pointer</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Value</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Returned attribute value pointer</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-handlevalueind">
+<span id="pkt-emshi-atts-handlevalueind"></span><h2><a class="reference internal" href="#emshi-atts-handlevalueind">EMSHI_ATTS_HandleValueInd</a><a class="headerlink" href="#emshi-atts-handlevalueind" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_HandleValueInd&quot;,</span> <span class="pre">connId=0xXx,handle=0xXx,valueLen=0xXx,pValue=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_HandleValueInd</span> <span class="pre">--connId=0xXx</span> <span class="pre">--handle=0xXx</span> <span class="pre">--valueLen=0xXx</span> <span class="pre">--pValue=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d0a</p>
+</dd>
+</dl>
+<p>Send an attribute protocol Handle Value Indication.</p>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x0a</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>connId</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">DM connection ID</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>handle</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Attribute handle.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>valueLen</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Length of value data.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>pValue</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Pointer to value data.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-handlevaluentf">
+<span id="pkt-emshi-atts-handlevaluentf"></span><h2><a class="reference internal" href="#emshi-atts-handlevaluentf">EMSHI_ATTS_HandleValueNtf</a><a class="headerlink" href="#emshi-atts-handlevaluentf" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_HandleValueNtf&quot;,</span> <span class="pre">connId=0xXx,handle=0xXx,valueLen=0xXx,pValue=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_HandleValueNtf</span> <span class="pre">--connId=0xXx</span> <span class="pre">--handle=0xXx</span> <span class="pre">--valueLen=0xXx</span> <span class="pre">--pValue=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d0b</p>
+</dd>
+</dl>
+<p>Send an attribute protocol Handle Value Notification.</p>
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x0b</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>connId</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">DM connection ID.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>handle</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Attribute handle.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>valueLen</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Length of value data.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>pValue</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Pointer to value data.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-cccregister">
+<span id="pkt-emshi-atts-cccregister"></span><h2><a class="reference internal" href="#emshi-atts-cccregister">EMSHI_ATTS_CccRegister</a><a class="headerlink" href="#emshi-atts-cccregister" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_CccRegister&quot;,</span> <span class="pre">setLen=0xXx,pSet=0xXx,cback=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_CccRegister</span> <span class="pre">--setLen=0xXx</span> <span class="pre">--pSet=0xXx</span> <span class="pre">--cback=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d0c</p>
+</dd>
+</dl>
+<p>Register the utility service for managing client characteristic configuration descriptors. This function is typically called once on system initialization.</p>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id10" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x0c</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>setLen</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Length of settings array.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>pSet</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Array of CCC descriptor settings.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>cback</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Client callback function.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-cccget">
+<span id="pkt-emshi-atts-cccget"></span><h2><a class="reference internal" href="#emshi-atts-cccget">EMSHI_ATTS_CccGet</a><a class="headerlink" href="#emshi-atts-cccget" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_CccGet&quot;,</span> <span class="pre">connId=0xXx,idx=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_CccGet</span> <span class="pre">--connId=0xXx</span> <span class="pre">--idx=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d0d</p>
+</dd>
+</dl>
+<p>Get the value of a client characteristic configuration descriptor by its index. If not found, return zero.</p>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x0d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>connId</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">DM connection ID.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>idx</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Index of descriptor in CCC descriptor handle table.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-cccset">
+<span id="pkt-emshi-atts-cccset"></span><h2><a class="reference internal" href="#emshi-atts-cccset">EMSHI_ATTS_CccSet</a><a class="headerlink" href="#emshi-atts-cccset" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_CccSet&quot;,</span> <span class="pre">connId=0xXx,idx=0xXx,value=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_CccSet</span> <span class="pre">--connId=0xXx</span> <span class="pre">--idx=0xXx</span> <span class="pre">--value=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d0e</p>
+</dd>
+</dl>
+<p>Set the value of a client characteristic configuration descriptor by its index.</p>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x0e</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>connId</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">DM connection ID.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>idx</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Index of descriptor in CCC descriptor handle table.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>value</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Value of the descriptor.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-setcsrk">
+<span id="pkt-emshi-atts-setcsrk"></span><h2><a class="reference internal" href="#emshi-atts-setcsrk">EMSHI_ATTS_SetCsrk</a><a class="headerlink" href="#emshi-atts-setcsrk" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_SetCsrk&quot;,</span> <span class="pre">connId=0xXx,pCsrk=0xXx,authen=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_SetCsrk</span> <span class="pre">--connId=0xXx</span> <span class="pre">--pCsrk=0xXx</span> <span class="pre">--authen=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d0f</p>
+</dd>
+</dl>
+<p>Set the peer’s data signing key on this connection. This function is typically called from the ATT connection callback when the connection is established. The caller is responsible for maintaining the memory that contains the key.</p>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x0f</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>connId</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">DM connection ID.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>pCsrk</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Pointer to data signing key (CSRK).</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>authen</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Whether CSRK was received on authenticated connection.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-setsigncounter">
+<span id="pkt-emshi-atts-setsigncounter"></span><h2><a class="reference internal" href="#emshi-atts-setsigncounter">EMSHI_ATTS_SetSignCounter</a><a class="headerlink" href="#emshi-atts-setsigncounter" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_SetSignCounter&quot;,</span> <span class="pre">connId=0xXx,signCounter=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_SetSignCounter</span> <span class="pre">--connId=0xXx</span> <span class="pre">--signCounter=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d10</p>
+</dd>
+</dl>
+<dl>
+<dt>Set the peer’s sign counter on this connection.</dt><dd><div class="line-block">
+<div class="line">This function is typically called from the ATT connection callback when the connection is established.</div>
+<div class="line">ATT maintains the value of the sign counter internally and sets the value when a signed packet is successfully received.</div>
+</div>
+</dd>
+</dl>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id14" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x10</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>connId</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">DM connection ID.</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>signCounter</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Sign Counter.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-dyninit">
+<span id="pkt-emshi-atts-dyninit"></span><h2><a class="reference internal" href="#emshi-atts-dyninit">EMSHI_ATTS_DynInit</a><a class="headerlink" href="#emshi-atts-dyninit" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_DynInit&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_DynInit</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d25</p>
+</dd>
+</dl>
+<p>Initialize the Dynamic ATT Service subsystem.</p>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x25</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-dyncreategroup">
+<span id="pkt-emshi-atts-dyncreategroup"></span><h2><a class="reference internal" href="#emshi-atts-dyncreategroup">EMSHI_ATTS_DynCreateGroup</a><a class="headerlink" href="#emshi-atts-dyncreategroup" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_DynCreateGroup&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_DynCreateGroup</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d26</p>
+</dd>
+</dl>
+<p>Dynamically create an ATT Service at runtime.</p>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x26</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-dyndeletegroup">
+<span id="pkt-emshi-atts-dyndeletegroup"></span><h2><a class="reference internal" href="#emshi-atts-dyndeletegroup">EMSHI_ATTS_DynDeleteGroup</a><a class="headerlink" href="#emshi-atts-dyndeletegroup" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_DynDeleteGroup&quot;,</span> <span class="pre">SvcHandle=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_DynDeleteGroup</span> <span class="pre">--SvcHandle=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d27</p>
+</dd>
+</dl>
+<p>Dynamically delete an ATT Service at runtime.</p>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id17" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x27</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>SvcHandle</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Service handle returned by AttsDynCreateGroup</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-dynaddattr">
+<span id="pkt-emshi-atts-dynaddattr"></span><h2><a class="reference internal" href="#emshi-atts-dynaddattr">EMSHI_ATTS_DynAddAttr</a><a class="headerlink" href="#emshi-atts-dynaddattr" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_DynAddAttr&quot;,</span> <span class="pre">SvcHandle=0xXx,uuid=0xXx,Value=0xXx,len=0xXx,maxLen=0xXx,settings=0xXx,permissions=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_DynAddAttr</span> <span class="pre">--SvcHandle=0xXx</span> <span class="pre">--uuid=0xXx</span> <span class="pre">--Value=0xXx</span> <span class="pre">--len=0xXx</span> <span class="pre">--maxLen=0xXx</span> <span class="pre">--settings=0xXx</span> <span class="pre">--permissions=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d29</p>
+</dd>
+</dl>
+<p>Dynamically add an attribute to a dynamic ATT Services at app initialization.</p>
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x29</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>SvcHandle</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Service handle returned by AttsDynCreateGroup</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>uuid</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Constant UUID</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Value</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Initial value of attribute (copied into attribute memory)</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>len</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Length of pValue in bytes</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>maxLen</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Maximum length of the attribute in bytes</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>settings</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Atribute settings</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>permissions</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Attribute permissions</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-dynaddattrconst">
+<span id="pkt-emshi-atts-dynaddattrconst"></span><h2><a class="reference internal" href="#emshi-atts-dynaddattrconst">EMSHI_ATTS_DynAddAttrConst</a><a class="headerlink" href="#emshi-atts-dynaddattrconst" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_DynAddAttrConst&quot;,</span> <span class="pre">uuid=0xXx,Value=0xXx,len=0xXx,settings=0xXx,permissions=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_DynAddAttrConst</span> <span class="pre">--uuid=0xXx</span> <span class="pre">--Value=0xXx</span> <span class="pre">--len=0xXx</span> <span class="pre">--settings=0xXx</span> <span class="pre">--permissions=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d2a</p>
+</dd>
+</dl>
+<p>Dynamically add an attribute with a constant value to a dynamic ATT Services.</p>
+<table class="docutils align-default" id="id19">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id19" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x2a</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>uuid</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Constant UUID</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Pointer to constant attribute memory</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>len</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Length of pValue in bytes</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>settings</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Atribute settings</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>permissions</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Attribute permissions</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-allocatememoryforattributes">
+<span id="pkt-emshi-atts-allocatememoryforattributes"></span><h2><a class="reference internal" href="#emshi-atts-allocatememoryforattributes">EMSHI_ATTS_AllocateMemoryForAttributes</a><a class="headerlink" href="#emshi-atts-allocatememoryforattributes" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_AllocateMemoryForAttributes&quot;,</span> <span class="pre">service=0xXx,characteristic=0xXx,cccd=0xXx,startingHandle=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_AllocateMemoryForAttributes</span> <span class="pre">--service=0xXx</span> <span class="pre">--characteristic=0xXx</span> <span class="pre">--cccd=0xXx</span> <span class="pre">--startingHandle=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d2b</p>
+</dd>
+</dl>
+<p>This function allocates memory and creates the list for the attribute handles.</p>
+<table class="docutils align-default" id="id20">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id20" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x2b</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>service</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of Services</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>characteristic</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of Characteristic</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>cccd</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of CCCD</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>startingHandle</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Starting attribute handle</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-addservice">
+<span id="pkt-emshi-atts-addservice"></span><h2><a class="reference internal" href="#emshi-atts-addservice">EMSHI_ATTS_AddService</a><a class="headerlink" href="#emshi-atts-addservice" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_AddService&quot;,</span> <span class="pre">setting=0xXx,permissions=0xXx,uuidSize=0xXx,partialUuid=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_AddService</span> <span class="pre">--setting=0xXx</span> <span class="pre">--permissions=0xXx</span> <span class="pre">--uuidSize=0xXx</span> <span class="pre">--partialUuid=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d2c</p>
+</dd>
+</dl>
+<p>This function builds the custom service and adds to the application.</p>
+<table class="docutils align-default" id="id21">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id21" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x2c</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>setting</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute settings</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>permissions</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute permissions</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>uuidSize</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">UUID Size; 2 Bytes or 16 Bytes</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>partialUuid</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">partial uuid value which is used to build the pValue of attsAttr_t element</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-addcharacteristic">
+<span id="pkt-emshi-atts-addcharacteristic"></span><h2><a class="reference internal" href="#emshi-atts-addcharacteristic">EMSHI_ATTS_AddCharacteristic</a><a class="headerlink" href="#emshi-atts-addcharacteristic" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_AddCharacteristic&quot;,</span> <span class="pre">setting=0xXx,permissions=0xXx,properties=0xXx,uuidSize=0xXx,partialUuid=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_AddCharacteristic</span> <span class="pre">--setting=0xXx</span> <span class="pre">--permissions=0xXx</span> <span class="pre">--properties=0xXx</span> <span class="pre">--uuidSize=0xXx</span> <span class="pre">--partialUuid=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d2d</p>
+</dd>
+</dl>
+<p>Build custom UUIDs</p>
+<table class="docutils align-default" id="id22">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id22" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x2d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>setting</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute settings</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>permissions</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute permissions</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>properties</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">characteristic properties</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>uuidSize</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">UUID Size; 2 Bytes or 16 Bytes</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>partialUuid</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">partial uuid value which is used to build the pValue of attsAttr_t element</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-addcharvalue">
+<span id="pkt-emshi-atts-addcharvalue"></span><h2><a class="reference internal" href="#emshi-atts-addcharvalue">EMSHI_ATTS_AddCharValue</a><a class="headerlink" href="#emshi-atts-addcharvalue" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_AddCharValue&quot;,</span> <span class="pre">setting=0xXx,permissions=0xXx,valLen=0xXx,charVal=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_AddCharValue</span> <span class="pre">--setting=0xXx</span> <span class="pre">--permissions=0xXx</span> <span class="pre">--valLen=0xXx</span> <span class="pre">--charVal=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d2e</p>
+</dd>
+</dl>
+<p>Build custom UUIDs</p>
+<table class="docutils align-default" id="id23">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id23" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x2e</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>setting</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute settings</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>permissions</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute permissions</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>valLen</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Length of the value</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>charVal</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Value of the characteristic</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-addcccd">
+<span id="pkt-emshi-atts-addcccd"></span><h2><a class="reference internal" href="#emshi-atts-addcccd">EMSHI_ATTS_AddCCCD</a><a class="headerlink" href="#emshi-atts-addcccd" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_AddCCCD&quot;,</span> <span class="pre">setting=0xXx,permissions=0xXx,attrValue=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_AddCCCD</span> <span class="pre">--setting=0xXx</span> <span class="pre">--permissions=0xXx</span> <span class="pre">--attrValue=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d2f</p>
+</dd>
+</dl>
+<p>Build custom UUIDs</p>
+<table class="docutils align-default" id="id24">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id24" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x2f</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>setting</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute settings</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>permissions</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">attribute permissions</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>attrValue</strong></p></td>
+<td></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Defaul cccd Value</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-addcustomattrgroup">
+<span id="pkt-emshi-atts-addcustomattrgroup"></span><h2><a class="reference internal" href="#emshi-atts-addcustomattrgroup">EMSHI_ATTS_AddCustomAttrGroup</a><a class="headerlink" href="#emshi-atts-addcustomattrgroup" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_AddCustomAttrGroup&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_AddCustomAttrGroup</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d30</p>
+</dd>
+</dl>
+<p>Adds the custom attribute group to the application</p>
+<table class="docutils align-default" id="id25">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id25" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x30</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="emshi-atts-getattrhandle">
+<span id="pkt-emshi-atts-getattrhandle"></span><h2><a class="reference internal" href="#emshi-atts-getattrhandle">EMSHI_ATTS_GetAttrHandle</a><a class="headerlink" href="#emshi-atts-getattrhandle" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EMSHI_ATTS_GetAttrHandle&quot;,</span> <span class="pre">index=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EMSHI_ATTS_GetAttrHandle</span> <span class="pre">--index=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01) &gt; <a class="reference internal" href="aci.em.hci.html#pkt-emshi-packet"><span class="std std-ref">EMSHI_PACKET</span></a> (0xffc0)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x8d31</p>
+</dd>
+</dl>
+<p>This function fetches the attribute handle from the attribute handle list.</p>
+<table class="docutils align-default" id="id26">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id26" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>em_opcode</strong></p></td>
+<td><p>0x8d</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>command</strong></p></td>
+<td><p>0x31</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">No Description</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>index</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">List index</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id27">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id27" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Handle</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Attribute handle.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="em.system.hi.cmd.attc.html" class="btn btn-neutral float-left" title="em.system.hi.cmd.attc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="em.system.hi.cmd.dm.html" class="btn btn-neutral float-right" title="em.system.hi.cmd.dm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

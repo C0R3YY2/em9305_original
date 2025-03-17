@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I2C Master Driver &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="I2S Driver" href="../i2s/index.html" />
+    <link rel="prev" title="GPIO Driver" href="../gpio/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc/index.html">ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../aoad/index.html">AOAD Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dma/index.html">DMA Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../em_hw_api/index.html">Interrupt management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gpio/index.html">GPIO Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">I2C Master Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hal-api">HAL API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s/index.html">I2S Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pml/index.html">PML Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../protocol_timer/index.html">Protocol Timer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec/index.html">QDEC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radio/index.html">Radio Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc/index.html">RTC Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master/index.html">SPI Master Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave/index.html">SPI Slave Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../temperature_indicator/index.html">Temperature Indicator Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../uart/index.html">UART Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../unitimer/index.html">Unitimer Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog/index.html">Watchdog Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">I2C Master Driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="i2c-master-driver">
+<h1>I2C Master Driver<a class="headerlink" href="#i2c-master-driver" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The I2C driver allows to configure and use the I2C master bus.</p>
+<p>It supports only master mode from 100 kbit/s to 1 Mbit/s.</p>
+<p>Clock stretching allows the slave to hold down the clock if it needs
+to reduce the bus speed. Please read I2C specification
+(chapter 3.1.9, Rev. 6 - 4 April 2014) for more details.</p>
+<p>7-bit device addressing mode.</p>
+<p>16 bytes long RX buffer for reception and 16 bytes long TX buffer for transmission.</p>
+<section id="i2c-configuration-structure">
+<h3>I2C configuration structure<a class="headerlink" href="#i2c-configuration-structure" title="Link to this heading"></a></h3>
+<p>The I2C module needs to be registered in order to be used.
+Then the configuration structure can be set to the needed configuration.</p>
+<ul class="simple">
+<li><p>Clock Frequency</p></li>
+<li><p>Clock Stretching</p></li>
+<li><p>GPIO SCK</p></li>
+<li><p>GPIO SDA</p></li>
+</ul>
+<p>Different clock speed can be used.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief Possible frequency rates supported by the I2C master.</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ClockFrequency1000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt; I2C Fast+ mode, 1000Khz. */</span>
+<span class="w">    </span><span class="n">ClockFrequency833</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt; I2C Fast+ mode, 833Khz. */</span>
+<span class="w">    </span><span class="n">ClockFrequency400</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt; I2C Fast mode, 400Khz. */</span>
+<span class="w">    </span><span class="n">ClockFrequency333</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt; I2C Fast mode, 333Khz. */</span>
+<span class="w">    </span><span class="n">ClockFrequency100</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt; I2C Standard mode, 100Khz. */</span>
+<span class="w">    </span><span class="n">ClockFrequency83</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="cm">/**&lt; I2C Standard mode, 83Khz. */</span>
+<span class="p">}</span><span class="w"> </span><span class="n">I2C_ClockFrequency_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Clock stretching allow to enable / disable the feature using a boolean.</p>
+<p>The configuration structure contain also GPIO for SCK and SDA.</p>
+<ul class="simple">
+<li><p>Clock of I2C can be set on GPIO 0, 4, 9 or 10 only.</p></li>
+<li><p>SDA of I2C can be set on GPIO 1, 5, 8, 10 or 11 only.</p></li>
+</ul>
+<p>I2C shall be registered in NVM_ConfigModules() and then configuration
+structure can be set with the needed settings.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">//...</span>
+
+<span class="w">    </span><span class="c1">// Register I2C module</span>
+<span class="w">    </span><span class="n">I2C_RegisterModule</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+
+<span class="w">    </span><span class="c1">// Enable I2C peripheral</span>
+<span class="w">    </span><span class="n">gI2C_Config</span><span class="p">.</span><span class="n">clockFrequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClockFrequency100</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2C_Config</span><span class="p">.</span><span class="n">clockStretching</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2C_Config</span><span class="p">.</span><span class="n">gpioSck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_I2C_SCK</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2C_Config</span><span class="p">.</span><span class="n">gpioSda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_I2C_SDA</span><span class="p">;</span>
+<span class="w">    </span><span class="n">gI2C_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">//...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="i2c-read-write-operations">
+<h3>I2C Read / Write operations<a class="headerlink" href="#i2c-read-write-operations" title="Link to this heading"></a></h3>
+<p>There is four functions to read and write data on the I2C slave peripheral.</p>
+<p>All these functions are non-blocking, the input buffer cannot be modified until
+the transaction is complete. The callback is called when the operation finish.</p>
+<p>I2C Device address shall be 7 bits.</p>
+<p>Performs an I2C write operation on the selected register of the I2C device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">I2C_WriteRegister</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i2cDevice</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">reg</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">pBuffer</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">Driver_Callback_t</span><span class="w"> </span><span class="n">callbackFunction</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Performs one or more I2C read operations on the selected register of the I2C device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">I2C_ReadRegister</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i2cDevice</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">reg</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">pBuffer</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="n">Driver_Callback_t</span><span class="w"> </span><span class="n">callbackFunction</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Performs one or more I2C read operations on the selected I2C device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">I2C_Read</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i2cDevice</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">pBuffer</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Driver_Callback_t</span><span class="w"> </span><span class="n">callbackFunction</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Performs one or more I2C read operations on the selected I2C device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">I2C_Write</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i2cDevice</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">pBuffer</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Driver_Callback_t</span><span class="w"> </span><span class="n">callbackFunction</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the buffer is on the stack, you must ensure that the transaction
+completes before the function exits.</p>
+</div>
+<p>The prototype of the callback for end of operation shall be</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">I2C_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// I2C operation is finished</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d3/df5/group__i2c"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">i2c</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv416I2C_QueueIndex_t">
+<span id="_CPPv316I2C_QueueIndex_t"></span><span id="_CPPv216I2C_QueueIndex_t"></span><span id="I2C_QueueIndex_t"></span><span class="target" id="d3/df5/group__i2c_1gac8fe7341e1cda969134fe3d9b68e8bdd"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_QueueIndex_t</span></span></span><a class="headerlink" href="#_CPPv416I2C_QueueIndex_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Variable type to store a queue index or depth. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418I2C_RegisterModulev">
+<span id="_CPPv318I2C_RegisterModulev"></span><span id="_CPPv218I2C_RegisterModulev"></span><span id="I2C_RegisterModule__void"></span><span class="target" id="d3/df5/group__i2c_1ga89d9a4b42df5f6f882b88434af492463"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_RegisterModule</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418I2C_RegisterModulev" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the I2C module into the module config list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function needs to be called before the modules are initialized </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417I2C_WriteRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv317I2C_WriteRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv217I2C_WriteRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="I2C_WriteRegister__uint8_t.uint8_t.uint8_tP.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d3/df5/group__i2c_1gad6fd9c03c2b7fe56498a98a9deee661b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_WriteRegister</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">reg</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417I2C_WriteRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs an I2C write operation on the selected register of the I2C device. </p>
+<p>This is a non-blocking operation, the input buffer cannot be modified until the transaction is complete.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the buffer is on the stack, you must ensure that the transaction completes before the function exits.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i2cDevice</strong> – The I2C device address to communicate with. </p></li>
+<li><p><strong>reg</strong> – The register to write to. </p></li>
+<li><p><strong>pBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>bytes</strong> – The number of entries in the source array. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the I2C transaction is complete, the return status is passed as an argument. If you do not need a callback you may set this to NULL. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416I2C_ReadRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv316I2C_ReadRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv216I2C_ReadRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="I2C_ReadRegister__uint8_t.uint8_t.uint8_tP.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d3/df5/group__i2c_1ga3079ad59096f12ebed63a460aab65597"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_ReadRegister</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">reg</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416I2C_ReadRegister7uint8_t7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs one or more I2C read operations on the selected register of the I2C device. </p>
+<p>This is a non-blocking operation. The input buffer will be overwritten once the I2C transaction has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i2cDevice</strong> – The I2C device address to communicate with. </p></li>
+<li><p><strong>reg</strong> – The register to read from. </p></li>
+<li><p><strong>pBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>bytes</strong> – The number of bytes to read. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the I2C transaction is complete, the return status is passed as an argument. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv48I2C_Read7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv38I2C_Read7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv28I2C_Read7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="I2C_Read__uint8_t.uint8_tP.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d3/df5/group__i2c_1ga7e2f6503bb51cef77f43ca513a26f329"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_Read</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48I2C_Read7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs one or more I2C read operations on the selected I2C device. </p>
+<p>This is a non-blocking operation. The input buffer will be overwritten once the I2C transaction has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i2cDevice</strong> – The I2C device address to communicate with. </p></li>
+<li><p><strong>pBuffer</strong> – <strong>[out]</strong> The memory location to save the read data. </p></li>
+<li><p><strong>bytes</strong> – The number of bytes to read. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the I2C transaction is complete, the return status is passed as an argument. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49I2C_Write7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv">
+<span id="_CPPv39I2C_Write7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="_CPPv29I2C_Write7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv"></span><span id="I2C_Write__uint8_t.uint8_tP.uint32_t.Driver_Callback_t.voidP"></span><span class="target" id="d3/df5/group__i2c_1ga1ad31f47e998658b68dc7c3693327f2e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_Write</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffer</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bytes</span></span>, <span class="n"><span class="pre">Driver_Callback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">callbackFunction</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49I2C_Write7uint8_tP7uint8_t8uint32_t17Driver_Callback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs one or more I2C read operations on the selected I2C device. </p>
+<p>This is a non-blocking operation. The input buffer will be overwritten once the I2C transaction has completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i2cDevice</strong> – The I2C device address to communicate with. </p></li>
+<li><p><strong>pBuffer</strong> – <strong>[in]</strong> An array of data to write to the device. </p></li>
+<li><p><strong>bytes</strong> – The number of entries in the source array. </p></li>
+<li><p><strong>callbackFunction</strong> – <strong>[in]</strong> The function to call after the I2C transaction is complete, the return status is passed as an argument. </p></li>
+<li><p><strong>pUserData</strong> – <strong>[in]</strong> The data to pass to the callback function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the transaction was scheduled, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv427I2C_PendingTransactionCountv">
+<span id="_CPPv327I2C_PendingTransactionCountv"></span><span id="_CPPv227I2C_PendingTransactionCountv"></span><span id="I2C_PendingTransactionCount__void"></span><span class="target" id="d3/df5/group__i2c_1ga35b9c37c6152169a492808bde3e4ff96"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_PendingTransactionCount</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv427I2C_PendingTransactionCountv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the number of pending transactions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of pending I2C transactions. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv411gI2C_Config">
+<span id="_CPPv311gI2C_Config"></span><span id="_CPPv211gI2C_Config"></span><span id="gI2C_Config__I2C_Configuration_tV"></span><span class="target" id="d3/df5/group__i2c_1ga0c6d803322cc3e03d8be31d2e6f150bc"></span><span class="k"><span class="pre">volatile</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419I2C_Configuration_t" title="I2C_Configuration_t"><span class="n"><span class="pre">I2C_Configuration_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gI2C_Config</span></span></span><a class="headerlink" href="#_CPPv411gI2C_Config" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C configuration data. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv419I2C_Configuration_t">
+<span id="_CPPv319I2C_Configuration_t"></span><span id="_CPPv219I2C_Configuration_t"></span><span id="I2C_Configuration_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_Configuration_t</span></span></span><a class="headerlink" href="#_CPPv419I2C_Configuration_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;i2c.h&gt;</em></div>
+<p>I2C configuration data structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t12moduleConfigE">
+<span id="_CPPv3N19I2C_Configuration_t12moduleConfigE"></span><span id="_CPPv2N19I2C_Configuration_t12moduleConfigE"></span><span id="I2C_Configuration_t::moduleConfig__Config_ModuleConfiguration_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1a15db35065a12dbb7da2dc83772d500be"></span><span class="n"><span class="pre">Config_ModuleConfiguration_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">moduleConfig</span></span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t12moduleConfigE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base structure each module config must start with. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t16transactionDepthE">
+<span id="_CPPv3N19I2C_Configuration_t16transactionDepthE"></span><span id="_CPPv2N19I2C_Configuration_t16transactionDepthE"></span><span id="I2C_Configuration_t::transactionDepth__I2C_QueueIndex_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1a8f136c28e99f14a30e8aea1110c2b068"></span><a class="reference internal" href="#_CPPv416I2C_QueueIndex_t" title="I2C_QueueIndex_t"><span class="n"><span class="pre">I2C_QueueIndex_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transactionDepth</span></span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t16transactionDepthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the transaction queue. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t7enabledE">
+<span id="_CPPv3N19I2C_Configuration_t7enabledE"></span><span id="_CPPv2N19I2C_Configuration_t7enabledE"></span><span id="I2C_Configuration_t::enabled__uint8_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1ab78e92572f568c4aa41b21a784fc2b48"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t7enabledE" title="Link to this definition"></a><br /></dt>
+<dd><p>If the driver is enabled or not. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t14clockFrequencyE">
+<span id="_CPPv3N19I2C_Configuration_t14clockFrequencyE"></span><span id="_CPPv2N19I2C_Configuration_t14clockFrequencyE"></span><span id="I2C_Configuration_t::clockFrequency__uint8_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1a783a2e8c04e160c31a40d71bd4b7a841"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clockFrequency</span></span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t14clockFrequencyE" title="Link to this definition"></a><br /></dt>
+<dd><p>A clock frequency from I2C_ClockFrequency_t. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t15clockStretchingE">
+<span id="_CPPv3N19I2C_Configuration_t15clockStretchingE"></span><span id="_CPPv2N19I2C_Configuration_t15clockStretchingE"></span><span id="I2C_Configuration_t::clockStretching__uint8_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1a7a3b8f234d8602c6cfaef5456813ef04"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clockStretching</span></span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t15clockStretchingE" title="Link to this definition"></a><br /></dt>
+<dd><p>If clock stretching is enabled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t7gpioSckE">
+<span id="_CPPv3N19I2C_Configuration_t7gpioSckE"></span><span id="_CPPv2N19I2C_Configuration_t7gpioSckE"></span><span id="I2C_Configuration_t::gpioSck__uint8_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1abc011704afc7581501313844c63fe734"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpioSck</span></span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t7gpioSckE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO for the SCK signal. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t7gpioSdaE">
+<span id="_CPPv3N19I2C_Configuration_t7gpioSdaE"></span><span id="_CPPv2N19I2C_Configuration_t7gpioSdaE"></span><span id="I2C_Configuration_t::gpioSda__uint8_t"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1ac8843d08be1fd6a99ea3efc83fe64617"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gpioSda</span></span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t7gpioSdaE" title="Link to this definition"></a><br /></dt>
+<dd><p>GPIO for the SDA signal. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19I2C_Configuration_t8reservedE">
+<span id="_CPPv3N19I2C_Configuration_t8reservedE"></span><span id="_CPPv2N19I2C_Configuration_t8reservedE"></span><span id="I2C_Configuration_t::reserved__uint8_tA"></span><span class="target" id="d1/dba/struct_i2_c___configuration__t_1abccd37e8c8256a84efe845237fc9e043"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserved</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N19I2C_Configuration_t8reservedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reserved bytes. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="hal-api">
+<h2>HAL API<a class="headerlink" href="#hal-api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d6/dc8/group__i2c__hal"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">i2c_hal</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.I2C_MAX_TRANS_LENGTH">
+<span class="target" id="d6/dc8/group__i2c__hal_1gae69fa33e4e2dffb0fdac0b10800d064f"></span><span class="sig-name descname"><span class="n"><span class="pre">I2C_MAX_TRANS_LENGTH</span></span></span> <span class="pre">(16)</span><a class="headerlink" href="#c.I2C_MAX_TRANS_LENGTH" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum number of bytes that are sent in a single transaction. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv421I2C_ControlRegister_t">
+<span id="_CPPv321I2C_ControlRegister_t"></span><span id="_CPPv221I2C_ControlRegister_t"></span><span id="I2C_ControlRegister_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gad772bf6e527baaa6324195fb3bb094ea"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">RegI2CMCtrl_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></span><a class="headerlink" href="#_CPPv421I2C_ControlRegister_t" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C master control register. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv420I2C_ClockFrequency_t">
+<span id="_CPPv320I2C_ClockFrequency_t"></span><span id="_CPPv220I2C_ClockFrequency_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga72a621c0f5cee4dea16320bf40f8db44"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_ClockFrequency_t</span></span></span><a class="headerlink" href="#_CPPv420I2C_ClockFrequency_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Possible frequency rates supported by the I2C master. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20I2C_ClockFrequency_t18ClockFrequency1000E">
+<span id="_CPPv3N20I2C_ClockFrequency_t18ClockFrequency1000E"></span><span id="_CPPv2N20I2C_ClockFrequency_t18ClockFrequency1000E"></span><span class="target" id="d6/dc8/group__i2c__hal_1gga72a621c0f5cee4dea16320bf40f8db44a916dbdf0ec766d427468bf1d4741aa5a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClockFrequency1000</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N20I2C_ClockFrequency_t18ClockFrequency1000E" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C Fast+ mode, 1000Khz. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20I2C_ClockFrequency_t17ClockFrequency833E">
+<span id="_CPPv3N20I2C_ClockFrequency_t17ClockFrequency833E"></span><span id="_CPPv2N20I2C_ClockFrequency_t17ClockFrequency833E"></span><span class="target" id="d6/dc8/group__i2c__hal_1gga72a621c0f5cee4dea16320bf40f8db44a368ee1bbb045dc10bb08c04cb3676bed"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClockFrequency833</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N20I2C_ClockFrequency_t17ClockFrequency833E" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C Fast+ mode, 833Khz. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20I2C_ClockFrequency_t17ClockFrequency400E">
+<span id="_CPPv3N20I2C_ClockFrequency_t17ClockFrequency400E"></span><span id="_CPPv2N20I2C_ClockFrequency_t17ClockFrequency400E"></span><span class="target" id="d6/dc8/group__i2c__hal_1gga72a621c0f5cee4dea16320bf40f8db44a6f14f43da3622191a0f29ac65e0a2175"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClockFrequency400</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N20I2C_ClockFrequency_t17ClockFrequency400E" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C Fast mode, 400Khz. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20I2C_ClockFrequency_t17ClockFrequency333E">
+<span id="_CPPv3N20I2C_ClockFrequency_t17ClockFrequency333E"></span><span id="_CPPv2N20I2C_ClockFrequency_t17ClockFrequency333E"></span><span class="target" id="d6/dc8/group__i2c__hal_1gga72a621c0f5cee4dea16320bf40f8db44a8ed6fefbf0f575946b27113eb5055c7d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClockFrequency333</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N20I2C_ClockFrequency_t17ClockFrequency333E" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C Fast mode, 333Khz. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20I2C_ClockFrequency_t17ClockFrequency100E">
+<span id="_CPPv3N20I2C_ClockFrequency_t17ClockFrequency100E"></span><span id="_CPPv2N20I2C_ClockFrequency_t17ClockFrequency100E"></span><span class="target" id="d6/dc8/group__i2c__hal_1gga72a621c0f5cee4dea16320bf40f8db44a0a464fada1b46e6b0a4d6a2aa660a5cb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClockFrequency100</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#_CPPv4N20I2C_ClockFrequency_t17ClockFrequency100E" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C Standard mode, 100Khz. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20I2C_ClockFrequency_t16ClockFrequency83E">
+<span id="_CPPv3N20I2C_ClockFrequency_t16ClockFrequency83E"></span><span id="_CPPv2N20I2C_ClockFrequency_t16ClockFrequency83E"></span><span class="target" id="d6/dc8/group__i2c__hal_1gga72a621c0f5cee4dea16320bf40f8db44ad15e4302463e969e3b0ffc263b0af069"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ClockFrequency83</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N20I2C_ClockFrequency_t16ClockFrequency83E" title="Link to this definition"></a><br /></dt>
+<dd><p>I2C Standard mode, 83Khz. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425I2C_HAL_SetClockFrequency20I2C_ClockFrequency_t">
+<span id="_CPPv325I2C_HAL_SetClockFrequency20I2C_ClockFrequency_t"></span><span id="_CPPv225I2C_HAL_SetClockFrequency20I2C_ClockFrequency_t"></span><span id="I2C_HAL_SetClockFrequency__I2C_ClockFrequency_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga0cba62404a94d562e1fab040f7b66b9e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_SetClockFrequency</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv420I2C_ClockFrequency_t" title="I2C_ClockFrequency_t"><span class="n"><span class="pre">I2C_ClockFrequency_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">freq</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425I2C_HAL_SetClockFrequency20I2C_ClockFrequency_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the I2C Master to use the specified clock frequency. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>freq</strong> – The frequency to use for I2C transactions. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428I2C_HAL_SetClockMaxFrequency8uint16_t">
+<span id="_CPPv328I2C_HAL_SetClockMaxFrequency8uint16_t"></span><span id="_CPPv228I2C_HAL_SetClockMaxFrequency8uint16_t"></span><span id="I2C_HAL_SetClockMaxFrequency__uint16_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga80aa354be909fd5400cb7913861e1ce4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_SetClockMaxFrequency</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">freq</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428I2C_HAL_SetClockMaxFrequency8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the I2C Master to use the specified clock frequency. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>freq</strong> – The frequency to use for I2C transactions. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425I2C_HAL_GetClockFrequencyv">
+<span id="_CPPv325I2C_HAL_GetClockFrequencyv"></span><span id="_CPPv225I2C_HAL_GetClockFrequencyv"></span><span id="I2C_HAL_GetClockFrequency__void"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga045119fc33a978dd7edccd45b0db76a8"></span><a class="reference internal" href="#_CPPv420I2C_ClockFrequency_t" title="I2C_ClockFrequency_t"><span class="n"><span class="pre">I2C_ClockFrequency_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_GetClockFrequency</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425I2C_HAL_GetClockFrequencyv" title="Link to this definition"></a><br /></dt>
+<dd><p>Reads out the I2C master clock frequency. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The frequency that the I2C master is currently set to use. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426I2C_HAL_SetClockStretchingb">
+<span id="_CPPv326I2C_HAL_SetClockStretchingb"></span><span id="_CPPv226I2C_HAL_SetClockStretchingb"></span><span id="I2C_HAL_SetClockStretching__b"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga7da505a3df9bc0237895eb798548520c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_SetClockStretching</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426I2C_HAL_SetClockStretchingb" title="Link to this definition"></a><br /></dt>
+<dd><p>Enables or disables clock stretching on the I2C master bus. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>enable</strong> – Enable or disable clock stretching. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426I2C_HAL_GetClockStretchingv">
+<span id="_CPPv326I2C_HAL_GetClockStretchingv"></span><span id="_CPPv226I2C_HAL_GetClockStretchingv"></span><span id="I2C_HAL_GetClockStretching__void"></span><span class="target" id="d6/dc8/group__i2c__hal_1gad2c0091d853fdd4b7cdc1adffe9d4ce3"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_GetClockStretching</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426I2C_HAL_GetClockStretchingv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the state of the clock stretching enable bit. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>true</strong> – Clock stretching is currently enabled. </p></li>
+<li><p><strong>false</strong> – Clock stretching is currently disabled. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428I2C_HAL_BeginTransactionCtrl21I2C_ControlRegister_t">
+<span id="_CPPv328I2C_HAL_BeginTransactionCtrl21I2C_ControlRegister_t"></span><span id="_CPPv228I2C_HAL_BeginTransactionCtrl21I2C_ControlRegister_t"></span><span id="I2C_HAL_BeginTransactionCtrl__I2C_ControlRegister_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga5cdafac092586f58e21fd462439ab0d8"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_BeginTransactionCtrl</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ctrl</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428I2C_HAL_BeginTransactionCtrl21I2C_ControlRegister_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Begins an I2C transaction specified by the ctrl register. </p>
+<p>Data written using this function will be taken from the hardware registers. Data read using this function will be stored in the hardware registers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctrl</strong> – New control register value. </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>true</strong> – The I2C transaction has started. </p></li>
+<li><p><strong>false</strong> – The I2C transaction was unable to start. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414I2C_HAL_DidAckv">
+<span id="_CPPv314I2C_HAL_DidAckv"></span><span id="_CPPv214I2C_HAL_DidAckv"></span><span id="I2C_HAL_DidAck__void"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga25d36309795be5acb08910982d9c8147"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_DidAck</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414I2C_HAL_DidAckv" title="Link to this definition"></a><br /></dt>
+<dd><p>Waits for the I2C transaction to complete. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>true</strong> – An ACK was received. </p></li>
+<li><p><strong>false</strong> – A NACK was received. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414I2C_HAL_IsBusyv">
+<span id="_CPPv314I2C_HAL_IsBusyv"></span><span id="_CPPv214I2C_HAL_IsBusyv"></span><span id="I2C_HAL_IsBusy__void"></span><span class="target" id="d6/dc8/group__i2c__hal_1gab5756d7a29af1421b27a1249783605ad"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_IsBusy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414I2C_HAL_IsBusyv" title="Link to this definition"></a><br /></dt>
+<dd><p>Determines if the I2C master is currently in use. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return values<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>true</strong> – The I2C master is in use. </p></li>
+<li><p><strong>false</strong> – The I2C master is available. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437I2C_HAL_ControlRegister_StartWriteReg7uint8_t">
+<span id="_CPPv337I2C_HAL_ControlRegister_StartWriteReg7uint8_t"></span><span id="_CPPv237I2C_HAL_ControlRegister_StartWriteReg7uint8_t"></span><span id="I2C_HAL_ControlRegister_StartWriteReg__uint8_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gaff89f9af803fbf1a6354ba1190b62553"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_StartWriteReg</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437I2C_HAL_ControlRegister_StartWriteReg7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Generate a control register value to start an I2C register write. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i2cDevice</strong> – The 7-bit I2C slave address. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to set in the control register. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv438I2C_HAL_ControlRegister_StartWriteData7uint8_t">
+<span id="_CPPv338I2C_HAL_ControlRegister_StartWriteData7uint8_t"></span><span id="_CPPv238I2C_HAL_ControlRegister_StartWriteData7uint8_t"></span><span id="I2C_HAL_ControlRegister_StartWriteData__uint8_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gafbb5973a77730feb4c8f4e9c60574aca"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_StartWriteData</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv438I2C_HAL_ControlRegister_StartWriteData7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Generate a control register value to start an I2C write. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i2cDevice</strong> – The 7-bit I2C slave address. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to set in the control register. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv436I2C_HAL_ControlRegister_StartReadReg7uint8_t">
+<span id="_CPPv336I2C_HAL_ControlRegister_StartReadReg7uint8_t"></span><span id="_CPPv236I2C_HAL_ControlRegister_StartReadReg7uint8_t"></span><span id="I2C_HAL_ControlRegister_StartReadReg__uint8_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga6fc612a77e9d5334fa52967d74aa4245"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_StartReadReg</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv436I2C_HAL_ControlRegister_StartReadReg7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Generate a control register value to start an I2C register read. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i2cDevice</strong> – The 7-bit I2C slave address. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to set in the control register. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv437I2C_HAL_ControlRegister_StartReadData7uint8_t">
+<span id="_CPPv337I2C_HAL_ControlRegister_StartReadData7uint8_t"></span><span id="_CPPv237I2C_HAL_ControlRegister_StartReadData7uint8_t"></span><span id="I2C_HAL_ControlRegister_StartReadData__uint8_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga328fdda55b0b83df2b82435d0a2f489e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_StartReadData</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i2cDevice</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv437I2C_HAL_ControlRegister_StartReadData7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Generate a control register value to start an I2C read. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i2cDevice</strong> – The 7-bit I2C slave address. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to set in the control register. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430I2C_HAL_ControlRegister_SetReg21I2C_ControlRegister_t7uint8_t">
+<span id="_CPPv330I2C_HAL_ControlRegister_SetReg21I2C_ControlRegister_t7uint8_t"></span><span id="_CPPv230I2C_HAL_ControlRegister_SetReg21I2C_ControlRegister_t7uint8_t"></span><span id="I2C_HAL_ControlRegister_SetReg__I2C_ControlRegister_t.uint8_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gab8568b2414e3b09dcb3cc4e0a7544d4d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_SetReg</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ctrl</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">reg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430I2C_HAL_ControlRegister_SetReg21I2C_ControlRegister_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the register address in the I2C control register. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctrl</strong> – The original I2C control register. </p></li>
+<li><p><strong>reg</strong> – The register address to set within the control register. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to change the control register to. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv432I2C_HAL_ControlRegister_AddToReg21I2C_ControlRegister_t8uint32_t">
+<span id="_CPPv332I2C_HAL_ControlRegister_AddToReg21I2C_ControlRegister_t8uint32_t"></span><span id="_CPPv232I2C_HAL_ControlRegister_AddToReg21I2C_ControlRegister_t8uint32_t"></span><span id="I2C_HAL_ControlRegister_AddToReg__I2C_ControlRegister_t.uint32_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gae0178dff0c3e7c98edba3410a5ccf162"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_AddToReg</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ctrl</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">offset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432I2C_HAL_ControlRegister_AddToReg21I2C_ControlRegister_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Update the register address in the I2C control register (add to it). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctrl</strong> – The original I2C control register. </p></li>
+<li><p><strong>offset</strong> – The offset to add to the register address. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to change the control register to. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv431I2C_HAL_ControlRegister_IsWrite21I2C_ControlRegister_t">
+<span id="_CPPv331I2C_HAL_ControlRegister_IsWrite21I2C_ControlRegister_t"></span><span id="_CPPv231I2C_HAL_ControlRegister_IsWrite21I2C_ControlRegister_t"></span><span id="I2C_HAL_ControlRegister_IsWrite__I2C_ControlRegister_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gaf0f6d59a0c257e5acc3928a11603f83a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_IsWrite</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ctrl</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431I2C_HAL_ControlRegister_IsWrite21I2C_ControlRegister_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Determine if the control register is set to write. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctrl</strong> – The I2C control register. </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>true</strong> – The I2C control register is configured for a write. </p></li>
+<li><p><strong>false</strong> – The I2C control register is configured for a read. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430I2C_HAL_ControlRegister_IsRead21I2C_ControlRegister_t">
+<span id="_CPPv330I2C_HAL_ControlRegister_IsRead21I2C_ControlRegister_t"></span><span id="_CPPv230I2C_HAL_ControlRegister_IsRead21I2C_ControlRegister_t"></span><span id="I2C_HAL_ControlRegister_IsRead__I2C_ControlRegister_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gae30bc93524067a16209739c797e23037"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_IsRead</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ctrl</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430I2C_HAL_ControlRegister_IsRead21I2C_ControlRegister_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Determine if the control register is set to read. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctrl</strong> – The I2C control register. </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>true</strong> – The I2C control register is configured for a read. </p></li>
+<li><p><strong>false</strong> – The I2C control register is configured for a write. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv441I2C_HAL_ControlRegister_SetTransactionLen21I2C_ControlRegister_t7uint8_t">
+<span id="_CPPv341I2C_HAL_ControlRegister_SetTransactionLen21I2C_ControlRegister_t7uint8_t"></span><span id="_CPPv241I2C_HAL_ControlRegister_SetTransactionLen21I2C_ControlRegister_t7uint8_t"></span><span id="I2C_HAL_ControlRegister_SetTransactionLen__I2C_ControlRegister_t.uint8_t"></span><span class="target" id="d6/dc8/group__i2c__hal_1gadb65f167dd802d55f100f7f62dd0bf1a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_ControlRegister_SetTransactionLen</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ctrl</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dataLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv441I2C_HAL_ControlRegister_SetTransactionLen21I2C_ControlRegister_t7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the transaction length in the I2C control register. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctrl</strong> – The original I2C control register. </p></li>
+<li><p><strong>dataLength</strong> – The transaction length to set. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to change the control register to. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414I2C_HAL_NoStop21I2C_ControlRegister_tb">
+<span id="_CPPv314I2C_HAL_NoStop21I2C_ControlRegister_tb"></span><span id="_CPPv214I2C_HAL_NoStop21I2C_ControlRegister_tb"></span><span id="I2C_HAL_NoStop__I2C_ControlRegister_t.b"></span><span class="target" id="d6/dc8/group__i2c__hal_1ga21ac9c68df107de9d5834944a7f53255"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I2C_HAL_NoStop</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421I2C_ControlRegister_t" title="I2C_ControlRegister_t"><span class="n"><span class="pre">I2C_ControlRegister_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ctrl</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">enable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414I2C_HAL_NoStop21I2C_ControlRegister_tb" title="Link to this definition"></a><br /></dt>
+<dd><p>Set/unset the NO_STOP bit in the I2C control register. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctrl</strong> – The original I2C control register. </p></li>
+<li><p><strong>enable</strong> – True if the NO_STOP bit should be set, false otherwise </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value to change the control register to. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-1-3">
+<h3>Version 0.1.3<a class="headerlink" href="#version-0-1-3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Critical Section allow execution of radio driver ISR with maximum priority.</p></li>
+</ul>
+</section>
+<section id="version-0-1-2">
+<h3>Version 0.1.2<a class="headerlink" href="#version-0-1-2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed an issue in the I2C module related to sleep mode.</p></li>
+</ul>
+</section>
+<section id="version-0-1-1">
+<h3>Version 0.1.1<a class="headerlink" href="#version-0-1-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Created i2c_module.c/h in order to separate the functionalities related to the module.</p></li>
+<li><p>HAL functions renamed (I2C -&gt; I2C_HAL).</p></li>
+</ul>
+</section>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version</p></li>
+<li><p>Support basic functionalities</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../gpio/index.html" class="btn btn-neutral float-left" title="GPIO Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../i2s/index.html" class="btn btn-neutral float-right" title="I2S Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

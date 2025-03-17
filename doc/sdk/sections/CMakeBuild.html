@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMake and build procedure &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ROM Releases" href="rom.html" />
+    <link rel="prev" title="MetaWare IDE Integration" href="IDEIntegration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CMake and build procedure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-new-project">Create a new project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-process">Build process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#link-with-drivers-or-libraries">Link with drivers or libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#metaware-libraries">Metaware Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compiler-flags">Compiler flags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linker-flags">Linker flags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rom-symbols">ROM Symbols</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CMake and build procedure</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cmake-and-build-procedure">
+<h1>CMake and build procedure<a class="headerlink" href="#cmake-and-build-procedure" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This page provides informations on how the build system provided in this SDK works and how
+to use it to build examples or custom applications.</p>
+<p>It relies on the use of the ‘cmake’ tool that is a multiplatform tool freely downloadable
+from the following location:</p>
+<p><a class="reference external" href="https://cmake.org">https://cmake.org</a></p>
+<p>Here, it is assumed that this tool is already installed on the customer system and is up
+and running.</p>
+</section>
+<section id="create-a-new-project">
+<h2>Create a new project<a class="headerlink" href="#create-a-new-project" title="Link to this heading"></a></h2>
+<p>While there is still the possibility to create a new project from scratch, it is best to
+start a new project with a working example. The SDK comes along with several examples
+that cover many functions that can be part of an end user application.</p>
+<p>To do so, copy-paste an example folder (in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\projects</span></code>) and rename it.</p>
+<p>The following table lists all available examples that cover a wide range of applications.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Example</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>adc_continuous_example</p></td>
+<td><p>How to implement a continuous analog value sampling</p></td>
+</tr>
+<tr class="row-odd"><td><p>adc_single_example</p></td>
+<td><p>How to implement a single analog value sampling</p></td>
+</tr>
+<tr class="row-even"><td><p>basic_app_tutorial</p></td>
+<td><p>A step by step basic application to introduce the EM9305 drivers and libraries</p></td>
+</tr>
+<tr class="row-odd"><td><p>boot_selector</p></td>
+<td><p>How to configure the device to start-up into different modes</p></td>
+</tr>
+<tr class="row-even"><td><p>firmware_updater</p></td>
+<td><p>An application able to receive a new firmware image over a BLE connection for updating the device’s firmware</p></td>
+</tr>
+<tr class="row-odd"><td><p>i2c_example</p></td>
+<td><p>How to implement an I2C communication with an EEPROM</p></td>
+</tr>
+<tr class="row-even"><td><p>i2s_example</p></td>
+<td><p>How to output sine waves on the I2S bus</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_emb_controller_usb</p></td>
+<td><p>How to implement a BLE controller with a CDCACM USB profile for transport layer</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_emb_controller</p></td>
+<td><p>How to implement a simple BLE controller only</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_emb_controller_usb</p></td>
+<td><p>How to implement a BLE controller with a CDCACM USB profile for transport layer</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_emb_datatransfer_server</p></td>
+<td><p>How to implement a GATT service</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_emb_dts_ext_adv</p></td>
+<td><p>How to implement a Data Transfer Server with Extended Advertising.</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_emb_fit</p></td>
+<td><p>How to simulate a running speed and a cadence profile sensor</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_emb_hid_device</p></td>
+<td><p>How to combine BLE stack with a USB HID profile (mouse/keyboard)</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_emb_hid_usb</p></td>
+<td><p>How to implement a HID client application</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_emb_hrs</p></td>
+<td><p>How to simulate a heart rate sensor</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_emb_power_control</p></td>
+<td><p>A sample application that shows how to manually set the transmit power for advertising and connections</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_emb_rpa</p></td>
+<td><p>How to implement a resolvable private address (RPA) application</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_emb_tag</p></td>
+<td><p>An example of BLE tag for tracking objects and items</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_emsas_example</p></td>
+<td><p>Showcases how to write EM specific commands application</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_fwu_target</p></td>
+<td><p>A simple application that can be used to test the firmware update process</p></td>
+</tr>
+<tr class="row-odd"><td><p>nvm_qpc_example</p></td>
+<td><p>How to implement a small application relying on QP/C for real time scheduling</p></td>
+</tr>
+<tr class="row-even"><td><p>nvm_unit_test</p></td>
+<td><p>How to implement unit test running on the EM9305 device</p></td>
+</tr>
+<tr class="row-odd"><td><p>printf_example</p></td>
+<td><p>How to periodically send message over UART</p></td>
+</tr>
+<tr class="row-even"><td><p>qdec_example</p></td>
+<td><p>A sample application to showcase the use of the Quadrature Decoder (QDEC) functionnality</p></td>
+</tr>
+<tr class="row-odd"><td><p>rtc_example</p></td>
+<td><p>How to use RTC library</p></td>
+</tr>
+<tr class="row-even"><td><p>spi_master_example</p></td>
+<td><p>How to use SPI as a master</p></td>
+</tr>
+<tr class="row-odd"><td><p>spi_slave_example</p></td>
+<td><p>How to use SPI as a slave</p></td>
+</tr>
+<tr class="row-even"><td><p>ti_example</p></td>
+<td><p>How to use Temperature Indicator library</p></td>
+</tr>
+<tr class="row-odd"><td><p>timer_example</p></td>
+<td><p>How to use timers</p></td>
+</tr>
+<tr class="row-even"><td><p>watchdog_example</p></td>
+<td><p>How to use the internal watchdog</p></td>
+</tr>
+</tbody>
+</table>
+<p>All the provided examples are accessible from the <a class="reference internal" href="../IC/Examples.html#examples"><span class="std std-ref">Sample Applications</span></a> page. Each example comes with an executable file
+that will be directly run from the NVM.
+This is why all the examples provide a <strong>nvm_main.c</strong> file which contains two functions that are mandatory:</p>
+<ul class="simple">
+<li><p><strong>NVM_ConfigModules</strong>, where the modifications of the module configuration has to be done.</p></li>
+<li><p><strong>NVM_ApplicationEntry</strong>, which is the entry point of the application</p></li>
+</ul>
+<p>Then, the new project has to be added in the ‘CMakeLists.txt’ file located at the root of
+the ‘projects’ folder. The following screenshot shows an extract of a typical high level
+‘CMakeLists.txt’ file content in which projects are listed:</p>
+<a class="reference internal image-reference" href="../_images/EMBleu_List_of_projects_in_CMakeList_file.png"><img alt="List of projects in the CMakeLists.txt file" class="align-center" src="../_images/EMBleu_List_of_projects_in_CMakeList_file.png" style="width: 414.0px; height: 396.0px;" /></a>
+<p>Just add your new project at the end of this file in the same way as other examples by using the
+‘ADD_SUBDIRECTORY’ statement.</p>
+<p>The newly created project also contains its own ‘CMakeLists.txt’ file that needs to be customized
+to match the new project, at least for the project name.</p>
+<p>Here is an example of a ‘CMakeLists.txt’ for one single project:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">PROJECT</span><span class="p">(</span><span class="s">new_project</span><span class="w"> </span><span class="s">C</span><span class="p">)</span>
+
+<span class="nb">SET</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">_SRCS</span>
+<span class="w">    </span><span class="s">nvm_main.c</span>
+<span class="p">)</span>
+
+<span class="nb">SET</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">_LIBS</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">NVM_COMMON_LIBS</span><span class="o">}</span>
+
+<span class="w">    </span><span class="s">uart_dma</span>
+<span class="w">    </span><span class="s">printf</span>
+<span class="p">)</span>
+
+<span class="nb">SET</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">_INCLUDES</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">COMMON_INCLUDES</span><span class="o">}</span>
+<span class="p">)</span>
+
+<span class="nb">APP_IN_NVM</span><span class="p">()</span>
+
+<span class="nb">ARC_EXECUTABLE</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">${PROJECT_NAME</span><span class="o">}</span><span class="s">_SRCS}</span>
+<span class="p">)</span>
+
+<span class="nb">ARC_LINK_LIBRARIES</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">${PROJECT_NAME</span><span class="o">}</span><span class="s">_LIBS}</span>
+<span class="p">)</span>
+
+<span class="nb">ARC_INCLUDE_DIRECTORIES</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">${PROJECT_NAME</span><span class="o">}</span><span class="s">_INCLUDES}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The ‘PROJECT’ statement introduces the name of the project. This is where the project name
+shall be changed.</p>
+<p>The other ‘SET’ statements are used to defined variable that contain list of items:</p>
+<ul class="simple">
+<li><p>list of source code files</p></li>
+<li><p>list of libraries to link with, because used in the example</p></li>
+<li><p>list of header files to include</p></li>
+</ul>
+<p>Note that subsets of common libraries and include files are defined through the following
+variables:</p>
+<ul class="simple">
+<li><p>${NVM_COMMON_LIBS}</p></li>
+<li><p>${COMMON_INCLUDES}</p></li>
+</ul>
+<p>This is a convenient way to include most of the commonly used libraries and headers without
+bothering with the exact list.</p>
+<p>The next statement <cite>APP_IN_NVM</cite> will instruct the build process to map the final executable
+in the NVM.</p>
+<p>And the last three following statements are used to define how the executable will be built:</p>
+<ul class="simple">
+<li><p>the name of the executable to be build from which sources (reusing the variable ‘{PROJECT_NAME}_SRCS’)</p></li>
+<li><p>the list of libraries to link with</p></li>
+<li><p>the header files to include</p></li>
+</ul>
+<p>Then everything is in place to start build your project. To complete this process, the <cite>init.bat</cite> script shall be executed in order to create all the files required for building the applications.</p>
+</section>
+<section id="build-process">
+<h2>Build process<a class="headerlink" href="#build-process" title="Link to this heading"></a></h2>
+<p>Building a newly created project target (in section “Create a new project”) shall be compiled this way:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>new_project
+</pre></div>
+</div>
+</section>
+<section id="link-with-drivers-or-libraries">
+<h2>Link with drivers or libraries<a class="headerlink" href="#link-with-drivers-or-libraries" title="Link to this heading"></a></h2>
+<p>To link with a specific library, you can add it to the list in the CMakeLists.txt.</p>
+<p>In the following code, uart_dma and printf are linked.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">SET</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">_LIBS</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">NVM_COMMON_LIBS</span><span class="o">}</span>
+
+<span class="w">    </span><span class="s">uart_dma</span>
+<span class="w">    </span><span class="s">printf</span>
+<span class="p">)</span>
+
+<span class="c"># ...</span>
+
+<span class="nb">ARC_LINK_LIBRARIES</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">${PROJECT_NAME</span><span class="o">}</span><span class="s">_LIBS}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>NVM_COMMON_LIBS</strong> contains common libraries that are linked in most application.
+It is possible to remove <code class="docutils literal notranslate"><span class="pre">${NVM_COMMON_LIBS}</span></code> and to add only what is required to link your application.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The -Bno_all_archive flag is used by default. Using this flag cleans the unused objects/archives.
+So removing libraries from the link will not reduce the size of your application binary.</p>
+</div>
+<p>The <strong>NVM_COMMON_LIBS</strong> variable is defined in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\cmake\common\common_libs.cmake</span></code>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># NVM common libraries.</span>
+<span class="nb">SET</span><span class="p">(</span><span class="s">__NVM_COMMON_LIBS__</span>
+<span class="w">    </span><span class="s">Metaware</span>
+<span class="w">    </span><span class="s">em_core</span>
+<span class="w">    </span><span class="s">em_hw_api</span>
+<span class="w">    </span><span class="s">em_system</span>
+<span class="w">    </span><span class="s">header_access</span>
+<span class="w">    </span><span class="s">nvm_entry</span>
+<span class="w">    </span><span class="s">pml</span>
+<span class="w">    </span><span class="s">aoad</span>
+<span class="w">    </span><span class="s">radio</span>
+<span class="w">    </span><span class="s">prot_timer</span>
+<span class="w">    </span><span class="s">sleep_timer</span>
+<span class="w">    </span><span class="s">rc_calib</span>
+<span class="w">    </span><span class="s">sleep_manager</span>
+<span class="w">    </span><span class="s">transport</span>
+<span class="w">    </span><span class="s">QPC</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="metaware-libraries">
+<h2>Metaware Libraries<a class="headerlink" href="#metaware-libraries" title="Link to this heading"></a></h2>
+<p>The Metaware Libraries are linked by default.
+As the linker is cleaning the unused archives/objects (due to -Bno_all_archive used by default),
+there is no impact on the size of the final binary.</p>
+<p>The default version of the Metaware libraries is 2022.09.</p>
+</section>
+<section id="compiler-flags">
+<h2>Compiler flags<a class="headerlink" href="#compiler-flags" title="Link to this heading"></a></h2>
+<p>There are 2 types of compilation flags:</p>
+<ul class="simple">
+<li><p>The HW related compilation flags</p></li>
+<li><p>Customizable flags</p></li>
+</ul>
+<p><strong>HW related compilation flags</strong></p>
+<p>The HW related compilation flags must not be modified. They are related to the hardware configuration of the ARC core.</p>
+<p>The list of flags can be found in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\common\9305\tool_config\compile.arg</span></code>.</p>
+<p><strong>Customizable flags</strong></p>
+<p>The customizable flags are used for configuring the optimization, warnings and other.</p>
+<p>The list of flags can be found in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\cmake\flags.cmake</span></code>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Common compile flags for both C and assembly.</span>
+<span class="nb">SET</span><span class="p">(</span><span class="s">COMPILE_FLAGS</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">ARC_FLAGS</span><span class="o">}</span>
+
+<span class="w">    </span><span class="s">-Wall</span><span class="w">                    </span><span class="c"># Turn on all warnings.</span>
+<span class="w">    </span><span class="s">-Wconversion</span><span class="w">             </span><span class="c"># Warn on conversion (loss of precision).</span>
+<span class="w">    </span><span class="s">-Hhostlib=</span><span class="w">               </span><span class="c"># Specify the library to implement runtime system calls.</span>
+<span class="w">    </span><span class="s">-Hnocrt</span><span class="w">                  </span><span class="c"># Suppresses linking of runtime startup file.</span>
+<span class="w">    </span><span class="s">-Hon=Long_enums</span><span class="w">          </span><span class="c"># Needed for a bug in older compilers.</span>
+<span class="w">    </span><span class="s">-Hnocopyr</span><span class="w">                </span><span class="c"># Disables the compiler version and copyright.</span>
+<span class="w">    </span><span class="s">-Hnosdata</span><span class="w">                </span><span class="c"># Don&#39;t assume any variables are in the small-data area.</span>
+<span class="w">    </span><span class="s">-nostdsysteminc</span><span class="w">          </span><span class="c"># Do not use the standard include files.</span>
+<span class="w">    </span><span class="s">-Os</span><span class="w">                      </span><span class="c"># Optimize for code size.</span>
+<span class="w">    </span><span class="s">-Hccm</span><span class="w">                    </span><span class="c"># Assume a closely-coupled memory system with distinct I and D spaces with no cross access.</span>
+<span class="w">    </span><span class="s">-mllvm</span><span class="w">                   </span><span class="c"># Additional arguments to forward to LLVM&#39;s option processing.</span>
+<span class="w">    </span><span class="s">-align-labels=false</span><span class="w">      </span><span class="c"># Disable alignment of labels.</span>
+<span class="w">    </span><span class="s">-Hnoivt</span><span class="w">                  </span><span class="c"># Turn off the auto stuff IVT feature of the compiler.</span>
+<span class="c">#    -g                       # Produce debugging information.</span>
+<span class="w">    </span><span class="s">-ffunction-sections</span><span class="w">      </span><span class="c"># This will prevent optimizations in the code where an address</span>
+<span class="w">    </span><span class="s">-fdata-sections</span><span class="w">          </span><span class="c"># may be re-used for multiple variables or functions.</span>
+<span class="w">    </span><span class="s">-Wl,-Bdefine:STACKSIZE=</span><span class="o">${</span><span class="nv">STACKSIZE</span><span class="o">}</span>
+<span class="w">    </span><span class="s">-Hheap=0</span>
+
+<span class="w">    </span><span class="c"># Turn off these warnings (for now).</span>
+<span class="w">    </span><span class="s">-Wno-cast-align</span>
+
+<span class="w">    </span><span class="c"># Long jump</span>
+<span class="w">    </span><span class="s">-Mb</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="linker-flags">
+<h2>Linker flags<a class="headerlink" href="#linker-flags" title="Link to this heading"></a></h2>
+<p>The linker flags are used during the link.</p>
+<p>The list of flags can be found in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\cmake\flags.cmake</span></code>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Add default global LINK flags.</span>
+<span class="nb">ADD_LD_FLAGS</span><span class="p">(</span>
+<span class="w">    </span><span class="s">-Wl,-q</span><span class="w">                   </span><span class="c"># Don&#39;t display copyright message.</span>
+<span class="w">    </span><span class="s">-Wl,-Bgrouplib</span><span class="w">           </span><span class="c"># Search all archives together as a group.</span>
+<span class="w">    </span><span class="s">-Wl,-Xnocompress</span><span class="w">         </span><span class="c"># Never compress the .initdat section.</span>
+<span class="w">    </span><span class="s">-zallow_memory_overlap</span><span class="w">   </span><span class="c"># Allow the memory regions to overlap.</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Some flags are added in a later stage and depend on the target.
+For example <cite>-Bno_all_archive`</cite> flag is added for NVM application.</p>
+<p>See the macro APP_IN_NVM in <code class="docutils literal notranslate"><span class="pre">&lt;sdk&gt;\macros\macros_targets_executables.cmake</span></code>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Build application in NVM.</span>
+<span class="c"># Optional argument: ROM postfix.</span>
+<span class="nb">MACRO</span><span class="p">(</span><span class="s">APP_IN_NVM</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">APP_CLEAR_LOCATION</span><span class="p">(</span><span class="o">${</span><span class="nv">ARGN</span><span class="o">}</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">SET</span><span class="p">(</span><span class="s">APP_IS_IN_NVM</span><span class="w"> </span><span class="s">True</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">SET</span><span class="p">(</span><span class="s">APP_LINKER_FOLDER</span><span class="w"> </span><span class="s2">&quot;NVM&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">SET</span><span class="p">(</span><span class="s">APP_CFLAGS</span><span class="w"> </span><span class="s2">&quot;-DNVM_CODE&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">SET</span><span class="p">(</span><span class="s">APP_LDFLAGS</span><span class="w"> </span><span class="s2">&quot;-Hentry=NVM_Entry -Bno_all_archive&quot;</span><span class="p">)</span>
+<span class="nb">ENDMACRO</span><span class="p">(</span><span class="s">APP_IN_NVM</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The flag <strong>-Bno_all_archive</strong> is used to clean the archives/objects that are not referenced.</p>
+<p>The flag <strong>-Hentry</strong> is used to indicate that NVM_Entry is the entry function and the symbol must not be cleaned.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to keep all the archives/objects in the linked binary, you can change -Bno_all_archive to -Ball_archive.</p>
+</div>
+</section>
+<section id="rom-symbols">
+<h2>ROM Symbols<a class="headerlink" href="#rom-symbols" title="Link to this heading"></a></h2>
+<p>The ROM contains a set of functions that any end user application can use to address the following functionalities:</p>
+<ul class="simple">
+<li><p>Security (AES, RNG, SHA…)</p></li>
+<li><p>PML (Power up NVM, voltage monitor, HF clock switching)</p></li>
+<li><p>NVM driver</p></li>
+<li><p>GPIO driver</p></li>
+<li><p>Common functions (WaitUs, CRC32)</p></li>
+</ul>
+<p>A symbol file with the address of each of these functions is provided in the SDK. It is used by the build process which considers these symbols as strong symbols to be linked to the application. As a result, the end user does not have to worry about where a particular function is located. All he has to do is write a statement in his application that calls the function. The linker will actually take care of using the correct function in ROM.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="IDEIntegration.html" class="btn btn-neutral float-left" title="MetaWare IDE Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rom.html" class="btn btn-neutral float-right" title="ROM Releases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

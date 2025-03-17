@@ -1,0 +1,96 @@
+=========================================================================
+Resolvable Private Address (RPA) example
+=========================================================================
+
+Overview
+--------
+
+This example is designed to demostrate RPA functionality with device in peripheral role supporting connections, pairing, and security.
+The application begins by advertising its identity address. After bonding, it advertises using an RPA (Resolvable Private Address). 
+The peripheral automatically requests the central to initiate bonding. Only one device is stored in the bonding database at a time.
+
+.. note::
+   Some versions of Android show the pairing dialog twice. This is due to a problem in Android when handling SMP Security Requests from a peripheral.
+
+Build
+-----
+
+The build target of this example is: **nvm_emb_rpa**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emb_rpa
+
+Program and Run
+---------------
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emb_rpa\nvm_emb_rpa.ihex --progress
+
+With YY = the COM port number of your DVK (optional if you set it in the file ``<sdk>\tools\blengine\config.cfg``), and
+
+Erase the Bonding Database
+--------------------------
+
+To erase the bonding database in NVM:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY send DVK_TARGET_HARD_RESET --mode=1
+  python blengine_cli.py --port COMYY send EMSMM_NVM_ERASE_PAGE --Area=1 --Page=1
+
+Test
+----
+
+Program the firmware on a test device (DUT) in the `Run` step above. The DUT
+will immediately start connectable advertising using a complete local name
+as `EM9305_RPA`. Using a smartphone with the nrf connect app, the DUT
+can be seen in the scanner tab in the image below.
+
+The peer device can scan this device as shown in the image below,
+
+.. image:: imgs/nrf_scanner.jpg
+   :scale: 30 %
+   :alt: nrf connect app on smartphone showing T9305_RPA DUT advertising
+	:align: center
+
+
+After a connection is made user can request for bonding.
+
+.. image:: imgs/nrf_initiateBond.jpg
+   :scale: 30 %
+   :alt: nrf connect app on smartphone RPA Initiate bond
+	:align: center
+
+
+At this point the central may initiate just works pairing with the DUT.
+
+.. image:: imgs/nrf_pairing.jpg
+   :scale: 30 %
+   :alt: nrf connect app pairing confirmation
+	:align: center
+
+Screenshot image after pairing has completed and services are discovered.
+
+.. image:: imgs/nrf_services.jpg
+   :scale: 30 %
+   :alt: nrf connect app showing discovered services
+	:align: center
+
+Discovered services can be refreshed.
+
+.. image:: imgs/nrf_refreshservices.jpg
+   :scale: 30 %
+   :alt: nrf connect app how to refresh discovered services
+	:align: center
+
+At this point, if the devices are disconnected, the DUT will use an RPA when
+advertising again. Only the device who has the IRK exchanged during pairing is
+able to resolve the DUT's address. By default, the RPA will refresh every 5
+minutes providing privacy against tracking by Bluetooth address.

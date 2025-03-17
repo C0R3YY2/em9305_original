@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECDSA &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ECC Schnorr’s Authentication protocol" href="Schnoor.html" />
+    <link rel="prev" title="ECDH - Diffie Hellman key agreement" href="ECDH.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="P256.html">ECC P-256</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCEnum.html">ECC Error Enumeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCKey.html">ECC Key management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECDH.html">ECDH - Diffie Hellman key agreement</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ECDSA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ecdsa-protocol">ECDSA protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ecdsa-verify">ECDSA_Verify</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#function">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#general-performances">General Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performances">Performances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Schnoor.html">ECC Schnorr’s Authentication protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ECC_FUNCTIONS.html">ECC Functions</a> &raquo;</li>
+      <li>ECDSA</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ecdsa">
+<h1>ECDSA<a class="headerlink" href="#ecdsa" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] FIPS 186-4: Digital Signature Standard</p>
+<p><a class="reference external" href="https://csrc.nist.gov/publications/detail/fips/186/4/final">FIPS 186-4</a>: <a class="reference external" href="https://csrc.nist.gov/publications/detail/fips/186/4/final">https://csrc.nist.gov/publications/detail/fips/186/4/final</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this document is to describe the functionality of the library <strong>ECDSA</strong>.</p>
+<dl class="simple">
+<dt>This document:</dt><dd><ul class="simple">
+<li><p>describes the supported functions,</p></li>
+<li><p>describes the parameters, etc…</p></li>
+<li><p>provides the performances of the functions.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="ecdsa-protocol">
+<h2>ECDSA protocol<a class="headerlink" href="#ecdsa-protocol" title="Permalink to this headline"></a></h2>
+<p>ECDSA protocol is a signature protocol based on elliptic curves.</p>
+<p>In the context of EM9305,  ECDSA  is used to sign data and ensure the authenticity and the origin of the data.</p>
+<p>External entity signs the data with the private key, while EM9305 verifies the signature with the public key.</p>
+<p>If the signature is valid, the data is approved. If the signature is not valid, the data is rejected.</p>
+<p>Next figure illustrates the protocol.</p>
+<blockquote>
+<div><img alt="_images/ECDSA.png" src="_images/ECDSA.png" />
+</div></blockquote>
+<dl class="simple">
+<dt>ECDSA relies on:</dt><dd><ul class="simple">
+<li><p><strong>an underlying curve</strong>: the underlying curve is <strong>P-256</strong>.</p></li>
+<li><p><strong>a hash algorithm</strong>: the API user can use any hash function (SHA-1, SHA-224, SHA-256, SHA-384, SHA-512 or any other). Nonetheless, it is recommended to use SHA-256 as the level of security is consistent with P-256 and a 32-byte long digest would not require truncation or padding.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For further details on <strong>P-256</strong>, see the chapter <a class="reference internal" href="P256.html#ecc-p256-label"><span class="std std-ref">ECC P-256</span></a>.
+For further details on the hash functions,:ref:<cite>SHA1_Label</cite>, <a class="reference internal" href="SHA224.html#sha224-label"><span class="std std-ref">SHA224</span></a>, <a class="reference internal" href="SHA256.html#sha256-label"><span class="std std-ref">SHA256</span></a>, <a class="reference internal" href="SHA384.html#sha384-label"><span class="std std-ref">SHA384</span></a>, <a class="reference internal" href="SHA512.html#sha512-label"><span class="std std-ref">SHA512</span></a></p>
+<p>The figure illustrates the 2 phases of the ECDSA signature process:</p>
+<blockquote>
+<div><ul>
+<li><p><strong>Phase 1: the key pairs generation</strong> (in brown in the figure)</p>
+<blockquote>
+<div><p>A key pair of the system is generated:
+* Step a: a private key is generated.
+* Step b: the public key is generated from the private key.</p>
+<p>The public key is provided to the signature verifier. In our example, the key is stored in EM9305.</p>
+<p>The private key is provided to the signer.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Phase 2: The signature generation and the signature verification</strong> (in blue in the figure)</p>
+<blockquote>
+<div><p>It is composed of several steps:</p>
+<ul class="simple">
+<li><p>Step 1: the signer generates data.</p></li>
+<li><p>Step 2: the signer hashes the previous data.</p></li>
+<li><p>Step 3: the signer signs the hash of the data using the system private key. The signer sends the data and the signature to the verifier.</p></li>
+<li><p>Step 4: the verifier hashes the recieved data.</p></li>
+<li><p>Step 5: the verifier verifies the consistency of the signature and the hash.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<p>The library only includes an API to <strong>verify the signature</strong>.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The library does not embed any function to generate a signature.</p>
+</div>
+</div></blockquote>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<p>The error status are given here: <a class="reference internal" href="ECCEnum.html#ecc-enumerations-label"><span class="std std-ref">ECC Error Enumeration</span></a></p>
+</section>
+<section id="ecdsa-verify">
+<h3>ECDSA_Verify<a class="headerlink" href="#ecdsa-verify" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>The function performs an ECDSA verification.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The hash computation is not performed in this API. It only performs the operations on the P-256 curve.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="function">
+<h4>Function<a class="headerlink" href="#function" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412ECDSA_VerifyP16PointCertificateP5POINTP7uint8_t">
+<span id="_CPPv312ECDSA_VerifyP16PointCertificateP5POINTP7uint8_t"></span><span id="_CPPv212ECDSA_VerifyP16PointCertificateP5POINTP7uint8_t"></span><span id="ECDSA_Verify__PointCertificateP.POINTP.uint8_tP"></span><span class="target" id="group___e_c_d_s_a_1ga625bd279272dceaad65d7ef5f118160e"></span><a class="reference internal" href="ECCEnum.html#_CPPv411ECC_Error_t" title="ECC_Error_t"><span class="n"><span class="pre">ECC_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECDSA_Verify</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">PointCertificate</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Signature</span></span>, <span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PubKey</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412ECDSA_VerifyP16PointCertificateP5POINTP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Performs an ECDSA verification. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Signature</strong> – <strong>[in]</strong> Signature of the message (a point) </p></li>
+<li><p><strong>PubKey</strong> – <strong>[in]</strong> Public key of the system (a point) </p></li>
+<li><p><strong>Message</strong> – <strong>[in]</strong> Message that was signed (32 -bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECDSA_SIGNATURE_VALID</strong> – Signature is valid </p></li>
+<li><p><strong>SW_ECDSA_INVALID_SIGNATURE</strong> – Signature is invalid </p></li>
+<li><p><strong>SW_ECC_INVALID_PUBLIC_POINT</strong> – Invalid public point </p></li>
+<li><p><strong>SW_ECC_SIGNATURE_COORDINATE_X_INVALID</strong> – Invalid coordinate X </p></li>
+<li><p><strong>SW_ECC_SIGNATURE_COORDINATE_Y_INVALID</strong> – Invalid coordinate Y </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Signature</strong> : Signature of the message (a point)</p></li>
+<li><p><strong>PubKey</strong>    : The public key of the system. A point that shall be on the curve P-256.</p></li>
+<li><p><strong>Message</strong>   : The message that was signed. The message shall be 32-byte long. This is typically the result of the hash function.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SW_ECDSA_SIGNATURE_VALID</p></td>
+<td><p>Verification operation is successful and the signature is valid</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECDSA_INVALID_SIGNATURE</p></td>
+<td><p>Verification operation was performed but the signature is not valid</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>SW_ECC_INVALID_PUBLIC_POINT</p></td>
+<td><p>The public key is not on the curve</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECC_SIGNATURE_COORDINATE_X_INVALID</p></td>
+<td><p>The coordinate X of the given signature is not valid. Either it is null or greater than the modulus</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>SW_ECC_SIGNATURE_COORDINATE_Y_INVALID</p></td>
+<td><p>The coordinate Y of the given signature is not valid. Either it is null or greater than the modulus</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="general-performances">
+<h2>General Performances<a class="headerlink" href="#general-performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5284 bytes in ROM for the complete ECC lib</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No global RAM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Approximately 864 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="performances">
+<h3>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Number of cycles</p></th>
+<th class="head"><p>Time in ms at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ECDSA_Verify</p></td>
+<td><p>6378725</p></td>
+<td><p>132</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h3>
+<dl class="simple">
+<dt>The ECC lib depends on :</dt><dd><ul class="simple">
+<li><p>PRNG.lib for the random number generation</p></li>
+<li><p>AES.lib which is used by PRNG.lib</p></li>
+</ul>
+</dd>
+</dl>
+<p>For security reasons, some operations are performed with random numbers. It explains the dependency with the RNG.</p>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>Next C code example shows how to verify a signature and the returned status word when:</dt><dd><ul class="simple">
+<li><p>the signature is valid</p></li>
+<li><p>the signature is not valid</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*------------------------------------------------</span>
+<span class="cm"> FILE : ExampleECDSAVerify.c</span>
+<span class="cm"> ------------------------------------------------*/</span><span class="w"></span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCTypedef.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCStatus.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECDSA_Verify.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ExampleECCUtilities.h&gt;</span><span class="cp"></span>
+
+
+<span class="c1">//test structure</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Message</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Kpubx</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Kpuby</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SignX</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SignY</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">TEST_ECDSA_P256</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="c1">//First example: the signature is correct</span>
+<span class="n">TEST_ECDSA_P256</span><span class="w"> </span><span class="n">ExampleOK</span><span class="o">=</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;44acf6b7e36c1342c2c5897204fe09504e1e2efb1a900377dbc4e7a6a133ec56&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;1ccbe91c075fc7f4f033bfa248db8fccd3565de94bbfb12f3c59ff46c271bf83&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;ce4014c68811f9a21a1fdb2c0e6113e06db7ca93b7404e78dc7ccd5ca89a4ca9&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;f3ac8061b514795b8843e3d6629527ed2afd6b1f6a555a7acabb5e6f79c8c2ac&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;8bf77819ca05a6b2786c76262bf7371cef97b218e96f175a3ccdda2acc058903&quot;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="c1">//Second example: the signature is NOT consistent with the message</span>
+<span class="n">TEST_ECDSA_P256</span><span class="w"> </span><span class="n">ExampleNOK</span><span class="o">=</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;01acf6b7e36c1342c2c5897204fe09504e1e2efb1a900377dbc4e7a6a133ec56&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;1ccbe91c075fc7f4f033bfa248db8fccd3565de94bbfb12f3c59ff46c271bf83&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;ce4014c68811f9a21a1fdb2c0e6113e06db7ca93b7404e78dc7ccd5ca89a4ca9&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;f3ac8061b514795b8843e3d6629527ed2afd6b1f6a555a7acabb5e6f79c8c2ac&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="s">&quot;8bf77819ca05a6b2786c76262bf7371cef97b218e96f175a3ccdda2acc058903&quot;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">Example_ECDSAVerify</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Message</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="o">*</span><span class="mi">4</span><span class="p">];</span><span class="w">  </span><span class="c1">//Message is 32 bytes for P256</span>
+<span class="w">	</span><span class="n">PointCertificate</span><span class="w"> </span><span class="n">Signature</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">POINT_P256</span><span class="w"> </span><span class="n">Kpub</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">ECC_Error_t</span><span class="w"> </span><span class="n">Status</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Error</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="w">	</span><span class="c1">//EXAMPLE 1: Signature is correct</span>
+<span class="w">	</span><span class="c1">//------------------------------</span>
+<span class="w">	</span><span class="c1">//convert the data in a byte array</span>
+<span class="w">	</span><span class="n">ConvertStringToU8</span><span class="p">(</span><span class="n">ExampleOK</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span><span class="n">Message</span><span class="p">,</span><span class="n">CURVE_SIZE_P256</span><span class="o">*</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Create the public key in a point</span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleOK</span><span class="p">.</span><span class="n">Kpubx</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Kpub</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleOK</span><span class="p">.</span><span class="n">Kpuby</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Kpub</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Create the signature</span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleOK</span><span class="p">.</span><span class="n">SignX</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Signature</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleOK</span><span class="p">.</span><span class="n">SignY</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Signature</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Go for verification</span>
+<span class="w">	</span><span class="n">Status</span><span class="o">=</span><span class="w"> </span><span class="n">ECDSA_Verify</span><span class="p">((</span><span class="n">PointCertificate</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">Signature</span><span class="p">,(</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">Kpub</span><span class="p">,(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">Message</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//We expect a SW OK since the signature is correct</span>
+<span class="w">	</span><span class="k">if</span><span class="p">(</span><span class="n">Status</span><span class="o">!=</span><span class="n">SW_ECDSA_SIGNATURE_VALID</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//EXAMPLE 2: Signature is NOT correct</span>
+<span class="w">	</span><span class="c1">//------------------------------</span>
+<span class="w">	</span><span class="c1">//convert the data in a byte array</span>
+<span class="w">	</span><span class="n">ConvertStringToU8</span><span class="p">(</span><span class="n">ExampleNOK</span><span class="p">.</span><span class="n">Message</span><span class="p">,</span><span class="n">Message</span><span class="p">,</span><span class="n">CURVE_SIZE_P256</span><span class="o">*</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Create the public key in a point</span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleNOK</span><span class="p">.</span><span class="n">Kpubx</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Kpub</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleNOK</span><span class="p">.</span><span class="n">Kpuby</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Kpub</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Create the signature</span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleNOK</span><span class="p">.</span><span class="n">SignX</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Signature</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">ConvertStringToU32</span><span class="p">(</span><span class="n">ExampleNOK</span><span class="p">.</span><span class="n">SignY</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Signature</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">CURVE_SIZE_P256</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Go for verification</span>
+<span class="w">	</span><span class="n">Status</span><span class="o">=</span><span class="w"> </span><span class="n">ECDSA_Verify</span><span class="p">((</span><span class="n">PointCertificate</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">Signature</span><span class="p">,(</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">Kpub</span><span class="p">,(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">Message</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//We expect a SW NOK since the signature is NOT correct</span>
+<span class="w">	</span><span class="k">if</span><span class="p">(</span><span class="n">Status</span><span class="o">!=</span><span class="n">SW_ECDSA_INVALID_SIGNATURE</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">return</span><span class="p">(</span><span class="n">Error</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ECDH.html" class="btn btn-neutral float-left" title="ECDH - Diffie Hellman key agreement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Schnoor.html" class="btn btn-neutral float-right" title="ECC Schnorr’s Authentication protocol" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

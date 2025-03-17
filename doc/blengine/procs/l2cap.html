@@ -1,0 +1,883 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>l2cap Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="nvm_info Procedures" href="nvm_info.html" />
+    <link rel="prev" title="key_container Procedures" href="key_container.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html">authentication Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ble.html">ble Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firmware_update.html">firmware_update Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">gap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">gatt Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci.html">hci Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">l2cap Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#l2cap-configure-channel">l2cap.configure_channel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l2cap-connect-req">l2cap.connect_req</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l2cap-connect-rsp">l2cap.connect_rsp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l2cap-send-data">l2cap.send_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l2cap-disconnect">l2cap.disconnect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l2cap-reject">l2cap.reject</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sm.html">sm Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">l2cap Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="l2cap-procedures">
+<h1>l2cap Procedures<a class="headerlink" href="#l2cap-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="l2cap-configure-channel">
+<span id="proc-l2cap-configure-channel"></span><h2><a class="reference internal" href="#l2cap-configure-channel">l2cap.configure_channel</a><a class="headerlink" href="#l2cap-configure-channel" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Configure / Register L2CAP channel</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.l2cap</span> <span class="kn">import</span> <span class="n">configure_channel</span>
+
+<span class="n">configure_channel</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">psm</span><span class="p">,</span> <span class="n">hciTxCredits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_mtu</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">mps</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rxOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txLeft</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txDone</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txSDULength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">authoriz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">secLevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>L2CAP.configure_channel<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--hciTxCredits<span class="w"> </span>HCITXCREDITS<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--remote_mtu<span class="w"> </span>REMOTE_MTU<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--local_mtu<span class="w"> </span>LOCAL_MTU<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mps<span class="w"> </span>MPS<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--permissions<span class="w"> </span>PERMISSIONS<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--remote_cid<span class="w"> </span>REMOTE_CID<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--local_cid<span class="w"> </span>LOCAL_CID<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--local_credits<span class="w"> </span>LOCAL_CREDITS<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--remote_credits<span class="w"> </span>REMOTE_CREDITS<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--rxOffset<span class="w"> </span>RXOFFSET<span class="o">]</span><span class="w"> </span><span class="o">[</span>--txLeft<span class="w"> </span>TXLEFT<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--txDone<span class="w"> </span>TXDONE<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--txSDULength<span class="w"> </span>TXSDULENGTH<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--authoriz<span class="w"> </span>AUTHORIZ<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--secLevel<span class="w"> </span>SECLEVEL<span class="o">]</span><span class="w"> </span><span class="o">[</span>--role<span class="w"> </span>ROLE<span class="o">]</span>
+<span class="w">                                </span>conn_handle<span class="w"> </span>psm
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">psm<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>The PSM identifying the protocol/service for the L2CAP</dt><dd><p>channel</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--hciTxCredits <var>HCITXCREDITS</var></span></kbd></dt>
+<dd><p>The number of HCI Transmit buffers that this handler
+is allowed to fill when sending data.</p>
+</dd>
+<dt><kbd><span class="option">--remote_mtu <var>REMOTE_MTU</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent to
+the remote</p>
+</dd>
+<dt><kbd><span class="option">--local_mtu <var>LOCAL_MTU</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent
+from the remote</p>
+</dd>
+<dt><kbd><span class="option">--mps <var>MPS</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent
+from the remote</p>
+</dd>
+<dt><kbd><span class="option">--permissions <var>PERMISSIONS</var></span></kbd></dt>
+<dd><p>The local channel permissions required to this
+Connection.</p>
+</dd>
+<dt><kbd><span class="option">--remote_cid <var>REMOTE_CID</var></span></kbd></dt>
+<dd><p>The remote channel Allocated to this Connection.</p>
+</dd>
+<dt><kbd><span class="option">--local_cid <var>LOCAL_CID</var></span></kbd></dt>
+<dd><p>The local channel Allocated to this Connection.</p>
+</dd>
+<dt><kbd><span class="option">--local_credits <var>LOCAL_CREDITS</var></span></kbd></dt>
+<dd><p>The local available credits.</p>
+</dd>
+<dt><kbd><span class="option">--remote_credits <var>REMOTE_CREDITS</var></span></kbd></dt>
+<dd><p>The number of buffer(s) available in the remote device</p>
+</dd>
+<dt><kbd><span class="option">--rxOffset <var>RXOFFSET</var></span></kbd></dt>
+<dd><p>The RX current offset</p>
+</dd>
+<dt><kbd><span class="option">--txLeft <var>TXLEFT</var></span></kbd></dt>
+<dd><p>The length of data remaining.</p>
+</dd>
+<dt><kbd><span class="option">--txDone <var>TXDONE</var></span></kbd></dt>
+<dd><p>The length of data already transmitted</p>
+</dd>
+<dt><kbd><span class="option">--txSDULength <var>TXSDULENGTH</var></span></kbd></dt>
+<dd><p>The total number of data to transmit</p>
+</dd>
+<dt><kbd><span class="option">--authoriz <var>AUTHORIZ</var></span></kbd></dt>
+<dd><p>EMB parameter. Indicate if authorization is required</p>
+</dd>
+<dt><kbd><span class="option">--secLevel <var>SECLEVEL</var></span></kbd></dt>
+<dd><p>EMB parameter. Security Level.</p>
+</dd>
+<dt><kbd><span class="option">--role <var>ROLE</var></span></kbd></dt>
+<dd><p>EMB parameter. Channel role to be registered:
+initiator (0x01), acceptor (0x02) or both (0x03).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;L2CAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">configure_channel_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">configure_channel</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                      <span class="n">conn_handle</span><span class="p">,</span>
+                      <span class="n">psm</span><span class="p">,</span>
+                      <span class="n">hciTxCredits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">remote_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">local_mtu</span><span class="o">=</span><span class="mh">0x0040</span><span class="p">,</span>
+                      <span class="n">mps</span><span class="o">=</span><span class="mh">0x0040</span><span class="p">,</span>
+                      <span class="n">permissions</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">remote_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">local_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">local_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">remote_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">rxOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">txLeft</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">txDone</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">txSDULength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                      <span class="n">authoriz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">secLevel</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                      <span class="n">role</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span>
+                      <span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Configure / Register L2CAP channel</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">permissions</span> <span class="o">==</span> <span class="mh">0x04</span><span class="p">:</span>
+            <span class="n">permissions</span><span class="o">=</span><span class="mh">0x00</span>
+            <span class="n">authoriz</span><span class="o">=</span><span class="mh">0x01</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_CocRegister&quot;</span><span class="p">,</span>
+                        <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">,</span>
+                        <span class="n">mps</span><span class="o">=</span><span class="n">mps</span><span class="p">,</span>
+                        <span class="n">mtu</span><span class="o">=</span><span class="n">local_mtu</span><span class="p">,</span>
+                        <span class="n">credits</span><span class="o">=</span><span class="n">hciTxCredits</span><span class="p">,</span>
+                        <span class="n">authoriz</span><span class="o">=</span><span class="n">authoriz</span><span class="p">,</span>
+                        <span class="n">secLevel</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
+                        <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span>
+                        <span class="p">)</span>
+        <span class="n">RegId</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;RegId&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">RegId</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_Configure&quot;</span><span class="p">,</span>
+                          <span class="n">connHandle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                          <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">,</span>
+                          <span class="n">hciTxCredits</span><span class="o">=</span><span class="n">hciTxCredits</span><span class="p">,</span>
+                          <span class="n">remoteUpperLayerMTU</span><span class="o">=</span><span class="n">remote_mtu</span><span class="p">,</span>
+                          <span class="n">localUpperLayerMTU</span><span class="o">=</span><span class="n">local_mtu</span><span class="p">,</span>
+                          <span class="n">localUpperLayerMPS</span><span class="o">=</span><span class="n">mps</span><span class="p">,</span>
+                          <span class="n">localAccessPermissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
+                          <span class="n">remoteChannelID</span><span class="o">=</span><span class="n">remote_cid</span><span class="p">,</span>
+                          <span class="n">localCredits</span><span class="o">=</span><span class="n">local_credits</span><span class="p">,</span>
+                          <span class="n">remoteCredits</span><span class="o">=</span><span class="n">remote_credits</span><span class="p">,</span>
+                          <span class="n">rxOffset</span><span class="o">=</span><span class="n">rxOffset</span><span class="p">,</span>
+                          <span class="n">txLeft</span><span class="o">=</span><span class="n">txLeft</span><span class="p">,</span>
+                          <span class="n">txDone</span><span class="o">=</span><span class="n">txDone</span><span class="p">,</span>
+                          <span class="n">txSDULength</span><span class="o">=</span><span class="n">txSDULength</span><span class="p">,</span>
+                          <span class="n">localChannelID</span><span class="o">=</span><span class="n">local_cid</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_AllocateReceiveBuffer&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="l2cap-connect-req">
+<span id="proc-l2cap-connect-req"></span><h2><a class="reference internal" href="#l2cap-connect-req">l2cap.connect_req</a><a class="headerlink" href="#l2cap-connect-req" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Send L2CAP connection request to a given PSM. L2CAP channel shall be previously configured.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.l2cap</span> <span class="kn">import</span> <span class="n">connect_req</span>
+
+<span class="n">connect_req</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">configure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hciTxCredits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_mtu</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">mps</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rxOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txLeft</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txDone</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txSDULength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">authoriz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">secLevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>L2CAP.connect_req<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--configure<span class="w"> </span>CONFIGURE<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--hciTxCredits<span class="w"> </span>HCITXCREDITS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--remote_mtu<span class="w"> </span>REMOTE_MTU<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--local_mtu<span class="w"> </span>LOCAL_MTU<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mps<span class="w"> </span>MPS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--permissions<span class="w"> </span>PERMISSIONS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--remote_cid<span class="w"> </span>REMOTE_CID<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--local_cid<span class="w"> </span>LOCAL_CID<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--local_credits<span class="w"> </span>LOCAL_CREDITS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--remote_credits<span class="w"> </span>REMOTE_CREDITS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--rxOffset<span class="w"> </span>RXOFFSET<span class="o">]</span><span class="w"> </span><span class="o">[</span>--txLeft<span class="w"> </span>TXLEFT<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--txDone<span class="w"> </span>TXDONE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--txSDULength<span class="w"> </span>TXSDULENGTH<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--authoriz<span class="w"> </span>AUTHORIZ<span class="o">]</span><span class="w"> </span><span class="o">[</span>--secLevel<span class="w"> </span>SECLEVEL<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--role<span class="w"> </span>ROLE<span class="o">]</span>
+<span class="w">                          </span>conn_handle<span class="w"> </span>psm
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">psm<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>The PSM identifying the protocol/service for the L2CAP</dt><dd><p>channel</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--configure <var>CONFIGURE</var></span></kbd></dt>
+<dd><p>Indicates if channel configuration is required (True)
+or not (False) (when it has already been configured)</p>
+</dd>
+<dt><kbd><span class="option">--hciTxCredits <var>HCITXCREDITS</var></span></kbd></dt>
+<dd><p>The number of HCI Transmit buffers that this handler
+is allowed to fill when sending data.</p>
+</dd>
+<dt><kbd><span class="option">--remote_mtu <var>REMOTE_MTU</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent to
+the remote</p>
+</dd>
+<dt><kbd><span class="option">--local_mtu <var>LOCAL_MTU</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent
+from the remote</p>
+</dd>
+<dt><kbd><span class="option">--mps <var>MPS</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent
+from the remote</p>
+</dd>
+<dt><kbd><span class="option">--permissions <var>PERMISSIONS</var></span></kbd></dt>
+<dd><p>The local channel permissions required to this
+Connection.</p>
+</dd>
+<dt><kbd><span class="option">--remote_cid <var>REMOTE_CID</var></span></kbd></dt>
+<dd><p>The remote channel Allocated to this Connection.</p>
+</dd>
+<dt><kbd><span class="option">--local_cid <var>LOCAL_CID</var></span></kbd></dt>
+<dd><p>The local channel Allocated to this Connection.</p>
+</dd>
+<dt><kbd><span class="option">--local_credits <var>LOCAL_CREDITS</var></span></kbd></dt>
+<dd><p>The local available credits.</p>
+</dd>
+<dt><kbd><span class="option">--remote_credits <var>REMOTE_CREDITS</var></span></kbd></dt>
+<dd><p>The number of buffer(s) available in the remote device</p>
+</dd>
+<dt><kbd><span class="option">--rxOffset <var>RXOFFSET</var></span></kbd></dt>
+<dd><p>The RX current offset</p>
+</dd>
+<dt><kbd><span class="option">--txLeft <var>TXLEFT</var></span></kbd></dt>
+<dd><p>The length of data remaining.</p>
+</dd>
+<dt><kbd><span class="option">--txDone <var>TXDONE</var></span></kbd></dt>
+<dd><p>The length of data already transmitted</p>
+</dd>
+<dt><kbd><span class="option">--txSDULength <var>TXSDULENGTH</var></span></kbd></dt>
+<dd><p>The total number of data to transmit</p>
+</dd>
+<dt><kbd><span class="option">--authoriz <var>AUTHORIZ</var></span></kbd></dt>
+<dd><p>EMB parameter. Indicate if authorization is required</p>
+</dd>
+<dt><kbd><span class="option">--secLevel <var>SECLEVEL</var></span></kbd></dt>
+<dd><p>EMB parameter. Security Level.</p>
+</dd>
+<dt><kbd><span class="option">--role <var>ROLE</var></span></kbd></dt>
+<dd><p>EMB parameter. Channel role to be registered:
+initiator (0x01), acceptor (0x02) or both (0x03).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;L2CAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">connect_req_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">connect_req</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                <span class="n">conn_handle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">psm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">configure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">hciTxCredits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">remote_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">local_mtu</span><span class="o">=</span><span class="mh">0x0040</span><span class="p">,</span>
+                <span class="n">mps</span><span class="o">=</span><span class="mh">0x0040</span><span class="p">,</span>
+                <span class="n">permissions</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">remote_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">local_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">local_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">remote_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">rxOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">txLeft</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">txDone</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">txSDULength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">authoriz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">secLevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">role</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span>
+                <span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Send L2CAP connection request to a given PSM. L2CAP channel shall be previously configured.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+
+        <span class="n">configure</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># For EMB, always need to configure the channel to get the regId</span>
+
+        <span class="k">if</span> <span class="n">configure</span><span class="p">:</span>
+            <span class="c1"># If configure is enabled, the channel needs to be configured for initiating connection.</span>
+            <span class="c1"># If disabled, configuration is not required (must be already done).</span>
+            <span class="n">regId</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">configure_channel</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                            <span class="n">conn_handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                            <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">,</span>
+                            <span class="n">hciTxCredits</span><span class="o">=</span><span class="n">hciTxCredits</span><span class="p">,</span>
+                            <span class="n">remote_mtu</span><span class="o">=</span><span class="n">remote_mtu</span><span class="p">,</span>
+                            <span class="n">local_mtu</span><span class="o">=</span><span class="n">local_mtu</span><span class="p">,</span>
+                            <span class="n">mps</span><span class="o">=</span><span class="n">mps</span><span class="p">,</span>
+                            <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
+                            <span class="n">remote_cid</span><span class="o">=</span><span class="n">remote_cid</span><span class="p">,</span>
+                            <span class="n">local_cid</span><span class="o">=</span><span class="n">local_cid</span><span class="p">,</span>
+                            <span class="n">local_credits</span><span class="o">=</span><span class="n">local_credits</span><span class="p">,</span>
+                            <span class="n">remote_credits</span><span class="o">=</span><span class="n">remote_credits</span><span class="p">,</span>
+                            <span class="n">rxOffset</span><span class="o">=</span><span class="n">rxOffset</span><span class="p">,</span>
+                            <span class="n">txLeft</span><span class="o">=</span><span class="n">txLeft</span><span class="p">,</span>
+                            <span class="n">txDone</span><span class="o">=</span><span class="n">txDone</span><span class="p">,</span>
+                            <span class="n">txSDULength</span><span class="o">=</span><span class="n">txSDULength</span><span class="p">,</span>
+                            <span class="n">authoriz</span><span class="o">=</span><span class="n">authoriz</span><span class="p">,</span>
+                            <span class="n">secLevel</span><span class="o">=</span><span class="n">secLevel</span><span class="p">,</span>
+                            <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span>
+                            <span class="p">)</span>
+            <span class="n">configure_ok</span> <span class="o">=</span> <span class="n">status</span>
+            <span class="k">if</span> <span class="n">configure_ok</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_CocConnectReq&quot;</span><span class="p">,</span> <span class="n">connId</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">regId</span><span class="o">=</span><span class="n">regId</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">)</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cid&quot;</span><span class="p">)</span>
+        <span class="n">connectionFailureCause</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">connectionFailureCause</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">connectionFailureCause</span><span class="p">,</span> <span class="n">cid</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">configure</span><span class="p">:</span>
+            <span class="c1"># If configure is enabled, the channel needs to be configured for initiating connection.</span>
+            <span class="c1"># If disabled, configuration is not required (must be already done).</span>
+            <span class="n">configure_ok</span> <span class="o">=</span> <span class="n">configure_channel</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                            <span class="n">conn_handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                            <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">,</span>
+                            <span class="n">hciTxCredits</span><span class="o">=</span><span class="n">hciTxCredits</span><span class="p">,</span>
+                            <span class="n">remote_mtu</span><span class="o">=</span><span class="n">remote_mtu</span><span class="p">,</span>
+                            <span class="n">local_mtu</span><span class="o">=</span><span class="n">local_mtu</span><span class="p">,</span>
+                            <span class="n">mps</span><span class="o">=</span><span class="n">mps</span><span class="p">,</span>
+                            <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
+                            <span class="n">remote_cid</span><span class="o">=</span><span class="n">remote_cid</span><span class="p">,</span>
+                            <span class="n">local_cid</span><span class="o">=</span><span class="n">local_cid</span><span class="p">,</span>
+                            <span class="n">local_credits</span><span class="o">=</span><span class="n">local_credits</span><span class="p">,</span>
+                            <span class="n">remote_credits</span><span class="o">=</span><span class="n">remote_credits</span><span class="p">,</span>
+                            <span class="n">rxOffset</span><span class="o">=</span><span class="n">rxOffset</span><span class="p">,</span>
+                            <span class="n">txLeft</span><span class="o">=</span><span class="n">txLeft</span><span class="p">,</span>
+                            <span class="n">txDone</span><span class="o">=</span><span class="n">txDone</span><span class="p">,</span>
+                            <span class="n">txSDULength</span><span class="o">=</span><span class="n">txSDULength</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">configure_ok</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_Connect&quot;</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="n">connectionFailureCause</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">connectionFailureCause</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connectionFailureCause&quot;</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">connectionFailureCause</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="l2cap-connect-rsp">
+<span id="proc-l2cap-connect-rsp"></span><h2><a class="reference internal" href="#l2cap-connect-rsp">l2cap.connect_rsp</a><a class="headerlink" href="#l2cap-connect-rsp" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Accept L2CAP connection from remote on a given PSM. L2CAP channel shall be previously configured.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.l2cap</span> <span class="kn">import</span> <span class="n">connect_rsp</span>
+
+<span class="n">connect_rsp</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">psm</span><span class="p">,</span> <span class="n">configure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hciTxCredits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">local_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">remote_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rxOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txLeft</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txDone</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">txSDULength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">authoriz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">secLevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>L2CAP.connect_rsp<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--configure<span class="w"> </span>CONFIGURE<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--hciTxCredits<span class="w"> </span>HCITXCREDITS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--remote_mtu<span class="w"> </span>REMOTE_MTU<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--local_mtu<span class="w"> </span>LOCAL_MTU<span class="o">]</span><span class="w"> </span><span class="o">[</span>--mps<span class="w"> </span>MPS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--permissions<span class="w"> </span>PERMISSIONS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--remote_cid<span class="w"> </span>REMOTE_CID<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--local_cid<span class="w"> </span>LOCAL_CID<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--local_credits<span class="w"> </span>LOCAL_CREDITS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--remote_credits<span class="w"> </span>REMOTE_CREDITS<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--rxOffset<span class="w"> </span>RXOFFSET<span class="o">]</span><span class="w"> </span><span class="o">[</span>--txLeft<span class="w"> </span>TXLEFT<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--txDone<span class="w"> </span>TXDONE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--txSDULength<span class="w"> </span>TXSDULENGTH<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--authoriz<span class="w"> </span>AUTHORIZ<span class="o">]</span><span class="w"> </span><span class="o">[</span>--secLevel<span class="w"> </span>SECLEVEL<span class="o">]</span>
+<span class="w">                          </span><span class="o">[</span>--role<span class="w"> </span>ROLE<span class="o">]</span>
+<span class="w">                          </span>conn_handle<span class="w"> </span>psm
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+<dt class="field-even">psm<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>The PSM identifying the protocol/service for the L2CAP</dt><dd><p>channel</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--configure <var>CONFIGURE</var></span></kbd></dt>
+<dd><p>Indicates if channel configuration is required (True)
+or not (False) (when it has already been configured)</p>
+</dd>
+<dt><kbd><span class="option">--hciTxCredits <var>HCITXCREDITS</var></span></kbd></dt>
+<dd><p>The number of HCI Transmit buffers that this handler
+is allowed to fill when sending data.</p>
+</dd>
+<dt><kbd><span class="option">--remote_mtu <var>REMOTE_MTU</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent to
+the remote</p>
+</dd>
+<dt><kbd><span class="option">--local_mtu <var>LOCAL_MTU</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent
+from the remote</p>
+</dd>
+<dt><kbd><span class="option">--mps <var>MPS</var></span></kbd></dt>
+<dd><p>The Maximum size of the payload allowed to be sent
+from the remote</p>
+</dd>
+<dt><kbd><span class="option">--permissions <var>PERMISSIONS</var></span></kbd></dt>
+<dd><p>The local channel permissions required to this
+Connection.</p>
+</dd>
+<dt><kbd><span class="option">--remote_cid <var>REMOTE_CID</var></span></kbd></dt>
+<dd><p>The remote channel Allocated to this Connection.</p>
+</dd>
+<dt><kbd><span class="option">--local_cid <var>LOCAL_CID</var></span></kbd></dt>
+<dd><p>The local channel Allocated to this Connection.</p>
+</dd>
+<dt><kbd><span class="option">--local_credits <var>LOCAL_CREDITS</var></span></kbd></dt>
+<dd><p>The local available credits.</p>
+</dd>
+<dt><kbd><span class="option">--remote_credits <var>REMOTE_CREDITS</var></span></kbd></dt>
+<dd><p>The number of buffer(s) available in the remote device</p>
+</dd>
+<dt><kbd><span class="option">--rxOffset <var>RXOFFSET</var></span></kbd></dt>
+<dd><p>The RX current offset</p>
+</dd>
+<dt><kbd><span class="option">--txLeft <var>TXLEFT</var></span></kbd></dt>
+<dd><p>The length of data remaining.</p>
+</dd>
+<dt><kbd><span class="option">--txDone <var>TXDONE</var></span></kbd></dt>
+<dd><p>The length of data already transmitted</p>
+</dd>
+<dt><kbd><span class="option">--txSDULength <var>TXSDULENGTH</var></span></kbd></dt>
+<dd><p>The total number of data to transmit</p>
+</dd>
+<dt><kbd><span class="option">--authoriz <var>AUTHORIZ</var></span></kbd></dt>
+<dd><p>EMB parameter. Indicate if authorization is required</p>
+</dd>
+<dt><kbd><span class="option">--secLevel <var>SECLEVEL</var></span></kbd></dt>
+<dd><p>EMB parameter. Security Level.</p>
+</dd>
+<dt><kbd><span class="option">--role <var>ROLE</var></span></kbd></dt>
+<dd><p>EMB parameter. Channel role to be registered:
+initiator (0x01), acceptor (0x02) or both (0x03).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;L2CAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">connect_rsp_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">connect_rsp</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                <span class="n">conn_handle</span><span class="p">,</span>
+                <span class="n">psm</span><span class="p">,</span>
+                <span class="n">configure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">hciTxCredits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">remote_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">local_mtu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">mps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">permissions</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">remote_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">local_cid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">local_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">remote_credits</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">rxOffset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">txLeft</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">txDone</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">txSDULength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">authoriz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">secLevel</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                <span class="n">role</span><span class="o">=</span><span class="mh">0x03</span><span class="p">,</span>
+                <span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Accept L2CAP connection from remote on a given PSM. L2CAP channel shall be previously configured.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="c1"># For EMB stack, to be L2CAP channel acceptor, the only step required is to configure the channel</span>
+        <span class="n">configure</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># EMB always requires to configure the channel</span>
+
+        <span class="k">if</span> <span class="n">configure</span><span class="p">:</span>
+            <span class="n">RegId</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">configure_channel</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                            <span class="n">conn_handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                            <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">,</span>
+                            <span class="n">hciTxCredits</span><span class="o">=</span><span class="n">hciTxCredits</span><span class="p">,</span>
+                            <span class="n">remote_mtu</span><span class="o">=</span><span class="n">remote_mtu</span><span class="p">,</span>
+                            <span class="n">local_mtu</span><span class="o">=</span><span class="n">local_mtu</span><span class="p">,</span>
+                            <span class="n">mps</span><span class="o">=</span><span class="n">mps</span><span class="p">,</span>
+                            <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
+                            <span class="n">remote_cid</span><span class="o">=</span><span class="n">remote_cid</span><span class="p">,</span>
+                            <span class="n">local_cid</span><span class="o">=</span><span class="n">local_cid</span><span class="p">,</span>
+                            <span class="n">local_credits</span><span class="o">=</span><span class="n">local_credits</span><span class="p">,</span>
+                            <span class="n">remote_credits</span><span class="o">=</span><span class="n">remote_credits</span><span class="p">,</span>
+                            <span class="n">rxOffset</span><span class="o">=</span><span class="n">rxOffset</span><span class="p">,</span>
+                            <span class="n">txLeft</span><span class="o">=</span><span class="n">txLeft</span><span class="p">,</span>
+                            <span class="n">txDone</span><span class="o">=</span><span class="n">txDone</span><span class="p">,</span>
+                            <span class="n">txSDULength</span><span class="o">=</span><span class="n">txSDULength</span><span class="p">,</span>
+                            <span class="n">authoriz</span><span class="o">=</span><span class="n">authoriz</span><span class="p">,</span>
+                            <span class="n">secLevel</span><span class="o">=</span><span class="n">secLevel</span><span class="p">,</span>
+                            <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span>
+                            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">status</span><span class="o">==</span><span class="mi">0</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">configure</span><span class="p">:</span>
+            <span class="c1"># If configure is enabled, the channel needs to be configured for accepting connection. If disabled, configuration is not required (must be already done).</span>
+            <span class="n">configure_ok</span> <span class="o">=</span> <span class="n">configure_channel</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                            <span class="n">conn_handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span>
+                            <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">,</span>
+                            <span class="n">hciTxCredits</span><span class="o">=</span><span class="n">hciTxCredits</span><span class="p">,</span>
+                            <span class="n">remote_mtu</span><span class="o">=</span><span class="n">remote_mtu</span><span class="p">,</span>
+                            <span class="n">local_mtu</span><span class="o">=</span><span class="n">local_mtu</span><span class="p">,</span>
+                            <span class="n">mps</span><span class="o">=</span><span class="n">mps</span><span class="p">,</span>
+                            <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
+                            <span class="n">remote_cid</span><span class="o">=</span><span class="n">remote_cid</span><span class="p">,</span>
+                            <span class="n">local_cid</span><span class="o">=</span><span class="n">local_cid</span><span class="p">,</span>
+                            <span class="n">local_credits</span><span class="o">=</span><span class="n">local_credits</span><span class="p">,</span>
+                            <span class="n">remote_credits</span><span class="o">=</span><span class="n">remote_credits</span><span class="p">,</span>
+                            <span class="n">rxOffset</span><span class="o">=</span><span class="n">rxOffset</span><span class="p">,</span>
+                            <span class="n">txLeft</span><span class="o">=</span><span class="n">txLeft</span><span class="p">,</span>
+                            <span class="n">txDone</span><span class="o">=</span><span class="n">txDone</span><span class="p">,</span>
+                            <span class="n">txSDULength</span><span class="o">=</span><span class="n">txSDULength</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">configure_ok</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_RegisterListenningHandler&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="l2cap-send-data">
+<span id="proc-l2cap-send-data"></span><h2><a class="reference internal" href="#l2cap-send-data">l2cap.send_data</a><a class="headerlink" href="#l2cap-send-data" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Send L2CAP data packet. L2CAP channel shall be previously established.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.l2cap</span> <span class="kn">import</span> <span class="n">send_data</span>
+
+<span class="n">send_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cid</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>L2CAP.send_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--cid<span class="w"> </span>CID<span class="o">]</span><span class="w"> </span>data
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Data to be sent</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--cid <var>CID</var></span></kbd></dt>
+<dd><p>Channel identifier</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;L2CAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">send_data_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">send_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cid</span><span class="o">=</span><span class="mh">0x0040</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Send L2CAP data packet. L2CAP channel shall be previously established.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">data_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_CocDataReq&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="o">=</span><span class="n">cid</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="n">data_len</span><span class="p">,</span> <span class="n">pPayload</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_SendData&quot;</span><span class="p">,</span> <span class="n">data_len</span><span class="o">=</span><span class="n">data_len</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="l2cap-disconnect">
+<span id="proc-l2cap-disconnect"></span><h2><a class="reference internal" href="#l2cap-disconnect">l2cap.disconnect</a><a class="headerlink" href="#l2cap-disconnect" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Disconnect L2CAP channel</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.l2cap</span> <span class="kn">import</span> <span class="n">disconnect</span>
+
+<span class="n">disconnect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">local_cid</span><span class="p">,</span> <span class="n">remote_cid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>L2CAP.disconnect<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--remote_cid<span class="w"> </span>REMOTE_CID<span class="o">]</span>
+<span class="w">                         </span><span class="o">[</span>--local_cid<span class="w"> </span>LOCAL_CID<span class="o">]</span>
+<span class="w">                         </span>identifier
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier command packet rejected</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--remote_cid <var>REMOTE_CID</var></span></kbd></dt>
+<dd><p>The remote channel Allocated to this Connection.</p>
+</dd>
+<dt><kbd><span class="option">--local_cid <var>LOCAL_CID</var></span></kbd></dt>
+<dd><p>The local channel Allocated to this Connection.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;L2CAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">disconnect_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">local_cid</span><span class="p">,</span> <span class="n">remote_cid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Disconnect L2CAP channel</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_CocDisconnectReq&quot;</span><span class="p">,</span> <span class="n">cid</span><span class="o">=</span><span class="n">local_cid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_Disconnect&quot;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">,</span> <span class="n">cid</span><span class="o">=</span><span class="n">local_cid</span><span class="p">,</span> <span class="n">cid_remote</span><span class="o">=</span><span class="n">remote_cid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="l2cap-reject">
+<span id="proc-l2cap-reject"></span><h2><a class="reference internal" href="#l2cap-reject">l2cap.reject</a><a class="headerlink" href="#l2cap-reject" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Reject invalid identifier.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.host.procedures.l2cap</span> <span class="kn">import</span> <span class="n">reject</span>
+
+<span class="n">reject</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">local_cid</span><span class="p">,</span> <span class="n">remote_cid</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>L2CAP.reject<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--reason<span class="w"> </span>REASON<span class="o">]</span>
+<span class="w">                     </span>identifier<span class="w"> </span>remote_cid<span class="w"> </span>local_cid<span class="w"> </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">identifier<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier command packet rejected</p>
+</dd>
+<dt class="field-even">remote_cid<span class="colon">:</span></dt>
+<dd class="field-even"><p>Remote channel identifier.</p>
+</dd>
+<dt class="field-odd">local_cid<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Local channel identifier</p>
+</dd>
+<dt class="field-even">conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--reason <var>REASON</var></span></kbd></dt>
+<dd><p>Reject Reason</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;L2CAP.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">reject_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">reject</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">local_cid</span><span class="p">,</span> <span class="n">remote_cid</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="mh">0x0002</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Reject invalid identifier.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">engine</span><span class="o">.</span><span class="n">bluetooth_host_stack</span> <span class="o">==</span> <span class="s2">&quot;EMB&quot;</span><span class="p">:</span>
+        <span class="n">pkt</span><span class="o">=</span><span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_emb_SendCmdReject&quot;</span><span class="p">,</span> <span class="n">handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">reason</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_L2CAP_Reject_Invalid&quot;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">,</span> <span class="n">cid</span><span class="o">=</span><span class="n">local_cid</span><span class="p">,</span> <span class="n">cid_remote</span><span class="o">=</span><span class="n">remote_cid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="key_container.html" class="btn btn-neutral float-left" title="key_container Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nvm_info.html" class="btn btn-neutral float-right" title="nvm_info Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

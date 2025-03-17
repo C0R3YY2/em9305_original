@@ -1,0 +1,84 @@
+=========================================================================
+EM EMB Data Transfer Server service Example
+=========================================================================
+
+
+Overview
+--------
+
+The purpose of this example is to show how to put in place a GATT (Generic Attribute Profile) service
+application software running on the EM9305.
+
+This service will configure the device with the peripheral role in which the device will do the following:
+
+#. advertise, waiting for incoming connections
+#. answer to connection requests
+#. send notifications once connection is established
+
+The following picture shows a peripheral device doing active advertising.
+
+.. image:: ./imgs/Central_vs_peripheral.png
+
+This advertising allows a device acting with the central role to be aware of the peripheral device presence, and then to initiate an incoming connection that the peripheral will accept.
+
+.. warning::
+
+    This application has configurable SMP parameters `smpCfg_t` where `minKeyLen` can be specified. Reducing this value from 16 to 7 (minimum) reduces the entropy of the encryption key making the device less secure.
+
+
+Setup
+-----
+
+In this setup, a central device connected to EM9305 running the `nvm_emb_datatransfer_server` example can enable notifications on EM Data Transfer Server Data characteristic.
+This will result in the device sending multiple notifications in a single connection event and in subsequent connection events.
+
+Implementation details
+----------------------
+
+The *nvm_main.c* file contains code that creates and starts tasks for the Bluetooth Low Energy and the application.
+
+The *my_app/includes/my_app_signals.h* file contains the signals that are used by the whole application (between tasks and internally).
+
+The *my_app/includes/my_app_task.h* file contains the interface to create, start and post events to the application task.
+
+The *my_app/source/my_app_task.c* file contains the implementation to create, start and post events to the application task.
+
+The *my_app/source/my_app.c* file contains the internal and external event processing for the application task.
+
+The *my_app/source/my_app.h* file contains the protected interface to be used by *my_app_task.c*.
+
+The *ble/includes/ble_task.h* file contains the interface to create, start and post events to the BLE task.
+
+The *ble/source/ble_task.c* file contains the implementation to create, start and post events to the BLE task.
+
+The *ble/source/ble.c* file contains the internal and external event processing for the BLE task.
+
+The *ble/source/ble.h* file contains the protected interface to be used by *ble_task.c*.
+
+Build
+-----
+
+The build target of this example is: **nvm_emb_datatransfer_server**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emb_datatransfer_server
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emb_datatransfer_server\nvm_emb_datatransfer_server.ihex --progress
+
+With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).
+
+Then you can connect to the device named `EM EMB DTS Server` using your preferred smartphone or tablet application.
+You will then be able to activate the notification on the EM Data Transfer Service - Data Characteristic and see the notifications that are being received.
+EM Data Transfer Service UUID: 81cf6f08-454D-11e8-adc0-fa7ae01bd428
+EM Data Transfer Service - Data Characteristic UUID: 81cf7192-454D-11e8-adc0-fa7ae01bd428

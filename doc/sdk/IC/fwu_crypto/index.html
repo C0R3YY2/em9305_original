@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update Cryptographic Toolbox Library &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Update Library for SPI Transport" href="../fwu_spi/index.html" />
+    <link rel="prev" title="Firmware Update Service" href="../fwu_service/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm_op_sched/index.html">NVM operation scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../firmware_header/index.html">Firmware Header Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_core/index.html">Firmware Update Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_database/index.html">EMB Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Firmware Update Cryptographic Toolbox Library</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_spi/index.html">Firmware Update Library for SPI Transport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Firmware Update Cryptographic Toolbox Library</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-cryptographic-toolbox-library">
+<h1>Firmware Update Cryptographic Toolbox Library<a class="headerlink" href="#firmware-update-cryptographic-toolbox-library" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This library provides the cryptographic toolbox used in the firmware update feature.</p>
+<p>The cryptographic toolbox for firmware update includes the following functionalities:</p>
+<ol class="arabic simple">
+<li><p>AES Decryption API for AES-ECB, AES-CBC and AES-CTR modes.</p></li>
+<li><p>Signature verification API for ECDSA signature scheme.</p></li>
+<li><p>Digest calculation API for signature verification.</p></li>
+<li><p>Key management (key loading) for ECDSA Public Key in User or EM Information Page area.</p></li>
+<li><p>Definition of error codes specific to this cryptographic toolbox.</p></li>
+</ol>
+<p>Refer to the <a class="reference external" href="../../sections/FirmwareUpdate.html">Firmware Update</a> section of the SDK Documentation for additional information on the firmware update functionality.</p>
+<p>Refer to the <a class="reference external" href="../firmware_updater/index.html">Firmware Updater Sample Application</a> to see how the APIs of this cryptographic toolbox are used in an application.</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d4/d47/group__fwu__crypto"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">fwu_crypto</span></span></dt>
+<dd><p>Cryptographic toolbox for firmware update feature. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv429FWU_CRYPTO_Pub_Key_Location_t">
+<span id="_CPPv329FWU_CRYPTO_Pub_Key_Location_t"></span><span id="_CPPv229FWU_CRYPTO_Pub_Key_Location_t"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga10d25371d74623e1642da013ee519167"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_Pub_Key_Location_t</span></span></span><a class="headerlink" href="#_CPPv429FWU_CRYPTO_Pub_Key_Location_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Crypto library - Public Key Location. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N29FWU_CRYPTO_Pub_Key_Location_t24FWU_CRYPTO_PUBLIC_KEY_EME">
+<span id="_CPPv3N29FWU_CRYPTO_Pub_Key_Location_t24FWU_CRYPTO_PUBLIC_KEY_EME"></span><span id="_CPPv2N29FWU_CRYPTO_Pub_Key_Location_t24FWU_CRYPTO_PUBLIC_KEY_EME"></span><span class="target" id="d4/d47/group__fwu__crypto_1gga10d25371d74623e1642da013ee519167a54e1dc307fb82fd7c47511d3120bb5b0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_PUBLIC_KEY_EM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N29FWU_CRYPTO_Pub_Key_Location_t24FWU_CRYPTO_PUBLIC_KEY_EME" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N29FWU_CRYPTO_Pub_Key_Location_t26FWU_CRYPTO_PUBLIC_KEY_USERE">
+<span id="_CPPv3N29FWU_CRYPTO_Pub_Key_Location_t26FWU_CRYPTO_PUBLIC_KEY_USERE"></span><span id="_CPPv2N29FWU_CRYPTO_Pub_Key_Location_t26FWU_CRYPTO_PUBLIC_KEY_USERE"></span><span class="target" id="d4/d47/group__fwu__crypto_1gga10d25371d74623e1642da013ee519167a6c9823f271b258a4e10f5f4773b76d98"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_PUBLIC_KEY_USER</span></span></span><a class="headerlink" href="#_CPPv4N29FWU_CRYPTO_Pub_Key_Location_t26FWU_CRYPTO_PUBLIC_KEY_USERE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv425FWU_CRYPTO_Pub_Key_Type_t">
+<span id="_CPPv325FWU_CRYPTO_Pub_Key_Type_t"></span><span id="_CPPv225FWU_CRYPTO_Pub_Key_Type_t"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga6230b640d987fbbb9614121b2dfdb64e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_Pub_Key_Type_t</span></span></span><a class="headerlink" href="#_CPPv425FWU_CRYPTO_Pub_Key_Type_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Crypto library - Crypto Algorithm Type Location. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t15FWU_CRYPTO_NONEE">
+<span id="_CPPv3N25FWU_CRYPTO_Pub_Key_Type_t15FWU_CRYPTO_NONEE"></span><span id="_CPPv2N25FWU_CRYPTO_Pub_Key_Type_t15FWU_CRYPTO_NONEE"></span><span class="target" id="d4/d47/group__fwu__crypto_1gga6230b640d987fbbb9614121b2dfdb64ea5f7ca785b24a9654e830850870ab8149"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_NONE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t15FWU_CRYPTO_NONEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_ECBE">
+<span id="_CPPv3N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_ECBE"></span><span id="_CPPv2N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_ECBE"></span><span class="target" id="d4/d47/group__fwu__crypto_1gga6230b640d987fbbb9614121b2dfdb64ea31d22b87bc5e584c93eb7b0b931dbf3c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_AES_ECB</span></span></span><a class="headerlink" href="#_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_ECBE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CBCE">
+<span id="_CPPv3N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CBCE"></span><span id="_CPPv2N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CBCE"></span><span class="target" id="d4/d47/group__fwu__crypto_1gga6230b640d987fbbb9614121b2dfdb64ea09f9ad1e76542747ed4a86533360cc7b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_AES_CBC</span></span></span><a class="headerlink" href="#_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CBCE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CTRE">
+<span id="_CPPv3N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CTRE"></span><span id="_CPPv2N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CTRE"></span><span class="target" id="d4/d47/group__fwu__crypto_1gga6230b640d987fbbb9614121b2dfdb64ea6475843511f968f6e623ca87bed37af5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CRYPTO_AES_CTR</span></span></span><a class="headerlink" href="#_CPPv4N25FWU_CRYPTO_Pub_Key_Type_t18FWU_CRYPTO_AES_CTRE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv426FWUCrypto_ConvertByteToU32P7uint8_tP8uint32_t8uint32_t">
+<span id="_CPPv326FWUCrypto_ConvertByteToU32P7uint8_tP8uint32_t8uint32_t"></span><span id="_CPPv226FWUCrypto_ConvertByteToU32P7uint8_tP8uint32_t8uint32_t"></span><span id="FWUCrypto_ConvertByteToU32__uint8_tP.uint32_tP.uint32_t"></span><span class="target" id="d4/d47/group__fwu__crypto_1gabb7d22954cc621f88cb4d1ff003f5add"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_ConvertByteToU32</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">src</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dst</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426FWUCrypto_ConvertByteToU32P7uint8_tP8uint32_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert uint8 based vector to uint32 vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> – Pointer to the source vector </p></li>
+<li><p><strong>dst</strong> – Pointer to the destination vertor </p></li>
+<li><p><strong>size</strong> – size in 32-bit word </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv431FWUCrypto_GetSignaturePublicKey29FWU_CRYPTO_Pub_Key_Location_tP10POINT_P256">
+<span id="_CPPv331FWUCrypto_GetSignaturePublicKey29FWU_CRYPTO_Pub_Key_Location_tP10POINT_P256"></span><span id="_CPPv231FWUCrypto_GetSignaturePublicKey29FWU_CRYPTO_Pub_Key_Location_tP10POINT_P256"></span><span id="FWUCrypto_GetSignaturePublicKey__FWU_CRYPTO_Pub_Key_Location_t.POINT_P256P"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga66acdc192125dc5cb7e1692f26228bb8"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_GetSignaturePublicKey</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429FWU_CRYPTO_Pub_Key_Location_t" title="FWU_CRYPTO_Pub_Key_Location_t"><span class="n"><span class="pre">FWU_CRYPTO_Pub_Key_Location_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyLocation</span></span>, <span class="n"><span class="pre">POINT_P256</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pPublicKey</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431FWUCrypto_GetSignaturePublicKey29FWU_CRYPTO_Pub_Key_Location_tP10POINT_P256" title="Link to this definition"></a><br /></dt>
+<dd><p>Reads the public key from the user or EM information page. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keyLocation</strong> – Location of key (either FWU_CRYPTO_KEY_TYPE_EM or FWU_CRYPTO_KEY_TYPE_USER) </p></li>
+<li><p><strong>pPublicKey</strong> – Pointer to the selected public key </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if the procedure succeeds, or FWU_ERROR_CODE_PUBLIC_KEY_ERROR if something is wrong with the public key. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421FWUCrypto_SHA256_Initv">
+<span id="_CPPv321FWUCrypto_SHA256_Initv"></span><span id="_CPPv221FWUCrypto_SHA256_Initv"></span><span id="FWUCrypto_SHA256_Init__void"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga68aba3aeae41e579c043289e1d8ee537"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_SHA256_Init</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421FWUCrypto_SHA256_Initv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the SHA256 calculation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FWU_ERROR_CODE_SUCCESS if the procedure succeeds, FWU_ERROR_CODE_SHA256_ERROR otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423FWUCrypto_SHA256_UpdateP7uint8_t8uint32_t">
+<span id="_CPPv323FWUCrypto_SHA256_UpdateP7uint8_t8uint32_t"></span><span id="_CPPv223FWUCrypto_SHA256_UpdateP7uint8_t8uint32_t"></span><span id="FWUCrypto_SHA256_Update__uint8_tP.uint32_t"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga5e0d88a690b31bf7d81362a613f10c16"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_SHA256_Update</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423FWUCrypto_SHA256_UpdateP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Update intermediate SHA256 calculation with new data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pData</strong> – pointer to the new data </p></li>
+<li><p><strong>length</strong> – length of the new data to process </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if the procedure succeeds, FWU_ERROR_CODE_SHA256_ERROR otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425FWUCrypto_SHA256_FinalizeA18SHA256_DIGEST_SIZE_7uint8_t">
+<span id="_CPPv325FWUCrypto_SHA256_FinalizeA18SHA256_DIGEST_SIZE_7uint8_t"></span><span id="_CPPv225FWUCrypto_SHA256_FinalizeASHA256_DIGEST_SIZE_7uint8_t"></span><span id="FWUCrypto_SHA256_Finalize__uint8_tA"></span><span class="target" id="d4/d47/group__fwu__crypto_1gad5e81d27138f1eca1bd81cc7fd8f399f"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_SHA256_Finalize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">digest</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">SHA256_DIGEST_SIZE</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425FWUCrypto_SHA256_FinalizeA18SHA256_DIGEST_SIZE_7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalize the SHA256 calculation and generates a Digest. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>digest</strong> – Pointer to digest being calculated since the last call to FWU_Crypto_Init_SHA256 </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if the procedure succeeds, FWU_ERROR_CODE_SHA256_ERROR otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv433FWUCrypto_VerifyFirmwareSignatureP16PointCertificateP5POINTA18SHA256_DIGEST_SIZE_7uint8_t">
+<span id="_CPPv333FWUCrypto_VerifyFirmwareSignatureP16PointCertificateP5POINTA18SHA256_DIGEST_SIZE_7uint8_t"></span><span id="_CPPv233FWUCrypto_VerifyFirmwareSignatureP16PointCertificateP5POINTASHA256_DIGEST_SIZE_7uint8_t"></span><span id="FWUCrypto_VerifyFirmwareSignature__PointCertificateP.POINTP.uint8_tA"></span><span class="target" id="d4/d47/group__fwu__crypto_1gac7de9cea491dfa384c7f56b33999dde1"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_VerifyFirmwareSignature</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">PointCertificate</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pSignature</span></span>, <span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pPublicKey</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">digest</span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">SHA256_DIGEST_SIZE</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv433FWUCrypto_VerifyFirmwareSignatureP16PointCertificateP5POINTA18SHA256_DIGEST_SIZE_7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Verify the signature of a firmware. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pSignature</strong> – Pointer to the public key to use for signature verification. </p></li>
+<li><p><strong>pPublicKey</strong> – Length of the command parameters. </p></li>
+<li><p><strong>digest</strong> – Pointer to the digest used to verify the signature </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if the Signature is valid, FWU_ERROR_CODE_INVALID_FIRMWARE_SIGNATURE if the signature verification fails, FWU_ERROR_CODE_PUBLIC_KEY_ERROR if the public key is invalid or FWU_ERROR_CODE_UNSPECIFIED_ERROR for any other unspecified error. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422FWUCrypto_AES_ECB_InitP7uint8_t17AES_ECB_KeyType_t">
+<span id="_CPPv322FWUCrypto_AES_ECB_InitP7uint8_t17AES_ECB_KeyType_t"></span><span id="_CPPv222FWUCrypto_AES_ECB_InitP7uint8_t17AES_ECB_KeyType_t"></span><span id="FWUCrypto_AES_ECB_Init__uint8_tP.AES_ECB_KeyType_t"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga22c5a8d828b07df4e5020f7a09a93a62"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_ECB_Init</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pKey</span></span>, <a class="reference internal" href="../security/index.html#_CPPv417AES_ECB_KeyType_t" title="AES_ECB_KeyType_t"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422FWUCrypto_AES_ECB_InitP7uint8_t17AES_ECB_KeyType_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the AES ECB engine. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pKey</strong> – Pointer to the AES key or Key Container Index depending on the keyType value. </p></li>
+<li><p><strong>keyType</strong> – Either AES_ECB_KEY_ID of AES_ECB_KEY_VALUE </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR in case of initialization error. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv431FWUCrypto_AES_ECB_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t">
+<span id="_CPPv331FWUCrypto_AES_ECB_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t"></span><span id="_CPPv231FWUCrypto_AES_ECB_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t"></span><span id="FWUCrypto_AES_ECB_Decrypt_Block__uint8_tP.uint32_t.uint8_tP.uint32_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1gacdcb313558f390bfc76fef48ffcf0664"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_ECB_Decrypt_Block</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEncryptedData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">encryptedDataSize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431FWUCrypto_AES_ECB_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Decrypt an AEC ECB encrypted block. </p>
+<p>Decrypt block of data using AES ECB. The size corresponds to the encryptedDataSize as the padding is not removed and shall be done manually. This function is useful for large firmware that must be decrypted by block, where padding is removed to the last block.</p>
+<p>FWUCrypto_AES_ECB_Init shall be called prior calling this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pEncryptedData</strong> – Pointer to encrypted data. </p></li>
+<li><p><strong>encryptedDataSize</strong> – Size of the encrypted data. </p></li>
+<li><p><strong>pData</strong> – Pointer to the decrypted data. </p></li>
+<li><p><strong>pSize</strong> – Pointer to the size of the decrypted data after removal of the padding. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR if a data block cannot be decrypted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425FWUCrypto_AES_ECB_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_ECB_KeyType_tP8uint32_t">
+<span id="_CPPv325FWUCrypto_AES_ECB_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_ECB_KeyType_tP8uint32_t"></span><span id="_CPPv225FWUCrypto_AES_ECB_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_ECB_KeyType_tP8uint32_t"></span><span id="FWUCrypto_AES_ECB_Decrypt__uint8_tP.uint32_t.uint8_tP.uint8_tP.AES_ECB_KeyType_t.uint32_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga469d01869d57b080d8fbdd65ff5906ac"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_ECB_Decrypt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEncryptedData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">encryptedDataSize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pKey</span></span>, <a class="reference internal" href="../security/index.html#_CPPv417AES_ECB_KeyType_t" title="AES_ECB_KeyType_t"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425FWUCrypto_AES_ECB_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_ECB_KeyType_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Decrypt a complete block of data using AES ECB. </p>
+<p>The returned size is the exact size of the decrypted data where the padding has been removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pEncryptedData</strong> – Pointer to encrypted data. </p></li>
+<li><p><strong>encryptedDataSize</strong> – Size of the encrypted data. </p></li>
+<li><p><strong>pData</strong> – Pointer to the decrypted data. </p></li>
+<li><p><strong>pKey</strong> – Pointer to the AES key or Key Container Index depending on the keyType value. </p></li>
+<li><p><strong>keyType</strong> – Either AES_ECB_KEY_ID of AES_ECB_KEY_VALUE </p></li>
+<li><p><strong>pSize</strong> – Pointer to the Size of the decrypted data after removal of the padding. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR if the AEC ECB crypto engine cannot be initialized or if an error occurs during data decryption. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422FWUCrypto_AES_CBC_InitP7uint8_t17AES_CBC_KeyType_tP7uint8_t">
+<span id="_CPPv322FWUCrypto_AES_CBC_InitP7uint8_t17AES_CBC_KeyType_tP7uint8_t"></span><span id="_CPPv222FWUCrypto_AES_CBC_InitP7uint8_t17AES_CBC_KeyType_tP7uint8_t"></span><span id="FWUCrypto_AES_CBC_Init__uint8_tP.AES_CBC_KeyType_t.uint8_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1gaa7ae5bdde707fb61cf398419edfe7611"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_CBC_Init</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pKey</span></span>, <span class="n"><span class="pre">AES_CBC_KeyType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422FWUCrypto_AES_CBC_InitP7uint8_t17AES_CBC_KeyType_tP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the AES CBC engine. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pKey</strong> – Pointer to the AES key or Key Container Index depending on the keyType value. </p></li>
+<li><p><strong>keyType</strong> – Either AES_CBC_KEY_ID of AES_CBC_KEY_VALUE </p></li>
+<li><p><strong>pIv</strong> – Pointer to the Initialization Vector </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR if the key is not valid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv431FWUCrypto_AES_CBC_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t">
+<span id="_CPPv331FWUCrypto_AES_CBC_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t"></span><span id="_CPPv231FWUCrypto_AES_CBC_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t"></span><span id="FWUCrypto_AES_CBC_Decrypt_Block__uint8_tP.uint32_t.uint8_tP.uint32_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga45d8974a1975baaf961aa179e8a8665d"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_CBC_Decrypt_Block</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEncryptedData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">encryptedDataSize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431FWUCrypto_AES_CBC_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Decrypt an AES CBC encrypted data block. </p>
+<p>Decrypt block of data using AES CBC. The size corresponds to the encryptedDataSize as the padding is not removed and shall be done manually. This function is useful for large firmware that must be decrypted by block, where padding is removed to the last block.</p>
+<p>FWUCrypto_AES_CBC_Init shall be called prior calling this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pEncryptedData</strong> – Pointer to encrypted data. </p></li>
+<li><p><strong>encryptedDataSize</strong> – Size of the encrypted data. </p></li>
+<li><p><strong>pData</strong> – Pointer to the decrypted data. </p></li>
+<li><p><strong>pSize</strong> – Pointer to the size of the decrypted data after removal of the padding. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR if a data block cannot be decrypted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425FWUCrypto_AES_CBC_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CBC_KeyType_tP7uint8_tP8uint32_t">
+<span id="_CPPv325FWUCrypto_AES_CBC_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CBC_KeyType_tP7uint8_tP8uint32_t"></span><span id="_CPPv225FWUCrypto_AES_CBC_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CBC_KeyType_tP7uint8_tP8uint32_t"></span><span id="FWUCrypto_AES_CBC_Decrypt__uint8_tP.uint32_t.uint8_tP.uint8_tP.AES_CBC_KeyType_t.uint8_tP.uint32_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga4d55c4d841ad1643b1dc10c98a56c5c8"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_CBC_Decrypt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEncryptedData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">encryptedDataSize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pKey</span></span>, <span class="n"><span class="pre">AES_CBC_KeyType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pIv</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425FWUCrypto_AES_CBC_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CBC_KeyType_tP7uint8_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Decrypt block of data using AES CBC. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pEncryptedData</strong> – Pointer to encrypted data. </p></li>
+<li><p><strong>encryptedDataSize</strong> – Size of the encrypted data. </p></li>
+<li><p><strong>pData</strong> – Pointer to the decrypted data. </p></li>
+<li><p><strong>pKey</strong> – Pointer to the AES key or Key Container Index depending on the keyType value. </p></li>
+<li><p><strong>keyType</strong> – Either AES_CBC_KEY_ID of AES_CBC_KEY_VALUE </p></li>
+<li><p><strong>pIv</strong> – Pointer to the Initialization Vector </p></li>
+<li><p><strong>pSize</strong> – Pointer to the size of the decrypted data after removal of the padding. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR if the AES CBC crypto engine cannot be initialized or if a data block cannot be decrypted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422FWUCrypto_AES_CTR_InitP7uint8_t17AES_CTR_KeyType_tP7uint8_t">
+<span id="_CPPv322FWUCrypto_AES_CTR_InitP7uint8_t17AES_CTR_KeyType_tP7uint8_t"></span><span id="_CPPv222FWUCrypto_AES_CTR_InitP7uint8_t17AES_CTR_KeyType_tP7uint8_t"></span><span id="FWUCrypto_AES_CTR_Init__uint8_tP.AES_CTR_KeyType_t.uint8_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga0f5fc9b940c3d728df334bfdba194de5"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_CTR_Init</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pKey</span></span>, <span class="n"><span class="pre">AES_CTR_KeyType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCounter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422FWUCrypto_AES_CTR_InitP7uint8_t17AES_CTR_KeyType_tP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the AES CTR engine. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pKey</strong> – Pointer to the AES key or Key Container Index depending on the keyType value. </p></li>
+<li><p><strong>keyType</strong> – Either AES_CTR_KEY_ID of AES_CTR_KEY_VALUE </p></li>
+<li><p><strong>pCounter</strong> – Pointer to the Initialization Counter </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR in case of key error or if the AES CTR crypto engine cannot be initialized. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv431FWUCrypto_AES_CTR_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t">
+<span id="_CPPv331FWUCrypto_AES_CTR_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t"></span><span id="_CPPv231FWUCrypto_AES_CTR_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t"></span><span id="FWUCrypto_AES_CTR_Decrypt_Block__uint8_tP.uint32_t.uint8_tP.uint32_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga90be360fc529c4c44a5bb6b74c58b44b"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_CTR_Decrypt_Block</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEncryptedData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">encryptedDataSize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431FWUCrypto_AES_CTR_Decrypt_BlockP7uint8_t8uint32_tP7uint8_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Decrypt an AES CTR encrypted data block. </p>
+<p>Decrypt block of data using AES CTR. The size corresponds to the encryptedDataSize as the padding is not removed and shall be done manually. This function is useful for large firmware that must be decrypted by block.</p>
+<p>FWUCrypto_AES_CTR_Init shall be called prior calling this function.</p>
+<p>AES CTR does not use padding. Size must match encryptedDataSize. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pEncryptedData</strong> – Pointer to encrypted data. </p></li>
+<li><p><strong>encryptedDataSize</strong> – Size of the encrypted data. </p></li>
+<li><p><strong>pData</strong> – Pointer to the decrypted data. </p></li>
+<li><p><strong>pSize</strong> – Pointer to the size of the decrypted data after removal of the padding. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR in case a data block cannot be decrypted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425FWUCrypto_AES_CTR_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CTR_KeyType_tP7uint8_tP8uint32_t">
+<span id="_CPPv325FWUCrypto_AES_CTR_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CTR_KeyType_tP7uint8_tP8uint32_t"></span><span id="_CPPv225FWUCrypto_AES_CTR_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CTR_KeyType_tP7uint8_tP8uint32_t"></span><span id="FWUCrypto_AES_CTR_Decrypt__uint8_tP.uint32_t.uint8_tP.uint8_tP.AES_CTR_KeyType_t.uint8_tP.uint32_tP"></span><span class="target" id="d4/d47/group__fwu__crypto_1ga9bf181cc93143a3fcf5fa0974015b40b"></span><a class="reference internal" href="../fwu_core/index.html#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUCrypto_AES_CTR_Decrypt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEncryptedData</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">encryptedDataSize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pData</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pKey</span></span>, <span class="n"><span class="pre">AES_CTR_KeyType_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCounter</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pSize</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425FWUCrypto_AES_CTR_DecryptP7uint8_t8uint32_tP7uint8_tP7uint8_t17AES_CTR_KeyType_tP7uint8_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Decrypt block of data using AES CTR. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pEncryptedData</strong> – Pointer to encrypted data. </p></li>
+<li><p><strong>encryptedDataSize</strong> – Size of the encrypted data. </p></li>
+<li><p><strong>pData</strong> – Pointer to the decrypted data. </p></li>
+<li><p><strong>pKey</strong> – Pointer to the AES key or Key Container Index depending on the keyType value. </p></li>
+<li><p><strong>keyType</strong> – Either AES_CTR_KEY_ID of AES_CTR_KEY_VALUE </p></li>
+<li><p><strong>pCounter</strong> – Pointer to the Initialization Counter </p></li>
+<li><p><strong>pSize</strong> – Pointer to the size of the decrypted data which is equal to encryptedDataSize since AES CTR does not use padding on initial data to encrypt. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>FWU_ERROR_CODE_SUCCESS if successful or FWU_ERROR_CODE_AES_ERROR if the AES CTR crypto engine cannot be initialized or if a data block cannot be decrypted. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0">
+<h3>Version 1.0<a class="headerlink" href="#version-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial version of the firmware update crypto library.</p></li>
+<li><p>This version supports ECDSA signature verification.</p></li>
+<li><p>This version supports AES ECB, CBC and CTR for firmware package decryption.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../fwu_service/index.html" class="btn btn-neutral float-left" title="Firmware Update Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../fwu_spi/index.html" class="btn btn-neutral float-right" title="Firmware Update Library for SPI Transport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

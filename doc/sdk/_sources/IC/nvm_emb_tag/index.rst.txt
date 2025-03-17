@@ -1,0 +1,97 @@
+=========================================================================
+TagConnected example
+=========================================================================
+
+
+Overview
+--------
+
+This example is starting the BLE stack and implements a Tag application. Optionally, ``#define TAG_USE_RPA`` for the device to use a Resolvable Private Address (RPA) after pairing.
+
+Available profiles in this example:
+
+* Link Loss Service
+* Alert Service
+* Tx Power Service
+
+.. warning::
+
+    This application has configurable SMP parameters `smpCfg_t` where `minKeyLen` can be specified. Reducing this value from 16 to 7 (minimum) reduces the entropy of the encryption key making the device less secure.
+
+Build
+-----
+
+The build target of this example is: **nvm_emb_tag**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emb_tag
+
+
+Program
+-------
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emb_tag\nvm_emb_tag.ihex --progress
+
+With YY = the COM port number of your DVK (optional if you set it in the file ``<sdk>\tools\blengine\config.cfg``), and 
+XX = the design iteration identifier.
+
+
+Test
+----
+
+To connect to the device, you need a smartphone with a BLE app installed. Typically, the LightBlue application is used for the rest of this page.
+
+When installed, open the application and start a BLE scan.
+Find your device which name should be 'EM9305_TAG'.
+
+The following picture is filtered to show the TAG beacon using the LightBlue application.
+
+.. image:: imgs/LightBlue_Scan.png
+  :scale: 100 %
+  :alt: TAG - LightBlue Scan
+  :align: center
+
+Click on CONNECT to connect to the device. If you ``#define TAG_USE_RPA``, accept the pairing request.
+When connected, you can read some device informations and services.
+
+.. image:: imgs/LightBlue_Connected.png
+  :scale: 100 %
+  :alt: TAG - LightBlue Connected
+  :align: center
+
+Click on the advertisment data. This shows up detailed information on the device.
+
+.. image:: imgs/LightBlue_Data.png
+  :scale: 100 %
+  :alt: TAG - LightBlue Data
+  :align: center
+
+Once connected, scroll down until you see the link loss service and expand the selection.
+
+.. image:: imgs/LightBlue_LinkLoss.png
+  :scale: 100 %
+  :alt: TAG - LightBlue Link Loss service
+  :align: center
+
+Once connected, scroll down until you see the immediate alert service and expand the selection.
+
+.. image:: imgs/LightBlue_ImmediateAlert.png
+  :scale: 100 %
+  :alt: TAG - LightBlue Immediate Alert service
+  :align: center
+
+Once connected, scroll down until you see the Tx power service and expand the selection.
+
+.. image:: imgs/LightBlue_TxPower.png
+  :scale: 100 %
+  :alt: TAG - LightBlue Tx Power service
+  :align: center
+
+After disconnecting, if you chose to pair, your device will restart advertising with an RPA that changes according to interval defined by ``RPA_TIMEOUT_SEC``. Only devices that have the IRK are able to resolve the identity, preventing tracking by Bluetooth address. Reset the 9305 to clear the locally stored bonding data.

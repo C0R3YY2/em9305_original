@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RTC Example &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Temperature Indicator (TI) Example" href="../ti_example/index.html" />
+    <link rel="prev" title="SPI Slave Example" href="../spi_slave_example/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Examples.html">Sample Applications</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples/drivers.html">EM9305 Drivers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc_single_example/index.html">ADC in Single mode Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adc_continuous_example/index.html">ADC in Continuous mode using DMA Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s_example/index.html">I2S Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2c_example/index.html">I2C with EEPROM Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec_example/index.html">QDEC Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master_example/index.html">SPI Master Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave_example/index.html">SPI Slave Example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">RTC Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-it-works">How it works</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run">Run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ti_example/index.html">Temperature Indicator (TI) Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer_example/index.html">Timer Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog_example/index.html">Watchdog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/bluetooth.html">Bluetooth Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/firmware_update.html">Firmware Update Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/misc.html">Miscellaneous Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Examples.html">Sample Applications</a></li>
+          <li class="breadcrumb-item"><a href="../examples/drivers.html">EM9305 Drivers</a></li>
+      <li class="breadcrumb-item active">RTC Example</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rtc-example">
+<h1>RTC Example<a class="headerlink" href="#rtc-example" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This sample code shows how to use the RTC library with date and time
+and alarm feature using events provided by callback.</p>
+<p>This sample code show how to get and set the time using time elapsed
+from 1.1.2000 or using a date and time structure.</p>
+<p>This library also support the week day number and the first day of the
+week can be configured to sunday or monday.</p>
+<p>There is two type of alarms, short and standard. In case of short alarm,
+the time can be configured from 1 ms to max 1 day with a 1 ms resolution.
+This kind of alarm can be one shot or periodic.</p>
+<p>The second alarm type, is an alarm with the elapsed time in second from
+the reference time (1.1.2000) or with a date and time.</p>
+<p>Only one short alarm and one alarm can be set.</p>
+<p>The library provide also an event (callback) for the end of the day.
+This RTC library use the sleep timer which can be clocked by LF-RC
+or LF-XTAL.</p>
+<p>By default the sample code is compiled using LF-RC clock for the sleep timer.</p>
+<p>If the two definition are kept commented, the sample app will use LF-RC clock.</p>
+<p>In order to use LF-XTAL with calibration, uncomment USE_LF_XTAL_WITH_CALIBRATION
+definition.</p>
+<p>In order to use LF-XTAL without calibration, uncomment USE_LF_XTAL definition.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>with<span class="w"> </span>calibration
+<span class="c1">#define USE_LF_XTAL_WITH_CALIBRATION</span>
+
+//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>without<span class="w"> </span>calibration
+<span class="c1">#define USE_LF_XTAL</span>
+</pre></div>
+</div>
+<p>This code configure the settings for the PML for LF-XTAL clock source.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifdef USE_LF_XTAL</span>
+//<span class="w"> </span>configure<span class="w"> </span>PML<span class="w"> </span><span class="k">for</span><span class="w"> </span>using<span class="w"> </span>LF<span class="w"> </span>XTAL
+//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>without<span class="w"> </span>calibration
+<span class="w">    </span>gPML_Config.lfClkSourceType<span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>uint8_t<span class="o">)</span>PML_LF_CLK_XTAL_EN<span class="p">;</span>
+<span class="w">    </span>gPML_Config.lfClkFreqRatioHf<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">46875</span><span class="p">;</span><span class="w">    </span>//<span class="w"> </span>48MHz<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span><span class="m">32</span>.768kHz
+<span class="w">    </span>gPML_Config.lfClkFreqRatioLf<span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="m">64</span><span class="p">;</span>
+<span class="w">    </span>gPML_Config.lfClkSourceAccuracy<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">150</span><span class="p">;</span><span class="w">      </span>//<span class="w"> </span>150ppm
+<span class="w">    </span>gPML_Config.rcCalibSkip<span class="w">         </span><span class="o">=</span><span class="w"> </span>true<span class="p">;</span><span class="w">     </span>//<span class="w"> </span>Disable<span class="w"> </span>calibration
+<span class="c1">#ifdef USE_LF_XTAL_WITH_CALIBRATION</span>
+//<span class="w"> </span>configure<span class="w"> </span>PML<span class="w"> </span><span class="k">for</span><span class="w"> </span>specifically<span class="w"> </span>using<span class="w"> </span>LF<span class="w"> </span>XTAL<span class="w"> </span>with<span class="w"> </span>calibration
+//<span class="w"> </span>Use<span class="w"> </span>LF-XTAL<span class="w"> </span>with<span class="w"> </span>calibration
+<span class="w">    </span>gPML_Config.lfClkSourceAccuracy<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span><span class="p">;</span><span class="w">       </span>//<span class="w"> </span>50ppm
+<span class="w">    </span>gPML_Config.rcCalibSkip<span class="w">         </span><span class="o">=</span><span class="w"> </span>false<span class="p">;</span><span class="w">    </span>//<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>skip<span class="w"> </span>calibration
+<span class="w">    </span>gPML_Config.rcCalibHfLimit<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+<span class="w">    </span>gPML_Config.rcCalibLfLimit<span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">38</span><span class="p">;</span><span class="w">       </span>//<span class="w"> </span><span class="m">1</span>.2<span class="w"> </span>ms<span class="w"> </span>@32<span class="w"> </span>kHz
+<span class="w">    </span>gPML_Config.rcCalibPeriod<span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="m">16384</span><span class="p">;</span><span class="w">    </span>//<span class="w"> </span>500ms<span class="w"> </span>@32kHz
+<span class="w">    </span>gPML_Config.rcCalibCorrection<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">;</span><span class="w">        </span>//<span class="w"> </span>0ppm
+<span class="c1">#endif</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+</section>
+<section id="how-it-works">
+<h2>How it works<a class="headerlink" href="#how-it-works" title="Link to this heading"></a></h2>
+<p>RTC library is registered in NVM_ConfigModules() function. A callback shall be provided
+in the RTC configuration structure to be notified when an event occurs like RTC Ready,
+Alarm, End of day, …</p>
+<p>A sleep timer channel shall also be provided (0 to 3) for the sleep timer comparator.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>void<span class="w"> </span>NVM_ConfigModules<span class="o">(</span>void<span class="o">)</span>
+<span class="o">{</span>
+<span class="w">  </span>RTC_RegisterModule<span class="o">()</span><span class="p">;</span>
+
+<span class="w">  </span>//<span class="w"> </span>Configure<span class="w"> </span>RTC
+<span class="w">  </span>gRTC_Config.callback<span class="w"> </span><span class="o">=</span><span class="w"> </span>Main_RtcCallback<span class="p">;</span>
+<span class="w">  </span>gRTC_Config.sleepTimerChannel<span class="w"> </span><span class="o">=</span><span class="w"> </span>SLEEP_TIMER_CHANNEL_3<span class="p">;</span>
+</pre></div>
+</div>
+<p>The prototype of the callback to be notified when a RTC event occurs.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>static<span class="w"> </span>void<span class="w"> </span>Main_RtcCallback<span class="o">(</span>RTC_CallbackReason_t<span class="w"> </span>reason<span class="o">)</span>
+<span class="o">{</span>
+<span class="w">    </span>QK_ISR_ENTRY<span class="o">()</span><span class="p">;</span>
+
+<span class="w">    </span>//<span class="w"> </span>Post<span class="w"> </span>an<span class="w"> </span>event<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>task.
+<span class="w">    </span>MyAppTask_PostEvent<span class="o">(</span>RTC_EVENT_SIG,<span class="w"> </span><span class="o">(</span>void*<span class="o">)</span>reason<span class="o">)</span><span class="p">;</span>
+
+<span class="w">    </span>QK_ISR_EXIT<span class="o">()</span><span class="p">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>When QPC start, the RTC can be enabled. This function enable the sleep timer
+comparator on the selected channel and register the wakeup action.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">case</span><span class="w"> </span>MY_APP_INIT_SIG:
+<span class="o">{</span>
+<span class="w">    </span>printf<span class="o">(</span><span class="s2">&quot;EM Microelectronic\r\n&quot;</span><span class="o">)</span><span class="p">;</span>
+
+<span class="w">    </span>printf<span class="o">(</span><span class="s2">&quot;EM9305 RTC Demo\r\n&quot;</span><span class="o">)</span><span class="p">;</span>
+
+<span class="w">    </span>RTC_Enable<span class="o">()</span><span class="p">;</span>
+
+<span class="w">    </span>/*<span class="w"> </span>Write<span class="w"> </span>your<span class="w"> </span>application<span class="w"> </span>initialization<span class="w"> </span>code<span class="w"> </span>here.<span class="w"> </span>*/
+<span class="o">}</span>
+<span class="k">break</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Then the RTC Demo show the different features of the RTC library
+by printing on the UART (GPIO 7) what it does and provide
+informations when a RTC event occurs.</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>Connect the UART on GPIO 7 (Tx) and open a serial terminal like Putty
+with a speed of 115200 bauds.</p>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>The build target of this example is: <strong>rtc_example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>rtc_example
+</pre></div>
+</div>
+</section>
+<section id="run">
+<h2>Run<a class="headerlink" href="#run" title="Link to this heading"></a></h2>
+<p>To program and run the example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\r</span>tc_example<span class="se">\r</span>tc_example.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../spi_slave_example/index.html" class="btn btn-neutral float-left" title="SPI Slave Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../ti_example/index.html" class="btn btn-neutral float-right" title="Temperature Indicator (TI) Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

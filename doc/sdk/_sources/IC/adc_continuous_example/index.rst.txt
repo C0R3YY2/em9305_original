@@ -1,0 +1,88 @@
+=========================================================================
+ADC in Continuous mode using DMA Example
+=========================================================================
+
+
+Overview
+--------
+
+The purpose of this example is to show how to use the ADC driver library
+in continuous mode using DMA transfer for a determined number of samples with QPC to sample the ADC at 120 kHz.
+
+It will print the result on the UART.
+
+Setup
+-----
+
+The output (Tx UART signal) is on GPIO7. This signal can be accessed from two header connectors (see picture below).
+
+.. image:: imgs/UART_Tx_GPIO7_connection.jpg
+   :scale: 50 %
+   :alt: Tx/GPIO7 electrical connection
+	 :align: center
+
+You can then connect a USB to UART device to GPIO7 and use a terminal software (for example docklight, PuTTy, …) to connect to the COM port of your device.
+
+.. warning::
+
+  Double check you connected the jumpers D+(07) and D-(06) on the DVK.
+  The GPIO6 and GPIO7 pins are connected by default to the USB connector.
+
+The adc continuous application example does an ADC measurement of 10 samples using DMA and print the adc raw value and converted
+voltage.
+
+Implementation details
+----------------------
+
+This example code use QPC and the code from the printf example to output result on the UART.
+
+The function *NVM_ApplicationEntry()* is the entry point of the customer application.
+It configure QPC and create one task for the project. It is also reponsible to resume 
+the peripheral after the SOC exit sleep mode.
+
+When the application start, it generate Q_ENTRY_SIG signal. This code initialise the printf over UART,
+enable and configure the ADC using DMA by providing a callback function.
+
+A callback shall be registered in order to be informed when all samples have been transfered by the DMA
+to the memory buffer.
+
+Then the ADC can be started in continuous mode by providing a memory buffer and the DMA channel.
+
+When the ADC is started in continuous mode, the DMA will transfer to the memory buffer each sample.
+Then when the number of sample are acquired, the DMA generate and ISR and the callback will be called.
+
+
+Build
+-----
+
+The build target of this example is: **adc_continuous_example**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target adc_continuous_example
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\adc_continuous_example\adc_continuous_example.ihex --progress
+
+With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).
+
+
+Then, launch your terminal software and connect to the DVK (UART port) using the second COM port dynamically created
+at connection. Note that this port is different than the one used to program the application into the flash memory.
+
+Once you have identified the right COM port, then in your terminal software, configure the speed to be 115200 bit/s
+and open the connection.
+
+You will then see the counter messages on your terminal like shown in screenshot below.
+
+.. image:: imgs/Terminal_ADC.jpg
+	:align: center

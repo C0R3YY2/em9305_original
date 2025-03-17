@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EM System Application Specific (EMSAS) example &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="QPC example" href="../nvm_qpc_example/index.html" />
+    <link rel="prev" title="Bootloader example" href="../bootloader/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Examples.html">Sample Applications</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples/drivers.html">EM9305 Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/bluetooth.html">Bluetooth Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/firmware_update.html">Firmware Update Sample Applications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../examples/misc.html">Miscellaneous Sample Applications</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../basic_app_tutorial/index.html">Basic Application Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../boot_selector/index.html">Boot Selector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bootloader/index.html">Bootloader example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">EM System Application Specific (EMSAS) example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#program">Program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interact-with-the-target">Interact with the Target</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_qpc_example/index.html">QPC example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvm_unit_test/index.html">Unit test example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../printf_example/index.html">Printf Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Examples.html">Sample Applications</a></li>
+          <li class="breadcrumb-item"><a href="../examples/misc.html">Miscellaneous Sample Applications</a></li>
+      <li class="breadcrumb-item active">EM System Application Specific (EMSAS) example</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="em-system-application-specific-emsas-example">
+<h1>EM System Application Specific (EMSAS) example<a class="headerlink" href="#em-system-application-specific-emsas-example" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This example shows how to use EMSAS commands and how to generates EMSAS events in an application.</p>
+<p>EM System defines a set of commands that are reserved for vendor specific
+use. Among the EM System OpCodes, the range 0xFFC0 to 0xFFCF (16 OpCodes)
+is reserved for Application Specific use cases.</p>
+<p>In this example, the EMSAS command (OpCode 0xFFC0) is defined and accepts one parameter.</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">EMSAS_Timer_Control Command Parameter</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Format</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Timer_Control</p></td>
+<td><p>Octet</p></td>
+<td><div class="line-block">
+<div class="line">0x00: Stop Timer</div>
+<div class="line">0x01: Start Timer</div>
+<div class="line">0x02-0xFF: Reserved</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>The build target of this example is: <strong>nvm_emsas_example_spi</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>nvm_emsas_example_spi
+</pre></div>
+</div>
+</section>
+<section id="program">
+<h2>Program<a class="headerlink" href="#program" title="Link to this heading"></a></h2>
+<p>To program and run the example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\n</span>vm_emsas_example<span class="se">\n</span>vm_emsas_example_spi.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>With YY = the COM port number of your DVK.</p>
+</section>
+<section id="interact-with-the-target">
+<h2>Interact with the Target<a class="headerlink" href="#interact-with-the-target" title="Link to this heading"></a></h2>
+<p>The script host_emsas_example.py is included in the SDK to interact with the target.
+It shows how to instanciate an EMSAS Command as well as how to catch EMSAS Events.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>host_emsas_example.py<span class="w"> </span>--port<span class="o">=</span>COMYY
+
+With<span class="w"> </span><span class="nv">YY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>the<span class="w"> </span>COM<span class="w"> </span>port<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>DVK.
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../bootloader/index.html" class="btn btn-neutral float-left" title="Bootloader example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../nvm_qpc_example/index.html" class="btn btn-neutral float-right" title="QPC example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lock information pages &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lock information pages</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lock-information-pages">
+<h1>Lock information pages<a class="headerlink" href="#lock-information-pages" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The information pages can be permanently locked by setting the appropriate bits
+in the right place in the flash memory.
+At startup during the ROM boot sequence, these bits are read and used to configure
+the device. Once configured, an information page is protected against erase, and
+then consequently against rewrite.</p>
+<p>This documentation page explains how to configure the information pages lock bits.</p>
+</section>
+<section id="json-file-configuration">
+<h2>JSON file configuration<a class="headerlink" href="#json-file-configuration" title="Link to this heading"></a></h2>
+<p>The lock bits for the information pages are stored in information page 3 and are
+duplicated in information page 2.</p>
+<p>The lock bits in information page 3 are used to lock some NVM parts like typically
+the information page 3 which contains configuration values that must not be changed
+in order to have the device work properly.
+These lock bits let other information pages opened for the customer to store its
+own configuration parameters and to freely decide which of the non locked page he
+wants to lock.</p>
+<p>So, usually the customer receives devices with information page 3 locked. Since
+it is not possible for the customer to complete the locking information in information
+page 3 (because it is locked), then he has the possibility to use the same data
+structure but in information page 2 which is not locked.</p>
+<p>Note that once a page is locked, it cannot be unlocked. So if information page 3
+(reserved for EM usage) is locked while information page 2 is unlocked, the
+customer might want to enforce value 0 for information page 3 lock bit in its
+own reserved page. However, such action will have no effect and the information
+page 3 will stay locked anyway.</p>
+<p>The previous chapter above shows how to read the content of either the information
+page 3 or the information page 2. The outcome of such read is a JSON file which
+contains all the fields in a human readable format.</p>
+<p>The following screenshot is an extract showing the part of the file that contains
+the locking information.</p>
+<div class="line-block">
+<div class="line">“Lock Bits”: {</div>
+<div class="line-block">
+<div class="line">“address”: “0x1D00”,</div>
+<div class="line">“type”: “registers”,</div>
+<div class="line">“force”: true,</div>
+<div class="line">“data”: {</div>
+<div class="line-block">
+<div class="line">“RegNvmLockMain0”: {</div>
+<div class="line-block">
+<div class="line">“RegNvmLockMain0”: null</div>
+</div>
+<div class="line">},</div>
+<div class="line">“RegNvmLockMain1”: {</div>
+<div class="line-block">
+<div class="line">“RegNvmLockMain1”: null</div>
+</div>
+<div class="line">},</div>
+<div class="line">“RegNvmLockInfo”: {</div>
+<div class="line-block">
+<div class="line">“NvmEraseLockInfoPage0”: null,</div>
+<div class="line">“NvmWriteLockInfoPage0”: null,</div>
+<div class="line">“NvmLockInfoPage”: null</div>
+</div>
+<div class="line">},</div>
+</div>
+</div>
+</div>
+</section>
+<section id="modifying-lock-bits">
+<h2>Modifying lock bits<a class="headerlink" href="#modifying-lock-bits" title="Link to this heading"></a></h2>
+<p>From the snippet above, there is the field “RegNvmLockInfo” that defines the
+information pages lock structure.
+Within this field, the “NvmLockInfoPage” introduces the bits that are used to
+define the locking configuration.
+This field contains 4 bits, each bit being dedicated to one information page:</p>
+<ul class="simple">
+<li><p>bit 3 ==&gt; information page 3 <em>(0: unlocked, 1: locked)</em></p></li>
+<li><p>bit 2 ==&gt; information page 2 …</p></li>
+<li><p>bit 1 ==&gt; information page 1 …</p></li>
+<li><p>bit 0 ==&gt; information page 0 …</p></li>
+</ul>
+<p>Of course, a combination of those bits can be set to lock more than one page in
+one single operation.</p>
+<p>For example, the decimal value 13 (<em>b1101</em>) will permanently lock information pages 3, 2 and 0.</p>
+<p>The modification has to be done manually by editing the JSON file using a simple
+text editor:</p>
+<div class="line-block">
+<div class="line">…</div>
+<div class="line-block">
+<div class="line">“RegNvmLockInfo”: {</div>
+<div class="line-block">
+<div class="line">“NvmEraseLockInfoPage0”: null,</div>
+<div class="line">“NvmWriteLockInfoPage0”: null,</div>
+<div class="line">“NvmLockInfoPage”: <strong>13</strong></div>
+</div>
+<div class="line">},</div>
+</div>
+<div class="line">…</div>
+</div>
+<p>Then using the BLEngine tool, this file is then used to update the content
+of information page 3 or 2.</p>
+<p>For example, the following command line will write data from the <em>user_config.json</em>
+file into the user information page in flash memory (page 2):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="w"> </span>COMYY<span class="w"> </span>run<span class="w"> </span>nvm_write<span class="w"> </span>-p<span class="w"> </span>user<span class="w"> </span>-in<span class="w"> </span>config.json
+</pre></div>
+</div>
+<p>Now you know how to read an information page, how to modify it and how to store
+your new configuration.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

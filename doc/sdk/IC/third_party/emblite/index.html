@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMB Lite &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">EMB Lite</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="emb-lite">
+<span id="emblite-reference-label"></span><h1>EMB Lite<a class="headerlink" href="#emb-lite" title="Link to this heading"></a></h1>
+</section>
+<section id="emb-lite-api">
+<h1>EMB Lite API<a class="headerlink" href="#emb-lite-api" title="Link to this heading"></a></h1>
+<p>The <cite>EMB Lite</cite> library provides a wrapper library on top of the <em>em|bleu Bluetooth LE</em> stack that makes writing Bluetooth LE application easier by reducing the number of primitives required for common BLE operations.</p>
+<p>This <cite>EMB Lite</cite> sits on top of the existing Device Manager (DM) API and uses a centralized configuration module to allow for easy customization without requiring major application changes. It is a lightweight replacement for the previously supplied Application framework (AF). Consequently, an application using <cite>EMB Lite</cite> is intended to use the <cite>EMB Lite</cite> APIs in combination with the device manager APIs instead of any application framework APIs.</p>
+<p>The <cite>EMB Lite</cite> exclusively supports BLE operations in the Peripheral role with a limited selection of BLE features. Thus, it is not planned to support advanced features like advertising extension, direction finding, periodic advertising with response or isochronous channels.</p>
+<p>In case there is a need for advanced operations, then the end user shall fall back using the regular <em>em|bleu Bluetooth LE</em> stack.</p>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dc/d7a/group__emblite"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">emblite</span></span></dt>
+<dd><p>EMBLite API. </p>
+<p>This library is a Bluetooth LE Application wrapper add-on on top of the Bluetooth LE stack APIs that provides a higher lever of abstraction to ease writing of an application. Currently it exclusively supports BLE operations in Peripheral role and only limited selection of BLE features. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.EMBLITE_START_SIG">
+<span class="target" id="dc/d7a/group__emblite_1gad466fe45dba06445f5e28add2d4f5dc5"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_START_SIG</span></span></span> <span class="pre">(Q_USER_SIG)</span><a class="headerlink" href="#c.EMBLITE_START_SIG" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.EMBLITE_USER_EVT_START">
+<span class="target" id="dc/d7a/group__emblite_1gaf087c931bcf24e1eebc9983632d4bf9a"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_USER_EVT_START</span></span></span> <span class="pre">(</span><a class="reference internal" href="#dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da0499a3351b6eb7dc4a68f20858a55121"><span class="std std-ref"><span class="pre">EMBLITE_SIG_SIGNALS_MAX</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.EMBLITE_USER_EVT_START" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv415EMBLite_Signals">
+<span id="_CPPv315EMBLite_Signals"></span><span id="_CPPv215EMBLite_Signals"></span><span id="EMBLite_Signals"></span><span class="target" id="dc/d7a/group__emblite_1ga794600895a493265d1b5f3dbb89b5a99"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_Signals</span></span></span><a class="headerlink" href="#_CPPv415EMBLite_Signals" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv416EMBLite_Status_t">
+<span id="_CPPv316EMBLite_Status_t"></span><span id="_CPPv216EMBLite_Status_t"></span><span id="EMBLite_Status_t"></span><span class="target" id="dc/d7a/group__emblite_1ga57de2f588d5a0619f0b65d7455ef29fd"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_Status_t</span></span></span><a class="headerlink" href="#_CPPv416EMBLite_Status_t" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv424EMBLite_BLESubsys_Proc_t">
+<span id="_CPPv324EMBLite_BLESubsys_Proc_t"></span><span id="_CPPv224EMBLite_BLESubsys_Proc_t"></span><span id="EMBLite_BLESubsys_Proc_t"></span><span class="target" id="dc/d7a/group__emblite_1ga82cd3ac3b6b1d3db3a2e39425b441ad1"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_BLESubsys_Proc_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv413EMBLite_Msg_t" title="EMBLite_Msg_t"><span class="n"><span class="pre">EMBLite_Msg_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pMessage</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv424EMBLite_BLESubsys_Proc_t" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413AppSignaler_t">
+<span id="_CPPv313AppSignaler_t"></span><span id="_CPPv213AppSignaler_t"></span><span id="AppSignaler_t"></span><span class="target" id="dc/d7a/group__emblite_1ga4dcc2d4325b447b6e45e395b205cd68c"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">AppSignaler_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv415EMBLite_Signals" title="EMBLite_Signals"><span class="n"><span class="pre">EMBLite_Signals</span></span></a><span class="w"> </span><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pParams</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv413AppSignaler_t" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4Ut2_44">
+<span id="_CPPv3Ut2_44"></span><span class="target" id="dc/d7a/group__emblite_1ga157d5577a5b2f5986037d0d09c7dc77d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#_CPPv4Ut2_44" title="Link to this definition"></a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4423EMBLITE_STACK_READY_SIGE">
+<span id="_CPPv3NUt2_4423EMBLITE_STACK_READY_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da53356b9210df88c35c4d708fa11fefb5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_STACK_READY_SIG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">Q_USER_SIG</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4NUt2_4423EMBLITE_STACK_READY_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>BLE Stack Ready Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4427EMBLITE_STACK_INIT_FAIL_SIGE">
+<span id="_CPPv3NUt2_4427EMBLITE_STACK_INIT_FAIL_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da646f5a62c496fece92a7d2d140116056"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_STACK_INIT_FAIL_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4427EMBLITE_STACK_INIT_FAIL_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>BLE Stack Initialization Failed Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4423EMBLITE_ADV_STARTED_SIGE">
+<span id="_CPPv3NUt2_4423EMBLITE_ADV_STARTED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da7bc8b12b829bac5a447235c360a746d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_ADV_STARTED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4423EMBLITE_ADV_STARTED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Start Advertising Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4422EMBLITE_ADV_FAILED_SIGE">
+<span id="_CPPv3NUt2_4422EMBLITE_ADV_FAILED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da08190ea48b1e2011ef444ec9fd9f0113"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_ADV_FAILED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4422EMBLITE_ADV_FAILED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Advertising Failed Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4423EMBLITE_ADV_STOPPED_SIGE">
+<span id="_CPPv3NUt2_4423EMBLITE_ADV_STOPPED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da16b86d817a5ac4185307d2c4f2b0665b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_ADV_STOPPED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4423EMBLITE_ADV_STOPPED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Advertising Stopped Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4423EMBLITE_CONN_OPENED_SIGE">
+<span id="_CPPv3NUt2_4423EMBLITE_CONN_OPENED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77daa5ce6d5d277287f30caa641264adccdb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_CONN_OPENED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4423EMBLITE_CONN_OPENED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Connection Opened Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4423EMBLITE_CONN_CLOSED_SIGE">
+<span id="_CPPv3NUt2_4423EMBLITE_CONN_CLOSED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77dae4b899ac68033af7467fc59805a80b55"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_CONN_CLOSED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4423EMBLITE_CONN_CLOSED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Connection Closed Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4424EMBLITE_CONN_UPDATED_SIGE">
+<span id="_CPPv3NUt2_4424EMBLITE_CONN_UPDATED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da0cd013644183eb2bc7e172710d71f6b8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_CONN_UPDATED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4424EMBLITE_CONN_UPDATED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Connection Parameter Updated Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4434EMBLITE_HANDLE_VALUE_CONFIRMED_SIGE">
+<span id="_CPPv3NUt2_4434EMBLITE_HANDLE_VALUE_CONFIRMED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da5f59379a969b2d57e24fcb8d3bdd3edd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_HANDLE_VALUE_CONFIRMED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4434EMBLITE_HANDLE_VALUE_CONFIRMED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>ATT server handle value confirmation Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4429EMBLITE_CCC_STATE_CHANGED_SIGE">
+<span id="_CPPv3NUt2_4429EMBLITE_CCC_STATE_CHANGED_SIGE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da682a6f8704eb2cc02d8eff2691902d51"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_CCC_STATE_CHANGED_SIG</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4429EMBLITE_CCC_STATE_CHANGED_SIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Client Characteristic Configuration changed Signal </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4423EMBLITE_SIG_SIGNALS_MAXE">
+<span id="_CPPv3NUt2_4423EMBLITE_SIG_SIGNALS_MAXE"></span><span class="target" id="dc/d7a/group__emblite_1gga157d5577a5b2f5986037d0d09c7dc77da0499a3351b6eb7dc4a68f20858a55121"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_SIG_SIGNALS_MAX</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4423EMBLITE_SIG_SIGNALS_MAXE" title="Link to this definition"></a><br /></dt>
+<dd><p>EMBLite Signal limit. Application QPC messages should start from this number to avoid any collisions with EMBLite QPC messages </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4Ut2_45">
+<span id="_CPPv3Ut2_45"></span><span class="target" id="dc/d7a/group__emblite_1ga1fb9092bcdeada2d206bdc74afbbe122"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#_CPPv4Ut2_45" title="Link to this definition"></a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4531EMBLITE_CONN_UPDATE_TIMEOUT_INDE">
+<span id="_CPPv3NUt2_4531EMBLITE_CONN_UPDATE_TIMEOUT_INDE"></span><span class="target" id="dc/d7a/group__emblite_1gga1fb9092bcdeada2d206bdc74afbbe122a95ffb6272dfa9634b2ce01907dbc670f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_CONN_UPDATE_TIMEOUT_IND</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0xA0</span></span><a class="headerlink" href="#_CPPv4NUt2_4531EMBLITE_CONN_UPDATE_TIMEOUT_INDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Connection Parameter Update Timeout Indicator </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4524EMBLITE_INTERNAL_MSG_MAXE">
+<span id="_CPPv3NUt2_4524EMBLITE_INTERNAL_MSG_MAXE"></span><span class="target" id="dc/d7a/group__emblite_1gga1fb9092bcdeada2d206bdc74afbbe122ae30a4c3725e34b182e77862f70582872"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_INTERNAL_MSG_MAX</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4524EMBLITE_INTERNAL_MSG_MAXE" title="Link to this definition"></a><br /></dt>
+<dd><p>EMBLite internal message limit. Application WSF messages should start from this number to avoid any collisions with EMBLite internal messages </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4Ut2_46">
+<span id="_CPPv3Ut2_46"></span><span class="target" id="dc/d7a/group__emblite_1ga84627a72058502328269676b81780f89"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#_CPPv4Ut2_46" title="Link to this definition"></a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4615EMBLITE_SUCCESSE">
+<span id="_CPPv3NUt2_4615EMBLITE_SUCCESSE"></span><span class="target" id="dc/d7a/group__emblite_1gga84627a72058502328269676b81780f89a309829f7d692579420b5d87ad34f0ddf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NUt2_4615EMBLITE_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4627EMBLITE_ADV_DATA_UNASSIGNEDE">
+<span id="_CPPv3NUt2_4627EMBLITE_ADV_DATA_UNASSIGNEDE"></span><span class="target" id="dc/d7a/group__emblite_1gga84627a72058502328269676b81780f89acc393cf6092371877fba5b37ef4b588f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_ADV_DATA_UNASSIGNED</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4627EMBLITE_ADV_DATA_UNASSIGNEDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Advertising Data not assigned </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4628EMBLITE_PEER_ADDR_UNASSIGNEDE">
+<span id="_CPPv3NUt2_4628EMBLITE_PEER_ADDR_UNASSIGNEDE"></span><span class="target" id="dc/d7a/group__emblite_1gga84627a72058502328269676b81780f89a6b31a6fb81d8d1477d08d28ae7f8c68e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_PEER_ADDR_UNASSIGNED</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4628EMBLITE_PEER_ADDR_UNASSIGNEDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Advertising Peer Address not assigned </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_4623EMBLITE_NOT_LEGACY_MODEE">
+<span id="_CPPv3NUt2_4623EMBLITE_NOT_LEGACY_MODEE"></span><span class="target" id="dc/d7a/group__emblite_1gga84627a72058502328269676b81780f89a4543a57325978115441cf3359d6c1ad7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLITE_NOT_LEGACY_MODE</span></span></span><a class="headerlink" href="#_CPPv4NUt2_4623EMBLITE_NOT_LEGACY_MODEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Advertising not in Legacy mode </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422EMBLite_ConfigureStackP16EMBLite_Config_t">
+<span id="_CPPv322EMBLite_ConfigureStackP16EMBLite_Config_t"></span><span id="_CPPv222EMBLite_ConfigureStackP16EMBLite_Config_t"></span><span id="EMBLite_ConfigureStack__EMBLite_Config_tP"></span><span class="target" id="dc/d7a/group__emblite_1ga37d8dc79ff8a25f3579a620fa490667a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_ConfigureStack</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416EMBLite_Config_t" title="EMBLite_Config_t"><span class="n"><span class="pre">EMBLite_Config_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422EMBLite_ConfigureStackP16EMBLite_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Configure the EMB Lite stack. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EMBLite_Config_t</strong> – Data structure with configuration parameters for the EMB Lite stack. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423EMBLite_InitializeStackP16EMBLite_Config_t">
+<span id="_CPPv323EMBLite_InitializeStackP16EMBLite_Config_t"></span><span id="_CPPv223EMBLite_InitializeStackP16EMBLite_Config_t"></span><span id="EMBLite_InitializeStack__EMBLite_Config_tP"></span><span class="target" id="dc/d7a/group__emblite_1ga853046945890c4e571dca887e3fe2b07"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_InitializeStack</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416EMBLite_Config_t" title="EMBLite_Config_t"><span class="n"><span class="pre">EMBLite_Config_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423EMBLite_InitializeStackP16EMBLite_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the EMB Lite stack in Peripheral configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EMBLite_Config_t</strong> – Data structure with configuration parameters for the EMB Lite stack. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418EMBLite_StartStackP16EMBLite_Config_t">
+<span id="_CPPv318EMBLite_StartStackP16EMBLite_Config_t"></span><span id="_CPPv218EMBLite_StartStackP16EMBLite_Config_t"></span><span id="EMBLite_StartStack__EMBLite_Config_tP"></span><span class="target" id="dc/d7a/group__emblite_1gaeef4ae312c5b2147a9b7afedb195028b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_StartStack</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416EMBLite_Config_t" title="EMBLite_Config_t"><span class="n"><span class="pre">EMBLite_Config_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418EMBLite_StartStackP16EMBLite_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Start running the EMB Lite stack in Peripheral configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EMBLite_Config_t</strong> – Data structure with configuration parameters for the EMB Lite stack. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424EMBLite_StartAdvertisingP16EMBLite_Config_t">
+<span id="_CPPv324EMBLite_StartAdvertisingP16EMBLite_Config_t"></span><span id="_CPPv224EMBLite_StartAdvertisingP16EMBLite_Config_t"></span><span id="EMBLite_StartAdvertising__EMBLite_Config_tP"></span><span class="target" id="dc/d7a/group__emblite_1ga78ab58d93e30dcb51ee94b59a750a06c"></span><a class="reference internal" href="#_CPPv416EMBLite_Status_t" title="EMBLite_Status_t"><span class="n"><span class="pre">EMBLite_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_StartAdvertising</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv416EMBLite_Config_t" title="EMBLite_Config_t"><span class="n"><span class="pre">EMBLite_Config_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCfg</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424EMBLite_StartAdvertisingP16EMBLite_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Start Advertising. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>EMBLite_Config_t</strong> – Data structure with configuration parameters for the EMB Lite stack.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns one of the following status code:<ul class="simple">
+<li><p>EMBLITE_SUCCESS if advertising is successfully started</p></li>
+<li><p>EMBLITE_PEER_ADDR_UNASSIGNED in case no direct peer address has been previously assigned</p></li>
+<li><p>EMBLITE_ADV_DATA_UNASSIGNED in case no advertising data has been previously assigned </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423EMBLite_StopAdvertisingv">
+<span id="_CPPv323EMBLite_StopAdvertisingv"></span><span id="_CPPv223EMBLite_StopAdvertisingv"></span><span id="EMBLite_StopAdvertising__void"></span><span class="target" id="dc/d7a/group__emblite_1ga7191aff14c3c8653def4302e3d2bd55d"></span><a class="reference internal" href="#_CPPv416EMBLite_Status_t" title="EMBLite_Status_t"><span class="n"><span class="pre">EMBLite_Status_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_StopAdvertising</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423EMBLite_StopAdvertisingv" title="Link to this definition"></a><br /></dt>
+<dd><p>Stop Advertising. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns one of the following status code:<ul class="simple">
+<li><p>EMBLITE_SUCCESS if advertising is successfully stopped</p></li>
+<li><p>EMBLITE_NOT_LEGACY_MODE if not in legacy mode </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv433EMBLite_GetCurrentConnectionCountv">
+<span id="_CPPv333EMBLite_GetCurrentConnectionCountv"></span><span id="_CPPv233EMBLite_GetCurrentConnectionCountv"></span><span id="EMBLite_GetCurrentConnectionCount__void"></span><span class="target" id="dc/d7a/group__emblite_1gaf3220c9880bc4ccca6903175f073fc1d"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_GetCurrentConnectionCount</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv433EMBLite_GetCurrentConnectionCountv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the number of existing connections of the given role. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of connections, up to a max of 4 connections. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv423EMBLite_CloseConnection10dmConnId_t">
+<span id="_CPPv323EMBLite_CloseConnection10dmConnId_t"></span><span id="_CPPv223EMBLite_CloseConnection10dmConnId_t"></span><span id="EMBLite_CloseConnection__dmConnId_t"></span><span class="target" id="dc/d7a/group__emblite_1ga88ae8798c0918a41e8b28c3e470b5ffb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_CloseConnection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">dmConnId_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">connId</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv423EMBLite_CloseConnection10dmConnId_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Close the connection with the give connection identifier. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>connId</strong> – Connection identifier. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428EMBLite_RegisterBLEProcessor24EMBLite_BLESubsys_Proc_t">
+<span id="_CPPv328EMBLite_RegisterBLEProcessor24EMBLite_BLESubsys_Proc_t"></span><span id="_CPPv228EMBLite_RegisterBLEProcessor24EMBLite_BLESubsys_Proc_t"></span><span id="EMBLite_RegisterBLEProcessor__EMBLite_BLESubsys_Proc_t"></span><span class="target" id="dc/d7a/group__emblite_1gaf975a6b60d0eb21b7b522b37b19f3d10"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_RegisterBLEProcessor</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv424EMBLite_BLESubsys_Proc_t" title="EMBLite_BLESubsys_Proc_t"><span class="n"><span class="pre">EMBLite_BLESubsys_Proc_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">processor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428EMBLite_RegisterBLEProcessor24EMBLite_BLESubsys_Proc_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Register an additional processor for Device Manager and ATT events. NOTE: These events are already handled by EMBLite, but with this API you can trigger more application level functionality from these events if desired. Please note that the registered function will be called from inside EMBLite, no additional WSF messaged or QPC signals will be generated. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>processor</strong> – Additional processing function to run. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv427EMBLite_RegisterAppSignaler13AppSignaler_t">
+<span id="_CPPv327EMBLite_RegisterAppSignaler13AppSignaler_t"></span><span id="_CPPv227EMBLite_RegisterAppSignaler13AppSignaler_t"></span><span id="EMBLite_RegisterAppSignaler__AppSignaler_t"></span><span class="target" id="dc/d7a/group__emblite_1ga12186a8841e8cabfce289cee7c6d72de"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_RegisterAppSignaler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413AppSignaler_t" title="AppSignaler_t"><span class="n"><span class="pre">AppSignaler_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">signaler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv427EMBLite_RegisterAppSignaler13AppSignaler_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Register a QPC Signal Generator to be used for sending EMB Lite Signals to a separate QPC context outside the context of the BLE task. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>signaler</strong> – Handler for application signals task. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv432EMBLite_ConnectionUpdateParams_t">
+<span id="_CPPv332EMBLite_ConnectionUpdateParams_t"></span><span id="_CPPv232EMBLite_ConnectionUpdateParams_t"></span><span id="EMBLite_ConnectionUpdateParams_t"></span><span class="target" id="db/d74/struct_e_m_b_lite___connection_update_params__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_ConnectionUpdateParams_t</span></span></span><a class="headerlink" href="#_CPPv432EMBLite_ConnectionUpdateParams_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N32EMBLite_ConnectionUpdateParams_t16connUpdatePeriodE">
+<span id="_CPPv3N32EMBLite_ConnectionUpdateParams_t16connUpdatePeriodE"></span><span id="_CPPv2N32EMBLite_ConnectionUpdateParams_t16connUpdatePeriodE"></span><span id="EMBLite_ConnectionUpdateParams_t::connUpdatePeriod__uint32_t"></span><span class="target" id="db/d74/struct_e_m_b_lite___connection_update_params__t_1a90273fd71bd1ff1479b9fc54fbc2fafd"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connUpdatePeriod</span></span></span><a class="headerlink" href="#_CPPv4N32EMBLite_ConnectionUpdateParams_t16connUpdatePeriodE" title="Link to this definition"></a><br /></dt>
+<dd><p>Connection period in ms before attempting connection parameter update </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N32EMBLite_ConnectionUpdateParams_t15connIntervalMinE">
+<span id="_CPPv3N32EMBLite_ConnectionUpdateParams_t15connIntervalMinE"></span><span id="_CPPv2N32EMBLite_ConnectionUpdateParams_t15connIntervalMinE"></span><span id="EMBLite_ConnectionUpdateParams_t::connIntervalMin__uint16_t"></span><span class="target" id="db/d74/struct_e_m_b_lite___connection_update_params__t_1a29b8bf90dea63d685867c624a342a003"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connIntervalMin</span></span></span><a class="headerlink" href="#_CPPv4N32EMBLite_ConnectionUpdateParams_t15connIntervalMinE" title="Link to this definition"></a><br /></dt>
+<dd><p>Minimum connection interval. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N32EMBLite_ConnectionUpdateParams_t15connIntervalMaxE">
+<span id="_CPPv3N32EMBLite_ConnectionUpdateParams_t15connIntervalMaxE"></span><span id="_CPPv2N32EMBLite_ConnectionUpdateParams_t15connIntervalMaxE"></span><span id="EMBLite_ConnectionUpdateParams_t::connIntervalMax__uint16_t"></span><span class="target" id="db/d74/struct_e_m_b_lite___connection_update_params__t_1ae4c6dcdf7a4b2a0c030a70a81d5edfd0"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connIntervalMax</span></span></span><a class="headerlink" href="#_CPPv4N32EMBLite_ConnectionUpdateParams_t15connIntervalMaxE" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum connection interval. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N32EMBLite_ConnectionUpdateParams_t11connLatencyE">
+<span id="_CPPv3N32EMBLite_ConnectionUpdateParams_t11connLatencyE"></span><span id="_CPPv2N32EMBLite_ConnectionUpdateParams_t11connLatencyE"></span><span id="EMBLite_ConnectionUpdateParams_t::connLatency__uint16_t"></span><span class="target" id="db/d74/struct_e_m_b_lite___connection_update_params__t_1a3c1c240d65b6994f36d04a50ea00bde8"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connLatency</span></span></span><a class="headerlink" href="#_CPPv4N32EMBLite_ConnectionUpdateParams_t11connLatencyE" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum peripheral latency. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N32EMBLite_ConnectionUpdateParams_t18supervisionTimeoutE">
+<span id="_CPPv3N32EMBLite_ConnectionUpdateParams_t18supervisionTimeoutE"></span><span id="_CPPv2N32EMBLite_ConnectionUpdateParams_t18supervisionTimeoutE"></span><span id="EMBLite_ConnectionUpdateParams_t::supervisionTimeout__uint16_t"></span><span class="target" id="db/d74/struct_e_m_b_lite___connection_update_params__t_1af4592050178cc8bb7f4390a0d4741e48"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">supervisionTimeout</span></span></span><a class="headerlink" href="#_CPPv4N32EMBLite_ConnectionUpdateParams_t18supervisionTimeoutE" title="Link to this definition"></a><br /></dt>
+<dd><p>Supervision timeout. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N32EMBLite_ConnectionUpdateParams_t17maxUpdateAttemptsE">
+<span id="_CPPv3N32EMBLite_ConnectionUpdateParams_t17maxUpdateAttemptsE"></span><span id="_CPPv2N32EMBLite_ConnectionUpdateParams_t17maxUpdateAttemptsE"></span><span id="EMBLite_ConnectionUpdateParams_t::maxUpdateAttempts__uint8_t"></span><span class="target" id="db/d74/struct_e_m_b_lite___connection_update_params__t_1acf68da6ae1c0c86f7eea9eaa7425f343"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxUpdateAttempts</span></span></span><a class="headerlink" href="#_CPPv4N32EMBLite_ConnectionUpdateParams_t17maxUpdateAttemptsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of update attempts before giving up. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv416EMBLite_Config_t">
+<span id="_CPPv316EMBLite_Config_t"></span><span id="_CPPv216EMBLite_Config_t"></span><span id="EMBLite_Config_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_Config_t</span></span></span><a class="headerlink" href="#_CPPv416EMBLite_Config_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t10deviceNameE">
+<span id="_CPPv3N16EMBLite_Config_t10deviceNameE"></span><span id="_CPPv2N16EMBLite_Config_t10deviceNameE"></span><span id="EMBLite_Config_t::deviceName__uint8_tP"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1ad671380f79237b52e80e657512a08af0"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">deviceName</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t10deviceNameE" title="Link to this definition"></a><br /></dt>
+<dd><p>Device Name </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t16deviceNameLengthE">
+<span id="_CPPv3N16EMBLite_Config_t16deviceNameLengthE"></span><span id="_CPPv2N16EMBLite_Config_t16deviceNameLengthE"></span><span id="EMBLite_Config_t::deviceNameLength__uint16_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1aa1e0297d9c757c29cb1d03df41247906"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deviceNameLength</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t16deviceNameLengthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Length of <code class="docutils literal notranslate"><span class="pre">deviceName</span></code> field </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t19deviceNumberofPoolsE">
+<span id="_CPPv3N16EMBLite_Config_t19deviceNumberofPoolsE"></span><span id="_CPPv2N16EMBLite_Config_t19deviceNumberofPoolsE"></span><span id="EMBLite_Config_t::deviceNumberofPools__uint8_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a178574aa631a88270684a84676a350cf"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deviceNumberofPools</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t19deviceNumberofPoolsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of pools in the buffer pool description </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t18deviceBuffPoolDescE">
+<span id="_CPPv3N16EMBLite_Config_t18deviceBuffPoolDescE"></span><span id="_CPPv2N16EMBLite_Config_t18deviceBuffPoolDescE"></span><span id="EMBLite_Config_t::deviceBuffPoolDesc__wsfBufPoolDesc_tP"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1abe59794cbc69a0b4c69a34db7a84cb8c"></span><span class="n"><span class="pre">wsfBufPoolDesc_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">deviceBuffPoolDesc</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t18deviceBuffPoolDescE" title="Link to this definition"></a><br /></dt>
+<dd><p>Buffer Pool Description </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t19advertisingDurationE">
+<span id="_CPPv3N16EMBLite_Config_t19advertisingDurationE"></span><span id="_CPPv2N16EMBLite_Config_t19advertisingDurationE"></span><span id="EMBLite_Config_t::advertisingDuration__uint16_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1af089f54950540db8c02327a55199a7fa"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">advertisingDuration</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t19advertisingDurationE" title="Link to this definition"></a><br /></dt>
+<dd><p>Duration of each advertising operation (ms). Duration of zero (0) means advertising would not stop until manually stopped. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t19advertisingIntervalE">
+<span id="_CPPv3N16EMBLite_Config_t19advertisingIntervalE"></span><span id="_CPPv2N16EMBLite_Config_t19advertisingIntervalE"></span><span id="EMBLite_Config_t::advertisingInterval__uint16_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a0474c3b40ff4fcdd824d2f1e947f8f1a"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">advertisingInterval</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t19advertisingIntervalE" title="Link to this definition"></a><br /></dt>
+<dd><p>Advertising Interval (0.625ms increments). Min 20ms - Max 10.24 seconds. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t15advertisingDataE">
+<span id="_CPPv3N16EMBLite_Config_t15advertisingDataE"></span><span id="_CPPv2N16EMBLite_Config_t15advertisingDataE"></span><span id="EMBLite_Config_t::advertisingData__uint8_tP"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1aea61a58ea414638c0270d3ed8e862a83"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">advertisingData</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t15advertisingDataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Array of Advertising data </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t21advertisingDataLengthE">
+<span id="_CPPv3N16EMBLite_Config_t21advertisingDataLengthE"></span><span id="_CPPv2N16EMBLite_Config_t21advertisingDataLengthE"></span><span id="EMBLite_Config_t::advertisingDataLength__uint16_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a09c5229208633b663328706a39ca4e5c"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">advertisingDataLength</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t21advertisingDataLengthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Length of advertisingData </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t22advertisingIsScannableE">
+<span id="_CPPv3N16EMBLite_Config_t22advertisingIsScannableE"></span><span id="_CPPv2N16EMBLite_Config_t22advertisingIsScannableE"></span><span id="EMBLite_Config_t::advertisingIsScannable__b"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a4185fa739aa6a7efcbb94a52e30a38ae"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">advertisingIsScannable</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t22advertisingIsScannableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Control for advertising ops to respond to scan requests </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t19advertisingScanDataE">
+<span id="_CPPv3N16EMBLite_Config_t19advertisingScanDataE"></span><span id="_CPPv2N16EMBLite_Config_t19advertisingScanDataE"></span><span id="EMBLite_Config_t::advertisingScanData__uint8_tP"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a8f9b1016a85090dd5d9f5c81dfb64112"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">advertisingScanData</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t19advertisingScanDataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Array for Scan Response data </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t25advertisingScanDataLengthE">
+<span id="_CPPv3N16EMBLite_Config_t25advertisingScanDataLengthE"></span><span id="_CPPv2N16EMBLite_Config_t25advertisingScanDataLengthE"></span><span id="EMBLite_Config_t::advertisingScanDataLength__uint16_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a88c26b8a349d578e7fe6a94b1666d775"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">advertisingScanDataLength</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t25advertisingScanDataLengthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Length of advertisingScanData </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t21advertisingIsDirectedE">
+<span id="_CPPv3N16EMBLite_Config_t21advertisingIsDirectedE"></span><span id="_CPPv2N16EMBLite_Config_t21advertisingIsDirectedE"></span><span id="EMBLite_Config_t::advertisingIsDirected__b"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a1ad0be54e2ebf247f1a494bfa88baef1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">advertisingIsDirected</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t21advertisingIsDirectedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Control for directed advertising. Peer Address must be specified. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t30advertisingDirectedPeerAddressE">
+<span id="_CPPv3N16EMBLite_Config_t30advertisingDirectedPeerAddressE"></span><span id="_CPPv2N16EMBLite_Config_t30advertisingDirectedPeerAddressE"></span><span id="EMBLite_Config_t::advertisingDirectedPeerAddress__uint8_tP"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a908ee3b66eb48e5e0d93170bf5e99588"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">advertisingDirectedPeerAddress</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t30advertisingDirectedPeerAddressE" title="Link to this definition"></a><br /></dt>
+<dd><p>BD Addr of peer device for directed advertising </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t18connectionsEnabledE">
+<span id="_CPPv3N16EMBLite_Config_t18connectionsEnabledE"></span><span id="_CPPv2N16EMBLite_Config_t18connectionsEnabledE"></span><span id="EMBLite_Config_t::connectionsEnabled__b"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1ae2493074cf9bc539345dbe6a43b7b103"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connectionsEnabled</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t18connectionsEnabledE" title="Link to this definition"></a><br /></dt>
+<dd><p>Control for connectable advertising </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t21connectionsMaxAllowedE">
+<span id="_CPPv3N16EMBLite_Config_t21connectionsMaxAllowedE"></span><span id="_CPPv2N16EMBLite_Config_t21connectionsMaxAllowedE"></span><span id="EMBLite_Config_t::connectionsMaxAllowed__uint16_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a18fe3ca5ce92e5a7c7a370914ef96564"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connectionsMaxAllowed</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t21connectionsMaxAllowedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Max connections allowed by the application </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t27connectionsDesiredMtuLengthE">
+<span id="_CPPv3N16EMBLite_Config_t27connectionsDesiredMtuLengthE"></span><span id="_CPPv2N16EMBLite_Config_t27connectionsDesiredMtuLengthE"></span><span id="EMBLite_Config_t::connectionsDesiredMtuLength__uint16_t"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a37d543f0784b66a8e340661fa24fb2b3"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connectionsDesiredMtuLength</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t27connectionsDesiredMtuLengthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum ACL Length </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t24connectionsRequestUpdateE">
+<span id="_CPPv3N16EMBLite_Config_t24connectionsRequestUpdateE"></span><span id="_CPPv2N16EMBLite_Config_t24connectionsRequestUpdateE"></span><span id="EMBLite_Config_t::connectionsRequestUpdate__b"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a2d39d99eb5c4f168eb175f96536c3342"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connectionsRequestUpdate</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t24connectionsRequestUpdateE" title="Link to this definition"></a><br /></dt>
+<dd><p>Control for app to request connection parameter update procedure after connection is established </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t21requestedUpdateParamsE">
+<span id="_CPPv3N16EMBLite_Config_t21requestedUpdateParamsE"></span><span id="_CPPv2N16EMBLite_Config_t21requestedUpdateParamsE"></span><span id="EMBLite_Config_t::requestedUpdateParams__EMBLite_ConnectionUpdateParams_tP"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a3a3e72c3b6441d88ab91b1d3883ddd4a"></span><a class="reference internal" href="#_CPPv432EMBLite_ConnectionUpdateParams_t" title="EMBLite_ConnectionUpdateParams_t"><span class="n"><span class="pre">EMBLite_ConnectionUpdateParams_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">requestedUpdateParams</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t21requestedUpdateParamsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Data for peripheral requested connection update parameters </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t23connectionsAllowUpdatesE">
+<span id="_CPPv3N16EMBLite_Config_t23connectionsAllowUpdatesE"></span><span id="_CPPv2N16EMBLite_Config_t23connectionsAllowUpdatesE"></span><span id="EMBLite_Config_t::connectionsAllowUpdates__b"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a233ae31b07bb888c088eb398be69ed21"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">connectionsAllowUpdates</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t23connectionsAllowUpdatesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Control to allow app to respond to connection parameter update procedure </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16EMBLite_Config_t19updateParamsAllowedE">
+<span id="_CPPv3N16EMBLite_Config_t19updateParamsAllowedE"></span><span id="_CPPv2N16EMBLite_Config_t19updateParamsAllowedE"></span><span id="EMBLite_Config_t::updateParamsAllowed__EMBLite_ConnectionUpdateParams_tP"></span><span class="target" id="d2/d21/struct_e_m_b_lite___config__t_1a977dcf03670ce9d0fd579d9103a75605"></span><a class="reference internal" href="#_CPPv432EMBLite_ConnectionUpdateParams_t" title="EMBLite_ConnectionUpdateParams_t"><span class="n"><span class="pre">EMBLite_ConnectionUpdateParams_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">updateParamsAllowed</span></span></span><a class="headerlink" href="#_CPPv4N16EMBLite_Config_t19updateParamsAllowedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Data for connection update parameters allowed </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp union">
+<dt class="sig sig-object cpp" id="_CPPv413EMBLite_Msg_t">
+<span id="_CPPv313EMBLite_Msg_t"></span><span id="_CPPv213EMBLite_Msg_t"></span><span class="target" id="db/d38/union_e_m_b_lite___msg__t"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMBLite_Msg_t</span></span></span><a class="headerlink" href="#_CPPv413EMBLite_Msg_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13EMBLite_Msg_t3hdrE">
+<span id="_CPPv3N13EMBLite_Msg_t3hdrE"></span><span id="_CPPv2N13EMBLite_Msg_t3hdrE"></span><span id="EMBLite_Msg_t::hdr__wsfMsgHdr_t"></span><span class="target" id="db/d38/union_e_m_b_lite___msg__t_1a93f9c70714521f0235f80dbf35452743"></span><span class="n"><span class="pre">wsfMsgHdr_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hdr</span></span></span><a class="headerlink" href="#_CPPv4N13EMBLite_Msg_t3hdrE" title="Link to this definition"></a><br /></dt>
+<dd><p>Header structure </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13EMBLite_Msg_t2dmE">
+<span id="_CPPv3N13EMBLite_Msg_t2dmE"></span><span id="_CPPv2N13EMBLite_Msg_t2dmE"></span><span id="EMBLite_Msg_t::dm__dmEvt_t"></span><span class="target" id="db/d38/union_e_m_b_lite___msg__t_1a0abafdf890d21336a71b4a331ca7eaaa"></span><span class="n"><span class="pre">dmEvt_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dm</span></span></span><a class="headerlink" href="#_CPPv4N13EMBLite_Msg_t2dmE" title="Link to this definition"></a><br /></dt>
+<dd><p>Structure for Device Manager Events </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13EMBLite_Msg_t3cccE">
+<span id="_CPPv3N13EMBLite_Msg_t3cccE"></span><span id="_CPPv2N13EMBLite_Msg_t3cccE"></span><span id="EMBLite_Msg_t::ccc__attsCccEvt_t"></span><span class="target" id="db/d38/union_e_m_b_lite___msg__t_1ac23de89942cf26ab760a3d1e65a0071b"></span><span class="n"><span class="pre">attsCccEvt_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ccc</span></span></span><a class="headerlink" href="#_CPPv4N13EMBLite_Msg_t3cccE" title="Link to this definition"></a><br /></dt>
+<dd><p>Structure for ATTS Client Characteristic Configuration Events </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13EMBLite_Msg_t3attE">
+<span id="_CPPv3N13EMBLite_Msg_t3attE"></span><span id="_CPPv2N13EMBLite_Msg_t3attE"></span><span id="EMBLite_Msg_t::att__attEvt_t"></span><span class="target" id="db/d38/union_e_m_b_lite___msg__t_1aa11744e015e4614a127c1985aff4604c"></span><span class="n"><span class="pre">attEvt_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">att</span></span></span><a class="headerlink" href="#_CPPv4N13EMBLite_Msg_t3attE" title="Link to this definition"></a><br /></dt>
+<dd><p>Structure for ATT Events </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

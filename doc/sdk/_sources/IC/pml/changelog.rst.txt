@@ -1,0 +1,118 @@
+Change Log
+------------
+
+Version 1.0.0
+^^^^^^^^^^^^^
+
+    * PR 9111: Radio driver optimization when RF output power is applied for improved performances. Added bool returned type for following functions:
+
+               - `bool PML_UpdateDCDC(void);`
+               - `bool PML_SetDcdcTimingConst(…);`
+    * PR 9252: Reduce the minimum sleep time to 3 ms.
+    * PR 9274: Change the default value of the calibration correction factor (`gPML_Config.rcCalibCorrection`) to -105ppm to account for the change in LF-RC frequency between active and sleep modes.
+    * PR 9275: Set default sleep clock accuracy (SCA) value to 250 ppm with LF-RC and to 150 ppm with LF-XTAL.
+
+Version 0.6.1
+^^^^^^^^^^^^^
+
+* The switched capacitor doubler (SCDB) is now permanently activated to enhance system robustness in Voltage Multiplier Mode across the entire voltage range.
+
+Version 0.6.0
+^^^^^^^^^^^^^
+
+* Added support for configuring DCDC timings for 2.2uH coil.
+
+Version 0.5.0
+^^^^^^^^^^^^^
+
+Chores:
+
+* [MOD] Cleaning
+* [FIX] Source clean
+* IRQHandler_PmlClock(void) removed for test targets
+
+Fixes:
+
+* [MOD] RF_FpgaConfigXtalOsc is now weak to avoid issues when compile
+* safe register access
+* fix issue in test case (test_rom_pml_power)
+* flint error
+* Use the original PML Reset Flags for the new ROM
+* Init_n setting and voltage doubler initial value (bug 3731 and 5174)
+* PML unit tests run in ROM repo
+* Fix ROM bugs 3728 and 3729
+* Set VBAT1 comparator level to 1.9V in step up mode
+
+Features:
+
+* DRAM retention during deep sleep
+* Dynamic memory allocation in EM Transport and EM System
+* Number of transport buffers increased
+* PML simulation test cases ported to unity
+* Test targets added in the test unity package
+* Support of Deep Sleep Mode with and without DRAM retention
+* Single transport and GPIO libraries & No Device Monitor
+* add boot mode switching API
+
+Version 0.4.1
+^^^^^^^^^^^^^
+
+* Functions for setting and getting the LDO levels (VCC and dig) are now inline functions.
+
+
+Version 0.4.0
+^^^^^^^^^^^^^
+
+Reorganization of the PML driver:
+
+* Removed rom_pml.h and pml_shared.h header files. The content of those files were moved to pml.h.
+* Some function prototypes related to module initialization were removed from public header files.
+
+
+Version 0.3.2
+^^^^^^^^^^^^^
+
+* [ADD] LF clock calibration result correction added to improve timing.
+
+
+Version 0.3.1
+^^^^^^^^^^^^^
+
+* [FIX] Fixed an issue in the calculation of the wake-up time when the protocol timer divider != 1.
+
+
+Version 0.3
+^^^^^^^^^^^^^
+
+* [FIX] Voltage Doubler PWM value set to default value before going to Sleep mode to reduce peak current when resuming from Sleep mode.
+
+
+Version 0.2
+^^^^^^^^^^^^^
+
+* Merge documentation for PML, PML Power Management, and PML Voltage Monitor.
+* [FIX] System clock switched to 24MHz before going to sleep mode.
+* [FIX] DCDC parameters updated for step-down mode using 4.7uH coil.
+
+
+Version 0.1.2
+^^^^^^^^^^^^^
+
+* Updated doxygen comments.
+* Cleaned the driver.
+
+
+Version 0.1.1
+^^^^^^^^^^^^^
+
+* [FIX] VCC charging disabled in sleep mode.
+* [FIX] DCDC parameters updated for RF RX mode in step-down power mode.
+* [FIX] LDO used for 3dBm RF power with voltages < 1.9V in step-down mode.
+* [FIX] Modified the voltage limits for 6dBm and 3dBm in step-down mode.
+* [FIX] Update the switch cap doubler mode when SVLD interrupt occurs in external-up mode.
+
+
+Version 0.1.0
+^^^^^^^^^^^^^
+
+* Initial Version.

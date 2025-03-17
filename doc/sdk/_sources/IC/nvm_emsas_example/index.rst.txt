@@ -1,0 +1,63 @@
+=========================================================================
+EM System Application Specific (EMSAS) example
+=========================================================================
+
+
+Overview
+-------------
+
+This example shows how to use EMSAS commands and how to generates EMSAS events in an application.
+
+EM System defines a set of commands that are reserved for vendor specific
+use. Among the EM System OpCodes, the range 0xFFC0 to 0xFFCF (16 OpCodes)
+is reserved for Application Specific use cases.
+
+In this example, the EMSAS command (OpCode 0xFFC0) is defined and accepts one parameter.
+
+.. list-table:: EMSAS_Timer_Control Command Parameter
+   :widths: 25 25 50
+   :header-rows: 1
+
+   * - Parameter
+     - Format
+     - Description
+   * - Timer_Control
+     - Octet
+     - | 0x00: Stop Timer
+       | 0x01: Start Timer
+       | 0x02-0xFF: Reserved
+
+
+Build
+-----
+
+The build target of this example is: **nvm_emsas_example_spi**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target nvm_emsas_example_spi
+
+Program
+-------
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\nvm_emsas_example\nvm_emsas_example_spi.ihex --progress
+
+With YY = the COM port number of your DVK.
+
+Interact with the Target
+------------------------
+The script host_emsas_example.py is included in the SDK to interact with the target.
+It shows how to instanciate an EMSAS Command as well as how to catch EMSAS Events.
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python host_emsas_example.py --port=COMYY
+
+  With YY = the COM port number of your DVK.

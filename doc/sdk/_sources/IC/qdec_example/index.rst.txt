@@ -1,0 +1,145 @@
+=========================================================================
+QDEC Example
+=========================================================================
+
+
+Overview
+--------
+
+This sample code shows how to use the QDEC driver using mechanical sensor
+connected on phase A & B of the peripheral.
+
+The code example can be compiled using polling mechanism or by using
+hardware detection for movement and error, including wakeup from sleep.
+
+By default the sample code is compiled using hardware detection with ISR
+
+.. code-block:: bash
+
+  #define USE_CONTINUOUS_MODE
+
+  //#define USE_SINGLE_MODE
+
+In order to compile the sample code using polling mechanism
+
+.. code-block:: bash
+
+  //#define USE_CONTINUOUS_MODE
+
+  #define USE_SINGLE_MODE
+
+How it works
+------------
+
+QDEC driver is registered in NVM_ConfigModules() function.
+
+.. code-block:: bash
+
+  void NVM_ConfigModules(void)
+  {
+    // Register the modules.
+    QDEC_RegisterModule();
+
+Then the QDEC configuration is done by writing the configuration in the QDEC
+configuration structure.
+
+.. code-block:: bash
+
+  // Enable QDEC.
+  gQDEC_Config.enabled = true;
+  gQDEC_Config.configBits.bits.led_en = 0;            // Led Disabled
+  gQDEC_Config.configBits.bits.led_pol = 0;
+  gQDEC_Config.configBits.bits.debounce_en = 1;       // Debouncer enabled
+  gQDEC_Config.configBits.bits.wakeup_rpt_rdy_en = 1; // Wakeup in case of report ready
+  gQDEC_Config.configBits.bits.wakeup_ovf_en = 1;     // Wakeup in case of overflow
+  gQDEC_Config.configBits.bits.wakeup_dbl_mvt_en = 1; // Wakeup in case of double movement
+
+  gQDEC_Config.pinBits.bits.phase_a = 9;  // GPIO for Phase A signal
+  gQDEC_Config.pinBits.bits.phase_b = 11; // GPIO for Phase B signal
+  gQDEC_Config.pinBits.bits.led = 5;      // GPIO for Led (not used in this example)
+
+  gQDEC_Config.periodBits.bits.sample_period = (uint32_t)SAMPLING_PERIOD_512_US;
+  gQDEC_Config.periodBits.bits.report_period = (uint32_t)REPORT_PERIOD_80_SAMPLE;
+
+  gQDEC_Config.ledTimeBits.bits.led_time_on = 16; // Time of Led on (2 us per LSB)
+
+When the sample code is compiled in continuous mode, then each movement or error
+is detected by hardware. The code shall then set an ISR callback, and the "status" variable
+contains the type of the interruption (report ready, overflow or double movement error).
+The "values" structure contains the accumulator value and the double movement accumulator value.
+
+.. code-block:: bash
+
+  /**
+   * @brief QDEC callback
+   * @param status status of ISR can be report ready, overflow or double movement
+   * @param values accumulator and double movement accumulator values
+   * @note This callback is called when report ready, double movement or overflow is detected.
+   */
+  static void MyApp_QdecIsrCallback(QDEC_Status_t status, QDEC_Values_t values)
+  {
+    ...
+  }
+
+  QDEC_RegisterCallback(MyApp_QdecIsrCallback);
+
+Then the code can enable the QDEC capture.
+
+.. code-block:: bash
+
+  QDEC_StartContinuousCapture();
+
+If the sample code is compiled using single mode, a periodic timer is created and
+started (5 Hz - 200 ms).
+A callback for the timer is registered and called when the timer is fired.
+
+The timer callback sends a message to the task. When the task receive the signal, it
+calls QDEC_StartSingleCapture() to read accumulator and double movement accumulator
+values.
+
+.. code-block:: bash
+
+  int32_t acc;
+  uint8_t dblAcc;
+
+  QDEC_StartSingleCapture(&acc, &dblAcc);
+
+
+
+Setup
+-----
+
+Connect Phase A on GPIO 9 and Phase B on GPIO 11, they are configured in the QDEC
+configuration structure.
+
+.. code-block:: bash
+
+  gQDEC_Config.pinBits.bits.phase_a = 9;  // GPIO 9
+  gQDEC_Config.pinBits.bits.phase_b = 11; // GPIO 11
+
+Connect VCC from DVK to the sensor (pin 6 of UART connector).
+Connect GND from DVK to the sensor.
+
+
+Build
+-----
+
+The build target of this example is: **qdec_example**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target qdec_example
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\qdec_example\qdec_example.ihex --progress
+
+With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).

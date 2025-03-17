@@ -1,0 +1,198 @@
+.. _emcore:
+
+=========================================================================
+EM-Core
+=========================================================================
+
+Overview
+--------
+
+The *EM-Core* package provides a lightweight standalone and autonomous application
+as well as a set of functions that can be directly used as support functions by the end user application.
+The symbols file that contains the name of the available functions is provided with the SDK. It contains the
+list of the functions available in the "standard" EM-Core and that can be used within the end user application.
+
+The *EM-Core* application is a standalone application that reside in NVM.
+
+The following figure shows where the *EM-Core* standalone application firmware image sits in the NVM.
+
+.. image:: NVM_content_EMCore_based_app.png
+   :scale: 100%
+   :alt: The NVM memory content
+   :align: center
+
+|
+
+The *EM-Core* image is stored at the beginning of the second memory page at address ``0x30_2000`` which is its default location. However, it can be stored at any other location provided the fact that its first address shall be bounded to the beginning of the page where it is stored.
+Further in memory, the end user application software is stored and in case firmware update process is needed, then the firmware update application is stored usually at the end of the memory.
+
+To have the device being able to start-up, the bare minimum is to have:
+
+    - NVM_bootloader
+    - EM-Core
+
+With this configuration, the device can be started in the "*EM-Core*" mode.
+However, this *EM-Core* package is not mandatory and can be skipped if the application software is present. In such a case, the end user
+application will be started. However, both the *EM-Core* and the end user application can share
+the same NVM space in case the application relies on a set of functions provided by *EM-Core*.
+In this case, the default behavior is to start executing the end user application. But the *EM-Core*
+standalone application can still be executed on demand.
+
+Beyond the available standard *EM-Core* that is provided within the SDK, the user has the possibility
+to build his/her own homebrewed *EM-Core* that would serve as a foundation for the application. More
+details are provided further in this page on how to build and to use a custom *EM-Core*.
+
+In case the end user application is not programmed yet in the device, it is still possible to start-up
+the *EM-Core* standalone application.
+
+Supported HCI commands
+----------------------
+
+In order to communicate with *EM-Core*, a set of HCI commands is supported. All
+these commands are gathered within the so called ``EMSystem`` (abbreviated ``EMS``). This is why each
+such commands name starts with this prefix. It is completed by one or two additional letters that give information to which subsystem the command belongs to according to the following scheme:
+
+   - G: General
+   - S: Security
+   - RC: Radio Control
+   - MM: Memory Management
+
+For example, the command ``EMSRC_TransmitterTest`` deals with the radio subsystem and actually starts a test procedure of the radio transmitter.
+
+
+The following table summarizes the list of HCI commands that the ``EMSystem`` supports.
+
+.. csv-table:: Em-Core Command Set
+   :header: "Command", "Description"
+
+   "EMSG_CpuReset",                  "Issue a CPU reset"
+   "EMSG_EnterConfigurationMode",    "Reboot in Configuration Mode (ROM)"
+   "EMSG_GetEmCoreInformation",      "Get EM-Core information (version, variant)"
+   "EMSG_SetBootModeFlags",          "Set persistent boot mode selection flags"
+   "EMSG_ClearBootModeFlags",        "Clear persistent boot mode selection flags"
+   "EMSG_ReadMACAddress",            "Read the MAC Address from Info Page"
+   "EMSG_ReadProductInformation",    "Read the Product Information"
+   "EMSRC_ReceiverTest",             "Start receiver test"
+   "EMSRC_ReceiverTestEnd",          "Terminate receiver test"
+   "EMSRC_TransmitterTest",          "Start transmitter test"
+   "EMSRC_TransmitterTestEnd",       "Terminate transmitter test"
+   "EMSRC_StartAdvPattern",          "Start advertising pattern for current measurement in production"
+   "EMSS_LeRand",                    "Request a random number"
+   "EMSS_LeEncrypt",                 "Encrypt data using AES hardware engine"
+   "EMSS_LE_Decrypt",                "Decrypt data using AES hardware engine"
+   "EMSS_LE_Encrypt_KC",             "Encrypt data using AES hardware engine with the key container in information page 0"
+   "EMSS_LE_Decrypt_KC",             "Decrypt data using AES hardware engine with the key container in information page 0"
+   "EMSMM_Read_At_Address",          "Read one or more bytes at the given address"
+   "EMSMM_Write_At_Address",         "Write one or more bytes at the given address"
+   "EMSG_Set_Sleep_Options",         "Enable or disable sleep mode"
+
+Sending these commands can be done on a host computer connected to the device (the DVK) and running the *BLEngine* tool.
+
+For example, to trigger a CPU reset, the following command shall be issued:
+
+.. code:: bash
+
+   $ python blengine_cli.py send EMSG_CPU_RESET
+
+When the end user application is running and there is a need to start the *EM-Core* standalone application, the following procedure can be issued:
+
+.. code:: bash
+
+   $ python blengine_cli.py run restart --mode=emcore
+
+It will end-up in running the *EM-Core* standalone application.
+
+To get more details on the execution of this command, the option ``--debug`` can be added:
+
+.. code:: bash
+
+   $ python blengine_cli.py --debug run restart --mode=emcore
+
+
+
+EM-Core Built-in Libraries
+--------------------------
+
+The default standard *EM-Core* includes the following libraries:
+
+.. csv-table:: EM-Core built-in libraries
+   :header: "Command", "Description"
+   :widths: 30, 50
+
+   "Metaware",             "Metaware libraries"
+   "em_core",              "EM-Core standalone Application"
+   "em_hw_api",            "Hardware support for EM930x family of SOC"
+   "em_system_emcore",     "EM System support for EM-Core (set of EM System Commands)"
+   "header_access",        "Functions to get access to firmware image headers"
+   "nvm_entry_emcore",     "Entry function in NVM and boot selection"
+   "pml",                  "Power Management logic"
+   "radio",                "Radio driver"
+   "prot_timer",           "Protocol Timer"
+   "sleep_timer",          "Sleep Timer"
+   "rc_calib",             "RC Calibration library"
+   "sleep_manager",        "Sleep manager"
+   "transport",            "Transport manager"
+   "QPC",                  "QPC Library"
+
+Building an application for EM-Core
+-----------------------------------
+
+In order to build an application using a given version of EM-Core, the CMake macro
+``GENERATE_EMCORE_APPLICATION()`` shall be used in the application ``CMakeLists.txt`` file.
+See below this page the EM-Core integration part for a comprehensive description of
+this macro.
+
+By default, EM-Core based applications are built for the latest EM-Core version available in the SDK.
+
+In order to build an application based on EM-Core, the CMake macro ``GENERATE_EMCORE_APPLICATION()`` shall be used.
+It accepts the following parameters:
+
+.. code-block:: cmake
+
+   # \param: target -> this is the name of the executable target.
+   # \param: emcore -> must be one of EMCORE_VARIANT with optional version E.g., "standard;v1.0.0"
+   # \param: source_files -> list of source files to be compiled
+   # \param: include_files -> list of header files to be included
+   # \param: flags -> list of compile flags to be added. Use "" for no flags.
+   # \param(optional): libs -> list of libraries to be linked to the application.
+   # should not be one of 'EMCORE_LIBS_*'
+   #
+   # Example:
+   # GENERATE_EMCORE_APPLICATION(my_target "standard"
+   #     "${${PROJECT_NAME}_SRCS}" "${${PROJECT_NAME}_INCLUDES}"
+   #     "${STANDARD_CONFIG}" "my_custom_lib"
+   # )
+
+The code snippet below shows an example on how to trigger the generation of an application that uses *EM-Core*. In this example, the generated executable will be named with ``<application>_emcore`` with *EM-Core* as a suffix in the application’s name.
+
+.. code:: cmake
+
+   SET(targets_emcore_flavor "standard")
+   APP_IN_NVM()
+   ARC_EXECUTABLE(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS})
+   ARC_LINK_LIBRARIES(${PROJECT_NAME} ${${PROJECT_NAME}_LIBS})
+   ARC_INCLUDE_DIRECTORIES(${PROJECT_NAME} ${${PROJECT_NAME}_INCLUDES})
+   GENERATE_EMCORE_APPLICATION(${PROJECT_NAME}_emcore "${targets_emcore_flavor}"
+      "${${PROJECT_NAME}_SRCS}" "${${PROJECT_NAME}_INCLUDES}"
+      "-DNO_FLINT_ERRORS"
+      "${${PROJECT_NAME}_EMCORE_LIBS}")
+
+The macro instructs the build system to create an *EM-Core* based application and the final executable’s name will contain the suffix *_emcore*.
+
+For backward compatibility, it is possible to build an application for an older version of EM-Core.
+This can be done by setting the Em-Core version as an optional parameter in the Variant configutration in ``CMakeLists.txt``.
+
+.. code-block:: cmake
+
+   ### Setting the variant and the version of EM-Core.
+   ### available 'desired_variant' can be found under emcore/bin
+   SET(target_emcore_variant "<desired_variant>;vX.X.X")
+   ### Using EMCORE
+   GENERATE_EMCORE_APPLICATION(${PROJECT_NAME}_spi_emcore "${target_emcore_variant}"
+      "${${PROJECT_NAME}_SRCS}" "${${PROJECT_NAME}_INCLUDES}" ""
+   )
+
+
+.. include:: emcore.rst
+
+.. include:: changelog.rst

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES modes and MAC &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AES Electronic Code Book mode (ECB)" href="AES_ECB.html" />
+    <link rel="prev" title="AES Crypto Containers" href="CryptoContainer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">AES modes and MAC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html">AES Electronic Code Book mode (ECB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html">AES Cipher Block Chaining mode (CBC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html">AES Counter mode(CTR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html">AES CMAC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html">AES CCM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html">AES GCM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>AES modes and MAC</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aes-modes-and-mac">
+<h1>AES modes and MAC<a class="headerlink" href="#aes-modes-and-mac" title="Permalink to this headline"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="AES_ECB.html">AES Electronic Code Book mode (ECB)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#the-electronic-codebook-mode-ecb">The Electronic Codebook Mode (ECB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#apis">APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#aes-ecb-initctx">AES_ECB_InitCtx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#aes-ecb-encrypt">AES_ECB_Encrypt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#aes-ecb-decrypt">AES_ECB_Decrypt</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#performances">Performances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#library-location">Library location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#code-size">Code size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#stack">Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_ECB.html#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AES_CBC.html">AES Cipher Block Chaining mode (CBC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#the-cipher-block-chaining-mode-cbc">The Cipher Block Chaining mode (CBC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#apis">APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#aes-cbc-initctx">AES_CBC_InitCtx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#aes-cbc-encrypt">AES_CBC_Encrypt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#aes-cbc-decrypt">AES_CBC_Decrypt</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#performances">Performances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#library-location">Library location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#code-size">Code size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#stack">Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CBC.html#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AES_CTR.html">AES Counter mode(CTR)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#the-counter-mode-ctr">The Counter mode (CTR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#apis">APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#aes-ctr-initctx">AES_CTR_InitCtx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#aes-ctr-encrypt">AES_CTR_Encrypt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#aes-ctr-decrypt">AES_CTR_Decrypt</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#performances">Performances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#library-location">Library location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#code-size">Code size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#stack">Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CTR.html#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AES_CMAC.html">AES CMAC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#the-cmac-authentication-mode">The CMAC authentication mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#apis">APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#aes-cmac-initctx">AES_CMAC_InitCtx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#aes-cmac-compute">AES_CMAC_Compute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#aes-cmac-getmac">AES_CMAC_GetMAC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#performances">Performances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#library-location">Library location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#code-size">Code size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#stack">Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CMAC.html#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CMAC.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AES_CCM.html">AES CCM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#the-counter-with-cipher-block-chaining-message-authentication-code-ccm">The Counter with Cipher Block Chaining-Message Authentication Code(CCM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#apis">APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#aes-ccm-initctx">AES_CCM_InitCtx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#aes-ccm-hash-additional-data">AES_CCM_Hash_Additional_Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#aes-ccm-encryptandmac">AES_CCM_EncryptAndMAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#aes-ccm-decryptandmac">AES_CCM_DecryptAndMAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#aes-ccm-getmac">AES_CCM_GetMAC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#performances">Performances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#library-location">Library location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#code-size">Code size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#stack">Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_CCM.html#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AES_GCM.html">AES GCM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#the-galois-counter-mode-gcm">The Galois Counter Mode (GCM)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#gmac">GMAC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#apis">APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#enumerations">Enumerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#aes-gcm-initctx">AES_GCM_InitCtx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#aes-gcm-hash-additional-data">AES_GCM_Hash_Additional_Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#aes-gcm-encryptandmac">AES_GCM_EncryptAndMAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#aes-gcm-decryptandmac">AES_GCM_DecryptAndMAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#aes-gcm-gmac">AES_GCM_GMAC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#aes-gcm-getmac">AES_GCM_GetMAC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#performances">Performances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#library-location">Library location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#code-size">Code size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#stack">Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AES_GCM.html#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="CryptoContainer.html" class="btn btn-neutral float-left" title="AES Crypto Containers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="AES_ECB.html" class="btn btn-neutral float-right" title="AES Electronic Code Book mode (ECB)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

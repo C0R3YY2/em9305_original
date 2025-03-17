@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update Service &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Update Cryptographic Toolbox Library" href="../fwu_crypto/index.html" />
+    <link rel="prev" title="EM Bleu - Vendor specific GATT based services" href="../emb_vs_fwu/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm_op_sched/index.html">NVM operation scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../firmware_header/index.html">Firmware Header Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_core/index.html">Firmware Update Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_database/index.html">EMB Database</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Firmware Update Service</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_crypto/index.html">Firmware Update Cryptographic Toolbox Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_spi/index.html">Firmware Update Library for SPI Transport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a></li>
+      <li class="breadcrumb-item active">Firmware Update Service</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-service">
+<h1>Firmware Update Service<a class="headerlink" href="#firmware-update-service" title="Link to this heading"></a></h1>
+<p>The Firmware Update Service library is an implementation of the <a class="reference external" href="../../sections/firmware_update/FirmwareUpdateService.html">EM Firmware Update service</a> .</p>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d7/de3/group__fwu__svc"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">fwu_svc</span></span></dt>
+<dd><p>Firmware Update GATT based service for EM Bleu Bluetooth Stack. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWUSVC_START_HDL">
+<span class="target" id="d7/de3/group__fwu__svc_1gac2e879f5f852b88389e2717b3c5372d4"></span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_START_HDL</span></span></span> <span class="pre">0x200</span><a class="headerlink" href="#c.FWUSVC_START_HDL" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Proprietary Service Start Handle. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID16_FWU_SERVICE">
+<span class="target" id="d7/de3/group__fwu__svc_1ga21f808e6bc2261089644e70c2b6d1d08"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID16_FWU_SERVICE</span></span></span> <span class="pre">0xA888u</span><a class="headerlink" href="#c.UUID16_FWU_SERVICE" title="Link to this definition"></a><br /></dt>
+<dd><p>16-bit UUID for Firmware Update service </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID16_FWU_CMD">
+<span class="target" id="d7/de3/group__fwu__svc_1gadb8c52f95a317e75abe5a99cec62ae90"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID16_FWU_CMD</span></span></span> <span class="pre">0xA9A0u</span><a class="headerlink" href="#c.UUID16_FWU_CMD" title="Link to this definition"></a><br /></dt>
+<dd><p>16-bit UUID for Firmware Update Command characteristic </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID16_FWU_DATA">
+<span class="target" id="d7/de3/group__fwu__svc_1ga7d452762912511ca4d306c4b73829a70"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID16_FWU_DATA</span></span></span> <span class="pre">0xAAB8u</span><a class="headerlink" href="#c.UUID16_FWU_DATA" title="Link to this definition"></a><br /></dt>
+<dd><p>16-bit UUID for Firmware Update Data characteristic </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID_EM_BASE_PART1">
+<span class="target" id="d7/de3/group__fwu__svc_1ga45435796a76000c8643b96ae77231adb"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID_EM_BASE_PART1</span></span></span> <span class="pre">0x28u,</span> <span class="pre">0xD4u,</span> <span class="pre">0x1Bu,</span> <span class="pre">0xE0u,</span> <span class="pre">0x7Au,</span> <span class="pre">0xFAu,</span> <span class="pre">0xC0u,</span> <span class="pre">0xADu,</span> <span class="pre">0xE8u,</span> <span class="pre">0x11u,</span> <span class="pre">0x4Du,</span> <span class="pre">0x45u</span><a class="headerlink" href="#c.UUID_EM_BASE_PART1" title="Link to this definition"></a><br /></dt>
+<dd><p>Base UUID: 81cfXXXX-454D-11e8-adc0-fa7ae01bd428. </p>
+<p>Base UUID PART1”: 454D-11e8-adc0-fa7ae01bd428 </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID_EM_BASE_PART2">
+<span class="target" id="d7/de3/group__fwu__svc_1gae5999ad651feb31ebfd55cfb9643a09f"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID_EM_BASE_PART2</span></span></span> <span class="pre">0xCFu,</span> <span class="pre">0x81u</span><a class="headerlink" href="#c.UUID_EM_BASE_PART2" title="Link to this definition"></a><br /></dt>
+<dd><p>Base UUID PART2”: 81cf. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID_EM_BUILD">
+<span class="target" id="d7/de3/group__fwu__svc_1ga9e6b430b39cb5c67d7839c90abdaef09"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID_EM_BUILD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uuid16</span></span><span class="sig-paren">)</span> <a class="reference internal" href="#d7/de3/group__fwu__svc_1ga45435796a76000c8643b96ae77231adb"><span class="std std-ref"><span class="pre">UUID_EM_BASE_PART1</span></span></a><span class="pre">,</span> <span class="pre">UINT16_TO_BYTES(uuid16),</span> <a class="reference internal" href="#d7/de3/group__fwu__svc_1gae5999ad651feb31ebfd55cfb9643a09f"><span class="std std-ref"><span class="pre">UUID_EM_BASE_PART2</span></span></a><a class="headerlink" href="#c.UUID_EM_BUILD" title="Link to this definition"></a><br /></dt>
+<dd><p>Macro for building UUIDs. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID_FWU_SERVICE">
+<span class="target" id="d7/de3/group__fwu__svc_1ga6e0836bdddf5b7c8310c2f996e900152"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID_FWU_SERVICE</span></span></span> <a class="reference internal" href="#d7/de3/group__fwu__svc_1ga9e6b430b39cb5c67d7839c90abdaef09"><span class="std std-ref"><span class="pre">UUID_EM_BUILD</span></span></a><span class="pre">(</span><a class="reference internal" href="#d7/de3/group__fwu__svc_1ga21f808e6bc2261089644e70c2b6d1d08"><span class="std std-ref"><span class="pre">UUID16_FWU_SERVICE</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.UUID_FWU_SERVICE" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary services. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID_FWU_CMD">
+<span class="target" id="d7/de3/group__fwu__svc_1gad9275d6cd840796a085f7ac815850f8b"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID_FWU_CMD</span></span></span> <a class="reference internal" href="#d7/de3/group__fwu__svc_1ga9e6b430b39cb5c67d7839c90abdaef09"><span class="std std-ref"><span class="pre">UUID_EM_BUILD</span></span></a><span class="pre">(</span><a class="reference internal" href="#d7/de3/group__fwu__svc_1gadb8c52f95a317e75abe5a99cec62ae90"><span class="std std-ref"><span class="pre">UUID16_FWU_CMD</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.UUID_FWU_CMD" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary Command characteristics. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.UUID_FWU_DATA">
+<span class="target" id="d7/de3/group__fwu__svc_1gaa93256bba149a74fa0b1b6b741145a66"></span><span class="sig-name descname"><span class="n"><span class="pre">UUID_FWU_DATA</span></span></span> <a class="reference internal" href="#d7/de3/group__fwu__svc_1ga9e6b430b39cb5c67d7839c90abdaef09"><span class="std std-ref"><span class="pre">UUID_EM_BUILD</span></span></a><span class="pre">(</span><a class="reference internal" href="#d7/de3/group__fwu__svc_1ga7d452762912511ca4d306c4b73829a70"><span class="std std-ref"><span class="pre">UUID16_FWU_DATA</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.UUID_FWU_DATA" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary Data characteristics. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4Ut2_15">
+<span id="_CPPv3Ut2_15"></span><span class="target" id="d7/de3/group__fwu__svc_1gaba01db17f4a2bfbc3db60dc172972a25"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#_CPPv4Ut2_15" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary Service Handles. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_1519FWUSVC_SVC_DECL_HDLE">
+<span id="_CPPv3NUt2_1519FWUSVC_SVC_DECL_HDLE"></span><span class="target" id="d7/de3/group__fwu__svc_1ggaba01db17f4a2bfbc3db60dc172972a25ad17e86b7764d258d989b568f2984e92d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_SVC_DECL_HDL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x200</span></span><a class="headerlink" href="#_CPPv4NUt2_1519FWUSVC_SVC_DECL_HDLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary service declaration </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_1526FWUSVC_CMD_CHARAC_DECL_HDLE">
+<span id="_CPPv3NUt2_1526FWUSVC_CMD_CHARAC_DECL_HDLE"></span><span class="target" id="d7/de3/group__fwu__svc_1ggaba01db17f4a2bfbc3db60dc172972a25a5d85725e5b1c58808720fa51305fe4e8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_CMD_CHARAC_DECL_HDL</span></span></span><a class="headerlink" href="#_CPPv4NUt2_1526FWUSVC_CMD_CHARAC_DECL_HDLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary command characteristic declaration </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_1527FWUSVC_CMD_CHARAC_VALUE_HDLE">
+<span id="_CPPv3NUt2_1527FWUSVC_CMD_CHARAC_VALUE_HDLE"></span><span class="target" id="d7/de3/group__fwu__svc_1ggaba01db17f4a2bfbc3db60dc172972a25afba7b8c440653b6fed5d35504560ddc8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_CMD_CHARAC_VALUE_HDL</span></span></span><a class="headerlink" href="#_CPPv4NUt2_1527FWUSVC_CMD_CHARAC_VALUE_HDLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary command characteristic value </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_1525FWUSVC_CMD_CHARAC_CCC_HDLE">
+<span id="_CPPv3NUt2_1525FWUSVC_CMD_CHARAC_CCC_HDLE"></span><span class="target" id="d7/de3/group__fwu__svc_1ggaba01db17f4a2bfbc3db60dc172972a25ab2758441477524777b545dd018fb53bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_CMD_CHARAC_CCC_HDL</span></span></span><a class="headerlink" href="#_CPPv4NUt2_1525FWUSVC_CMD_CHARAC_CCC_HDLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary command client characteristic configuration </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_1527FWUSVC_DATA_CHARAC_DECL_HDLE">
+<span id="_CPPv3NUt2_1527FWUSVC_DATA_CHARAC_DECL_HDLE"></span><span class="target" id="d7/de3/group__fwu__svc_1ggaba01db17f4a2bfbc3db60dc172972a25a6285a57a03f6b01e5c67338b0c5762b2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_DATA_CHARAC_DECL_HDL</span></span></span><a class="headerlink" href="#_CPPv4NUt2_1527FWUSVC_DATA_CHARAC_DECL_HDLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary data characteristic declaration </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_1528FWUSVC_DATA_CHARAC_VALUE_HDLE">
+<span id="_CPPv3NUt2_1528FWUSVC_DATA_CHARAC_VALUE_HDLE"></span><span class="target" id="d7/de3/group__fwu__svc_1ggaba01db17f4a2bfbc3db60dc172972a25afe573ce275bf550cb42b8086f2ae4453"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_DATA_CHARAC_VALUE_HDL</span></span></span><a class="headerlink" href="#_CPPv4NUt2_1528FWUSVC_DATA_CHARAC_VALUE_HDLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Proprietary data characteristic value </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4NUt2_1514FWUSVC_MAX_HDLE">
+<span id="_CPPv3NUt2_1514FWUSVC_MAX_HDLE"></span><span class="target" id="d7/de3/group__fwu__svc_1ggaba01db17f4a2bfbc3db60dc172972a25a0354636cdef3b7d13bb38671e2332e16"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWUSVC_MAX_HDL</span></span></span><a class="headerlink" href="#_CPPv4NUt2_1514FWUSVC_MAX_HDLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum handle. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415FwuSvc_AddGroupv">
+<span id="_CPPv315FwuSvc_AddGroupv"></span><span id="_CPPv215FwuSvc_AddGroupv"></span><span id="FwuSvc_AddGroup__void"></span><span class="target" id="d7/de3/group__fwu__svc_1gadb22dee7b861cd2a9c57f179a6ad2025"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FwuSvc_AddGroup</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415FwuSvc_AddGroupv" title="Link to this definition"></a><br /></dt>
+<dd><p>Add the service to the attribute server. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418FwuSvc_RemoveGroupv">
+<span id="_CPPv318FwuSvc_RemoveGroupv"></span><span id="_CPPv218FwuSvc_RemoveGroupv"></span><span id="FwuSvc_RemoveGroup__void"></span><span class="target" id="d7/de3/group__fwu__svc_1gaf5879829c37dda9c442c16564a699f0f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FwuSvc_RemoveGroup</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418FwuSvc_RemoveGroupv" title="Link to this definition"></a><br /></dt>
+<dd><p>Remove the service from the attribute server. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420FwuSvc_RegisterCback15attsReadCback_t16attsWriteCback_t">
+<span id="_CPPv320FwuSvc_RegisterCback15attsReadCback_t16attsWriteCback_t"></span><span id="_CPPv220FwuSvc_RegisterCback15attsReadCback_t16attsWriteCback_t"></span><span id="FwuSvc_RegisterCback__attsReadCback_t.attsWriteCback_t"></span><span class="target" id="d7/de3/group__fwu__svc_1gaa15c2e3b21cdea7620777763297da41a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FwuSvc_RegisterCback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">attsReadCback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">readCback</span></span>, <span class="n"><span class="pre">attsWriteCback_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">writeCback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420FwuSvc_RegisterCback15attsReadCback_t16attsWriteCback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Register callbacks for the service. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>readCback</strong> – Read callback function. </p></li>
+<li><p><strong>writeCback</strong> – Write callback function. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../emb_vs_fwu/index.html" class="btn btn-neutral float-left" title="EM Bleu - Vendor specific GATT based services" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../fwu_crypto/index.html" class="btn btn-neutral float-right" title="Firmware Update Cryptographic Toolbox Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

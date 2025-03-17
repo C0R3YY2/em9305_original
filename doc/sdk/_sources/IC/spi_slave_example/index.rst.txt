@@ -1,0 +1,65 @@
+=========================================================================
+SPI Slave Example
+=========================================================================
+
+
+Overview
+--------
+
+The purpose of this example is to show how to use the SPI slave driver.
+
+This example prints over UART each byte received from SPI slave.
+To achieve the synchronization between the EM9305 and the SPI master device,
+a GPIO is used as a chip select (CS) signal. It is used to wake up the EM9305
+when in sleep mode while the SPI master needs to send data.
+
+GPIOs used:
+
+* UART TX on GPIO 7
+* SPIM CSN on GPIO 11
+* SPIM SCK on GPIO 8
+* SPIM MISO on GPIO 9
+* SPIM MOSI on GPIO 10
+
+The output is on GPIO7. You can connect a USB to UART device to GPIO7 and use a terminal (for example docklight) to connect on the COM port of your device.
+
+.. warning::
+
+  Double check you connected the jumpers D+(07) and D-(06) on the DVK.
+  The GPIO6 and GPIO7 pins are connected by default to the USB connector.
+
+The output of this example on GPIO7 should look like this (ASCII):
+
+.. code-block:: bash
+
+  EM9305 SPI Slave demo. Starting...
+  SPIS data received: 0x0b
+
+.. note::
+  The JTAG can't be used because the SPI slave is on GPIOs 8-11.
+
+
+Build
+-----
+
+The build target of this example is: **spi_slave_example**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target spi_slave_example
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\spi_slave_example\spi_slave_example.ihex --progress
+
+With YY = the COM port number of your DVK.
+
+You should be able to see the messages on your terminal.

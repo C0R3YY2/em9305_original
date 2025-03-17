@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLE Profile Developer’s Guide &mdash; em | bleu ble-profiles 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=665bc78d" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=48090e36" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BLE Profiles API" href="ble-profiles-api.html" />
+    <link rel="prev" title="Getting Started" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: LightSlateGray" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            em | bleu ble-profiles
+              <img src="_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BLE Profile Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ble-profiles-api.html">BLE Profiles API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ble-services-api.html">BLE Services API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: LightSlateGray" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">em | bleu ble-profiles</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">BLE Profile Developer’s Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ble-profile-dg.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ble-profile-developer-s-guide">
+<span id="profile-dg"></span><h1>BLE Profile Developer’s Guide<a class="headerlink" href="#ble-profile-developer-s-guide" title="Link to this heading"></a></h1>
+<div class="markdown docutils container" id="intro-md">
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This document is the Developer’s Guide for the em | bleu Profile software. This component implements the Bluetooth Low Energy Profile and Services features.</p>
+<section id="audience">
+<h3>Audience<a class="headerlink" href="#audience" title="Link to this heading"></a></h3>
+<p>This book is written for experienced software engineers who might or might not have experience with em | bleu products. Such engineers typically have experience writing Bluetooth applications but might have limited experience with em | bleu software. The reader is assumed to have embedded C software experience.</p>
+</section>
+<section id="abbreviations">
+<h3>Abbreviations<a class="headerlink" href="#abbreviations" title="Link to this heading"></a></h3>
+<p>Definitions of abbreviations used in this document are listed below:</p>
+<ul class="simple">
+<li><p>ACL: Asynchronous Connectionless data packet</p></li>
+<li><p>AD: Advertising Data</p></li>
+<li><p>ARQ: Automatic Repeat reQuest</p></li>
+<li><p>ATT: Attribute Protocol, also attribute protocol software subsystem</p></li>
+<li><p>ATTC: Attribute Protocol Client software subsystem</p></li>
+<li><p>ATTS: Attribute Protocol Server software subsystem</p></li>
+<li><p>BIG: Broadcast Isochronous Group</p></li>
+<li><p>BIS: Broadcast Isochronous Stream</p></li>
+<li><p>CCC: Client Characteristic Configuration</p></li>
+<li><p>CCCD: Client Characteristic Configuration Descriptor</p></li>
+<li><p>CID: Connection Identifier</p></li>
+<li><p>CIS: Connected Isochronous Stream</p></li>
+<li><p>CSRK: Connection Signature Resolving Key</p></li>
+<li><p>DM: Device Manager software subsystem</p></li>
+<li><p>GAP: Generic Access Profile</p></li>
+<li><p>GATT: Generic Attribute Profile</p></li>
+<li><p>HCI: Host Controller Interface</p></li>
+<li><p>IRK: Identity Resolving Key</p></li>
+<li><p>JIT: Just In Time</p></li>
+<li><p>L2C: L2CAP software subsystem</p></li>
+<li><p>L2CAP: Logical Link Control Adaptation Protocol</p></li>
+<li><p>BLE: Bluetooth Low Energy</p></li>
+<li><p>LL: Link Layer</p></li>
+<li><p>LLCP: Link Layer Control Protocol</p></li>
+<li><p>LTK: Long Term Key</p></li>
+<li><p>MITM: Man In The Middle pairing (authenticated pairing)</p></li>
+<li><p>OOB: Out Of Band data</p></li>
+<li><p>SMP: Security Manager Protocol, also security manager protocol software subsystem</p></li>
+<li><p>SMPI: Security Manager Protocol Initiator software subsystem</p></li>
+<li><p>SMPR: Security Manager Protocol Responder software subsystem</p></li>
+<li><p>STK: Short Term Key</p></li>
+<li><p>WSF: Wireless Software Foundation software service</p></li>
+</ul>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading"></a></h3>
+<p>The following documents are referenced by this document.</p>
+<ul class="simple">
+<li><p>1: Bluetooth SIG, “Bluetooth Core Specification”, Version 5.4, January 31, 2023.</p></li>
+</ul>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="context-md">
+<section id="system-context">
+<h2>System Context<a class="headerlink" href="#system-context" title="Link to this heading"></a></h2>
+<p>The BLE Host software system consists of two main components:</p>
+<ul class="simple">
+<li><p>em | bleu Host Host</p></li>
+<li><p>em | bleu Profiles Profiles</p></li>
+</ul>
+<p>The software system is dependent on WSF and PAL. WSF is an OS porting layer. It provides general-purpose software services such as queues, timers, and buffer management. PAL is the hardware platform abstraction layer. It provides the platform specific implementation to the hardware’s BSP libraries.</p>
+<section id="system-configuration">
+<h3>System Configuration<a class="headerlink" href="#system-configuration" title="Link to this heading"></a></h3>
+<p>The Host and Profiles are designed to support single-chip SoC systems and dual-chip systems.</p>
+<p>When operating in a single-chip system the Host and Profiles run on the processor inside the SoC. A “thin” HCI layer adapts to the software interface of the target’s BLE Link Layer.</p>
+<p>When operating in a dual-chip system the Host and Profiles run on a microcontroller and communicate with a BLE Controller chip over a wired interface such as UART or SPI. A standard transport-based HCI layer manages the communication between the two devices.</p>
+<a class="reference internal image-reference" href="_images/arch_block_diag_2x.png"><img alt="_images/arch_block_diag_2x.png" src="_images/arch_block_diag_2x.png" style="width: 600px;" /></a>
+<p><strong>Figure 2-1.</strong> Host and Profiles in a single-chip SoC system and dual-chip system.</p>
+</section>
+<section id="em-bleu-profiles">
+<h3>em | bleu Profiles<a class="headerlink" href="#em-bleu-profiles" title="Link to this heading"></a></h3>
+<p><a id="embleu-profiles"></a></p>
+<p>Profiles consists of <em>Sample Application</em>, interoperable Bluetooth <em>Profiles and Services</em> components and an <em>Application Framework</em> for simplified application development and porting.</p>
+<a class="reference internal image-reference" href="_images/arch_block_diag_app_2x.png"><img alt="_images/arch_block_diag_app_2x.png" src="_images/arch_block_diag_app_2x.png" style="width: 400px;" /></a>
+<p><strong>Figure 2-2.</strong> Profiles software system.</p>
+<p>For more information see em | bleu Profile Developer’s Guide.</p>
+<section id="sample-applications">
+<h4>Sample Applications<a class="headerlink" href="#sample-applications" title="Link to this heading"></a></h4>
+<p>em | bleu’s Bluetooth Low Energy sample applications provides example source code for products such as a proximity keyfob, health sensor, and watch. The sample applications are designed with a product-oriented focus, with each application supporting one or more BLE profile. The sample applications interface to the Profiles and Services and the Application Framework.</p>
+</section>
+<section id="profiles-and-services">
+<h4>Profiles and Services<a class="headerlink" href="#profiles-and-services" title="Link to this heading"></a></h4>
+<p>The profiles and services are interoperable components designed to Bluetooth profile and service specification requirements. The profiles and services are used in applications to implement particular profile and service features.</p>
+<p>The profiles are implemented in separate files for each profile role. The services, however, may be grouped together in files based on their logical function and the profile they are used by.</p>
+</section>
+<section id="application-framework">
+<h4>Application Framework<a class="headerlink" href="#application-framework" title="Link to this heading"></a></h4>
+<p>The Application Framework performs many operations common to BLE embedded applications, such as:</p>
+<ul class="simple">
+<li><p>Application-level device, connection, and security management.</p></li>
+<li><p>Simple user interface abstractions for button press handling, sounds, display, and other user feedback.</p></li>
+<li><p>An abstracted device database for storing bonding data and other device parameters.</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/app_frame_ss_2x.png"><img alt="_images/app_frame_ss_2x.png" src="_images/app_frame_ss_2x.png" style="width: 500px;" /></a>
+<p><strong>Figure 2-3.</strong> Application Framework software subsystem.</p>
+<p>The Application Framework consists of several modules, each with their own API interface file:</p>
+<ul class="simple">
+<li><p><strong>Main</strong>: Device, connection, and security management.</p></li>
+<li><p><strong>UI</strong>: User interface abstraction.</p></li>
+<li><p><strong>DB</strong>: Device database.</p></li>
+<li><p><strong>HW</strong>: Hardware sensor interface abstraction.</p></li>
+</ul>
+</section>
+</section>
+<section id="em-bleu-host">
+<h3>em | bleu Host<a class="headerlink" href="#em-bleu-host" title="Link to this heading"></a></h3>
+<p><a id="embleu-host"></a></p>
+<p>The Host is complete host protocol stack solution for single-mode BLE devices. It consists of five protocol layers:</p>
+<ul class="simple">
+<li><p><strong>ATT</strong>: Attribute protocol.</p></li>
+<li><p><strong>SMP</strong>: Security manager protocol.</p></li>
+<li><p><strong>L2C</strong>: L2CAP protocol.</p></li>
+<li><p><strong>HCI</strong>: Host controller interface protocol.</p></li>
+<li><p><strong>DM</strong>: Device manager.</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/pack_host_ss_2x.png"><img alt="_images/pack_host_ss_2x.png" src="_images/pack_host_ss_2x.png" style="width: 400px;" /></a>
+<p><strong>Figure 2-4.</strong> Host software system.</p>
+<section id="att">
+<h4>ATT<a class="headerlink" href="#att" title="Link to this heading"></a></h4>
+<p>The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and attribute protocol server (ATTS).</p>
+<p>ATTC implements all attribute protocol client features and is designed to meet the client requirements of the generic attribute profile. ATTC can support multiple simultaneous connections to different servers.</p>
+<p>ATTS implements all attribute protocol server features and has support for multiple simultaneous client connections. ATTS also implements the server features defined by the generic attribute
+profile.</p>
+<!-- For more information see [ATT API](../att_api/index.html).-->
+</section>
+<section id="smp">
+<h4>SMP<a class="headerlink" href="#smp" title="Link to this heading"></a></h4>
+<p>The SMP subsystem implements the security manager protocol. It contains two independent subsystems:</p>
+<ul class="simple">
+<li><p>The initiator (SMPI). SMPI implements the initiator features of the security manager protocol and has support for multiple simultaneous connections.</p></li>
+<li><p>The responder (SMPR). SMPR implements the responder features of the security manager protocol and has support for only one connection (by Bluetooth specification design).</p></li>
+</ul>
+<p>SMP also implements the cryptographic toolbox, which uses AES. The interface to AES is asynchronous and abstracted through WSF. SMP also implements functions to support data signing.</p>
+<!-- For more information see [SMP API](../smp_api/index.html). -->
+</section>
+<section id="l2c">
+<h4>L2C<a class="headerlink" href="#l2c" title="Link to this heading"></a></h4>
+<p>The L2C subsystem implements the BLE L2CAP protocol. It is a substantially scaled-down version of regular Bluetooth L2CAP.</p>
+<p>In the TX data path, the main function of L2C is building L2CAP packets and sending them to HCI. In the RX data path, its main function is receiving packets from HCI and routing them to either SMP or ATT.</p>
+<p>L2C also implements the connection parameter update procedure.</p>
+<!-- For more information see [L2CAP API](../l2cap_api/index.html). -->
+</section>
+<section id="hci">
+<h4>HCI<a class="headerlink" href="#hci" title="Link to this heading"></a></h4>
+<p>The HCI subsystem implements the host-controller interface specification. This specification defines commands, events, and data packets sent between a BLE protocol stack on a host and a link layer on a controller.</p>
+<p>The HCI API is optimized to be a thin interface layer for a single chip system. It is configurable for either a single chip system or traditional system with wired HCI.</p>
+<p>This configurability is accomplished through a layered implementation. A core layer can be configured for either a single chip system or wired HCI. A transport and driver layer below the core layer can be configured for different wired transports such as UART.</p>
+<!-- For more information see [HCI API](../hci_api/index.html). -->
+</section>
+<section id="dm">
+<h4>DM<a class="headerlink" href="#dm" title="Link to this heading"></a></h4>
+<p>The DM subsystem implements device management procedures required by the stack. These procedures are partitioned by procedure category and device role (master or slave). The following procedures are implemented in DM:</p>
+<ul class="simple">
+<li><p><strong>Advertising and device visibility</strong>: Enable/disable advertising, set advertising parameters and data, set connectability and discoverability.</p></li>
+<li><p><strong>Scanning and device discovery</strong>: Start/stop scanning, set scan parameters, advertising reports, name discovery.</p></li>
+<li><p><strong>Connection management</strong>: Create/accept/remove connections, set/update connection parameters, read RSSI.</p></li>
+<li><p><strong>Security management</strong>: Bonding, storage of security parameters, authentication, encryption, authorization, random address management.</p></li>
+<li><p><strong>Local device management</strong>: Initialization and reset, set local parameters, vendor-specific commands.</p></li>
+</ul>
+<p>DM procedures support the Generic Access Profile (GAP) when applicable.</p>
+<!-- For more information see [DM API](../dm_api/index.html). -->
+</section>
+<section id="wsf">
+<h4>WSF<a class="headerlink" href="#wsf" title="Link to this heading"></a></h4>
+<p>The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, and general-purpose software service used by the software system. The goal of WSF is to stay small and lean, supporting only the basic services required by the stack. It consists of the following:</p>
+<ul class="simple">
+<li><p>Event handler service with event and message passing.</p></li>
+<li><p>Timer service.</p></li>
+<li><p>Queue and buffer management service.</p></li>
+<li><p>Portable data types.</p></li>
+<li><p>Critical sections and task locking.</p></li>
+<li><p>Trace and assert diagnostic services.</p></li>
+<li><p>Security interfaces for encryption and random number generation.</p></li>
+</ul>
+<p>For more information see the WSF Developer’s Guide.</p>
+</section>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="arch-md">
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>This section describes the software architecture used by the em | bleu Host.</p>
+<section id="interfaces">
+<h3>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h3>
+<p>The software system uses function calls and callback functions in its APIs, as described below.</p>
+<section id="message-passing-api-functions">
+<h4>Message Passing API Functions<a class="headerlink" href="#message-passing-api-functions" title="Link to this heading"></a></h4>
+<p>Message passing API functions result in a message being sent to the task running the stack. These functions typically involve a complex operation, such as creating a connection, and do not access internal (private) data.</p>
+</section>
+<section id="direct-execute-api-functions">
+<h4>Direct Execute API Functions<a class="headerlink" href="#direct-execute-api-functions" title="Link to this heading"></a></h4>
+<p>Direct execute API functions run entirely in the context of the calling function. These functions typically involve simple operations like reading or setting internal data. Task scheduling is locked when accessing internal data.</p>
+</section>
+<section id="callback-functions">
+<h4>Callback Functions<a class="headerlink" href="#callback-functions" title="Link to this heading"></a></h4>
+<p>Callback functions are implemented by the client using the protocol stack and execute in the context of the stack.</p>
+<p>Callback functions are used to send events and data to the client.</p>
+<a class="reference internal image-reference" href="_images/message_pass_and_dei_2x.png"><img alt="_images/message_pass_and_dei_2x.png" src="_images/message_pass_and_dei_2x.png" style="width: 450px;" /></a>
+<p><strong>Figure 3-1.</strong> Message passing and direct execute interfaces.</p>
+</section>
+</section>
+<section id="event-handlers-and-tasks">
+<h3>Event Handlers and Tasks<a class="headerlink" href="#event-handlers-and-tasks" title="Link to this heading"></a></h3>
+<p>The em | bleu software system defines an event handler service that forms a basis for the asynchronous communication mechanisms used in the system. An event handler can receive messages and events. Each software subsystem typically has its own event handler; for example, each layer of the protocol stack has its own event handler.</p>
+<p>The stack is designed to be flexible and allow for different task architectures. The software system does not define any tasks but defines some interfaces to tasks. It relies on the target OS to implement tasks and manage the timer and event handler services from target OS tasks. A typical single-chip software system will use separate tasks for the application, stack, and link layer. However there is nothing in the design of the protocol stack or profiles that prevent them from being run in the same task as other software systems.</p>
+<a class="reference internal image-reference" href="_images/ex_sys_show_ehe_2x.png"><img alt="_images/ex_sys_show_ehe_2x.png" src="_images/ex_sys_show_ehe_2x.png" style="width: 650px;" /></a>
+<p><strong>Figure 3-2.</strong> Example system showing event handlers executing within an OS task</p>
+</section>
+<section id="data-path">
+<h3>Data Path<a class="headerlink" href="#data-path" title="Link to this heading"></a></h3>
+<p>This section describes the data flow between applications and the HCI.</p>
+<section id="tx-path">
+<h4>TX Path<a class="headerlink" href="#tx-path" title="Link to this heading"></a></h4>
+<p>The TX data path covers the flow of data as it is sent from the application, through the stack, and then on to HCI.</p>
+<p>When copying there can be two data copies in the TX data path:</p>
+<ul class="simple">
+<li><p>When data is sent from the application to the stack</p></li>
+<li><p>When data is sent from the stack to HCI</p></li>
+</ul>
+<p>As an optimization the stack provides zero-copy APIs that use a single data buffer between the application and stack. A zero-copy API is also utilized between the stack and HCI when running on a single CPU architecture.</p>
+<p>The stack does not copy data internally between layers.</p>
+<p>The allocation and deallocation of data buffers takes place at the point where data is copied. When the application sends data to the stack, a buffer is allocated and data is copied to the buffer.</p>
+<p>When data is sent from the stack to the HCI or the link layer, the data is copied to an HCI or link layer buffer and the stack buffer is deallocated.</p>
+<a class="reference internal image-reference" href="_images/tx_data_path_2x.png"><img alt="_images/tx_data_path_2x.png" src="_images/tx_data_path_2x.png" style="width: 500px;" /></a>
+<p><strong>Figure 3-3.</strong> TX data path</p>
+<p>In this scenario, the application calls an ATTC API function which initiates transmission of a packet. The ATTC function allocates a buffer and builds an attribute protocol packet, while reserving space at the start of the packet for the L2CAP and HCI headers. ATTC looks up the HCI handle for this instance and calls an L2C function, passing the handle along with the packet and packet length to L2C.</p>
+<p>L2C checks that the link for this handle is connected. If it is not, L2C discards the packet.</p>
+<p><span class="notes"><strong>Note</strong>: It is OK to silently discard the packet in this race condition because ATTC will be notified immediately afterwards that the link has been disconnected.</span></p>
+<p>L2C then builds the L2CAP and HCI headers for the packet and calls an HCI function to send the packet to HCI.</p>
+<p>HCI then processes the packet. The detailed operation of HCI depends on the system configuration. In general HCI will copy the data, deallocate the buffer, and queue the data.</p>
+</section>
+<section id="rx-path">
+<h4>RX Path<a class="headerlink" href="#rx-path" title="Link to this heading"></a></h4>
+<p>The RX data path covers the flow of data as it is sent from HCI, through the stack, and then on to
+the application. Like the TX path, there can be two data copies in the RX data path: when data is
+sent from the stack to the application and when data is sent from HCI to the stack. The stack does
+not copy data internally between layers.</p>
+<p>Buffers are allocated by the HCI layer and then deallocated internally by the stack.</p>
+<a class="reference internal image-reference" href="_images/rx_data_path_2x.png"><img alt="_images/rx_data_path_2x.png" src="_images/rx_data_path_2x.png" style="width: 500px;" /></a>
+<p><strong>Figure 3-4.</strong> RX data path</p>
+<p>HCI receives a data packet. It allocates a WSF buffer and copies the entire data packet, including the HCI handle and length, to the buffer. Then HCI calls an L2C callback function to send the data to L2C.</p>
+<p>L2C receives the packet and performs some basic error checking on the length and PSM. If there is an error the packet is discarded and the buffer is deallocated. If the packet is good it is routed to either ATT or SMP. In this example the packet is routed to ATT and L2C calls an ATT callback function.</p>
+<p>ATT receives the packet and performs error checking on the length and the attribute opcode. If there is an error the packet is discarded and the buffer is deallocated. If the packet is good it is routed to either ATTC or ATTS. In this example the packet is routed to ATTS and ATT calls an ATTS callback function.</p>
+<p>ATTS processes the received packet according to the attribute protocol specification. In this example, the packet is passed to the application for further processing. ATTS calls the application callback function which allocates a WSF message buffer, copies data to the buffer, and sends the message to the application task. After calling the application callback function ATTS deallocates the packet buffer.</p>
+</section>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="org-md">
+<section id="folder-organization">
+<h2>Folder Organization<a class="headerlink" href="#folder-organization" title="Link to this heading"></a></h2>
+<p>The contents of the root directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>ble-host</p></td>
+<td class="text-left"><p>Host software</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ble-profiles</p></td>
+<td class="text-left"><p>Profiles platform and sample projects</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>platform</p></td>
+<td class="text-left"><p>Platform integration and example source</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>projects</p></td>
+<td class="text-left"><p>sample applications</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wsf</p></td>
+<td class="text-left"><p>Wireless Software Foundation</p></td>
+</tr>
+</tbody>
+</table>
+<section id="ble-apps-folder">
+<h3>ble-apps folder<a class="headerlink" href="#ble-apps-folder" title="Link to this heading"></a></h3>
+<p>The contents of the ble-apps directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration / Makefiles</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sources</p></td>
+<td class="text-left"><p>Application source</p></td>
+</tr>
+</tbody>
+</table>
+<p>The build and sources directories contain the sample applications makefiles and source code respectively.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>assettag</p></td>
+<td class="text-left"><p>Asset tracking tag sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>cycling</p></td>
+<td class="text-left"><p>Cycling sensor sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>datc</p></td>
+<td class="text-left"><p>Proprietary data transfer client sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>dats</p></td>
+<td class="text-left"><p>Proprietary data transfer server sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>fit</p></td>
+<td class="text-left"><p>Fitness sensor sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>gluc</p></td>
+<td class="text-left"><p>Glucose sensor sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>hidapp</p></td>
+<td class="text-left"><p>HID sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>locator</p></td>
+<td class="text-left"><p>Proprietary asset tracking locator sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>medc</p></td>
+<td class="text-left"><p>Health data collector sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>meds</p></td>
+<td class="text-left"><p>Health sensor sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sensor</p></td>
+<td class="text-left"><p>Sensor sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>tag</p></td>
+<td class="text-left"><p>Proximity tag sample application</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>uribeacon</p></td>
+<td class="text-left"><p>Uribeacon sample application</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>watch</p></td>
+<td class="text-left"><p>Watch sample application</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ble-host-folder">
+<h3>ble-host folder<a class="headerlink" href="#ble-host-folder" title="Link to this heading"></a></h3>
+<p>The contents of the ble-host directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration / Makefiles</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>include</p></td>
+<td class="text-left"><p>Host API</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/hci</p></td>
+<td class="text-left"><p>Host HCI source</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sources/sec</p></td>
+<td class="text-left"><p>Host security support (AES, ECC)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/stack</p></td>
+<td class="text-left"><p>Host stack source</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ble-profiles-folder">
+<h3>ble-profiles folder<a class="headerlink" href="#ble-profiles-folder" title="Link to this heading"></a></h3>
+<p>The contents of the ble-profiles directory are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>build</p></td>
+<td class="text-left"><p>Build configuration / Makefiles</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>include</p></td>
+<td class="text-left"><p>Profiles API</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/af</p></td>
+<td class="text-left"><p>Application framework and sample applications</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sources/profiles</p></td>
+<td class="text-left"><p>BLE profiles</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sources/services</p></td>
+<td class="text-left"><p>BLE services</p></td>
+</tr>
+</tbody>
+</table>
+<p>The profiles directory contains the BLE profiles.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>anpc</p></td>
+<td class="text-left"><p>Alert Notification Profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>atpc</p></td>
+<td class="text-left"><p>Asset Tracking profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>atps</p></td>
+<td class="text-left"><p>Asset Tracking profile server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>bas</p></td>
+<td class="text-left"><p>Battery Service server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>blpc</p></td>
+<td class="text-left"><p>Blood Pressure Profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>blps</p></td>
+<td class="text-left"><p>Blood Pressure Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>cpp</p></td>
+<td class="text-left"><p>Cycling Power Profile server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>cscp</p></td>
+<td class="text-left"><p>Cycling Speed and Cadence Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>dis</p></td>
+<td class="text-left"><p>Device Information Service client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>fmpl</p></td>
+<td class="text-left"><p>Find Me Profile locator</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>gap</p></td>
+<td class="text-left"><p>GAP Profile</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>gatt</p></td>
+<td class="text-left"><p>Generic Attribute Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>glpc</p></td>
+<td class="text-left"><p>Glucose Profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>glps</p></td>
+<td class="text-left"><p>Glucose Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>hid</p></td>
+<td class="text-left"><p>HID device</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>hrpc</p></td>
+<td class="text-left"><p>Heart Rate Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>hrps</p></td>
+<td class="text-left"><p>Heart Rate Profile server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>htpc</p></td>
+<td class="text-left"><p>Health Thermometer Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>htps</p></td>
+<td class="text-left"><p>Health Thermometer Profile server</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>paspc</p></td>
+<td class="text-left"><p>Phone Alert Status Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>plxpc</p></td>
+<td class="text-left"><p>Pulse Oximeter Profile collector</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>plxps</p></td>
+<td class="text-left"><p>Pulse Oximeter Profile sensor</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>rscp</p></td>
+<td class="text-left"><p>Running Speed and Cadence Profile sensor</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>scpps</p></td>
+<td class="text-left"><p>Scan Parameter Profile server</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>sensor</p></td>
+<td class="text-left"><p>Example Temperature and Gyroscope Service Profile</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>tipc</p></td>
+<td class="text-left"><p>Time Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>udsc</p></td>
+<td class="text-left"><p>User Data Service Collector</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>uribeacon</p></td>
+<td class="text-left"><p>Uribeacon Configuration Profile</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wdxc</p></td>
+<td class="text-left"><p>Proprietary Data Exchange Client Profile</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>wdxs</p></td>
+<td class="text-left"><p>Proprietary Data Exchange Server Profile</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wpc</p></td>
+<td class="text-left"><p>Packetcraft proprietary profile client</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>wspc</p></td>
+<td class="text-left"><p>Weight Scale Profile client</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>wsps</p></td>
+<td class="text-left"><p>Weight Scale Profile server</p></td>
+</tr>
+</tbody>
+</table>
+<p>The services directory contains the BLE services.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Directory</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>svc_alert</p></td>
+<td class="text-left"><p>Example Alert-related services implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_batt</p></td>
+<td class="text-left"><p>Example Battery service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_bps</p></td>
+<td class="text-left"><p>Example Blood Pressure service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_core</p></td>
+<td class="text-left"><p>Example GATT and GAP service implementations</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_cps</p></td>
+<td class="text-left"><p>Example Cycling Power Service Server implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_cscs</p></td>
+<td class="text-left"><p>Example Cycling Speed and Cadence Service Server implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_cte</p></td>
+<td class="text-left"><p>Example Constant Tone Extension Service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_dis</p></td>
+<td class="text-left"><p>Example Device Information Service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_gls</p></td>
+<td class="text-left"><p>Example Glucose service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_gyro</p></td>
+<td class="text-left"><p>Example gyroscope sensor service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_hid</p></td>
+<td class="text-left"><p>Human Interface Device service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_hrs</p></td>
+<td class="text-left"><p>Example Heart Rate service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_hts</p></td>
+<td class="text-left"><p>Example Health Thermometer service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_ipss</p></td>
+<td class="text-left"><p>Example Internet Profile Support Service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_plxs</p></td>
+<td class="text-left"><p>Example Pulse Oximeter Service Server implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_px</p></td>
+<td class="text-left"><p>Example Proximity services implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_rscs</p></td>
+<td class="text-left"><p>Example Running Speed and Cadence Service Server implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_scpss</p></td>
+<td class="text-left"><p>Example Scan Parameter Service Server implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_temp</p></td>
+<td class="text-left"><p>Example temperature sensor service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_time</p></td>
+<td class="text-left"><p>Example Time-related services implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_uricfg</p></td>
+<td class="text-left"><p>UriCfg configuration service implementation</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_wdxs</p></td>
+<td class="text-left"><p>Wireless Data Exchange service implementation</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>svc_wp</p></td>
+<td class="text-left"><p>WP service implementation. Packetcraft proprietary servicde</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>svc_wss</p></td>
+<td class="text-left"><p>Example Weight Scale service implementation</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</div>
+<div class="markdown docutils container" id="porting-md">
+<section id="porting">
+<h2>Porting<a class="headerlink" href="#porting" title="Link to this heading"></a></h2>
+<p>The porting process typically consists of two main steps:</p>
+<ol class="arabic simple">
+<li><p>Porting WSF interfaces and services to the target OS and software system.</p></li>
+<li><p>Porting HCI to the target system and writing a transport driver, if applicable.</p></li>
+</ol>
+<section id="wsf-porting">
+<h3>WSF Porting<a class="headerlink" href="#wsf-porting" title="Link to this heading"></a></h3>
+<p>Consult the WSF Developer’s Guide for WSF porting.</p>
+<p>Refer to Figure 7-1 WSF porting process to a target system for more details.</p>
+</section>
+<section id="hci-porting">
+<h3>HCI Porting<a class="headerlink" href="#hci-porting" title="Link to this heading"></a></h3>
+<p>The HCI layer is designed to be portable and support different transport and chip configurations. The porting process depends on the chip configuration:</p>
+<ul class="simple">
+<li><p>If the stack is ported to a single-chip system then a “thin HCI” porting process is used.</p></li>
+<li><p>If the stack is ported to a two-chip system with wired HCI transport then a transport-based porting process is used.</p></li>
+</ul>
+</section>
+</section>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ble-profiles-api.html" class="btn btn-neutral float-right" title="BLE Profiles API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023 EM Microelectronic.  All rights reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+=========================================================================
+Temperature Indicator (TI) Example
+=========================================================================
+
+
+Overview
+--------
+
+The purpose of this example is to show how to use the TI driver library
+with callback through interruption and timer with QPC.
+
+Setup
+-----
+
+The output (Tx UART signal) is on GPIO7. This signal can be accessed from two header connectors (see picture below).
+
+.. image:: imgs/UART_Tx_GPIO7_connection.jpg
+   :scale: 50 %
+   :alt: Tx/GPIO7 electrical connection
+	 :align: center
+
+You can then connect a USB to UART device to GPIO7 and use a terminal software (for example docklight, PuTTy, …) to connect to the COM port of your device.
+
+.. warning::
+
+  Double check you connected the jumpers D+(07) and D-(06) on the DVK.
+  The GPIO6 and GPIO7 pins are connected by default to the USB connector.
+
+Implementation details
+----------------------
+
+This example code uses the implementation of the printf example, please check documentation
+of this example for UART implementation details.
+
+The function *NVM_ApplicationEntry()* is the entry point of the sample application.
+It configures QP/C and creates one single task for this example. It also resumes any
+peripheral devices in use after SOC wakes from sleep mode.
+
+When the application starts, it generates Q_ENTRY_SIG signal. This code initializes the printf over UART.
+
+When the timer expires, the callback Timer_Callback is called and post SIG_TIMER_TICK signal to the task.
+Then the task receive the signal and start a conversion.
+
+When the convertion of TI is ready, the TI_Callback callback function is called. It posts a 
+signal SIG_TEMP_INDIC_ISR to the task.
+
+Then the task will receive the SIG_TEMP_INDIC_ISR signal and print the temperature over UART. 
+
+Build
+-----
+
+The build target of this example is: **ti_example**
+
+.. code-block:: bash
+
+  cd <sdk>\build
+  cmake --build . --target ti_example
+
+
+Run
+---
+
+To program and run the example:
+
+.. code-block:: bash
+
+  cd <sdk>\tools\blengine
+  python blengine_cli.py --port COMYY run emsystem_prog ..\..\build\projects\ti_example\ti_example.ihex --progress
+
+With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).
+
+
+Then, launch your terminal software and connect to the DVK (UART port) using the second COM port dynamically created
+at connection. Note that this port is different than the one used to program the application into the flash memory.
+
+Once you have identified the right COM port, then in your terminal software, configure the speed to be 115200 bit/s
+and open the connection.
+
+You will then see the counter messages on your terminal like shown in screenshot below.
+
+.. image:: imgs/Terminal_TI.jpg
+	:align: center

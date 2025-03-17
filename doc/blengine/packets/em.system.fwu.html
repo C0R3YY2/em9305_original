@@ -1,0 +1,1305 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>em.system.fwu &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="em.system.general" href="em.system.general.html" />
+    <link rel="prev" title="em.system.em" href="em.system.em.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../packets.html">HCI Packets List</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="aci.em.hci.html">aci.em.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.9304.system.cmd.html">em.9304.system.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.bridge.cmd.html">em.bridge.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.dvk.cmd.html">em.dvk.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.event.unity.html">em.event.unity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.em.html">em.system.em</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">em.system.fwu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-get-firmware-update-info">EM_FWU_get_firmware_update_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-get-firmware-area-count">EM_FWU_get_firmware_area_count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-get-firmware-info">EM_FWU_get_firmware_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-reboot">EM_FWU_reboot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-firmware-upload-init">EM_FWU_firmware_upload_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-store-firmware-block">EM_FWU_store_firmware_block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-validate-firmware-update">EM_FWU_validate_firmware_update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-crypto-engine-init">EM_FWU_crypto_engine_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#em-fwu-crypto-engine-upload-signature-material">EM_FWU_crypto_engine_upload_signature_material</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.general.html">em.system.general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.arc.html">em.system.hi.cmd.arc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.att.html">em.system.hi.cmd.att</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.attc.html">em.system.hi.cmd.attc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.atts.html">em.system.hi.cmd.atts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.dm.html">em.system.hi.cmd.dm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gap.html">em.system.hi.cmd.gap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gatt.html">em.system.hi.cmd.gatt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.gpio.html">em.system.hi.cmd.gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.hci.html">em.system.hi.cmd.hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.l2cap.html">em.system.hi.cmd.l2cap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.rtc.html">em.system.hi.cmd.rtc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.sm.html">em.system.hi.cmd.sm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smp.html">em.system.hi.cmd.smp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpi.html">em.system.hi.cmd.smpi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.smpr.html">em.system.hi.cmd.smpr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.cmd.whitelist.html">em.system.hi.cmd.whitelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.hi.event.html">em.system.hi.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.mm.html">em.system.mm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pc.html">em.system.pc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.pm.html">em.system.pm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rc.html">em.system.rc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.rm.html">em.system.rm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.security.html">em.system.security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.ut.html">em.system.ut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="em.system.wt.html">em.system.wt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.html">hci</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.cmd.html">hci.aci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.event.html">hci.aci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.aci.hci.event.html">hci.aci.hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.acl.html">hci.acl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.ble.event.html">hci.ble.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd.html">hci.cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.cmd_802_15_4.html">hci.cmd_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.data_802_15_4.html">hci.data_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.html">hci.event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event.vs.html">hci.event.vs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.event_802_15_4.html">hci.event_802_15_4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hci.iso.html">hci.iso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">HCI Packets Index by ID</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../packets.html">HCI Packets List</a></li>
+      <li class="breadcrumb-item active">em.system.fwu</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="em-system-fwu">
+<h1>em.system.fwu<a class="headerlink" href="#em-system-fwu" title="Link to this heading"></a></h1>
+<nav class="contents local" id="index">
+<p class="topic-title">Index</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#em-fwu-get-firmware-update-info" id="id19">EM_FWU_get_firmware_update_info</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-get-firmware-area-count" id="id20">EM_FWU_get_firmware_area_count</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-get-firmware-info" id="id21">EM_FWU_get_firmware_info</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-reboot" id="id22">EM_FWU_reboot</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-firmware-upload-init" id="id23">EM_FWU_firmware_upload_init</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-store-firmware-block" id="id24">EM_FWU_store_firmware_block</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-validate-firmware-update" id="id25">EM_FWU_validate_firmware_update</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-crypto-engine-init" id="id26">EM_FWU_crypto_engine_init</a></p></li>
+<li><p><a class="reference internal" href="#em-fwu-crypto-engine-upload-signature-material" id="id27">EM_FWU_crypto_engine_upload_signature_material</a></p></li>
+</ul>
+</nav>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div>
+<div id="count">9 Packets</div><section id="em-fwu-get-firmware-update-info">
+<span id="pkt-em-fwu-get-firmware-update-info"></span><h2><a class="reference internal" href="#em-fwu-get-firmware-update-info">EM_FWU_get_firmware_update_info</a><a class="headerlink" href="#em-fwu-get-firmware-update-info" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_get_firmware_update_info&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_get_firmware_update_info</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0001</p>
+</dd>
+</dl>
+<dl>
+<dt>Request the firmware update information such as firmwre update firmware version,</dt><dd><div class="line-block">
+<div class="line">target hardware, etc.</div>
+</div>
+</dd>
+</dl>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x01</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id2" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>IC_Family_ID</strong></p></td>
+<td><p>4</p></td>
+<td><p>&lt;L</p></td>
+<td><div class="line-block">
+<div class="line">IC Family ID as per specified in Product Information structure (Information Page 3)</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Silicon_Version</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Silicon version of the IC (design iteration)</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Firmware_Version</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Version of the frimware currently being executed</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Firmware_Type</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Type of the firmware currently being executed</div>
+<div class="line">0x0001: Firmware Updater</div>
+<div class="line">0x0002: Application</div>
+<div class="line">0x0000, 0x0003 to 0xFFFF: Reserved</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>User_Data</strong></p></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">User defined data</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-get-firmware-area-count">
+<span id="pkt-em-fwu-get-firmware-area-count"></span><h2><a class="reference internal" href="#em-fwu-get-firmware-area-count">EM_FWU_get_firmware_area_count</a><a class="headerlink" href="#em-fwu-get-firmware-area-count" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_get_firmware_area_count&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_get_firmware_area_count</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0002</p>
+</dd>
+</dl>
+<p>Request the amount of firmware area currently in NVM</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x02</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Firmware_Area_Counter</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Number of different firmwares in the device’s memory</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-get-firmware-info">
+<span id="pkt-em-fwu-get-firmware-info"></span><h2><a class="reference internal" href="#em-fwu-get-firmware-info">EM_FWU_get_firmware_info</a><a class="headerlink" href="#em-fwu-get-firmware-info" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_get_firmware_info&quot;,</span> <span class="pre">Index=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_get_firmware_info</span> <span class="pre">--Index=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0003</p>
+</dd>
+</dl>
+<p>Request the firmware information of a given firmware area (e.g., firmware header)</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x03</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Index</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">The firmware Index can be obtained with the command EMSFU_Get_Firmware_Area_Count</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id6" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Firmware_Header</strong></p></td>
+<td><p>40</p></td>
+<td><p>&lt;40s</p></td>
+<td><div class="line-block">
+<div class="line">Firmware header payload</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-reboot">
+<span id="pkt-em-fwu-reboot"></span><h2><a class="reference internal" href="#em-fwu-reboot">EM_FWU_reboot</a><a class="headerlink" href="#em-fwu-reboot" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_reboot&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_reboot</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0004</p>
+</dd>
+</dl>
+<dl>
+<dt>Reboot in a given Mode:</dt><dd><div class="line-block">
+<div class="line">0x01: EMCore Mode</div>
+<div class="line">0x02: Application Mode</div>
+<div class="line">0x03: Firmware Updater Mode</div>
+</div>
+</dd>
+</dl>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x04</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Mode</strong></p></td>
+<td><p>0x02</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Reboot Mode</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id8" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-firmware-upload-init">
+<span id="pkt-em-fwu-firmware-upload-init"></span><h2><a class="reference internal" href="#em-fwu-firmware-upload-init">EM_FWU_firmware_upload_init</a><a class="headerlink" href="#em-fwu-firmware-upload-init" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_firmware_upload_init&quot;,</span> <span class="pre">Header=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_firmware_upload_init</span> <span class="pre">--Header=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0010</p>
+</dd>
+</dl>
+<p>Initialize the firmware update for a given firmware area</p>
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id9" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x10</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Header</strong></p></td>
+<td></td>
+<td><p>40</p></td>
+<td><p>&lt;40s</p></td>
+<td><div class="line-block">
+<div class="line">The Firmware Header</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id10" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Block_Size</strong></p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Maximum Block Size for firmware upload</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-store-firmware-block">
+<span id="pkt-em-fwu-store-firmware-block"></span><h2><a class="reference internal" href="#em-fwu-store-firmware-block">EM_FWU_store_firmware_block</a><a class="headerlink" href="#em-fwu-store-firmware-block" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_store_firmware_block&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_store_firmware_block</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0020</p>
+</dd>
+</dl>
+<p>Verify and apply the last received firmware block</p>
+<table class="docutils align-default" id="id11">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id11" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x20</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id12">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id12" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-validate-firmware-update">
+<span id="pkt-em-fwu-validate-firmware-update"></span><h2><a class="reference internal" href="#em-fwu-validate-firmware-update">EM_FWU_validate_firmware_update</a><a class="headerlink" href="#em-fwu-validate-firmware-update" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_validate_firmware_update&quot;)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_validate_firmware_update</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0021</p>
+</dd>
+</dl>
+<p>Verify and apply the last received firmware update</p>
+<table class="docutils align-default" id="id13">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id13" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x21</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id14">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id14" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-crypto-engine-init">
+<span id="pkt-em-fwu-crypto-engine-init"></span><h2><a class="reference internal" href="#em-fwu-crypto-engine-init">EM_FWU_crypto_engine_init</a><a class="headerlink" href="#em-fwu-crypto-engine-init" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_crypto_engine_init&quot;,</span> <span class="pre">Encryption_Type=0xXx,Initialization_Data=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_crypto_engine_init</span> <span class="pre">--Encryption_Type=0xXx</span> <span class="pre">--Initialization_Data=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0030</p>
+</dd>
+</dl>
+<p>Initialize the firmware update crypto engine</p>
+<table class="docutils align-default" id="id15">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id15" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x30</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Encryption_Type</strong></p></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">0x00: None</div>
+<div class="line-block">
+<div class="line">0x01: AES-ECB</div>
+<div class="line">0x02: AES-CBC</div>
+<div class="line">0x03: AES-CTR</div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Initialization_Data</strong></p></td>
+<td></td>
+<td><p>0</p></td>
+<td><p>None</p></td>
+<td><div class="line-block">
+<div class="line">Crypto Engine Initialization Data (not present or 16 bytes long)</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id16">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id16" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+<section id="em-fwu-crypto-engine-upload-signature-material">
+<span id="pkt-em-fwu-crypto-engine-upload-signature-material"></span><h2><a class="reference internal" href="#em-fwu-crypto-engine-upload-signature-material">EM_FWU_crypto_engine_upload_signature_material</a><a class="headerlink" href="#em-fwu-crypto-engine-upload-signature-material" title="Link to this heading"></a></h2>
+<p><strong>API usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">engine.send(&quot;EM_FWU_crypto_engine_upload_signature_material&quot;,</span> <span class="pre">Signature_X=0xXx,Signature_Y=0xXx,Digest=0xXx)</span></code></p>
+<p><strong>CLI usage:</strong>
+<code class="docutils literal notranslate"><span class="pre">blengine</span> <span class="pre">send</span> <span class="pre">EM_FWU_crypto_engine_upload_signature_material</span> <span class="pre">--Signature_X=0xXx</span> <span class="pre">--Signature_Y=0xXx</span> <span class="pre">--Digest=0xXx</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">wrapped by<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="hci.html#pkt-hci-cmd"><span class="std std-ref">HCI_CMD</span></a> (0x01)</p>
+</dd>
+<dt class="field-even">identifier<span class="colon">:</span></dt>
+<dd class="field-even"><p>0x0031</p>
+</dd>
+</dl>
+<p>Upload and verify signature material</p>
+<table class="docutils align-default" id="id17">
+<caption><span class="caption-text">Parameters</span><a class="headerlink" href="#id17" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 38.8%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>value</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>opcode</strong></p></td>
+<td><p>0x40fe</p></td>
+<td><p>2</p></td>
+<td><p>&lt;H</p></td>
+<td><div class="line-block">
+<div class="line">Command OpCode</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>length</strong></p></td>
+<td><p>auto</p></td>
+<td><p>auto</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Packet Length</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>0x31</p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Signature_X</strong></p></td>
+<td></td>
+<td><p>32</p></td>
+<td><p>&lt;32s</p></td>
+<td><div class="line-block">
+<div class="line">X coordinate of the signature</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Signature_Y</strong></p></td>
+<td></td>
+<td><p>32</p></td>
+<td><p>&lt;32s</p></td>
+<td><div class="line-block">
+<div class="line">Y coordinate of the signature</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>Digest</strong></p></td>
+<td></td>
+<td><p>32</p></td>
+<td><p>&lt;32s</p></td>
+<td><div class="line-block">
+<div class="line">Digest</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default" id="id18">
+<caption><span class="caption-text">Expected Response</span><a class="headerlink" href="#id18" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 39.2%" />
+<col style="width: 1.0%" />
+<col style="width: 1.0%" />
+<col style="width: 58.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>size</p></th>
+<th class="head"><p>struct</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Response Status</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><strong>fwu_opcode</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>fwu_status</strong></p></td>
+<td><p>1</p></td>
+<td><p>&lt;B</p></td>
+<td><div class="line-block">
+<div class="line">Firmware Update Sub Command Parameters</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<hr></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="em.system.em.html" class="btn btn-neutral float-left" title="em.system.em" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="em.system.general.html" class="btn btn-neutral float-right" title="em.system.general" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1886 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ble Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="firmware_update Procedures" href="firmware_update.html" />
+    <link rel="prev" title="authentication Procedures" href="authentication.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html">authentication Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ble Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-conn-handle">get_conn_handle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#disconnect">disconnect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-legacy-advertising-data">ble.set_legacy_advertising_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-scan-response-data">ble.set_scan_response_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-name">ble.set_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-role">ble.set_role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-mode">ble.set_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-manufacturer-data">ble.set_manufacturer_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-connect">ble.connect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-connect-ext">ble.connect_ext</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-scan">ble.scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-update-phy">ble.update_phy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-private-address">ble.set_private_address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-clear-filter-accept-list">ble.clear_filter_accept_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-read-filter-accept-list-size">ble.read_filter_accept_list_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-add-device-filter-accept-list">ble.add_device_filter_accept_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-clear-resolving-list">ble.clear_resolving_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-read-resolving-list-size">ble.read_resolving_list_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-add-device-resolving-list">ble.add_device_resolving_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-advertising-parameters">ble.set_advertising_parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ble-set-periodic-advertising-parameters">ble.set_periodic_advertising_parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="firmware_update.html">firmware_update Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">gap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">gatt Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci.html">hci Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">l2cap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sm.html">sm Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">ble Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ble-procedures">
+<h1>ble Procedures<a class="headerlink" href="#ble-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="get-conn-handle">
+<span id="proc-get-conn-handle"></span><h2><a class="reference internal" href="#get-conn-handle">get_conn_handle</a><a class="headerlink" href="#get-conn-handle" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Get the connection handle of a Device. (EMSHI only)</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">get_conn_handle</span>
+
+<span class="n">get_conn_handle</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>get_conn_handle<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bluetooth Address to connect to, call scan() to get a list</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">get_conn_handle_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_conn_handle</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the connection handle of a Device. (EMSHI only)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_GetConnectionHandle&quot;</span><span class="p">,</span> <span class="n">Addr</span><span class="o">=</span><span class="n">mac</span><span class="p">(</span><span class="n">address</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ConnHandle&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="disconnect">
+<span id="proc-disconnect"></span><h2><a class="reference internal" href="#disconnect">disconnect</a><a class="headerlink" href="#disconnect" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Disconnect from a Remote Device. (EMSHI only)</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">disconnect</span>
+
+<span class="n">disconnect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>disconnect<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>conn_handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="n">disconnect_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Disconnect from a Remote Device. (EMSHI only)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Disconnect&quot;</span><span class="p">,</span> <span class="n">Connection_Handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">wait_ack</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Sent Disconnect Packet&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-legacy-advertising-data">
+<span id="proc-ble-set-legacy-advertising-data"></span><h2><a class="reference internal" href="#ble-set-legacy-advertising-data">ble.set_legacy_advertising_data</a><a class="headerlink" href="#ble-set-legacy-advertising-data" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set ONE Advertising Data</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_legacy_advertising_data</span>
+
+<span class="n">set_legacy_advertising_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adv_dict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_legacy_advertising_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>data
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">data<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw data to advertise in hex form</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_legacy_adv_data_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_legacy_advertising_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adv_dict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set ONE Advertising Data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="s2">&quot;Legacy_Advertising_Data&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="o">.</span><span class="n">update</span><span class="p">({</span> <span class="s2">&quot;Legacy_Advertising_Data&quot;</span><span class="p">:</span> <span class="p">{}</span> <span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">adv_dict</span> <span class="o">=</span> <span class="n">adv_dict</span> <span class="ow">or</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Legacy_Advertising_Data&quot;</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">make_advertising_data</span><span class="p">(</span><span class="n">adv_dict</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Advertising_Data&quot;</span><span class="p">,</span>
+                    <span class="n">Advertising_Data_Length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+                    <span class="n">Advertising_Data</span><span class="o">=</span><span class="n">padortrim</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+
+    <span class="c1">#assert rsp.response.get(&quot;status&quot;) == 0, &quot;Cannot set name, Error: %s&quot; % rsp.status_text</span>
+    <span class="k">if</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;name not set, error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Advertising Data set to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">data</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-scan-response-data">
+<span id="proc-ble-set-scan-response-data"></span><h2><a class="reference internal" href="#ble-set-scan-response-data">ble.set_scan_response_data</a><a class="headerlink" href="#ble-set-scan-response-data" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set LE Bluetooth Device Name.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_scan_response_data</span>
+
+<span class="n">set_scan_response_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_scan_response_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>name<span class="w"> </span>value
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Data Type Name</p>
+</dd>
+<dt class="field-even">value<span class="colon">:</span></dt>
+<dd class="field-even"><p>Value</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_scan_response_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_scan_response_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set LE Bluetooth Device Name.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">adv_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">value</span> <span class="p">})</span>
+
+    <span class="n">adv_pkt</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+    <span class="n">rsp</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Scan_Response_Data&quot;</span><span class="p">,</span>
+                        <span class="n">Scan_Response_Data_Length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">adv_pkt</span><span class="o">.</span><span class="n">bytes_value</span><span class="p">()),</span>
+                        <span class="n">Scan_Response_Data</span><span class="o">=</span><span class="n">adv_pkt</span><span class="o">.</span><span class="n">pad_value</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
+
+    <span class="c1">#assert rsp.response.get(&quot;status&quot;) == 0, &quot;Cannot set name, Error: %s&quot; % rsp.status_text</span>
+    <span class="k">if</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;name not set, error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rsp</span><span class="o">.</span><span class="n">status_text</span>
+    <span class="k">return</span> <span class="n">rsp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;name set to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-name">
+<span id="proc-ble-set-name"></span><h2><a class="reference internal" href="#ble-set-name">ble.set_name</a><a class="headerlink" href="#ble-set-name" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set LE Bluetooth Device Name.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_name</span>
+
+<span class="n">set_name</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">shortname</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_name<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--shortname<span class="w"> </span>SHORTNAME<span class="o">]</span><span class="w"> </span>name
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">name<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Device Name</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--shortname <var>SHORTNAME</var></span></kbd></dt>
+<dd><p>Device Short Name</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_name_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">shortname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set LE Bluetooth Device Name.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">adv</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;GAP_AD_Complete_Local_Name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">shortname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">adv</span><span class="o">.</span><span class="n">update</span><span class="p">({</span> <span class="s2">&quot;GAP_AD_Short_Local_Name&quot;</span><span class="p">:</span> <span class="n">shortname</span> <span class="p">})</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;name set to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-role">
+<span id="proc-ble-set-role"></span><h2><a class="reference internal" href="#ble-set-role">ble.set_role</a><a class="headerlink" href="#ble-set-role" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set LE Bluetooth Device Role.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_role</span>
+
+<span class="n">set_role</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_role<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>role
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">role<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Can be any combination, separated by commas, of the following</dt><dd><p>values:
+PeripheralOnly,CentralOnly,PeripheralPreferred,CentralPreferred</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_role_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_role</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set LE Bluetooth Device Role.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;Read_BD_ADDR&quot;</span><span class="p">,</span> <span class="n">timeout</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="n">bd_addr</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BD_ADDR&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;PeripheralOnly&quot;</span> <span class="ow">in</span> <span class="n">role</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Advertising_Parameters&quot;</span><span class="p">,</span> <span class="n">Peer_Address</span><span class="o">=</span><span class="n">bd_addr</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Advertising_Enable&quot;</span><span class="p">,</span> <span class="n">Advertising_Enable</span><span class="o">=</span><span class="mh">0x01</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;CentralOnly&quot;</span> <span class="ow">in</span> <span class="n">role</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Advertising_Enable&quot;</span><span class="p">,</span> <span class="n">Advertising_Enable</span><span class="o">=</span><span class="mh">0x00</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">pkt</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-mode">
+<span id="proc-ble-set-mode"></span><h2><a class="reference internal" href="#ble-set-mode">ble.set_mode</a><a class="headerlink" href="#ble-set-mode" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set LE Bluetooth Device Mode.</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_mode</span>
+
+<span class="n">set_mode</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">modes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_manufacturer_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>modes
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">modes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>can be any combination, separated by commas, of the following</dt><dd><p>values: LimitedDiscoverable,GeneralDiscoverable,BrEdrNotSupporte
+d,LEandBrEdrSupported (Controller),LEandBrEdrSupported (Host)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_mode_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">modes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set LE Bluetooth Device Mode.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="mh">0x00</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">+=</span> <span class="n">LE_ADV_FLAGS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">modes</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">advertise</span><span class="p">({</span>
+                    <span class="s2">&quot;GAP_AD_Flags&quot;</span><span class="p">:</span> <span class="n">mode</span><span class="p">,</span>
+                     <span class="p">})</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mode</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-manufacturer-data">
+<span id="proc-ble-set-manufacturer-data"></span><h2><a class="reference internal" href="#ble-set-manufacturer-data">ble.set_manufacturer_data</a><a class="headerlink" href="#ble-set-manufacturer-data" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set manufacturer specific data</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_manufacturer_data</span>
+
+<span class="n">set_manufacturer_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_manufacturer_data<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>modes
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">modes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>can be any combination, separated by commas, of the following</dt><dd><p>values: LimitedDiscoverable,GeneralDiscoverable,BrEdrNotSupporte
+d,LEandBrEdrSupported (Controller),LEandBrEdrSupported (Host)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_mode_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_manufacturer_data</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set manufacturer specific data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSHI_GAP_SetManufacturerSpecificData&quot;</span><span class="p">,</span> <span class="n">Len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">Value</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1">#assert pkt.response.get(&quot;status&quot;) == 0, &quot;Cannot set manufacturer specific data, error: %s&quot; % pkt.status_text</span>
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-connect">
+<span id="proc-ble-connect"></span><h2><a class="reference internal" href="#ble-connect">ble.connect</a><a class="headerlink" href="#ble-connect" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Connect to a Remote Device. (LE)</p>
+<p>return (status, connection_handle)</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">connect</span>
+
+<span class="n">connect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">address_type</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">filter_policy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">conn_interval_min_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">conn_interval_max_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">max_latency</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_ce_length</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_ce_length</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">conn_timeout_ms</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.connect<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--address_type<span class="w"> </span>ADDRESS_TYPE<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--scan_interval_ms<span class="w"> </span>SCAN_INTERVAL_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--scan_window_ms<span class="w"> </span>SCAN_WINDOW_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--conn_interval_min_ms<span class="w"> </span>CONN_INTERVAL_MIN_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--conn_interval_max_ms<span class="w"> </span>CONN_INTERVAL_MAX_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--max_latency<span class="w"> </span>MAX_LATENCY<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--conn_timeout_ms<span class="w"> </span>CONN_TIMEOUT_MS<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--min_ce_length<span class="w"> </span>MIN_CE_LENGTH<span class="o">]</span>
+<span class="w">                    </span><span class="o">[</span>--max_ce_length<span class="w"> </span>MAX_CE_LENGTH<span class="o">]</span>
+<span class="w">                    </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Bluetooth Address to connect to, call scan() to get a</dt><dd><p>list</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--address_type <var>ADDRESS_TYPE</var></span></kbd></dt>
+<dd><p>Bluetooth Address Type</p>
+</dd>
+<dt><kbd><span class="option">--scan_interval_ms <var>SCAN_INTERVAL_MS</var></span></kbd></dt>
+<dd><p>Scan Interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scan_window_ms <var>SCAN_WINDOW_MS</var></span></kbd></dt>
+<dd><p>Scan Window in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--conn_interval_min_ms <var>CONN_INTERVAL_MIN_MS</var></span></kbd></dt>
+<dd><p>Scan Interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--conn_interval_max_ms <var>CONN_INTERVAL_MAX_MS</var></span></kbd></dt>
+<dd><p>Scan Window in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--max_latency <var>MAX_LATENCY</var></span></kbd></dt>
+<dd><p>Maximum Peripheral Latency</p>
+</dd>
+<dt><kbd><span class="option">--conn_timeout_ms <var>CONN_TIMEOUT_MS</var></span></kbd></dt>
+<dd><p>Supervision timeout for LE Link in ms</p>
+</dd>
+<dt><kbd><span class="option">--min_ce_length <var>MIN_CE_LENGTH</var></span></kbd></dt>
+<dd><p>Minimum length of connection event</p>
+</dd>
+<dt><kbd><span class="option">--max_ce_length <var>MAX_CE_LENGTH</var></span></kbd></dt>
+<dd><p>Maximum length of connection event</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">connect_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span>
+            <span class="n">address_type</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+            <span class="n">filter_policy</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+            <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">conn_interval_min_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">conn_interval_max_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">max_latency</span><span class="o">=</span><span class="mh">0x0000</span><span class="p">,</span>
+            <span class="n">min_ce_length</span> <span class="o">=</span> <span class="mh">0x0000</span><span class="p">,</span>
+            <span class="n">max_ce_length</span> <span class="o">=</span> <span class="mh">0x0000</span><span class="p">,</span>
+            <span class="n">conn_timeout_ms</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Connect to a Remote Device. (LE)</span>
+
+<span class="sd">    return (status, connection_handle)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>  <span class="s2">&quot;LE_Create_Connection&quot;</span><span class="p">,</span>
+                        <span class="n">Peer_Address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span>
+                        <span class="n">Peer_Address_Type</span><span class="o">=</span><span class="n">address_type</span><span class="p">,</span>
+                        <span class="n">Own_Address_Type</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                        <span class="n">LE_Scan_Interval</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">scan_interval_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">),</span>  <span class="c1"># ratio 1/0.625 ms</span>
+                        <span class="n">LE_Scan_Window</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">scan_window_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">),</span>  <span class="c1"># ratio 1/0.625 ms</span>
+                        <span class="n">Initiator_Filter_Policy</span><span class="o">=</span><span class="n">filter_policy</span><span class="p">,</span>
+                        <span class="n">Connection_Interval_Min</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_interval_min_ms</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">),</span> <span class="c1"># ratio 1/1.25 ms</span>
+                        <span class="n">Connection_Interval_Max</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_interval_max_ms</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">),</span><span class="c1"># ratio 1/1.25 ms</span>
+                        <span class="n">Supervision_Timeout</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_timeout_ms</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span>  <span class="c1"># 10ms</span>
+                        <span class="n">Max_Latency</span><span class="o">=</span><span class="n">max_latency</span><span class="p">,</span>
+                        <span class="n">Min_CE_Length</span><span class="o">=</span><span class="n">min_ce_length</span><span class="p">,</span>
+                        <span class="n">Max_CE_Length</span><span class="o">=</span><span class="n">max_ce_length</span><span class="p">,</span>
+                        <span class="n">wait_ack</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="n">retry</span> <span class="o">=</span> <span class="n">retry</span><span class="p">,</span>
+                        <span class="n">timeout</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;Connection_Complete&quot;</span> <span class="ow">in</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span>  <span class="n">pkt</span><span class="o">.</span><span class="n">response</span>
+
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0b</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0c</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Create_Connection_Cancel&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Command Disallowed&quot;</span>
+
+
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span> <span class="ow">or</span> <span class="s2">&quot;Command Status Timeout&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-connect-ext">
+<span id="proc-ble-connect-ext"></span><h2><a class="reference internal" href="#ble-connect-ext">ble.connect_ext</a><a class="headerlink" href="#ble-connect-ext" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Extended Connection to a Remote Device. (LE)</p>
+<p>return (status, connection_handle)</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">connect_ext</span>
+
+<span class="n">connect_ext</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">address_type</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">initiating_phys</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">filter_policy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">conn_interval_min_ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">conn_interval_max_ms</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">max_latency</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_ce_length</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_ce_length</span><span class="o">=</span><span class="mi">6400</span><span class="p">,</span> <span class="n">conn_timeout_ms</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.connect_ext<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--address_type<span class="w"> </span>ADDRESS_TYPE<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--initiating_phys<span class="w"> </span>INITIATING_PHYS<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--scan_interval_ms<span class="w"> </span>SCAN_INTERVAL_MS<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--scan_window_ms<span class="w"> </span>SCAN_WINDOW_MS<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--conn_interval_min_ms<span class="w"> </span>CONN_INTERVAL_MIN_MS<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--conn_interval_max_ms<span class="w"> </span>CONN_INTERVAL_MAX_MS<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--max_latency<span class="w"> </span>MAX_LATENCY<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--conn_timeout_ms<span class="w"> </span>CONN_TIMEOUT_MS<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--min_ce_length<span class="w"> </span>MIN_CE_LENGTH<span class="o">]</span>
+<span class="w">                        </span><span class="o">[</span>--max_ce_length<span class="w"> </span>MAX_CE_LENGTH<span class="o">]</span>
+<span class="w">                        </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Bluetooth Address to connect to, call scan() to get a</dt><dd><p>list</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--address_type <var>ADDRESS_TYPE</var></span></kbd></dt>
+<dd><p>Bluetooth Address Type</p>
+</dd>
+<dt><kbd><span class="option">--initiating_phys <var>INITIATING_PHYS</var></span></kbd></dt>
+<dd><p>Initiating PHYs</p>
+</dd>
+<dt><kbd><span class="option">--scan_interval_ms <var>SCAN_INTERVAL_MS</var></span></kbd></dt>
+<dd><p>Scan Interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scan_window_ms <var>SCAN_WINDOW_MS</var></span></kbd></dt>
+<dd><p>Scan Window in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--conn_interval_min_ms <var>CONN_INTERVAL_MIN_MS</var></span></kbd></dt>
+<dd><p>Scan Interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--conn_interval_max_ms <var>CONN_INTERVAL_MAX_MS</var></span></kbd></dt>
+<dd><p>Scan Window in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--max_latency <var>MAX_LATENCY</var></span></kbd></dt>
+<dd><p>Maximum Peripheral Latency</p>
+</dd>
+<dt><kbd><span class="option">--conn_timeout_ms <var>CONN_TIMEOUT_MS</var></span></kbd></dt>
+<dd><p>Supervision timeout for LE Link in ms</p>
+</dd>
+<dt><kbd><span class="option">--min_ce_length <var>MIN_CE_LENGTH</var></span></kbd></dt>
+<dd><p>Minimum length of connection event</p>
+</dd>
+<dt><kbd><span class="option">--max_ce_length <var>MAX_CE_LENGTH</var></span></kbd></dt>
+<dd><p>Maximum length of connection event</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">connect_ext_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">connect_ext</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span>
+            <span class="n">address_type</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+            <span class="n">initiating_phys</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+            <span class="n">filter_policy</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+            <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">conn_interval_min_ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">conn_interval_max_ms</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">max_latency</span><span class="o">=</span><span class="mh">0x0000</span><span class="p">,</span>
+            <span class="n">min_ce_length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">max_ce_length</span> <span class="o">=</span> <span class="mi">6400</span><span class="p">,</span>
+            <span class="n">conn_timeout_ms</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Extended Connection to a Remote Device. (LE)</span>
+
+<span class="sd">    return (status, connection_handle)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>  <span class="s2">&quot;LE_Extended_Create_Connection&quot;</span><span class="p">,</span>
+                        <span class="n">Peer_Address</span><span class="o">=</span><span class="n">mac</span><span class="p">(</span><span class="n">address</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(),</span>
+                        <span class="n">Peer_Address_Type</span><span class="o">=</span><span class="n">address_type</span><span class="p">,</span>
+                        <span class="n">Own_Address_Type</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                        <span class="n">Initiating_PHYs</span><span class="o">=</span><span class="n">initiating_phys</span><span class="p">,</span>
+                        <span class="n">Scan_Interval</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">scan_interval_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">),</span>
+                        <span class="n">Scan_Window</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">scan_window_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">),</span>
+                        <span class="n">Initiator_Filter_Policy</span><span class="o">=</span><span class="n">filter_policy</span><span class="p">,</span>
+                        <span class="n">Connection_Interval_Min</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_interval_min_ms</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">),</span>
+                        <span class="n">Connection_Interval_Max</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_interval_max_ms</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">),</span>
+                        <span class="n">Supervision_Timeout</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">conn_timeout_ms</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span>
+                        <span class="n">Max_Latency</span><span class="o">=</span><span class="n">max_latency</span><span class="p">,</span>
+                        <span class="n">Min_CE_Length</span><span class="o">=</span><span class="n">min_ce_length</span><span class="p">,</span>
+                        <span class="n">Max_CE_Length</span><span class="o">=</span><span class="n">max_ce_length</span><span class="p">,</span>
+                        <span class="n">wait_ack</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="n">retry</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+                        <span class="n">timeout</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;Enhanced_Connection_Complete&quot;</span> <span class="ow">in</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Connected&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0b</span><span class="p">:</span>
+            <span class="c1"># we are already connected</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Already Connected&quot;</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0c</span><span class="p">:</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Create_Connection_Cancel&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Command Disallowed&quot;</span>
+
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span> <span class="ow">or</span> <span class="s2">&quot;Command Status Timeout&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-scan">
+<span id="proc-ble-scan"></span><h2><a class="reference internal" href="#ble-scan">ble.scan</a><a class="headerlink" href="#ble-scan" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Scan for devices and return a advertising packets list.</p>
+<p>Two callbacks can be provided for the advertising packets and for the scan
+response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      mode<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mode</p>
+</dd>
+<dt class="field-odd">param      duration_ms<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The duration milliseconds</p>
+</dd>
+<dt class="field-even">param      scan_interval_ms<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scan interval milliseconds</p>
+</dd>
+<dt class="field-odd">param      scan_window_ms<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scan window milliseconds</p>
+</dd>
+<dt class="field-even">param      address_filter<span class="colon">:</span></dt>
+<dd class="field-even"><p>The address filter</p>
+</dd>
+<dt class="field-odd">param      name_filter<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name filter</p>
+</dd>
+<dt class="field-even">param      uuid_filter<span class="colon">:</span></dt>
+<dd class="field-even"><p>The uuid filter</p>
+</dd>
+<dt class="field-odd">param      nearest<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The nearest filter</p>
+</dd>
+<dt class="field-even">param      retry<span class="colon">:</span></dt>
+<dd class="field-even"><p>The retry</p>
+</dd>
+<dt class="field-odd">param      on_advertising<span class="colon">:</span></dt>
+<dd class="field-odd"><p>On advertising Callback</p>
+</dd>
+<dt class="field-even">param      on_scan_response<span class="colon">:</span></dt>
+<dd class="field-even"><p>On scan response Callback</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>status and advertising packets</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple(str, list)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">scan</span>
+
+<span class="n">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">legacy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duration_ms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">scanning_filter_policy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scanning_phys</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">scan_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">filter_duplicates</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">uuid_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">on_advertising</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">on_scan_response</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.scan<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--legacy<span class="w"> </span>LEGACY<span class="o">]</span><span class="w"> </span><span class="o">[</span>--duration_ms<span class="w"> </span>DURATION_MS<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--scan_interval_ms<span class="w"> </span>SCAN_INTERVAL_MS<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--scan_window_ms<span class="w"> </span>SCAN_WINDOW_MS<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--scanning_filter_policy<span class="w"> </span>SCANNING_FILTER_POLICY<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--scanning_phys<span class="w"> </span>SCANNING_PHYS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--scan_type<span class="w"> </span>SCAN_TYPE<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--filter_duplicates<span class="w"> </span>FILTER_DUPLICATES<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--address_filter<span class="w"> </span>ADDRESS_FILTER<span class="o">]</span>
+<span class="w">                 </span><span class="o">[</span>--name_filter<span class="w"> </span>NAME_FILTER<span class="o">]</span><span class="w"> </span><span class="o">[</span>--uuid_filter<span class="w"> </span>UUID_FILTER<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--legacy <var>LEGACY</var></span></kbd></dt>
+<dd><p>Extended scan by default, specify legacy for LE Scan</p>
+</dd>
+<dt><kbd><span class="option">--duration_ms <var>DURATION_MS</var></span></kbd></dt>
+<dd><p>Duration of the scan in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scan_interval_ms <var>SCAN_INTERVAL_MS</var></span></kbd></dt>
+<dd><p>Scan interval in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scan_window_ms <var>SCAN_WINDOW_MS</var></span></kbd></dt>
+<dd><p>Advertisement Window in milliseconds</p>
+</dd>
+<dt><kbd><span class="option">--scanning_filter_policy <var>SCANNING_FILTER_POLICY</var></span></kbd></dt>
+<dd><p>Filter Devices based on this MAC Address</p>
+</dd>
+<dt><kbd><span class="option">--scanning_phys <var>SCANNING_PHYS</var></span></kbd></dt>
+<dd><p>PhYs (ext only)</p>
+</dd>
+<dt><kbd><span class="option">--scan_type <var>SCAN_TYPE</var></span></kbd></dt>
+<dd><p>s</p>
+</dd>
+<dt><kbd><span class="option">--filter_duplicates <var>FILTER_DUPLICATES</var></span></kbd></dt>
+<dd><p>Filter Duplicates</p>
+</dd>
+<dt><kbd><span class="option">--address_filter <var>ADDRESS_FILTER</var></span></kbd></dt>
+<dd><p>Filter Devices based on this MAC Address</p>
+</dd>
+<dt><kbd><span class="option">--name_filter <var>NAME_FILTER</var></span></kbd></dt>
+<dd><p>Filter Devices which name contain this string</p>
+</dd>
+<dt><kbd><span class="option">--uuid_filter <var>UUID_FILTER</var></span></kbd></dt>
+<dd><p>Filter the devices that advertise the specific uuid</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">scan_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+         <span class="n">legacy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+         <span class="n">duration_ms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+         <span class="n">scan_interval_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+         <span class="n">scan_window_ms</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+         <span class="n">scanning_filter_policy</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
+         <span class="n">scanning_phys</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+         <span class="n">scan_type</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+         <span class="n">filter_duplicates</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+         <span class="n">address_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">name_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">uuid_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">retry</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+         <span class="n">on_advertising</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">on_scan_response</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scan for devices and return a advertising packets list.</span>
+
+<span class="sd">    Two callbacks can be provided for the advertising packets and for the scan</span>
+<span class="sd">    response.</span>
+
+
+
+<span class="sd">    :param      engine:            The engine</span>
+<span class="sd">    :param      mode:              The mode</span>
+<span class="sd">    :param      duration_ms:       The duration milliseconds</span>
+<span class="sd">    :param      scan_interval_ms:  The scan interval milliseconds</span>
+<span class="sd">    :param      scan_window_ms:    The scan window milliseconds</span>
+<span class="sd">    :param      address_filter:    The address filter</span>
+<span class="sd">    :param      name_filter:       The name filter</span>
+<span class="sd">    :param      uuid_filter:       The uuid filter</span>
+<span class="sd">    :param      nearest:           The nearest filter</span>
+<span class="sd">    :param      retry:             The retry</span>
+<span class="sd">    :param      on_advertising:    On advertising Callback</span>
+<span class="sd">    :param      on_scan_response:  On scan response Callback</span>
+
+<span class="sd">    :returns:   status and advertising packets</span>
+<span class="sd">    :rtype:     tuple(str, list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">uuid_filter</span><span class="p">:</span>
+        <span class="n">uuid_filter</span> <span class="o">=</span> <span class="n">UUID</span><span class="p">(</span><span class="n">uuid_filter</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">added_parsing_time_ms</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="n">scan_complete</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="n">last_rx_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">process_adv_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+        <span class="c1"># if it does not pass the address filter, discard it right away</span>
+        <span class="c1">#if address_filter and pkt.get(&quot;Address&quot;) != address_filter:</span>
+        <span class="c1">#   return False</span>
+
+        <span class="k">if</span> <span class="n">legacy</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">gap_ad_storage</span><span class="o">.</span><span class="n">decode_adv_data</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Advertising_Data&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">gap_ad_storage</span><span class="o">.</span><span class="n">decode_adv_data</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Data&quot;</span><span class="p">))</span>
+
+        <span class="c1"># add the Decoded advertising Data to the Packet.</span>
+        <span class="n">pkt</span><span class="o">.</span><span class="n">frag</span><span class="p">(</span><span class="s2">&quot;AdvData&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">on_advertising_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Callback method executed when a advertisement event is received</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">nonlocal</span> <span class="n">last_rx_time</span>
+        <span class="k">nonlocal</span> <span class="n">results</span>
+
+        <span class="n">pkt</span><span class="o">.</span><span class="n">is_scan_response</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+        <span class="k">if</span> <span class="n">process_adv_packet</span><span class="p">(</span><span class="n">pkt</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">on_advertising</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">on_advertising</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="n">scan_complete</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pkt</span><span class="p">)</span>
+
+        <span class="n">last_rx_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="n">scan_interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scan_interval_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">)</span>
+    <span class="n">scan_window</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">scan_window_ms</span> <span class="o">*</span> <span class="mf">1.6</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_LE_Advertising_Report&quot;</span><span class="p">,</span> <span class="n">on_advertising_packet</span><span class="p">)</span>
+    <span class="n">engine</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;on_LE_Extended_Advertising_Report&quot;</span><span class="p">,</span> <span class="n">on_advertising_packet</span><span class="p">)</span>
+
+    <span class="c1">#engine.bind(&quot;on_rx&quot;, on_rx)</span>
+
+    <span class="n">timeout</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">duration_ms</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+
+    <span class="c1">#print(engine.send(&quot;LE_Set_Event_Mask&quot;, LE_Event_Mask=0xffffffffffffffff))</span>
+    <span class="c1">#print(engine.send(&quot;Set_Event_Mask_Page_2&quot;, LE_Event_Mask=0xffffffffffffffff))</span>
+    <span class="k">if</span> <span class="n">legacy</span><span class="p">:</span>
+        <span class="n">param_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Scan_Parameters&quot;</span><span class="p">,</span>
+                                    <span class="n">LE_Scan_Type</span>     <span class="o">=</span> <span class="n">scan_type</span><span class="p">,</span>
+                                    <span class="n">Own_Address_Type</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
+                                    <span class="n">LE_Scan_Interval</span> <span class="o">=</span> <span class="n">scan_interval</span><span class="p">,</span>
+                                    <span class="n">LE_Scan_Window</span> <span class="o">=</span> <span class="n">scan_window</span><span class="p">,</span>
+                                    <span class="n">Scanning_Filter_Policy</span> <span class="o">=</span> <span class="n">scanning_filter_policy</span><span class="p">)</span>
+
+        <span class="n">scan_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Scan_Enable&quot;</span><span class="p">,</span>
+                                    <span class="n">LE_Scan_Enable</span>    <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+                                    <span class="n">Filter_Duplicates</span> <span class="o">=</span> <span class="n">filter_duplicates</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">param_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Extended_Scan_Parameters&quot;</span><span class="p">,</span>
+                        <span class="n">Own_Address_Type</span>       <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
+                        <span class="n">Scanning_Filter_Policy</span> <span class="o">=</span> <span class="n">scanning_filter_policy</span><span class="p">,</span>
+                        <span class="n">Scanning_PHYs</span>          <span class="o">=</span> <span class="n">scanning_phys</span><span class="p">,</span>
+                        <span class="n">Scan_Type</span>              <span class="o">=</span> <span class="n">scan_type</span><span class="p">,</span>
+                        <span class="n">Scan_Interval</span>          <span class="o">=</span> <span class="n">scan_interval</span><span class="p">,</span>
+                        <span class="n">Scan_Window</span>            <span class="o">=</span> <span class="n">scan_window</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">param_pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x0c</span><span class="p">:</span>
+            <span class="n">scan_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Extended_Scan_Enable&quot;</span><span class="p">,</span>
+                        <span class="n">Enable</span>                <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
+                        <span class="n">Filter_Duplicates</span>     <span class="o">=</span> <span class="n">filter_duplicates</span><span class="p">,</span>
+                        <span class="n">Duration</span>              <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">Period</span>                <span class="o">=</span> <span class="mh">0x0000</span><span class="p">)</span>
+
+            <span class="n">param_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send_pkt</span><span class="p">(</span><span class="n">param_pkt</span><span class="p">)</span>
+
+
+        <span class="n">scan_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Extended_Scan_Enable&quot;</span><span class="p">,</span>
+                        <span class="n">Enable</span>                <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+                        <span class="n">Filter_Duplicates</span>     <span class="o">=</span> <span class="n">filter_duplicates</span><span class="p">,</span>
+                        <span class="n">Duration</span>              <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">Period</span>                <span class="o">=</span> <span class="mh">0x0000</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">scan_pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># wait for the scan to be complete (device side)</span>
+        <span class="n">scan_complete</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+        <span class="c1">#logger.get(&quot;scan&quot;).info(inquiry_pkt)</span>
+
+        <span class="c1"># wait for processing time before unbinding events, there can be many events</span>
+        <span class="c1"># and we have to wait on the parser.</span>
+        <span class="c1"># we wait max 500ms but while True is bad ! consider refactoring</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_rx_time</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">&gt;</span> <span class="n">added_parsing_time_ms</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">legacy</span><span class="p">:</span>
+        <span class="n">scan_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Scan_Enable&quot;</span><span class="p">,</span> <span class="n">LE_Scan_Enable</span><span class="o">=</span><span class="mh">0x00</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scan_pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Extended_Scan_Enable&quot;</span><span class="p">,</span>
+                            <span class="n">Enable</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+                            <span class="n">Filter_Duplicates</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+                            <span class="n">Duration</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                            <span class="n">Period</span> <span class="o">=</span> <span class="mh">0x0000</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_LE_Advertising_Report&quot;</span><span class="p">,</span> <span class="n">on_advertising_packet</span><span class="p">)</span>
+    <span class="n">engine</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="s2">&quot;on_LE_Extended_Advertising_Report&quot;</span><span class="p">,</span> <span class="n">on_advertising_packet</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">scan_pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">results</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-update-phy">
+<span id="proc-ble-update-phy"></span><h2><a class="reference internal" href="#ble-update-phy">ble.update_phy</a><a class="headerlink" href="#ble-update-phy" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set the PHY mapping</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      engine<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The engine</p>
+</dd>
+<dt class="field-even">param      conn_handle<span class="colon">:</span></dt>
+<dd class="field-even"><p>The connection handle</p>
+</dd>
+<dt class="field-odd">param      rx<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The receive speed</p>
+</dd>
+<dt class="field-even">param      tx<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transmit speed</p>
+</dd>
+<dt class="field-odd">param      options<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The options</p>
+</dd>
+<dt class="field-even">returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">update_phy</span>
+
+<span class="n">update_phy</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">rx_phy</span><span class="p">,</span> <span class="n">tx_phy</span><span class="p">,</span> <span class="n">coded_option</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">all_phy</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.update_phy<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--coded_option<span class="w"> </span>CODED_OPTION<span class="o">]</span>
+<span class="w">                       </span><span class="o">[</span>--preferred_phy<span class="w"> </span>PREFERRED_PHY<span class="o">]</span>
+<span class="w">                       </span>conn_handle<span class="w"> </span>rx_phy<span class="w"> </span>tx_phy
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">conn_handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Conenction Handle</p>
+</dd>
+<dt class="field-even">rx_phy<span class="colon">:</span></dt>
+<dd class="field-even"><p>RX PHY : 1M, 2M or Coded</p>
+</dd>
+<dt class="field-odd">tx_phy<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TX PHY : 1M, 2M or Coded</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--coded_option <var>CODED_OPTION</var></span></kbd></dt>
+<dd><p>Coded options : None, S=2, S=8</p>
+</dd>
+<dt><kbd><span class="option">--preferred_phy <var>PREFERRED_PHY</var></span></kbd></dt>
+<dd><p>Preferred PHY : None, TX, RX, Both</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_phy_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">update_phy</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">conn_handle</span><span class="p">,</span> <span class="n">rx_phy</span><span class="p">,</span> <span class="n">tx_phy</span><span class="p">,</span> <span class="n">coded_option</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">all_phy</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Set the PHY mapping</span>
+
+<span class="sd">    :param      engine:       The engine</span>
+<span class="sd">    :param      conn_handle:  The connection handle</span>
+<span class="sd">    :param      rx:           The receive speed</span>
+<span class="sd">    :param      tx:           The transmit speed</span>
+<span class="sd">    :param      options:      The options</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">phy_mapping</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;1M&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2M&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Coded&quot;</span><span class="p">:</span> <span class="mi">4</span> <span class="p">}</span>
+    <span class="n">coded_options_mapping</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;S=2&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;S=8&quot;</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span>
+    <span class="n">all_phys_mapping</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;TX&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;RX&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Both&quot;</span><span class="p">:</span> <span class="mi">3</span> <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rx_phy</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">rx_phy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">phy_mapping</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;RX must be either </span><span class="si">%s</span><span class="s2">. was </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phy_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">rx_phy</span><span class="p">)</span>
+        <span class="n">rx_phy</span> <span class="o">=</span> <span class="n">phy_mapping</span><span class="p">[</span><span class="n">rx_phy</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tx_phy</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tx_phy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">phy_mapping</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;TX must be either </span><span class="si">%s</span><span class="s2">. was </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">phy_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">tx_phy</span><span class="p">)</span>
+        <span class="n">tx_phy</span> <span class="o">=</span> <span class="n">phy_mapping</span><span class="p">[</span><span class="n">tx_phy</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coded_option</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">coded_option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">coded_options_mapping</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Coded Option must be </span><span class="si">%s</span><span class="s2">. was </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">coded_options_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">coded_option</span><span class="p">)</span>
+        <span class="n">coded_option</span> <span class="o">=</span> <span class="n">coded_options_mapping</span><span class="p">[</span><span class="n">coded_option</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">all_phy</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">all_phy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_phys_mapping</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Preferred PHY must be </span><span class="si">%s</span><span class="s2">. was </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_phys_mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="n">all_phy</span><span class="p">)</span>
+        <span class="n">all_phy</span> <span class="o">=</span> <span class="n">all_phys_mapping</span><span class="p">[</span><span class="n">all_phy</span><span class="p">]</span>
+
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_PHY&quot;</span><span class="p">,</span> <span class="n">Connection_Handle</span><span class="o">=</span><span class="n">conn_handle</span><span class="p">,</span> <span class="n">All_PHYs</span><span class="o">=</span><span class="n">all_phy</span><span class="p">,</span> <span class="n">TX_PHYs</span><span class="o">=</span><span class="n">tx_phy</span><span class="p">,</span> <span class="n">RX_PHYs</span><span class="o">=</span><span class="n">rx_phy</span><span class="p">,</span> <span class="n">PHY_Options</span><span class="o">=</span><span class="n">coded_option</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Set PHY sent&quot;</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-private-address">
+<span id="proc-ble-set-private-address"></span><h2><a class="reference internal" href="#ble-set-private-address">ble.set_private_address</a><a class="headerlink" href="#ble-set-private-address" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Set the random private address for Advertising, Scanning or Initiating connection with privacy</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_private_address</span>
+
+<span class="n">set_private_address</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">resolvable</span><span class="p">,</span> <span class="n">advertising_handle</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">local_irk</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;Hee-Haw!BR-549JS&#39;</span><span class="p">),</span> <span class="n">rnd</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xea</span><span class="s1">^o</span><span class="se">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span class="s1">&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_private_address<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--advertising_handle<span class="w"> </span>ADVERTISING_HANDLE<span class="o">]</span>
+<span class="w">                                </span><span class="o">[</span>--local_irk<span class="w"> </span>LOCAL_IRK<span class="o">]</span><span class="w"> </span><span class="o">[</span>--rnd<span class="w"> </span>RND<span class="o">]</span>
+<span class="w">                                </span>resolvable
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">resolvable<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Set to True if the private address to be set is RPA,</dt><dd><p>set to False if it is NRPA</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--advertising_handle <var>ADVERTISING_HANDLE</var></span></kbd></dt>
+<dd><p>Advertising Handle when settind random address for an
+advertiser</p>
+</dd>
+<dt><kbd><span class="option">--local_irk <var>LOCAL_IRK</var></span></kbd></dt>
+<dd><p>Local IRK</p>
+</dd>
+<dt><kbd><span class="option">--rnd <var>RND</var></span></kbd></dt>
+<dd><p>Random number for the encrypt function to generate RPA</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_private_address_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_private_address</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+                        <span class="n">resolvable</span><span class="p">,</span>
+                        <span class="n">advertising_handle</span><span class="o">=</span><span class="mh">0x0001</span><span class="p">,</span>
+                        <span class="n">local_irk</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">([</span><span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x2d</span><span class="p">,</span> <span class="mh">0x48</span><span class="p">,</span> <span class="mh">0x61</span><span class="p">,</span> <span class="mh">0x77</span><span class="p">,</span> <span class="mh">0x21</span><span class="p">,</span> <span class="mh">0x42</span><span class="p">,</span> <span class="mh">0x52</span><span class="p">,</span> <span class="mh">0x2d</span><span class="p">,</span> <span class="mh">0x35</span><span class="p">,</span> <span class="mh">0x34</span><span class="p">,</span> <span class="mh">0x39</span><span class="p">,</span> <span class="mh">0x4a</span><span class="p">,</span> <span class="mh">0x53</span><span class="p">]),</span>
+                        <span class="n">rnd</span><span class="o">=</span><span class="nb">bytearray</span><span class="p">([</span><span class="mh">0xea</span><span class="p">,</span> <span class="mh">0x5e</span><span class="p">,</span> <span class="mh">0x6f</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">]),</span>
+                        <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set the random private address for Advertising, Scanning or Initiating connection with privacy</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">resolvable</span><span class="p">:</span>
+
+        <span class="c1"># If the address to be set is Resolvable Private Address (RPA)</span>
+        <span class="c1"># RPA generated as specified in Core Spec Vol 6, Part B, section 1.3.2.2</span>
+
+        <span class="c1">#r = self.send(&quot;LE_Rand&quot;)</span>
+
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Encrypt&quot;</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">local_irk</span><span class="p">,</span> <span class="n">Plaintext_Data</span><span class="o">=</span><span class="n">rnd</span><span class="p">)</span> <span class="c1"># e(IRK, prand&#39;)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Encrypted_Data&quot;</span><span class="p">)</span> <span class="c1"># hash</span>
+
+        <span class="n">private_address</span> <span class="o">=</span> <span class="n">mac</span><span class="p">((</span><span class="n">rnd</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># prand || hash</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting RPA random address: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">private_address</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">resolvable</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+
+        <span class="c1"># If the address to be set is Non Resolvable Private Address (NRPA)</span>
+        <span class="n">private_address</span> <span class="o">=</span> <span class="n">mac</span><span class="p">(</span><span class="s2">&quot;00:00:00:01:02:03&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># NRPA Address (starts with 0b00 = 0x0,1,2,3)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting NRPA random address: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">private_address</span><span class="p">)</span>
+
+    <span class="n">legacy</span> <span class="o">=</span> <span class="s2">&quot;LE Extended Advertising&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LE_Supported_Features&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Random_Address&quot;</span><span class="p">,</span> <span class="n">Random_Address</span><span class="o">=</span><span class="n">private_address</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">legacy</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Advertising_Set_Random_Address&quot;</span><span class="p">,</span> <span class="n">Advertising_Handle</span><span class="o">=</span><span class="n">advertising_handle</span><span class="p">,</span> <span class="n">Advertising_Random_Address</span><span class="o">=</span><span class="n">private_address</span><span class="p">)</span> <span class="c1"># If Extended Advertising is supported, this command shall be used to set the random address for Advertising</span>
+
+    <span class="k">return</span> <span class="n">private_address</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-clear-filter-accept-list">
+<span id="proc-ble-clear-filter-accept-list"></span><h2><a class="reference internal" href="#ble-clear-filter-accept-list">ble.clear_filter_accept_list</a><a class="headerlink" href="#ble-clear-filter-accept-list" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Clear the Filter Accept List stored in the controller</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">clear_filter_accept_list</span>
+
+<span class="n">clear_filter_accept_list</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">clear_filter_accept_list</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Clear the Filter Accept List stored in the controller</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Clear_Filter_Accept_List&quot;</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Sent Clear Filter Accept List&quot;</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-read-filter-accept-list-size">
+<span id="proc-ble-read-filter-accept-list-size"></span><h2><a class="reference internal" href="#ble-read-filter-accept-list-size">ble.read_filter_accept_list_size</a><a class="headerlink" href="#ble-read-filter-accept-list-size" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Read the Filter Accept List size</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">read_filter_accept_list_size</span>
+
+<span class="n">read_filter_accept_list_size</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_filter_accept_list_size</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Read the Filter Accept List size</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Filter_Accept_List_Size&quot;</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Filter_Accept_List_Size&quot;</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Sent Read Filter Accept List Size. Size is </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">size</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">size</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-add-device-filter-accept-list">
+<span id="proc-ble-add-device-filter-accept-list"></span><h2><a class="reference internal" href="#ble-add-device-filter-accept-list">ble.add_device_filter_accept_list</a><a class="headerlink" href="#ble-add-device-filter-accept-list" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Add a peer device to the Filter Accept List of the controller</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">add_device_filter_accept_list</span>
+
+<span class="n">add_device_filter_accept_list</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">address_type</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.add_device_filter_accept_list<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                          </span><span class="o">[</span>--address_type<span class="w"> </span>ADDRESS_TYPE<span class="o">]</span>
+<span class="w">                                          </span>address
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">address<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Bluetooth Address of the device to be added to the</dt><dd><p>Filter Accept List</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--address_type <var>ADDRESS_TYPE</var></span></kbd></dt>
+<dd><p>Bluetooth Address Type</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">add_device_filter_accept_list_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_device_filter_accept_list</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">address_type</span><span class="o">=</span><span class="mh">0x00</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Add a peer device to the Filter Accept List of the controller</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Add_Device_To_Filter_Accept_List&quot;</span><span class="p">,</span>
+                      <span class="n">Address_Type</span> <span class="o">=</span> <span class="n">address_type</span><span class="p">,</span>
+                      <span class="n">Address</span> <span class="o">=</span> <span class="n">address</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Device with address </span><span class="si">%s</span><span class="s2"> added to Filter Accept List&quot;</span> <span class="o">%</span> <span class="n">address</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-clear-resolving-list">
+<span id="proc-ble-clear-resolving-list"></span><h2><a class="reference internal" href="#ble-clear-resolving-list">ble.clear_resolving_list</a><a class="headerlink" href="#ble-clear-resolving-list" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Clear the Resolving List stored in the controller</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">clear_resolving_list</span>
+
+<span class="n">clear_resolving_list</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">clear_resolving_list</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Clear the Resolving List stored in the controller</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Clear_Resolving_List&quot;</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Sent Clear Resolving List&quot;</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-read-resolving-list-size">
+<span id="proc-ble-read-resolving-list-size"></span><h2><a class="reference internal" href="#ble-read-resolving-list-size">ble.read_resolving_list_size</a><a class="headerlink" href="#ble-read-resolving-list-size" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Read the Resolving List size</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">read_Resolving_list_size</span>
+
+<span class="n">read_Resolving_list_size</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>No<span class="w"> </span>Help
+</pre></div>
+</div>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_Resolving_list_size</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Read the Resolving List size</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Read_Resolving_List_Size&quot;</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Resolving_List_Size&quot;</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Sent Read FResolving List Size. Size is </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">size</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">size</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-add-device-resolving-list">
+<span id="proc-ble-add-device-resolving-list"></span><h2><a class="reference internal" href="#ble-add-device-resolving-list">ble.add_device_resolving_list</a><a class="headerlink" href="#ble-add-device-resolving-list" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Add one device to the resolving list used to generate and resolve RPAs in the controller</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">add_device_resolving_list</span>
+
+<span class="n">add_device_resolving_list</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">peer_identity_address</span><span class="p">,</span> <span class="n">peer_irk</span><span class="p">,</span> <span class="n">local_irk</span><span class="p">,</span> <span class="n">peer_identity_address_type</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.add_device_resolving_list<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                      </span><span class="o">[</span>--peer_identity_address_type<span class="w"> </span>PEER_IDENTITY_ADDRESS_TYPE<span class="o">]</span>
+<span class="w">                                      </span>peer_identity_address<span class="w"> </span>peer_irk
+<span class="w">                                      </span>local_irk
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">peer_identity_address<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Public or Random (static) Identity Address of the peer</dt><dd><p>device to be added to the Resolving List</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">peer_irk<span class="colon">:</span></dt>
+<dd class="field-even"><p>IRK of the peer device</p>
+</dd>
+<dt class="field-odd">local_irk<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IRK of the local device</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--peer_identity_address_type <var>PEER_IDENTITY_ADDRESS_TYPE</var></span></kbd></dt>
+<dd><p>Bluetooth Address Type of the peer device to be added.
+0x00 for Public Identity Address or 0x01 for Random
+(static) Identity Address</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">add_device_resolving_list_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_device_resolving_list</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">peer_identity_address</span><span class="p">,</span> <span class="n">peer_irk</span><span class="p">,</span> <span class="n">local_irk</span><span class="p">,</span> <span class="n">peer_identity_address_type</span><span class="o">=</span><span class="mh">0x00</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Add one device to the resolving list used to generate and resolve RPAs in the controller</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Add_Device_To_Resolving_List&quot;</span><span class="p">,</span>
+                    <span class="n">Peer_Identity_Address_Type</span><span class="o">=</span><span class="n">peer_identity_address_type</span><span class="p">,</span>
+                    <span class="n">Peer_Identity_Address</span><span class="o">=</span><span class="n">peer_identity_address</span><span class="p">,</span>
+                    <span class="n">Peer_IRK</span><span class="o">=</span><span class="n">peer_irk</span><span class="p">,</span>
+                    <span class="n">Local_IRK</span><span class="o">=</span><span class="n">local_irk</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Device with identity address </span><span class="si">%s</span><span class="s2"> added to Resolving List&quot;</span> <span class="o">%</span> <span class="n">peer_identity_address</span>
+
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="k">return</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">msg</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-advertising-parameters">
+<span id="proc-ble-set-advertising-parameters"></span><h2><a class="reference internal" href="#ble-set-advertising-parameters">ble.set_advertising_parameters</a><a class="headerlink" href="#ble-set-advertising-parameters" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Sets the advertising parameters in the device_infos engine dictionary.</p>
+<p>Extended and Legacy advertisings are covered by this method</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      Interval_Min<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The interval minimum</p>
+</dd>
+<dt class="field-even">param      Interval_Max<span class="colon">:</span></dt>
+<dd class="field-even"><p>The interval maximum</p>
+</dd>
+<dt class="field-odd">param      Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The type</p>
+</dd>
+<dt class="field-even">param      Own_Address_Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>The own address type</p>
+</dd>
+<dt class="field-odd">param      Peer_Address_Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The peer address type</p>
+</dd>
+<dt class="field-even">param      Peer_Address<span class="colon">:</span></dt>
+<dd class="field-even"><p>The peer address</p>
+</dd>
+<dt class="field-odd">param      Channel_Map<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The channel map</p>
+</dd>
+<dt class="field-even">param      Filter_Policy<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filter policy</p>
+</dd>
+<dt class="field-odd">param      Handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The handle</p>
+</dd>
+<dt class="field-even">param      Event_Properties<span class="colon">:</span></dt>
+<dd class="field-even"><p>The event properties</p>
+</dd>
+<dt class="field-odd">param      TX_Power<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The tx power</p>
+</dd>
+<dt class="field-even">param      Primary_PHY<span class="colon">:</span></dt>
+<dd class="field-even"><p>The primary phy</p>
+</dd>
+<dt class="field-odd">param      Secondary_Max_Skip<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The secondary maximum skip</p>
+</dd>
+<dt class="field-even">param      Secondary_PHY<span class="colon">:</span></dt>
+<dd class="field-even"><p>The secondary phy</p>
+</dd>
+<dt class="field-odd">param      SID<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The new value</p>
+</dd>
+<dt class="field-even">param      Scan_Request_Notification_Enable<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scan request notification enable</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_advertising_parameters</span>
+
+<span class="n">set_advertising_parameters</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">legacy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">v2</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dico</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_advertising_parameters<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--Interval_Min<span class="w"> </span>INTERVAL_MIN<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Interval_Max<span class="w"> </span>INTERVAL_MAX<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Properties<span class="w"> </span>PROPERTIES<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Type<span class="w"> </span>TYPE<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Own_Address_Type<span class="w"> </span>OWN_ADDRESS_TYPE<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Peer_Address_Type<span class="w"> </span>PEER_ADDRESS_TYPE<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Peer_Address<span class="w"> </span>PEER_ADDRESS<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Channel_Map<span class="w"> </span>CHANNEL_MAP<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Filter_Policy<span class="w"> </span>FILTER_POLICY<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--TX_Power<span class="w"> </span>TX_POWER<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Primary_PHY<span class="w"> </span>PRIMARY_PHY<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Secondary_Max_Skip<span class="w"> </span>SECONDARY_MAX_SKIP<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Secondary_PHY<span class="w"> </span>SECONDARY_PHY<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--SID<span class="w"> </span>SID<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--Scan_Request_Notification_Enable<span class="w"> </span>SCAN_REQUEST_NOTIFICATION_ENABLE<span class="o">]</span>
+<span class="w">                                       </span><span class="o">[</span>--legacy<span class="o">]</span><span class="w"> </span><span class="o">[</span>--apply<span class="o">]</span><span class="w"> </span><span class="o">[</span>--v2<span class="o">]</span>
+<span class="w">                                       </span>handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Connection Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--Interval_Min <var>INTERVAL_MIN</var></span></kbd></dt>
+<dd><p>Primary Adv Interval Min</p>
+</dd>
+<dt><kbd><span class="option">--Interval_Max <var>INTERVAL_MAX</var></span></kbd></dt>
+<dd><p>Primary Adv Interval Max</p>
+</dd>
+<dt><kbd><span class="option">--Properties <var>PROPERTIES</var></span></kbd></dt>
+<dd><p>Advertising Event Properties</p>
+</dd>
+<dt><kbd><span class="option">--Type <var>TYPE</var></span></kbd></dt>
+<dd><p>Legacy Advertising Type</p>
+</dd>
+<dt><kbd><span class="option">--Own_Address_Type <var>OWN_ADDRESS_TYPE</var></span></kbd></dt>
+<dd><p>Own Address Type</p>
+</dd>
+<dt><kbd><span class="option">--Peer_Address_Type <var>PEER_ADDRESS_TYPE</var></span></kbd></dt>
+<dd><p>Peer Address type</p>
+</dd>
+<dt><kbd><span class="option">--Peer_Address <var>PEER_ADDRESS</var></span></kbd></dt>
+<dd><p>Peer MAC Address</p>
+</dd>
+<dt><kbd><span class="option">--Channel_Map <var>CHANNEL_MAP</var></span></kbd></dt>
+<dd><p>Primary Channel Map</p>
+</dd>
+<dt><kbd><span class="option">--Filter_Policy <var>FILTER_POLICY</var></span></kbd></dt>
+<dd><p>Advertising Filter Policy</p>
+</dd>
+<dt><kbd><span class="option">--TX_Power <var>TX_POWER</var></span></kbd></dt>
+<dd><p>TX Power</p>
+</dd>
+<dt><kbd><span class="option">--Primary_PHY <var>PRIMARY_PHY</var></span></kbd></dt>
+<dd><p>Primary Advertising PHY</p>
+</dd>
+<dt><kbd><span class="option">--Secondary_Max_Skip <var>SECONDARY_MAX_SKIP</var></span></kbd></dt>
+<dd><p>Secondary Advertising Max Skip</p>
+</dd>
+<dt><kbd><span class="option">--Secondary_PHY <var>SECONDARY_PHY</var></span></kbd></dt>
+<dd><p>Secondary Advertising PHY</p>
+</dd>
+<dt><kbd><span class="option">--SID <var>SID</var></span></kbd></dt>
+<dd><p>Advertising SID</p>
+</dd>
+<dt><kbd><span class="option">--Scan_Request_Notification_Enable <var>SCAN_REQUEST_NOTIFICATION_ENABLE</var></span></kbd></dt>
+<dd><p>Scan requets Notif enable</p>
+</dd>
+<dt><kbd><span class="option">--legacy</span></kbd></dt>
+<dd><p>Force legacy (non extended) advertising</p>
+</dd>
+<dt><kbd><span class="option">--apply</span></kbd></dt>
+<dd><p>Apply advertising parameters (default True)</p>
+</dd>
+<dt><kbd><span class="option">--v2</span></kbd></dt>
+<dd><p>Use V2 packet</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_adv_params_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_advertising_parameters</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+        <span class="n">handle</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+        <span class="n">legacy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">v2</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">dico</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">args</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets the advertising parameters in the device_infos engine dictionary.</span>
+
+<span class="sd">    Extended and Legacy advertisings are covered by this method</span>
+
+<span class="sd">    :param      Interval_Min:                      The interval minimum</span>
+<span class="sd">    :param      Interval_Max:                      The interval maximum</span>
+<span class="sd">    :param      Type:                              The type</span>
+<span class="sd">    :param      Own_Address_Type:                  The own address type</span>
+<span class="sd">    :param      Peer_Address_Type:                 The peer address type</span>
+<span class="sd">    :param      Peer_Address:                      The peer address</span>
+<span class="sd">    :param      Channel_Map:                       The channel map</span>
+<span class="sd">    :param      Filter_Policy:                     The filter policy</span>
+<span class="sd">    :param      Handle:                            The handle</span>
+<span class="sd">    :param      Event_Properties:                  The event properties</span>
+<span class="sd">    :param      TX_Power:                          The tx power</span>
+<span class="sd">    :param      Primary_PHY:                       The primary phy</span>
+<span class="sd">    :param      Secondary_Max_Skip:                The secondary maximum skip</span>
+<span class="sd">    :param      Secondary_PHY:                     The secondary phy</span>
+<span class="sd">    :param      SID:                               The new value</span>
+<span class="sd">    :param      Scan_Request_Notification_Enable:  The scan request notification enable</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s2">&quot;Advertising_Parameters&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;Advertising_Parameters&quot;</span><span class="p">:</span> <span class="p">{}</span> <span class="p">}</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">handle</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Advertising_Parameters&quot;</span><span class="p">]:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Advertising_Parameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="n">handle</span><span class="p">:</span> <span class="p">{}</span> <span class="p">}</span> <span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Advertising_Parameters&quot;</span><span class="p">][</span><span class="n">handle</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dico</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Advertising_Parameters&quot;</span><span class="p">][</span><span class="n">handle</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dico</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">apply</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">apply_advertising_parameters</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">legacy</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Advertising Parameters Applied&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="ble-set-periodic-advertising-parameters">
+<span id="proc-ble-set-periodic-advertising-parameters"></span><h2><a class="reference internal" href="#ble-set-periodic-advertising-parameters">ble.set_periodic_advertising_parameters</a><a class="headerlink" href="#ble-set-periodic-advertising-parameters" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Sets the periodic advertising parameters in the device_infos engine dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param      Handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Advertising Handle</p>
+</dd>
+<dt class="field-even">param      Interval_Min<span class="colon">:</span></dt>
+<dd class="field-even"><p>The periodic interval minimum</p>
+</dd>
+<dt class="field-odd">param      Interval_Max<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The periodic interval maximum</p>
+</dd>
+<dt class="field-even">param      Properties<span class="colon">:</span></dt>
+<dd class="field-even"><p>The periodic advertising properties</p>
+</dd>
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{ description_of_the_return_value }</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>{ return_type_description }</p>
+</dd>
+</dl>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.ble</span> <span class="kn">import</span> <span class="n">set_periodic_advertising_parameters</span>
+
+<span class="n">set_periodic_advertising_parameters</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">Handle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Legacy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>BLE.set_periodic_advertising_parameters<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span>
+<span class="w">                                                </span><span class="o">[</span>--Interval_Min<span class="w"> </span>INTERVAL_MIN<span class="o">]</span>
+<span class="w">                                                </span><span class="o">[</span>--Interval_Max<span class="w"> </span>INTERVAL_MAX<span class="o">]</span>
+<span class="w">                                                </span><span class="o">[</span>--Properties<span class="w"> </span>PROPERTIES<span class="o">]</span>
+<span class="w">                                                </span>Handle
+</pre></div>
+</div>
+<p><em>Positional arguments:</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Handle<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Advertising Handle</p>
+</dd>
+</dl>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--Interval_Min <var>INTERVAL_MIN</var></span></kbd></dt>
+<dd><p>Primary Periodic Adv Interval Min</p>
+</dd>
+<dt><kbd><span class="option">--Interval_Max <var>INTERVAL_MAX</var></span></kbd></dt>
+<dd><p>Primary Periodic Adv Interval Max</p>
+</dd>
+<dt><kbd><span class="option">--Properties <var>PROPERTIES</var></span></kbd></dt>
+<dd><p>Periodic Advertising Event Properties</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@procedure</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;BLE.&quot;</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">set_per_adv_params_parser</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">set_periodic_advertising_parameters</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span>
+        <span class="n">Handle</span><span class="o">=</span><span class="mh">0x00</span><span class="p">,</span>
+        <span class="n">Legacy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">args</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets the periodic advertising parameters in the device_infos engine dictionary.</span>
+
+<span class="sd">    :param      Handle:                             The Advertising Handle</span>
+<span class="sd">    :param      Interval_Min:                      The periodic interval minimum</span>
+<span class="sd">    :param      Interval_Max:                      The periodic interval maximum</span>
+<span class="sd">    :param      Properties:                        The periodic advertising properties</span>
+
+<span class="sd">    :returns:   { description_of_the_return_value }</span>
+<span class="sd">    :rtype:     { return_type_description }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">if</span> <span class="s2">&quot;Periodic_Advertising_Parameters&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;Periodic_Advertising_Parameters&quot;</span><span class="p">:</span> <span class="p">{}</span> <span class="p">}</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">Handle</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Periodic_Advertising_Parameters&quot;</span><span class="p">]:</span>
+        <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Periodic_Advertising_Parameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="n">Handle</span><span class="p">:</span> <span class="p">{}</span> <span class="p">}</span> <span class="p">)</span>
+
+    <span class="n">engine</span><span class="o">.</span><span class="n">device_infos</span><span class="p">[</span><span class="s2">&quot;Periodic_Advertising_Parameters&quot;</span><span class="p">][</span><span class="n">Handle</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">apply</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">apply_per_advertising_parameters</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">Handle</span><span class="p">,</span> <span class="n">Legacy</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Periodic Advertising Parameters Applied&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="authentication.html" class="btn btn-neutral float-left" title="authentication Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="firmware_update.html" class="btn btn-neutral float-right" title="firmware_update Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

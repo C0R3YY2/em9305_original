@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES (one block) &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AES Crypto Containers" href="CryptoContainer.html" />
+    <link rel="prev" title="Introduction" href="Architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">AES (one block)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reminders">Reminders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supported-features">Supported features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aes-chaining-modes-and-mac">AES chaining modes and MAC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prototype">Prototype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enumerations">Enumerations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aes-type">AES type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-mode">AES mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-key-size-in-bits">AES Key size in bits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-key-size-in-bytes">AES Key size in bytes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-error-status">AES error status</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performances">Performances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-time">Execution time</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aes-hardware">AES Hardware</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-software">AES Software</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>AES (one block)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aes-one-block">
+<h1>AES (one block)<a class="headerlink" href="#aes-one-block" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] FIPS197: Specification for the Advanced Encryption Standard (AES)</p>
+<p><a class="reference external" href="http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf">FIPS197</a>: <a class="reference external" href="http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf">http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf</a></p>
+</section>
+<section id="reminders">
+<h2>Reminders<a class="headerlink" href="#reminders" title="Permalink to this headline"></a></h2>
+<p>EM9305 embeds 3 AES:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>A <strong>hardware AES</strong> dedicated to the link layer encryption (AES-CCM). This AES is not available for multi-usages.</p></li>
+<li><p>A <strong>hardware AES-128</strong>, connected to the crypto key containers. This AES can be used for generic usages. This document, together with the crypto container documentation describes how to use this AES.</p></li>
+<li><p>A <strong>software AES</strong> that supports the 3 key sizes: <strong>128, 192, 256 bits</strong>.</p></li>
+</ol>
+</div></blockquote>
+<p>In this document, we describe the API that interfaces the AES-128(2) and the AES software(3).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The API described in this document <strong>does not</strong> manage the execution of the hardware AES-128 with the <strong>key containers</strong>. AES key containers are described in the dedicated documentation: <a class="reference internal" href="CryptoContainer.html#aes-crypto-containers-label"><span class="std std-ref">AES Crypto Containers</span></a></p>
+</div>
+<p>Next figure shows the various possibilities to execute AES algorithm. The green options are described in this chapter, while the blue one is described in the specific crypto container chapter.</p>
+<blockquote>
+<div><img alt="_images/AES_Select2.png" src="_images/AES_Select2.png" />
+</div></blockquote>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this document is to describe the functionality of the <strong>AES</strong> library.</p>
+<p><strong>AES</strong> library is located in ROM.</p>
+<p>This document:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>describes the API, including the prototype, the parameters, the error codes etc…</p></li>
+<li><p>provides the performances of the function.</p></li>
+</ul>
+</div></blockquote>
+<section id="supported-features">
+<h3>Supported features<a class="headerlink" href="#supported-features" title="Permalink to this headline"></a></h3>
+<p><strong>AES</strong> library supports the encryption or the decryption of a <strong>block only</strong>.</p>
+<p>Next figure shows the basic principle of AES.</p>
+<blockquote>
+<div><img alt="_images/AES.png" src="_images/AES.png" />
+</div></blockquote>
+<p>Regarding the key size and the modes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>AES</strong> library implements all the variants, i.e. it supports the three key sizes <strong>128, 192 and 256 bits</strong>. For a 128-bit key, the user can choose to use the AES hardware or the AES software. For 192-bit and 256-bit keys, only the software AES is supported.</p></li>
+<li><p><strong>AES</strong> library supports both the <strong>encryption</strong> and <strong>decryption</strong> modes.</p></li>
+</ul>
+</div></blockquote>
+<p>Next table summarizes the capabilities of the AES library.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>AES Hardware</p></th>
+<th class="head"><p>AES Software</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Encryption</p></td>
+<td><p>128</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Encryption</p></td>
+<td><p>192</p></td>
+<td><p><strong>Not Supported</strong></p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-even"><td><p>Encryption</p></td>
+<td><p>256</p></td>
+<td><p><strong>Not Supported</strong></p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Decryption</p></td>
+<td><p>128</p></td>
+<td><p>Supported</p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-odd"><td><p>Decryption</p></td>
+<td><p>192</p></td>
+<td><p><strong>Not Supported</strong></p></td>
+<td><p>Supported</p></td>
+</tr>
+<tr class="row-even"><td><p>Decryption</p></td>
+<td><p>256</p></td>
+<td><p><strong>Not Supported</strong></p></td>
+<td><p>Supported</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aes-chaining-modes-and-mac">
+<h3>AES chaining modes and MAC<a class="headerlink" href="#aes-chaining-modes-and-mac" title="Permalink to this headline"></a></h3>
+<p>EM9305 embeds several AES chaining modes and MAC computations. It includes AES ECB, CBC, CTR, GCM, CCM and CMAC.
+Those modes are built on top of the AES library. For further details on those modes, please refer to the dedicated chapters.
+See <a class="reference internal" href="AES_ECB.html#aes-ecb-label"><span class="std std-ref">AES Electronic Code Book mode (ECB)</span></a>, <a class="reference internal" href="AES_CBC.html#aes-cbc-label"><span class="std std-ref">AES Cipher Block Chaining mode (CBC)</span></a>, <a class="reference internal" href="AES_CTR.html#aes-ctr-label"><span class="std std-ref">AES Counter mode(CTR)</span></a>, <a class="reference internal" href="AES_CCM.html#aes-ccm-label"><span class="std std-ref">AES CCM</span></a>, <a class="reference internal" href="AES_GCM.html#aes-gcm-label"><span class="std std-ref">AES GCM</span></a> and <a class="reference internal" href="AES_CMAC.html#aes-cmac-label"><span class="std std-ref">AES CMAC</span></a></p>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h2>
+<section id="purpose">
+<h3>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline"></a></h3>
+<p>The <strong>AES</strong> library contains a unique function “AES”.
+This function computes AES on a block of 16 bytes.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>In encryption mode, it encrypts the plain text to generate a 16-byte cipher text.</p></li>
+<li><p>In decryption mode, it decrypts a cipher text to retrieve the 16-byte plain text.</p></li>
+</ul>
+</div></blockquote>
+<p>The input block <strong>must always be 16 bytes long</strong>.</p>
+<p>The library does not support any padding schemes, or chaining options.</p>
+<p>Unlike the input block, the key size can be chosen by the user among the three lengths specified by AES. To be more precise, the key size can be:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>16 bytes (128 bits)</p></li>
+<li><p>24 bytes (192 bits)</p></li>
+<li><p>32 bytes (256 bits)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="prototype">
+<h3>Prototype<a class="headerlink" href="#prototype" title="Permalink to this headline"></a></h3>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv43AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t">
+<span id="_CPPv33AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t"></span><span id="_CPPv23AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t"></span><span id="AES__AES_Select_t.uint8_tP.uint8_tP.uint8_tP.AES_key_size_bit_t.AES_OpMode_t"></span><span class="target" id="group___a_e_s_1gaf356b3003b71c6414f50530160a2e556"></span><a class="reference internal" href="#_CPPv415AES_Lib_error_t" title="AES_Lib_error_t"><span class="n"><span class="pre">AES_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Key</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <a class="reference internal" href="#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">KeyLength</span></span>, <a class="reference internal" href="#_CPPv412AES_OpMode_t" title="AES_OpMode_t"><span class="n"><span class="pre">AES_OpMode_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">Mode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv43AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Perform AES in encryption or decryption mode with 128,192 or 256-bit key. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> Select the AES to execute. Either the AES Hardware or the AES Software </p></li>
+<li><p><strong>Key</strong> – <strong>[in]</strong> 16, 24 or 32-byte key array according to the key size </p></li>
+<li><p><strong>Message</strong> – <strong>[in]</strong> 16-byte message to encrypt or decrypt according to the mode </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> 16-byte result </p></li>
+<li><p><strong>KeyLength</strong> – <strong>[in]</strong> Length of the key in bits: 128, 192 or 256 </p></li>
+<li><p><strong>Mode</strong> – <strong>[in]</strong> Mode of operation. Either AES_ENCRYPTION or AES_DECRYPTION</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>AES_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized </p></li>
+<li><p><strong>AES_INCORRECT_KEY_LENGTH</strong> – Incorrect key length. It should be 128,192 or 256 </p></li>
+<li><p><strong>AES_INCORRECT_AES_TYPE</strong> – AES is either hardware or software </p></li>
+<li><p><strong>AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWARE</strong> – AES Hardware is only support for 128 bit keys </p></li>
+<li><p><strong>AES_INCORRECT_MODE</strong> – Mode is either encryption or decryption</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<section id="aes-type">
+<span id="aes-hw-sw-label"></span><h4>AES type<a class="headerlink" href="#aes-type" title="Permalink to this headline"></a></h4>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv412AES_Select_t">
+<span id="_CPPv312AES_Select_t"></span><span id="_CPPv212AES_Select_t"></span><span class="target" id="group___a_e_s_1gacc25f20b83c2702eba7da6572c6fca62"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_Select_t</span></span></span><a class="headerlink" href="#_CPPv412AES_Select_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Select the AES between AES hardware(128 bit only) and the AES software(all key sizes). This module only concerns the encryption or decryption of a 16-byte block. See documentation of the AES container for implicit keys. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_Select_t12AES_HARDWAREE">
+<span id="_CPPv3N12AES_Select_t12AES_HARDWAREE"></span><span id="_CPPv2N12AES_Select_t12AES_HARDWAREE"></span><span class="target" id="group___a_e_s_1ggacc25f20b83c2702eba7da6572c6fca62a3a05b864d0f38e01f3ca6fecd8ae8951"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HARDWARE</span></span></span><a class="headerlink" href="#_CPPv4N12AES_Select_t12AES_HARDWAREE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES HARDWARE (only valid for 128-bit keys) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_Select_t12AES_SOFTWAREE">
+<span id="_CPPv3N12AES_Select_t12AES_SOFTWAREE"></span><span id="_CPPv2N12AES_Select_t12AES_SOFTWAREE"></span><span class="target" id="group___a_e_s_1ggacc25f20b83c2702eba7da6572c6fca62a7622651ca849cdbcdc5ba1fed9ba7c53"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_SOFTWARE</span></span></span><a class="headerlink" href="#_CPPv4N12AES_Select_t12AES_SOFTWAREE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES SOFTWARE (valid for all key sizes) </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="aes-mode">
+<h4>AES mode<a class="headerlink" href="#aes-mode" title="Permalink to this headline"></a></h4>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv412AES_OpMode_t">
+<span id="_CPPv312AES_OpMode_t"></span><span id="_CPPv212AES_OpMode_t"></span><span class="target" id="group___a_e_s_1gad4da014820a4979d3551f163b5fa291a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_OpMode_t</span></span></span><a class="headerlink" href="#_CPPv412AES_OpMode_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Select the mode of operation of AES. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_OpMode_t14AES_ENCRYPTIONE">
+<span id="_CPPv3N12AES_OpMode_t14AES_ENCRYPTIONE"></span><span id="_CPPv2N12AES_OpMode_t14AES_ENCRYPTIONE"></span><span class="target" id="group___a_e_s_1ggad4da014820a4979d3551f163b5fa291aa4656e8bd59bf198b469865b3032d0ca5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ENCRYPTION</span></span></span><a class="headerlink" href="#_CPPv4N12AES_OpMode_t14AES_ENCRYPTIONE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES encryption mode. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_OpMode_t14AES_DECRYPTIONE">
+<span id="_CPPv3N12AES_OpMode_t14AES_DECRYPTIONE"></span><span id="_CPPv2N12AES_OpMode_t14AES_DECRYPTIONE"></span><span class="target" id="group___a_e_s_1ggad4da014820a4979d3551f163b5fa291aa39be77f9136f99d5490b45e052107f64"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_DECRYPTION</span></span></span><a class="headerlink" href="#_CPPv4N12AES_OpMode_t14AES_DECRYPTIONE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES decryption mode. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="aes-key-size-in-bits">
+<span id="aes-key-size-bits-label"></span><h4>AES Key size in bits<a class="headerlink" href="#aes-key-size-in-bits" title="Permalink to this headline"></a></h4>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418AES_key_size_bit_t">
+<span id="_CPPv318AES_key_size_bit_t"></span><span id="_CPPv218AES_key_size_bit_t"></span><span class="target" id="group___a_e_s_1gaac3e01ede09059a62828b248ffa6ad29"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></span><a class="headerlink" href="#_CPPv418AES_key_size_bit_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Select the AES key size in bits. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_key_size_bit_t11AES_KEY_128E">
+<span id="_CPPv3N18AES_key_size_bit_t11AES_KEY_128E"></span><span id="_CPPv2N18AES_key_size_bit_t11AES_KEY_128E"></span><span class="target" id="group___a_e_s_1ggaac3e01ede09059a62828b248ffa6ad29ad8c1d2fb9e872e01f283eb3278714ae2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_128</span></span></span><a class="headerlink" href="#_CPPv4N18AES_key_size_bit_t11AES_KEY_128E" title="Permalink to this definition"></a><br /></dt>
+<dd><p>128-bit key size </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_key_size_bit_t11AES_KEY_192E">
+<span id="_CPPv3N18AES_key_size_bit_t11AES_KEY_192E"></span><span id="_CPPv2N18AES_key_size_bit_t11AES_KEY_192E"></span><span class="target" id="group___a_e_s_1ggaac3e01ede09059a62828b248ffa6ad29a03ffabf96649e9731c3ad6bd0fdcb765"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_192</span></span></span><a class="headerlink" href="#_CPPv4N18AES_key_size_bit_t11AES_KEY_192E" title="Permalink to this definition"></a><br /></dt>
+<dd><p>192-bit key size </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_key_size_bit_t11AES_KEY_256E">
+<span id="_CPPv3N18AES_key_size_bit_t11AES_KEY_256E"></span><span id="_CPPv2N18AES_key_size_bit_t11AES_KEY_256E"></span><span class="target" id="group___a_e_s_1ggaac3e01ede09059a62828b248ffa6ad29a23db44ed3285f4248d3976675a57989a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_256</span></span></span><a class="headerlink" href="#_CPPv4N18AES_key_size_bit_t11AES_KEY_256E" title="Permalink to this definition"></a><br /></dt>
+<dd><p>256-bit key size </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="aes-key-size-in-bytes">
+<h4>AES Key size in bytes<a class="headerlink" href="#aes-key-size-in-bytes" title="Permalink to this headline"></a></h4>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv419AES_key_size_byte_t">
+<span id="_CPPv319AES_key_size_byte_t"></span><span id="_CPPv219AES_key_size_byte_t"></span><span class="target" id="group___a_e_s_1ga9465cf5229d232b10938c92686b096aa"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_key_size_byte_t</span></span></span><a class="headerlink" href="#_CPPv419AES_key_size_byte_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES key sizes in byte. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E">
+<span id="_CPPv3N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E"></span><span id="_CPPv2N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E"></span><span class="target" id="group___a_e_s_1gga9465cf5229d232b10938c92686b096aaaf1641302be5579f10ec20b13d0a0f198"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_BYTE_SIZE_KEY128</span></span></span><a class="headerlink" href="#_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E" title="Permalink to this definition"></a><br /></dt>
+<dd><p>128-bit key size(16 bytes) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E">
+<span id="_CPPv3N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E"></span><span id="_CPPv2N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E"></span><span class="target" id="group___a_e_s_1gga9465cf5229d232b10938c92686b096aaac9b847da416ff93ae469181656ecf234"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_BYTE_SIZE_KEY192</span></span></span><a class="headerlink" href="#_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E" title="Permalink to this definition"></a><br /></dt>
+<dd><p>192-bit key size(24 bytes) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E">
+<span id="_CPPv3N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E"></span><span id="_CPPv2N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E"></span><span class="target" id="group___a_e_s_1gga9465cf5229d232b10938c92686b096aaacc713fbd028cfdc724212309ab5a6fad"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_BYTE_SIZE_KEY256</span></span></span><a class="headerlink" href="#_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E" title="Permalink to this definition"></a><br /></dt>
+<dd><p>256-bit key size(32 bytes) </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="aes-error-status">
+<h4>AES error status<a class="headerlink" href="#aes-error-status" title="Permalink to this headline"></a></h4>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv415AES_Lib_error_t">
+<span id="_CPPv315AES_Lib_error_t"></span><span id="_CPPv215AES_Lib_error_t"></span><span class="target" id="group___a_e_s_1ga1b17dbe99f1d33d2fc3ea54befddde04"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv415AES_Lib_error_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Error status words for AES. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t11AES_SUCCESSE">
+<span id="_CPPv3N15AES_Lib_error_t11AES_SUCCESSE"></span><span id="_CPPv2N15AES_Lib_error_t11AES_SUCCESSE"></span><span class="target" id="group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a234478327f40c7f5881899c5fde93d03"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t11AES_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE">
+<span id="_CPPv3N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE"></span><span id="_CPPv2N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE"></span><span class="target" id="group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04ab8d65333d52445ea2700b3ea151deeeb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWARE</span></span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES Hardware only supports the key size 128-bit. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t12AES_HW_ERRORE">
+<span id="_CPPv3N15AES_Lib_error_t12AES_HW_ERRORE"></span><span id="_CPPv2N15AES_Lib_error_t12AES_HW_ERRORE"></span><span class="target" id="group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a358f45b6b97a352783eac5b9dd4e40bc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HW_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t12AES_HW_ERRORE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>An error occured in the AES hardware. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE"></span><span class="target" id="group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a1b33047948036b099ad1b4f3b1b6c75b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE">
+<span id="_CPPv3N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE"></span><span id="_CPPv2N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE"></span><span class="target" id="group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a3c9af0b261e2869743800644f17a6b97"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_AES_TYPE</span></span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES type Hardware or Software is not correct. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE">
+<span id="_CPPv3N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE"></span><span id="_CPPv2N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE"></span><span class="target" id="group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a642c38a2633e7331e246310d210bd750"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_KEY_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES key length is not correct. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t18AES_INCORRECT_MODEE">
+<span id="_CPPv3N15AES_Lib_error_t18AES_INCORRECT_MODEE"></span><span id="_CPPv2N15AES_Lib_error_t18AES_INCORRECT_MODEE"></span><span class="target" id="group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04aa97b358be045fecbfb8fba83337cf31c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_MODE</span></span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t18AES_INCORRECT_MODEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES mode is not correct. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="defines">
+<h3>Defines<a class="headerlink" href="#defines" title="Permalink to this headline"></a></h3>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AES_BLOCK_SIZE_BYTE">
+<span class="target" id="group___a_e_s_1ga824fe44ef0198d72fdc59d5d6121dc69"></span><span class="sig-name descname"><span class="n"><span class="pre">AES_BLOCK_SIZE_BYTE</span></span></span><a class="headerlink" href="#c.AES_BLOCK_SIZE_BYTE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Size of an AES block in byte. </p>
+</dd></dl>
+
+</section>
+<section id="return-values">
+<h3>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 27%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_SUCCESS</p></td>
+<td><p>AES computation successful.</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWARE</p></td>
+<td><p>AES Hardware only supports the key size 128-bit.</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_HW_ERROR</p></td>
+<td><p>An error occurred in the AES hardware.</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_INCORRECT_RESULT_POINTER</p></td>
+<td><p>Result pointer is null.</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_INCORRECT_AES_TYPE</p></td>
+<td><p>AES type Hardware or Software is not correct.</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_INCORRECT_KEY_LENGTH</p></td>
+<td><p>AES key length is not correct.</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_INCORRECT_MODE</p></td>
+<td><p>AES mode is not correct.</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="performances">
+<h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3628 bytes in ROM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No usage of global RAM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Approximatively 100 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="execution-time">
+<h3>Execution time<a class="headerlink" href="#execution-time" title="Permalink to this headline"></a></h3>
+<p>The execution time of AES function depends on the key size, the mode and the underlying algorithm.
+On the other hand, for a given variant, the execution time is constant. There is no variability in the computation. Next tables show the number of cycles and the execution time at 48 Mhz.</p>
+<section id="aes-hardware">
+<h4>AES Hardware<a class="headerlink" href="#aes-hardware" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Encryption</p></td>
+<td><p>128</p></td>
+<td><p>Approximatively 5us</p></td>
+</tr>
+<tr class="row-odd"><td><p>Decryption</p></td>
+<td><p>128</p></td>
+<td><p>Approximatively 5us</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aes-software">
+<h4>AES Software<a class="headerlink" href="#aes-software" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Number of cycles</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Encryption</p></td>
+<td><p>128</p></td>
+<td><p>5283</p></td>
+<td><p>110</p></td>
+</tr>
+<tr class="row-odd"><td><p>Encryption</p></td>
+<td><p>192</p></td>
+<td><p>6547</p></td>
+<td><p>136</p></td>
+</tr>
+<tr class="row-even"><td><p>Encryption</p></td>
+<td><p>256</p></td>
+<td><p>7414</p></td>
+<td><p>154</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Decryption</p></td>
+<td><p>128</p></td>
+<td><p>6668</p></td>
+<td><p>138</p></td>
+</tr>
+<tr class="row-odd"><td><p>Decryption</p></td>
+<td><p>192</p></td>
+<td><p>8478</p></td>
+<td><p>176</p></td>
+</tr>
+<tr class="row-even"><td><p>Decryption</p></td>
+<td><p>256</p></td>
+<td><p>9767</p></td>
+<td><p>203</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<p>AES library does not have any dependency.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<p>Next example shows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>how to use the library function with various key sizes,</p></li>
+<li><p>how to select the AES hardware or the AES software when relevant,</p></li>
+<li><p>how to select the mode encryption or decryption.</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//*************************************************************************************</span>
+<span class="c1">//</span>
+<span class="c1">// FILE : ExampleAES.c</span>
+<span class="c1">//</span>
+<span class="c1">//Provide examples of use of AES</span>
+<span class="c1">//*************************************************************************************/</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES.h&quot;</span><span class="cp"></span>
+
+<span class="c1">//=====================================================================================</span>
+<span class="c1">//                      TEST SUITE</span>
+<span class="c1">//=====================================================================================</span>
+
+<span class="c1">//*************************************************************************************</span>
+<span class="c1">//Test patterns</span>
+<span class="c1">//*************************************************************************************/</span>
+<span class="cp">#define NB_TEST     6</span>
+<span class="cp">#define TEST_OK     0</span>
+<span class="cp">#define TEST_NOK    1</span>
+
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">Message</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">Result</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">KeyLength</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mode</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="n">Patterns</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">//keys</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key128</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0f</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key192</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12</span><span class="p">,</span><span class="w"> </span><span class="mh">0x13</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="mh">0x15</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0x17</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key256</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12</span><span class="p">,</span><span class="w"> </span><span class="mh">0x13</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="mh">0x15</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0x17</span><span class="p">,</span><span class="w"> </span><span class="mh">0x18</span><span class="p">,</span><span class="w"> </span><span class="mh">0x19</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1f</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="c1">//message</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">message</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="mh">0x22</span><span class="p">,</span><span class="w"> </span><span class="mh">0x33</span><span class="p">,</span><span class="w"> </span><span class="mh">0x44</span><span class="p">,</span><span class="w"> </span><span class="mh">0x55</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x77</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaa</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xee</span><span class="p">,</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="c1">//result encryption = input for decryption</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">result128</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x69</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x30</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0xd8</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb7</span><span class="p">,</span><span class="w"> </span><span class="mh">0x80</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5a</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">result192</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xdd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x86</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdf</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe0</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0x6e</span><span class="p">,</span><span class="w"> </span><span class="mh">0xaf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa0</span><span class="p">,</span><span class="w"> </span><span class="mh">0xec</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x71</span><span class="p">,</span><span class="w"> </span><span class="mh">0x91</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">result256</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x8e</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb7</span><span class="p">,</span><span class="w"> </span><span class="mh">0xca</span><span class="p">,</span><span class="w"> </span><span class="mh">0x51</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x45</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbf</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="mh">0xea</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfc</span><span class="p">,</span><span class="w"> </span><span class="mh">0x49</span><span class="p">,</span><span class="w"> </span><span class="mh">0x90</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x49</span><span class="p">,</span><span class="w"> </span><span class="mh">0x60</span><span class="p">,</span><span class="w"> </span><span class="mh">0x89</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="n">Patterns</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">NB_TEST</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">result128</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">key128</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="n">AES_ENCRYPTION</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">result192</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_192</span><span class="p">,</span><span class="w"> </span><span class="n">key192</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="n">AES_ENCRYPTION</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">result256</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_256</span><span class="p">,</span><span class="w"> </span><span class="n">key256</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="n">AES_ENCRYPTION</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">result128</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"> </span><span class="n">key128</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="n">AES_DECRYPTION</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">result192</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_192</span><span class="p">,</span><span class="w"> </span><span class="n">key192</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="n">AES_DECRYPTION</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">result256</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_256</span><span class="p">,</span><span class="w"> </span><span class="n">key256</span><span class="p">,</span><span class="w"></span>
+<span class="w">		</span><span class="n">AES_DECRYPTION</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="cm">/***************************************************************************************</span>
+<span class="cm"> Function: uint8_t ExampleAES(void)</span>
+
+<span class="cm"> - Shows example of use of the AES function</span>
+<span class="cm"> - Validate the above patterns</span>
+<span class="cm"> - Count the number of errors</span>
+<span class="cm"> -</span>
+<span class="cm"> Return:</span>
+<span class="cm"> 0 if everything is ok</span>
+<span class="cm"> 1 otherwise</span>
+
+<span class="cm"> ***************************************************************************************/</span><span class="w"></span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">ExampleAES</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//Number of errors</span>
+<span class="w">	</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//loops</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">u8Loop1</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">u8Loop2</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//result variable</span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ResultAES</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="n">AES_Select_t</span><span class="w"> </span><span class="n">AESHWorSW</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">AES_Lib_error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//First we run the tests with the AES Software</span>
+<span class="w">	</span><span class="n">AESHWorSW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u8Loop1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NB_TEST</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop1</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//Perform AES with the defined patterns</span>
+<span class="w">		</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES</span><span class="p">(</span><span class="n">AESHWorSW</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">key</span><span class="p">,</span><span class="w"></span>
+<span class="w">				</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">Message</span><span class="p">,</span><span class="w"> </span><span class="n">ResultAES</span><span class="p">,</span><span class="w"></span>
+<span class="w">				</span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">KeyLength</span><span class="p">,</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">			</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//Check if the result is correct</span>
+<span class="w">		</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u8Loop2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop2</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop2</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ResultAES</span><span class="p">[</span><span class="n">u8Loop2</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">Result</span><span class="p">[</span><span class="n">u8Loop2</span><span class="p">])</span><span class="w"></span>
+<span class="w">				</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Second we run the tests with the AES Hardware</span>
+<span class="w">	</span><span class="n">AESHWorSW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u8Loop1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NB_TEST</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop1</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="c1">//Perform AES with the defined patterns</span>
+<span class="w">		</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES</span><span class="p">(</span><span class="n">AESHWorSW</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">key</span><span class="p">,</span><span class="w"></span>
+<span class="w">				</span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">Message</span><span class="p">,</span><span class="w"> </span><span class="n">ResultAES</span><span class="p">,</span><span class="w"></span>
+<span class="w">				</span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">KeyLength</span><span class="p">,</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">mode</span><span class="p">);</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">KeyLength</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWARE</span><span class="p">)</span><span class="w"></span>
+<span class="w">				</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">			</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">				</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">			</span><span class="c1">//Check if the result is correct</span>
+<span class="w">			</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">u8Loop2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop2</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="n">u8Loop2</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">				</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ResultAES</span><span class="p">[</span><span class="n">u8Loop2</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Pat</span><span class="p">[</span><span class="n">u8Loop1</span><span class="p">].</span><span class="n">Result</span><span class="p">[</span><span class="n">u8Loop2</span><span class="p">])</span><span class="w"></span>
+<span class="w">					</span><span class="n">Error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">			</span><span class="p">}</span><span class="w"></span>
+<span class="w">		</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">TEST_NOK</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">TEST_OK</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Architecture.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CryptoContainer.html" class="btn btn-neutral float-right" title="AES Crypto Containers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

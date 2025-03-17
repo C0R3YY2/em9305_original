@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NVM operation scheduler &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Firmware Header Utilities" href="../firmware_header/index.html" />
+    <link rel="prev" title="Watchdog Driver" href="../watchdog/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">NVM operation scheduler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../firmware_header/index.html">Firmware Header Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_core/index.html">Firmware Update Core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_database/index.html">EMB Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_crypto/index.html">Firmware Update Cryptographic Toolbox Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_spi/index.html">Firmware Update Library for SPI Transport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">NVM operation scheduler</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nvm-operation-scheduler">
+<h1>NVM operation scheduler<a class="headerlink" href="#nvm-operation-scheduler" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This library is used to schedule write and erase operations in the EM9305 FLASH memory (NVM) when the system is idle (e.g., no ongoing radio operation).</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="df/d28/group__nvm__op__sched"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">nvm_op_sched</span></span></dt>
+<dd><p>Library to schedule the NVM operations. </p>
+<p>This module contains all the code required to schedule the NVM operations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.NVM_OP_SCHED_QUEUE_SIZE">
+<span class="target" id="df/d28/group__nvm__op__sched_1gacf08c7dabcb3aa79c2c9b296863eb266"></span><span class="sig-name descname"><span class="n"><span class="pre">NVM_OP_SCHED_QUEUE_SIZE</span></span></span> <span class="pre">(8u)</span><a class="headerlink" href="#c.NVM_OP_SCHED_QUEUE_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>The maximum number of scheduled NVM operation that can be queued. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv427NVMOpSched_DriverCallback_t">
+<span id="_CPPv327NVMOpSched_DriverCallback_t"></span><span id="_CPPv227NVMOpSched_DriverCallback_t"></span><span id="NVMOpSched_DriverCallback_t"></span><span class="target" id="df/d28/group__nvm__op__sched_1ga7bb46adbedb695aaa18b4c38090ee035"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">NVMOpSched_DriverCallback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv418NVMOpSched_Event_t" title="NVMOpSched_Event_t"><span class="n"><span class="pre">NVMOpSched_Event_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pUserData</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv427NVMOpSched_DriverCallback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Callback function type definition. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv415NVM_EventType_t">
+<span id="_CPPv315NVM_EventType_t"></span><span id="_CPPv215NVM_EventType_t"></span><span class="target" id="df/d28/group__nvm__op__sched_1ga41778419dfdc197363e89faa1df964e5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_EventType_t</span></span></span><a class="headerlink" href="#_CPPv415NVM_EventType_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Event type. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15NVM_EventType_t15NVM_EVENT_ERASEE">
+<span id="_CPPv3N15NVM_EventType_t15NVM_EVENT_ERASEE"></span><span id="_CPPv2N15NVM_EventType_t15NVM_EVENT_ERASEE"></span><span class="target" id="df/d28/group__nvm__op__sched_1gga41778419dfdc197363e89faa1df964e5a1df93a9e323679cfaa828a8eba70f099"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_EVENT_ERASE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N15NVM_EventType_t15NVM_EVENT_ERASEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15NVM_EventType_t15NVM_EVENT_WRITEE">
+<span id="_CPPv3N15NVM_EventType_t15NVM_EVENT_WRITEE"></span><span id="_CPPv2N15NVM_EventType_t15NVM_EVENT_WRITEE"></span><span class="target" id="df/d28/group__nvm__op__sched_1gga41778419dfdc197363e89faa1df964e5a5b72bfb7067741ed3a0a090bbd659a51"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVM_EVENT_WRITE</span></span></span><a class="headerlink" href="#_CPPv4N15NVM_EventType_t15NVM_EVENT_WRITEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424NVMOpSched_ScheduleErase8uint32_t8uint32_t27NVMOpSched_DriverCallback_tPv">
+<span id="_CPPv324NVMOpSched_ScheduleErase8uint32_t8uint32_t27NVMOpSched_DriverCallback_tPv"></span><span id="_CPPv224NVMOpSched_ScheduleErase8uint32_t8uint32_t27NVMOpSched_DriverCallback_tPv"></span><span id="NVMOpSched_ScheduleErase__uint32_t.uint32_t.NVMOpSched_DriverCallback_t.voidP"></span><span class="target" id="df/d28/group__nvm__op__sched_1gac15c287186bf2482d45e6075d3ce4e88"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVMOpSched_ScheduleErase</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">addr</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span>, <a class="reference internal" href="#_CPPv427NVMOpSched_DriverCallback_t" title="NVMOpSched_DriverCallback_t"><span class="n"><span class="pre">NVMOpSched_DriverCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">operationCb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424NVMOpSched_ScheduleErase8uint32_t8uint32_t27NVMOpSched_DriverCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Schedule a NVM-Main or NMV-Info erase page(s). </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The maximum number of scheduled NVM operation is <a class="reference internal" href="#df/d28/group__nvm__op__sched_1gacf08c7dabcb3aa79c2c9b296863eb266"><span class="std std-ref">NVM_OP_SCHED_QUEUE_SIZE</span></a>. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addr</strong> – Start address, must be NVM page size aligned. </p></li>
+<li><p><strong>length</strong> – Number of bytes to erase, must be NVM page size aligned. </p></li>
+<li><p><strong>operationCb</strong> – Callback that will be called when the operation is completed. </p></li>
+<li><p><strong>pUserData</strong> – User data that is passed as a parameter when the callback is invoked. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error code, see errno.h. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424NVMOpSched_ScheduleWrite8uint32_t8uint32_tP8uint32_t27NVMOpSched_DriverCallback_tPv">
+<span id="_CPPv324NVMOpSched_ScheduleWrite8uint32_t8uint32_tP8uint32_t27NVMOpSched_DriverCallback_tPv"></span><span id="_CPPv224NVMOpSched_ScheduleWrite8uint32_t8uint32_tP8uint32_t27NVMOpSched_DriverCallback_tPv"></span><span id="NVMOpSched_ScheduleWrite__uint32_t.uint32_t.uint32_tP.NVMOpSched_DriverCallback_t.voidP"></span><span class="target" id="df/d28/group__nvm__op__sched_1gaef0bdbc497b23565fd70de18ad590f23"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVMOpSched_ScheduleWrite</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">addr</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pWriteData</span></span>, <a class="reference internal" href="#_CPPv427NVMOpSched_DriverCallback_t" title="NVMOpSched_DriverCallback_t"><span class="n"><span class="pre">NVMOpSched_DriverCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">operationCb</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424NVMOpSched_ScheduleWrite8uint32_t8uint32_tP8uint32_t27NVMOpSched_DriverCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Schedule a write to NVM-Main or NMV-Info. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The maximum number of scheduled NVM operation is <a class="reference internal" href="#df/d28/group__nvm__op__sched_1gacf08c7dabcb3aa79c2c9b296863eb266"><span class="std std-ref">NVM_OP_SCHED_QUEUE_SIZE</span></a>. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>addr</strong> – Start address, must be NVM word size aligned. </p></li>
+<li><p><strong>length</strong> – Number of bytes to write, must be NVM word size aligned. </p></li>
+<li><p><strong>pWriteData</strong> – Pointer to the data to write to NVM. </p></li>
+<li><p><strong>operationCb</strong> – Callback that will be called when the operation is completed. </p></li>
+<li><p><strong>pUserData</strong> – User data that is passed as a parameter when the callback is invoked. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error code, see errno.h. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428NVMOpSched_TryToPerformNvmOpv">
+<span id="_CPPv328NVMOpSched_TryToPerformNvmOpv"></span><span id="_CPPv228NVMOpSched_TryToPerformNvmOpv"></span><span id="NVMOpSched_TryToPerformNvmOp__void"></span><span class="target" id="df/d28/group__nvm__op__sched_1gac919e52d91fe957359f99f57d8a0d4b7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVMOpSched_TryToPerformNvmOp</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428NVMOpSched_TryToPerformNvmOpv" title="Link to this definition"></a><br /></dt>
+<dd><p>Try to perform the NVM operations that were scheduled. </p>
+<p>This function is intended to be called when the system is executing its idle task. The NVM scheduler will query all modules that have registered a function with the protocol timer module using <a class="reference internal" href="../protocol_timer/index.html#d0/d6f/group__prottim_1gac5e5da08bbad40ad0b533301d730125e"><span class="std std-ref">ProtTimer_RegisterEventTimeCallback</span></a>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When NVM operations are waiting to be executed, the NVM operation scheduler will prohibit the CPU from going to sleep and halting. </p>
+</div>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv418NVMOpSched_Event_t">
+<span id="_CPPv318NVMOpSched_Event_t"></span><span id="_CPPv218NVMOpSched_Event_t"></span><span id="NVMOpSched_Event_t"></span><span class="target" id="d3/d05/struct_n_v_m_op_sched___event__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NVMOpSched_Event_t</span></span></span><a class="headerlink" href="#_CPPv418NVMOpSched_Event_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;nvm_op_sched.h&gt;</em></div>
+<p>Event type definition. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18NVMOpSched_Event_t4typeE">
+<span id="_CPPv3N18NVMOpSched_Event_t4typeE"></span><span id="_CPPv2N18NVMOpSched_Event_t4typeE"></span><span id="NVMOpSched_Event_t::type__NVM_EventType_t"></span><span class="target" id="d3/d05/struct_n_v_m_op_sched___event__t_1ab91b6f065af2b0eb0a1e028e10f545ff"></span><a class="reference internal" href="#_CPPv415NVM_EventType_t" title="NVM_EventType_t"><span class="n"><span class="pre">NVM_EventType_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#_CPPv4N18NVMOpSched_Event_t4typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Event Type. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18NVMOpSched_Event_t6statusE">
+<span id="_CPPv3N18NVMOpSched_Event_t6statusE"></span><span id="_CPPv2N18NVMOpSched_Event_t6statusE"></span><span id="NVMOpSched_Event_t::status__int32_t"></span><span class="target" id="d3/d05/struct_n_v_m_op_sched___event__t_1ac6f1e4ed6d088d08164e53237a0d7c0e"></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><a class="headerlink" href="#_CPPv4N18NVMOpSched_Event_t6statusE" title="Link to this definition"></a><br /></dt>
+<dd><p>Status. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N18NVMOpSched_Event_tUt2_27E">
+<span id="_CPPv3N18NVMOpSched_Event_tUt2_27E"></span><span class="target" id="d3/d05/struct_n_v_m_op_sched___event__t_1a252dd5a5df91a1484438939378273469"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv418NVMOpSched_Event_t" title="NVMOpSched_Event_t"><span class="n"><span class="pre">NVMOpSched_Event_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">[anonymous]</span></span></span><a class="headerlink" href="#_CPPv4N18NVMOpSched_Event_tUt2_27E" title="Link to this definition"></a><br /></dt>
+<dd><p>Event info. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-0-1-0">
+<h3>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial Version.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../watchdog/index.html" class="btn btn-neutral float-left" title="Watchdog Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../firmware_header/index.html" class="btn btn-neutral float-right" title="Firmware Header Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

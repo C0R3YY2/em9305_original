@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The ADC driver allows to configure the peripheral and retrieve samples
+in blocking mode (waiting on sample) or in a asynchronous way using interrupt
+with callback function.</p>
+<p>The ADC has 4 source of measurement with different features.</p>
+<p>Input source</p>
+<ul class="simple">
+<li><p>VBAT1</p></li>
+<li><p>VCC</p></li>
+<li><p>GPIO5 with Sample &amp; Hold</p></li>
+<li><p>GPIO5 without Sample &amp; Hold</p></li>
+</ul>
+<p>Input range</p>
+<dl class="simple">
+<dt>VBAT1 input source</dt><dd><ul class="simple">
+<li><p>1.8 V to 3.6 V</p></li>
+</ul>
+</dd>
+<dt>VCC input source</dt><dd><ul class="simple">
+<li><p>0.95 V to 1.9 V</p></li>
+</ul>
+</dd>
+<dt>GPIO5 input source with sample &amp; hold feature</dt><dd><ul class="simple">
+<li><p>0.05 V to 0.5 V</p></li>
+<li><p>0.05 V to 1 V</p></li>
+<li><p>0.05 V to 2 V</p></li>
+</ul>
+</dd>
+<dt>GPIO5 input source without sample &amp; hold feature</dt><dd><ul class="simple">
+<li><p>0.95 V to 1.9 V if Vhi is disabled</p></li>
+<li><p>1.8 V to 3.6 V if Vhi is enabled</p></li>
+</ul>
+</dd>
+</dl>
+<p>When a source without Sample &amp; Hold is selected, the sampling rate can be
+configured from 88’888 Hz to 120’000 Hz.</p>
+<p>When the source from GPIO5 with Sample &amp; Hold is selected, the sampling rate
+can be configured from 60’000 Hz to 85714 Hz.</p>
+<p>The ADC driver implements a feature to recover configuration after wakeup.</p>
+<section id="adc-configuration">
+<h2>ADC Configuration<a class="headerlink" href="#adc-configuration" title="Link to this heading"></a></h2>
+<p>If VBAT1 input is selected, clock config shall be done to select the sampling frequency of the ADC.
+The ADC can be also configured as 8 bits / 9 bits resolution. By default the ADC has a 9 bits resolution.</p>
+<p>Example with 120 kHz sampling frequency and 9 bits resolution.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from VBAT1</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_VBAT1</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If VCC input is selected, clock config shall be done to select the sampling frequency of the ADC.
+The ADC can be also configured as 8 or 9 bits resolution.</p>
+<p>Example with 120 kHz sampling frequency and 9 bits resolution.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from VCC</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_VCC</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If GPIO5 with Sample &amp; Hold feature is selected as input source, the configuration
+given in the code snippet below shall be done. With this input source,
+the Sample &amp; Hold feature can be enabled or disabled.
+In case of S&amp;H disabled, there is no need to configure the Sample &amp; Hold clock config.</p>
+<img alt="../../_images/sh_clock_config.png" src="../../_images/sh_clock_config.png" />
+<p>Example with Sample &amp; Hold feature enabled at 60 kHz of sampling frequency,
+range from 0.05 V to 0.5V and 9 bits of resolution.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from GPIO5 with Sample &amp; Hold</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_GPIO5_WITH_SH</span><span class="p">);</span>
+
+<span class="c1">// Set Range from 0.05 V to 0.5 V</span>
+<span class="n">ADC_SetRange</span><span class="p">(</span><span class="n">ADC_RANGE_0_05V_TO_0_5V</span><span class="p">);</span>
+
+<span class="c1">// Enable Sample &amp; Hold</span>
+<span class="n">ADC_EnableSampleAndHold</span><span class="p">();</span>
+
+<span class="c1">// Set Sample &amp; Hold clock config</span>
+<span class="n">ADC_SetSHClockConfig</span><span class="p">(</span><span class="n">ADC_SH_CLOCK_60000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If GPIO5 wihtout Sample &amp; Hold feature is selected as input source, the following configuration
+should be done.</p>
+<p>Example with sampling frequency at 120 kHz and Vhi enabled with a range of 1.8 V to 3.6 V</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from GPIO5 without Sample &amp; Hold</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_GPIO5_WITHOUT_SH</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Enable Vhi for range from 1.8 V to 3.6 V instead</span>
+<span class="c1">// of range from 0.95 V to 1.9 V</span>
+<span class="n">ADC_EnableVhi</span><span class="p">();</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="enabling-adc">
+<h2>Enabling ADC<a class="headerlink" href="#enabling-adc" title="Link to this heading"></a></h2>
+<p>The ADC shall be first configured and then enabled prior use.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// ADC Configuration</span>
+<span class="p">...</span>
+
+<span class="c1">// Enable ADC peripheral</span>
+<span class="n">ADC_Enable</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The hardware of ADC need 50 us to be operational after enable.
+The ADC_Enable() and ADC_Resume() functions include a wait
+of 50 us to ensure proper usage.</p>
+</div>
+<p>There is no need to register the module because it doesn’t need any memory
+allocation by the system.</p>
+</section>
+<section id="adc-initialization-and-sleep-mode">
+<h2>ADC initialization and Sleep mode<a class="headerlink" href="#adc-initialization-and-sleep-mode" title="Link to this heading"></a></h2>
+<p>The ADC shall be initialized at power and resumed (reconfigured) after wakeup.
+This shall be done at the time the application checks if it resumes from sleep mode.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">NO_RETURN</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">NVM_ApplicationEntry</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Initialize the board support package.</span>
+<span class="w">    </span><span class="n">BSP_Init</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Enable interrupts (threshold set during IRQ module initialization).</span>
+<span class="w">    </span><span class="n">IRQ_EnableInterrupts</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Check if it is wake-up from sleep.</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Resume ADC</span>
+<span class="w">        </span><span class="n">ADC_Resume</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Resume QPC</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">QF_resume</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Init ADC</span>
+<span class="w">        </span><span class="n">ADC_Init</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="adc-conversion-with-blocking-function">
+<h2>ADC Conversion with blocking function<a class="headerlink" href="#adc-conversion-with-blocking-function" title="Link to this heading"></a></h2>
+<p>The StartBlocking() API start an ADC conversion and wait for the result.
+It also check errors on ADC conversion. In this case the API
+returns false if the operation fails.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Start conversion for ADC.</span>
+<span class="cm">* @note This function start the conversion and wait for the result (blocking).</span>
+<span class="cm">* @retval true in case of sucessful operation</span>
+<span class="cm">* @retval false in case of timeout on conversion running</span>
+<span class="cm">*/</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">ADC_StartBlocking</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function does not return back any sample value. Consequently, the function below
+should be called to obtain the ADC raw value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Get ADC measurement</span>
+<span class="cm">*</span>
+<span class="cm">* @param result uint16_t value with 8 or 9 bits resolution</span>
+<span class="cm">* @retval true in case of data valid</span>
+<span class="cm">* @retval false in case of overrun</span>
+<span class="cm">*/</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">ADC_GetValue</span><span class="p">(</span><span class="kt">uint16_t</span><span class="o">*</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In case of overrun on the ADC, the function return false. Overrun means that a previous
+ADC conversion was done and not read before the new conversion has been started.</p>
+</section>
+<section id="adc-conversion-with-asynchronous-function">
+<h2>ADC Conversion with asynchronous function<a class="headerlink" href="#adc-conversion-with-asynchronous-function" title="Link to this heading"></a></h2>
+<p>First in order to use ISR mechanism for ADC conversion, a callback shall be
+registered to the driver.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief Set ISR callback when the user want to use</span>
+<span class="cm">* conversion with interrupt</span>
+<span class="cm">*</span>
+<span class="cm">* @param callbackFunction callback function for interrupt</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">ADC_RegisterCallback</span><span class="p">(</span><span class="n">Driver_Callback_t</span><span class="w"> </span><span class="n">callbackFunction</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The prototype of the callback shall be</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">ADC_ISR_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note : When using QPC, a signal shall be posted to the task to read the ADC value.</p>
+<p>Then a conversion can be started by calling the following function. It returns
+immediatly after having started the conversion.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ADC_StartWithCallback</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>After the conversion delay of the ADC following the sampling frequency, the callback
+will be called.</p>
+<p>As explained before, it is not recommended to read the ADC data from the callback which
+is called by the ISR. In the case of QPC, post a signal to the task and when the task receive
+the signal, the following code can be executed to read the ADC value.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">adc</span><span class="p">;</span>
+
+<span class="c1">// Get data from ADC register</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ADC_GetValue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">adc</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Valid data</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Overrun error on ADC</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="adc-convertion-in-continuous-mode-using-dma">
+<h2>ADC Convertion in Continuous mode using DMA<a class="headerlink" href="#adc-convertion-in-continuous-mode-using-dma" title="Link to this heading"></a></h2>
+<p>The ADC can be used in continuous mode, it means the ADC will sample the voltage at the sampling
+frequency. In order to offload the CPU, the DMA controller is used to transfer all the samples
+in the provided buffer. When the number of samples is acquired, the DMA controller generate an IRQ
+and the ADC library call the callback.</p>
+<p>The first thing is to configure the ADC.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set Source from VBAT1</span>
+<span class="n">ADC_SetSourceSelection</span><span class="p">(</span><span class="n">ADC_SOURCE_VBAT1</span><span class="p">);</span>
+
+<span class="c1">// Set Clock of ADC to 120 kHz</span>
+<span class="n">ADC_SetClockConfig</span><span class="p">(</span><span class="n">ADC_CLK_120000_HZ</span><span class="p">);</span>
+
+<span class="c1">// Set ADC resolution of 9 bits</span>
+<span class="n">ADC_SetResolution</span><span class="p">(</span><span class="n">ADC_9_BITS</span><span class="p">);</span>
+
+<span class="c1">// Enable ADC</span>
+<span class="n">ADC_Enable</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Then a callback shall be provided to the API. This callback will be called when the DMA
+raise the ISR when all samples have been transfered to the buffer.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">DMA_ISR_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// All samples from the ADC have been acquired and transfered to the buffer</span>
+<span class="p">}</span>
+
+<span class="c1">// Register the callback for the end of DMA operation</span>
+<span class="n">ADC_RegisterCallback</span><span class="p">(</span><span class="n">DMA_ISR_Callback</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>At this time, the ADC in continuous mode can be used.
+A memory buffer for the DMA shall be declared.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// For 9 bits ADC, the buffer shall be 16 bits size</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">aligned</span><span class="p">(</span><span class="mi">4</span><span class="p">)));</span>
+
+<span class="c1">// For 8 Bits ADC, the buffer shall be 8 bits size</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="n">__attribute__</span><span class="p">((</span><span class="n">aligned</span><span class="p">(</span><span class="mi">4</span><span class="p">)));</span>
+</pre></div>
+</div>
+<p>Then the ADC can be started in continuous mode. The buffer shall be provided to the API
+and the number of samples to acquire (same as buffer size). A free DMA channel shall be
+also provided for the DMA transfer.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Start the ADC in continuous mode, the function is asynchronous</span>
+<span class="n">ADC_StartContinuousWithCallback</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="adc-calibration">
+<h2>ADC Calibration<a class="headerlink" href="#adc-calibration" title="Link to this heading"></a></h2>
+<p>The ADC can be factory calibrated or by the customer.</p>
+<p>The calibration data is stored in either the EM Info Page or the User Info Page.
+The User Info Page takes precedence over the EM Info Page.</p>
+<p>During system power-on, the ADC driver verifies the calibration data CRC for each input source.
+This verification occurs when the ADC_Init() function is called and is only performed once
+at power-on because it is time-consuming and the calibration data remains unchanged.</p>
+<p>If no calibration data is available or if it is corrupted (with a bad CRC),
+the driver will still continue working but without any calibration applied.</p>
+</section>
+<section id="adc-driver-thread-safety">
+<h2>ADC Driver thread safety<a class="headerlink" href="#adc-driver-thread-safety" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The ADC API is not thread safe, it means that it is not recommended to access the ADC
+from multiple task. If it’s absolutly needed, the access to the driver shall be protected
+at application level.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

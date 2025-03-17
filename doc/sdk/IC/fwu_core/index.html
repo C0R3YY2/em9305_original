@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firmware Update Core &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="EMB Database" href="../emb_database/index.html" />
+    <link rel="prev" title="Firmware Header Utilities" href="../firmware_header/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm_op_sched/index.html">NVM operation scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../firmware_header/index.html">Firmware Header Utilities</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Firmware Update Core</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_database/index.html">EMB Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../emb_vs_fwu/index.html">EM Bleu - Vendor specific GATT based services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_crypto/index.html">Firmware Update Cryptographic Toolbox Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../fwu_spi/index.html">Firmware Update Library for SPI Transport</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Firmware Update Core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="firmware-update-core">
+<h1>Firmware Update Core<a class="headerlink" href="#firmware-update-core" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The firmware update core sub-system library gathers a set of functions that can be used to
+implement a firmware updater application which main goal is to update any embedded firmware
+image within the device.</p>
+<p>This library comes with a sample application that showcase how to use some of the provided functions.</p>
+<p>The library API covers various functionalities from getting informations on the installed firmware images
+along with their versions to verify a proper and correct new firmware image installation. Using all of
+the provided functions is not mandatory. It depends on the operations a firmware update application needs
+to do and these checks are up to the end user when designing his own application.</p>
+<p>Moreover, the library defines operational codes (so called <cite>opcodes</cite>) that trigger specific actions whenever
+they are received.
+If an end user wants to reuse this library, then the same opcodes will have to be reused because they are
+put into the action answer sent back to the requester.</p>
+<p>For example, the opcode <cite>0x01</cite> corresponds to the function to get firmware information. When receiving this
+opcode, the function <cite>FWU_GetFirmwareUpdateInformationResponse()</cite> is called from the sample application.
+Such function actually does the action of gathering firmware images information. Such data is then pushed
+into the answer that will be sent back to the requester (which can be a mobile phone for example). Added
+to this response packet is the opcode that triggered the action.</p>
+<p>The process depicted in the following diagram is an overview on the various operations that must be done for a firmware image update and the opcodes that must be sent to the device from the source of the update process (e.g. from a mobile device). These opcodes are represented in red background boxes.</p>
+<img alt="../../_images/FW_Update_Opcodes_Sequence.png" src="../../_images/FW_Update_Opcodes_Sequence.png" />
+<p>For example, it is usual that the first operation would be to identify the device and its content. This is why the opcode ` <cite>FWU_CMD_OPCODE_GET_FWU_INFORMATION</cite> is sent. This triggers the execution of the function <cite>FWU_GetFirmwareUpdateInformationResponse()</cite> on the EM9305 side which returns the expected information. Based on that, the requester can decide if a reboot to the FW updater mode is needed, for example because it needs to update the application while the latter is under execution.</p>
+<p>Then, by sending some other opcodes, the next steps of the process are executed and completed until the new firmware image is fully uploaded and verified.</p>
+<p>As said earlier, the sample application <cite>nvm_fwu_target</cite> is a typical example of a firmware update implementation on the device side. The main condition for it to work properly is that the mobile application sends the exact same opcodes that are defined and processed within this example.</p>
+<p>Moreover, this sample application can be used as a starting point to design a more complete one with extra feature which are application dependant. This can be done by adding extra checks and actions when receiving these opcodes.</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d9/d29/group__fwu__core"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">fwu_core</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_GET_FWU_INFORMATION">
+<span class="target" id="d9/d29/group__fwu__core_1ga16dcb84af5fcbe9acbb3799a901a7b45"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_GET_FWU_INFORMATION</span></span></span> <span class="pre">0x01u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_GET_FWU_INFORMATION" title="Link to this definition"></a><br /></dt>
+<dd><p>Get various information on the device to be updated.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga51ff83e1c71d5bc85db4ba95e4c82dc5"><span class="std std-ref">FWU_GetFirmwareUpdateInformationResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_GET_FW_AREA_CNT">
+<span class="target" id="d9/d29/group__fwu__core_1ga0d5533a62eb0b0432e3bf31bebfacf30"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_GET_FW_AREA_CNT</span></span></span> <span class="pre">0x02u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_GET_FW_AREA_CNT" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the number of firmware images stored in the device.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1gab49ef25c98139c1c923d413608d795c6"><span class="std std-ref">FWU_GetFirmwareAreaCountResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_GET_FIRMWARE_INFORMATION">
+<span class="target" id="d9/d29/group__fwu__core_1gadb1c4ed9f63f4c39d525ecf7d6c0613f"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_GET_FIRMWARE_INFORMATION</span></span></span> <span class="pre">0x03u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_GET_FIRMWARE_INFORMATION" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a specific firmware image identification information.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga046ce62df749603c39ea14263520b397"><span class="std std-ref">FWU_GetFirmwareInformationResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_REBOOT">
+<span class="target" id="d9/d29/group__fwu__core_1gac647ff0592303010d5721ac3b4cb7fd9"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_REBOOT</span></span></span> <span class="pre">0x04u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_REBOOT" title="Link to this definition"></a><br /></dt>
+<dd><p>Trigger a reboot in a specific mode.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga7becce139f1560d9ec4d557aa44a5f9d"><span class="std std-ref">FWU_RebootResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_GET_CURRENT_FIRMWARE_INFO">
+<span class="target" id="d9/d29/group__fwu__core_1ga477ee90112eaedab684c5de21de89277"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_GET_CURRENT_FIRMWARE_INFO</span></span></span> <span class="pre">0x05u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_GET_CURRENT_FIRMWARE_INFO" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the current executing firmware image information.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga046ce62df749603c39ea14263520b397"><span class="std std-ref">FWU_GetFirmwareInformationResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_INVALIDATE_FW_AREA">
+<span class="target" id="d9/d29/group__fwu__core_1ga2d5979c78b2b5680418b5c57f63aff75"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_INVALIDATE_FW_AREA</span></span></span> <span class="pre">0x06u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_INVALIDATE_FW_AREA" title="Link to this definition"></a><br /></dt>
+<dd><p>Invalidate a firmware area and make it unusable by the device.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1gabadc35e1c405e7b04942a26a30ead061"><span class="std std-ref">FWU_InvalidateFwAreaResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_UPLOAD_INIT">
+<span class="target" id="d9/d29/group__fwu__core_1gadccc09d912cba21b055efb5a2d5c2e9d"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_UPLOAD_INIT</span></span></span> <span class="pre">0x10u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_UPLOAD_INIT" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the firmware upload procedure by erasing the memory location where the new firmware image will be stored.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1gaa3ded6e2e662cd30c0c5ac57a33c20e6"><span class="std std-ref">FWU_UploadInitResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_STORE_FIRMWARE_BLOCK">
+<span class="target" id="d9/d29/group__fwu__core_1ga7795e2a4546d74c5d0d593ff756cc250"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_STORE_FIRMWARE_BLOCK</span></span></span> <span class="pre">0x20u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_STORE_FIRMWARE_BLOCK" title="Link to this definition"></a><br /></dt>
+<dd><p>Stores one firmware block in memory.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga32fafeb810f35ab56e718dbff16538bb"><span class="std std-ref">FWU_StoreFirmwareBlockResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_VALIDATE_FIRMWARE_UPDATE">
+<span class="target" id="d9/d29/group__fwu__core_1ga2e3c07a438d26a166babe374b12fa94d"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_VALIDATE_FIRMWARE_UPDATE</span></span></span> <span class="pre">0x21u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_VALIDATE_FIRMWARE_UPDATE" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalize a new firmware image once it has been uploaded and written in memory.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga69b4e5326f208e60a130b4c78e3d9a5b"><span class="std std-ref">FWU_ValidateFirmwareUpdateResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_CRYPTO_ENGINE_INIT">
+<span class="target" id="d9/d29/group__fwu__core_1gac3372223385b00a4c518a3111d542620"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_CRYPTO_ENGINE_INIT</span></span></span> <span class="pre">0x30u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_CRYPTO_ENGINE_INIT" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the cryto-engine.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1gacfb998322d91a95e8eccd7823c51d54b"><span class="std std-ref">FWU_CryptoEngineInitResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_CMD_OPCODE_CRYPTO_ENGINE_UPLOAD_SIG_MAT">
+<span class="target" id="d9/d29/group__fwu__core_1ga9ef62bfa0e0201d0d63c0c35c3826dba"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CMD_OPCODE_CRYPTO_ENGINE_UPLOAD_SIG_MAT</span></span></span> <span class="pre">0x31u</span><a class="headerlink" href="#c.FWU_CMD_OPCODE_CRYPTO_ENGINE_UPLOAD_SIG_MAT" title="Link to this definition"></a><br /></dt>
+<dd><p>Upload materials (elliptic key and digest) that will be used to verify a firmware image validity.</p>
+<p>See function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga845690ec8aa00cf2455e9c9fe299139a"><span class="std std-ref">FWU_CryptoEngineUploadSignatureMaterialResponse()</span></a> details for parameters and returned values. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_SUCCESS">
+<span class="target" id="d9/d29/group__fwu__core_1ga6cb7337dc7c215ed57a4e08cc8e336a2"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_SUCCESS</span></span></span> <span class="pre">0x00u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_SUCCESS" title="Link to this definition"></a><br /></dt>
+<dd><p>Returned code in case of successful operation. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_UNKNOWN_COMMAND">
+<span class="target" id="d9/d29/group__fwu__core_1ga2da90550a44f6b7b06f72924c2811602"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_UNKNOWN_COMMAND</span></span></span> <span class="pre">0x02u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_UNKNOWN_COMMAND" title="Link to this definition"></a><br /></dt>
+<dd><p>An unknown opcode has been received. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_INVALID_COMMAND_PARAMETERS">
+<span class="target" id="d9/d29/group__fwu__core_1ga5285391ee1a9a574db66767ae943c031"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_INVALID_COMMAND_PARAMETERS</span></span></span> <span class="pre">0x03u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_INVALID_COMMAND_PARAMETERS" title="Link to this definition"></a><br /></dt>
+<dd><p>One or more command parameters contain invalid values (e.g. an invalid packet length). </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_INSUFFICIENT_RESSOURCE">
+<span class="target" id="d9/d29/group__fwu__core_1gaa355fb06c869d3016cf4f60f40ebd1d1"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_INSUFFICIENT_RESSOURCE</span></span></span> <span class="pre">0x04u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_INSUFFICIENT_RESSOURCE" title="Link to this definition"></a><br /></dt>
+<dd><p>Not enough memory or buffer size too short to store data. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_INVALID_FIRMWARE_SIGNATURE">
+<span class="target" id="d9/d29/group__fwu__core_1ga3385f127ae3c985ee4171d63d7d080bc"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_INVALID_FIRMWARE_SIGNATURE</span></span></span> <span class="pre">0x05u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_INVALID_FIRMWARE_SIGNATURE" title="Link to this definition"></a><br /></dt>
+<dd><p>The signature check of a firmware image failed. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_CHANNEL_UNAVAILABLE">
+<span class="target" id="d9/d29/group__fwu__core_1ga619c3e7713bdc496904854757b4a2de1"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_CHANNEL_UNAVAILABLE</span></span></span> <span class="pre">0x06u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_CHANNEL_UNAVAILABLE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reserved for future use. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_VOLTAGE_TOO_LOW">
+<span class="target" id="d9/d29/group__fwu__core_1gad733ddd1cbad2b337e18bad6936bed63"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_VOLTAGE_TOO_LOW</span></span></span> <span class="pre">0x07u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_VOLTAGE_TOO_LOW" title="Link to this definition"></a><br /></dt>
+<dd><p>Reserved for future use. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_PROCEDURE_NOT_PERMITTED">
+<span class="target" id="d9/d29/group__fwu__core_1ga9184df854d5a444b78310d1ca607f407"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_PROCEDURE_NOT_PERMITTED</span></span></span> <span class="pre">0x08u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_PROCEDURE_NOT_PERMITTED" title="Link to this definition"></a><br /></dt>
+<dd><p>The FW update state machine has entered into an invalid state. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_NVM_LOCKED">
+<span class="target" id="d9/d29/group__fwu__core_1gafe71bf19c351d16860d65ddc95ea0fb1"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_NVM_LOCKED</span></span></span> <span class="pre">0x09u</span><a class="headerlink" href="#c.FWU_ERROR_CODE_NVM_LOCKED" title="Link to this definition"></a><br /></dt>
+<dd><p>Reserved for future use. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_OPERATION_FAILED">
+<span class="target" id="d9/d29/group__fwu__core_1ga82d4b0f45ecf2bfd27536287924e9b0c"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_OPERATION_FAILED</span></span></span> <span class="pre">0x0Au</span><a class="headerlink" href="#c.FWU_ERROR_CODE_OPERATION_FAILED" title="Link to this definition"></a><br /></dt>
+<dd><p>The requested operation has failed. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_UNSPECIFIED_ERROR">
+<span class="target" id="d9/d29/group__fwu__core_1gab186d64733d352061910e679b98459b4"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_UNSPECIFIED_ERROR</span></span></span> <span class="pre">0x0Bu</span><a class="headerlink" href="#c.FWU_ERROR_CODE_UNSPECIFIED_ERROR" title="Link to this definition"></a><br /></dt>
+<dd><p>An error occurred but the root cause is not identified. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_PUBLIC_KEY_ERROR">
+<span class="target" id="d9/d29/group__fwu__core_1gac0d6e53470075b9275cdc71b33d8e9ed"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_PUBLIC_KEY_ERROR</span></span></span> <span class="pre">0x0Cu</span><a class="headerlink" href="#c.FWU_ERROR_CODE_PUBLIC_KEY_ERROR" title="Link to this definition"></a><br /></dt>
+<dd><p>The provided public key for verifying the FW image signature is invalid. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_SHA256_ERROR">
+<span class="target" id="d9/d29/group__fwu__core_1ga0ed4f4890656b97f23ad8971ffb42b24"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_SHA256_ERROR</span></span></span> <span class="pre">0x0Du</span><a class="headerlink" href="#c.FWU_ERROR_CODE_SHA256_ERROR" title="Link to this definition"></a><br /></dt>
+<dd><p>Use of the SHA256 crypto engine failed. </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.FWU_ERROR_CODE_AES_ERROR">
+<span class="target" id="d9/d29/group__fwu__core_1gad47eb12a4df59813ab4d199127c1e90b"></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ERROR_CODE_AES_ERROR</span></span></span> <span class="pre">0x0Eu</span><a class="headerlink" href="#c.FWU_ERROR_CODE_AES_ERROR" title="Link to this definition"></a><br /></dt>
+<dd><p>Use of the AES crypto engine failed. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv415FWU_CmdOpCode_t">
+<span id="_CPPv315FWU_CmdOpCode_t"></span><span id="_CPPv215FWU_CmdOpCode_t"></span><span id="FWU_CmdOpCode_t"></span><span class="target" id="d9/d29/group__fwu__core_1gad378bcf131441fa5cc46f432c129d91e"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CmdOpCode_t</span></span></span><a class="headerlink" href="#_CPPv415FWU_CmdOpCode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware update command opcodes typedef. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv429FWU_UserCheckFirmwareHeader_t">
+<span id="_CPPv329FWU_UserCheckFirmwareHeader_t"></span><span id="_CPPv229FWU_UserCheckFirmwareHeader_t"></span><span id="FWU_UserCheckFirmwareHeader_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga59eb5b6a7a4ec288afb41009ab91e9db"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_UserCheckFirmwareHeader_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">FIRMWARE_HEADER_T</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pFirmwareHeader</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv429FWU_UserCheckFirmwareHeader_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Header. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv421FWU_EventUploadInit_t">
+<span id="_CPPv321FWU_EventUploadInit_t"></span><span id="_CPPv221FWU_EventUploadInit_t"></span><span id="FWU_EventUploadInit_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga81506348683e95cb05f387a6ab2bb436"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419FWU_EventResponse_s" title="FWU_EventResponse_s"><span class="n"><span class="pre">FWU_EventResponse_s</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EventUploadInit_t</span></span></span><a class="headerlink" href="#_CPPv421FWU_EventUploadInit_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Event for UploadInit. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv423FWU_EventStoreFwBlock_t">
+<span id="_CPPv323FWU_EventStoreFwBlock_t"></span><span id="_CPPv223FWU_EventStoreFwBlock_t"></span><span id="FWU_EventStoreFwBlock_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga75042fec3fbd55134dc8e742d21a64aa"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419FWU_EventResponse_s" title="FWU_EventResponse_s"><span class="n"><span class="pre">FWU_EventResponse_s</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EventStoreFwBlock_t</span></span></span><a class="headerlink" href="#_CPPv423FWU_EventStoreFwBlock_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Event for StoreFwBlock. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv427FWU_EventValidateFwUpdate_t">
+<span id="_CPPv327FWU_EventValidateFwUpdate_t"></span><span id="_CPPv227FWU_EventValidateFwUpdate_t"></span><span id="FWU_EventValidateFwUpdate_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga1152e23af9ac238184db62757b5fcae8"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419FWU_EventResponse_s" title="FWU_EventResponse_s"><span class="n"><span class="pre">FWU_EventResponse_s</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EventValidateFwUpdate_t</span></span></span><a class="headerlink" href="#_CPPv427FWU_EventValidateFwUpdate_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Event for ValidateFwUpdate. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv417FWU_CmdCallback_t">
+<span id="_CPPv317FWU_CmdCallback_t"></span><span id="_CPPv217FWU_CmdCallback_t"></span><span id="FWU_CmdCallback_t"></span><span class="target" id="d9/d29/group__fwu__core_1gad1e522c22a78fcf3a25ef4ec29188220"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CmdCallback_t</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv411FWU_Event_t" title="FWU_Event_t"><span class="n"><span class="pre">FWU_Event_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">pUserData</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv417FWU_CmdCallback_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Callback function type definition. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv415FWU_ErrorCode_t">
+<span id="_CPPv315FWU_ErrorCode_t"></span><span id="_CPPv215FWU_ErrorCode_t"></span><span id="FWU_ErrorCode_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga860871a7e9dee8371244477f6f570385"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></span><a class="headerlink" href="#_CPPv415FWU_ErrorCode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Error Code. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv417FWU_RebootModes_t">
+<span id="_CPPv317FWU_RebootModes_t"></span><span id="_CPPv217FWU_RebootModes_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga463db226954e600b24006c215eebbff2"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_RebootModes_t</span></span></span><a class="headerlink" href="#_CPPv417FWU_RebootModes_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update reboot mode definition. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17FWU_RebootModes_t27FWU_REBOOT_MODE_UNSPECIFIEDE">
+<span id="_CPPv3N17FWU_RebootModes_t27FWU_REBOOT_MODE_UNSPECIFIEDE"></span><span id="_CPPv2N17FWU_RebootModes_t27FWU_REBOOT_MODE_UNSPECIFIEDE"></span><span class="target" id="d9/d29/group__fwu__core_1gga463db226954e600b24006c215eebbff2a20296c80ec679954a4b7a6a71cfbb96c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_REBOOT_MODE_UNSPECIFIED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N17FWU_RebootModes_t27FWU_REBOOT_MODE_UNSPECIFIEDE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17FWU_RebootModes_t22FWU_REBOOT_MODE_EMCOREE">
+<span id="_CPPv3N17FWU_RebootModes_t22FWU_REBOOT_MODE_EMCOREE"></span><span id="_CPPv2N17FWU_RebootModes_t22FWU_REBOOT_MODE_EMCOREE"></span><span class="target" id="d9/d29/group__fwu__core_1gga463db226954e600b24006c215eebbff2ab18940e435331fb9e421a3e49575c8fe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_REBOOT_MODE_EMCORE</span></span></span><a class="headerlink" href="#_CPPv4N17FWU_RebootModes_t22FWU_REBOOT_MODE_EMCOREE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17FWU_RebootModes_t27FWU_REBOOT_MODE_APPLICATIONE">
+<span id="_CPPv3N17FWU_RebootModes_t27FWU_REBOOT_MODE_APPLICATIONE"></span><span id="_CPPv2N17FWU_RebootModes_t27FWU_REBOOT_MODE_APPLICATIONE"></span><span class="target" id="d9/d29/group__fwu__core_1gga463db226954e600b24006c215eebbff2a13edbf8ffac5f1838a232d75a32ea0cb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_REBOOT_MODE_APPLICATION</span></span></span><a class="headerlink" href="#_CPPv4N17FWU_RebootModes_t27FWU_REBOOT_MODE_APPLICATIONE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17FWU_RebootModes_t32FWU_REBOOT_MODE_FIRMWARE_UPDATERE">
+<span id="_CPPv3N17FWU_RebootModes_t32FWU_REBOOT_MODE_FIRMWARE_UPDATERE"></span><span id="_CPPv2N17FWU_RebootModes_t32FWU_REBOOT_MODE_FIRMWARE_UPDATERE"></span><span class="target" id="d9/d29/group__fwu__core_1gga463db226954e600b24006c215eebbff2aace9ad5b9ec3795015db3cd5d75e1625"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_REBOOT_MODE_FIRMWARE_UPDATER</span></span></span><a class="headerlink" href="#_CPPv4N17FWU_RebootModes_t32FWU_REBOOT_MODE_FIRMWARE_UPDATERE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv415FWU_EventType_t">
+<span id="_CPPv315FWU_EventType_t"></span><span id="_CPPv215FWU_EventType_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga5021f7e0dcce260d3699f1fdc9017d1e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EventType_t</span></span></span><a class="headerlink" href="#_CPPv415FWU_EventType_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Firmware Update Event Type. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15FWU_EventType_t28FWU_EVENT_VALIDATE_SIGNATUREE">
+<span id="_CPPv3N15FWU_EventType_t28FWU_EVENT_VALIDATE_SIGNATUREE"></span><span id="_CPPv2N15FWU_EventType_t28FWU_EVENT_VALIDATE_SIGNATUREE"></span><span class="target" id="d9/d29/group__fwu__core_1gga5021f7e0dcce260d3699f1fdc9017d1ea8bfdc6a03a2b9e0e6cbc748138fb2f41"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EVENT_VALIDATE_SIGNATURE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N15FWU_EventType_t28FWU_EVENT_VALIDATE_SIGNATUREE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15FWU_EventType_t21FWU_EVENT_UPLOAD_INITE">
+<span id="_CPPv3N15FWU_EventType_t21FWU_EVENT_UPLOAD_INITE"></span><span id="_CPPv2N15FWU_EventType_t21FWU_EVENT_UPLOAD_INITE"></span><span class="target" id="d9/d29/group__fwu__core_1gga5021f7e0dcce260d3699f1fdc9017d1eaa6a6a029ad93c17f65d536833b764ccc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EVENT_UPLOAD_INIT</span></span></span><a class="headerlink" href="#_CPPv4N15FWU_EventType_t21FWU_EVENT_UPLOAD_INITE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15FWU_EventType_t30FWU_EVENT_STORE_FIRMWARE_BLOCKE">
+<span id="_CPPv3N15FWU_EventType_t30FWU_EVENT_STORE_FIRMWARE_BLOCKE"></span><span id="_CPPv2N15FWU_EventType_t30FWU_EVENT_STORE_FIRMWARE_BLOCKE"></span><span class="target" id="d9/d29/group__fwu__core_1gga5021f7e0dcce260d3699f1fdc9017d1ea33f0dba62f89ae7c0a68db0976433ec9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EVENT_STORE_FIRMWARE_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N15FWU_EventType_t30FWU_EVENT_STORE_FIRMWARE_BLOCKE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15FWU_EventType_t34FWU_EVENT_VALIDATE_FIRMWARE_UPDATEE">
+<span id="_CPPv3N15FWU_EventType_t34FWU_EVENT_VALIDATE_FIRMWARE_UPDATEE"></span><span id="_CPPv2N15FWU_EventType_t34FWU_EVENT_VALIDATE_FIRMWARE_UPDATEE"></span><span class="target" id="d9/d29/group__fwu__core_1gga5021f7e0dcce260d3699f1fdc9017d1eac9e67c54651eb59a5c067add0e6a19e5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EVENT_VALIDATE_FIRMWARE_UPDATE</span></span></span><a class="headerlink" href="#_CPPv4N15FWU_EventType_t34FWU_EVENT_VALIDATE_FIRMWARE_UPDATEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15FWU_EventType_t28FWU_EVENT_INVALIDATE_FW_AREAE">
+<span id="_CPPv3N15FWU_EventType_t28FWU_EVENT_INVALIDATE_FW_AREAE"></span><span id="_CPPv2N15FWU_EventType_t28FWU_EVENT_INVALIDATE_FW_AREAE"></span><span class="target" id="d9/d29/group__fwu__core_1gga5021f7e0dcce260d3699f1fdc9017d1eac4d64cb6ef21ced6dbadc8982c2858e2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EVENT_INVALIDATE_FW_AREA</span></span></span><a class="headerlink" href="#_CPPv4N15FWU_EventType_t28FWU_EVENT_INVALIDATE_FW_AREAE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15FWU_EventType_t22FWU_EVENT_REBOOT_ASKEDE">
+<span id="_CPPv3N15FWU_EventType_t22FWU_EVENT_REBOOT_ASKEDE"></span><span id="_CPPv2N15FWU_EventType_t22FWU_EVENT_REBOOT_ASKEDE"></span><span class="target" id="d9/d29/group__fwu__core_1gga5021f7e0dcce260d3699f1fdc9017d1eaaae86212a340252a4536302b2e0c60dc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EVENT_REBOOT_ASKED</span></span></span><a class="headerlink" href="#_CPPv4N15FWU_EventType_t22FWU_EVENT_REBOOT_ASKEDE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15FWU_EventType_t19FWU_EVENT_NOT_VALIDE">
+<span id="_CPPv3N15FWU_EventType_t19FWU_EVENT_NOT_VALIDE"></span><span id="_CPPv2N15FWU_EventType_t19FWU_EVENT_NOT_VALIDE"></span><span class="target" id="d9/d29/group__fwu__core_1gga5021f7e0dcce260d3699f1fdc9017d1ea56ebec645c279e609847ce89788c251e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EVENT_NOT_VALID</span></span></span><a class="headerlink" href="#_CPPv4N15FWU_EventType_t19FWU_EVENT_NOT_VALIDE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv440FWU_GetFirmwareUpdateInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t">
+<span id="_CPPv340FWU_GetFirmwareUpdateInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="_CPPv240FWU_GetFirmwareUpdateInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="FWU_GetFirmwareUpdateInformationResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga51ff83e1c71d5bc85db4ba95e4c82dc5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_GetFirmwareUpdateInformationResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv440FWU_GetFirmwareUpdateInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieve device informations preliminary to a firmware image update. </p>
+<p>This function retrieves detailed information on the device and on the firmware currently under execution (application or FW updater). Such information is helpful to decide if a reboot to the FW updater mode shall be requested, and if the device is compliant with the new firmware image that is to be uploaded.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. No command parameters are needed for this function. </p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t</p></li>
+<li><p>IC family ID (4 bytes)</p></li>
+<li><p>IC Design iteration (2 bytes)</p></li>
+<li><p>Firmware version (2 bytes)</p></li>
+<li><p>Firmware type (1 byte), see FwHeader_SectionCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv432FWU_GetFirmwareAreaCountResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t">
+<span id="_CPPv332FWU_GetFirmwareAreaCountResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="_CPPv232FWU_GetFirmwareAreaCountResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="FWU_GetFirmwareAreaCountResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t"></span><span class="target" id="d9/d29/group__fwu__core_1gab49ef25c98139c1c923d413608d795c6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_GetFirmwareAreaCountResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432FWU_GetFirmwareAreaCountResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the number of firmware image stored in the device. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. No command parameters are needed for this function. </p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t</p></li>
+<li><p>Number of different firmwares in the target (1 byte) </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv434FWU_GetFirmwareInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t">
+<span id="_CPPv334FWU_GetFirmwareInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="_CPPv234FWU_GetFirmwareInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="FWU_GetFirmwareInformationResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga046ce62df749603c39ea14263520b397"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_GetFirmwareInformationResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv434FWU_GetFirmwareInformationResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets a specific firmware image header informations. </p>
+<p>The firmware updater device can enumerate the different firmware information with this function. The maximum firmware index is determined by the response to the Get_Firmware_Area_Count command. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. The command parameters are:<ul>
+<li><p>Firmware Index (1 byte), first firmware is at index 0 </p></li>
+</ul>
+</p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t</p></li>
+<li><p>Firmware header, see FIRMWARE_HEADER_T </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv434FWU_GetCurrentFirmwareInfoResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t">
+<span id="_CPPv334FWU_GetCurrentFirmwareInfoResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="_CPPv234FWU_GetCurrentFirmwareInfoResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="FWU_GetCurrentFirmwareInfoResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t"></span><span class="target" id="d9/d29/group__fwu__core_1gaa72ebd6da1b318b30333b448d5d3883a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_GetCurrentFirmwareInfoResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv434FWU_GetCurrentFirmwareInfoResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the current executing firmware image information. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. There are no command parameters. </p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t</p></li>
+<li><p>Firmware header, see FIRMWARE_HEADER_T </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428FWU_InvalidateFwAreaResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv">
+<span id="_CPPv328FWU_InvalidateFwAreaResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="_CPPv228FWU_InvalidateFwAreaResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="FWU_InvalidateFwAreaResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t.FWU_CmdCallback_t.voidP"></span><span class="target" id="d9/d29/group__fwu__core_1gabadc35e1c405e7b04942a26a30ead061"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_InvalidateFwAreaResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span>, <a class="reference internal" href="#_CPPv417FWU_CmdCallback_t" title="FWU_CmdCallback_t"><span class="n"><span class="pre">FWU_CmdCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">cmdCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428FWU_InvalidateFwAreaResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Invalidate a firmware area and make it unusable by the device. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is not immediate. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The user can get the maximum firmware area index with the command Get_Firmware_Area_Count.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an error is immediately detected, the immediate response buffer will be filled with the error response. If the command execution was registered, the immediate response buffer is untouched and the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called at the end of the command execution.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. The command parameters are:<ul>
+<li><p>Firmware Index (1 byte), first firmware is at index 0 </p></li>
+</ul>
+</p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+<li><p><strong>cmdCallback</strong> – User callback that will be called with the event FWU_EVENT_INVALIDATE_FW_AREA ( see FWU_EventType_t ) when the command is completed. </p></li>
+<li><p><strong>pUserData</strong> – User data that will be given back when the user callback is called by the library. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv428FWU_CryptoEngineInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t">
+<span id="_CPPv328FWU_CryptoEngineInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="_CPPv228FWU_CryptoEngineInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="FWU_CryptoEngineInitResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t"></span><span class="target" id="d9/d29/group__fwu__core_1gacfb998322d91a95e8eccd7823c51d54b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CryptoEngineInitResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv428FWU_CryptoEngineInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the cryptographic engine for firmware image signature. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. The command parameters are:<ul>
+<li><p>Crypot mode, see FWU_CRYPTO_Pub_Key_Type_t</p></li>
+<li><p>Init Vector (16 bytes) optional, only for AES_CBC and AES_CTR </p></li>
+</ul>
+</p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv447FWU_CryptoEngineUploadSignatureMaterialResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv">
+<span id="_CPPv347FWU_CryptoEngineUploadSignatureMaterialResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="_CPPv247FWU_CryptoEngineUploadSignatureMaterialResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="FWU_CryptoEngineUploadSignatureMaterialResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t.FWU_CmdCallback_t.voidP"></span><span class="target" id="d9/d29/group__fwu__core_1ga845690ec8aa00cf2455e9c9fe299139a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_CryptoEngineUploadSignatureMaterialResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span>, <a class="reference internal" href="#_CPPv417FWU_CmdCallback_t" title="FWU_CmdCallback_t"><span class="n"><span class="pre">FWU_CmdCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">cmdCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv447FWU_CryptoEngineUploadSignatureMaterialResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Uploads the cryptographic keys and all relevant information. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is not immediate.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an error is immediately detected, the immediate response buffer will be filled with the error response. If the command execution was registered, the immediate response buffer is untouched and the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called at the end of the command execution.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. The command parameters are:<ul>
+<li><p>Signature X (32 bytes)</p></li>
+<li><p>Signature Y (32 bytes)</p></li>
+<li><p>Digest (32 bytes) </p></li>
+</ul>
+</p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. In case of an error, the immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+<li><p><strong>cmdCallback</strong> – User callback that will be called with the event FWU_EVENT_VALIDATE_SIGNATURE ( see FWU_EventType_t ) when a signature needs to be verified. Signature verification does take a good amount of time (~200ms), it is preferred that the user offloads this task to a less priority task. see FWUCrypto_VerifyFirmwareSignature has to be used to verify the signature. </p></li>
+<li><p><strong>pUserData</strong> – User data that will be given back when the user callback is called by the library. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv445FWU_NotifySignatureMaterialVerificationResultP7uint8_tP8uint16_t8uint16_t15FWU_ErrorCode_t">
+<span id="_CPPv345FWU_NotifySignatureMaterialVerificationResultP7uint8_tP8uint16_t8uint16_t15FWU_ErrorCode_t"></span><span id="_CPPv245FWU_NotifySignatureMaterialVerificationResultP7uint8_tP8uint16_t8uint16_t15FWU_ErrorCode_t"></span><span id="FWU_NotifySignatureMaterialVerificationResult__uint8_tP.uint16_tP.uint16_t.FWU_ErrorCode_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga1c59108c4c58e6c96534851a181f0290"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_NotifySignatureMaterialVerificationResult</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span>, <a class="reference internal" href="#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">fwuErrorCode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv445FWU_NotifySignatureMaterialVerificationResultP7uint8_tP8uint16_t8uint16_t15FWU_ErrorCode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>FWU_CryptoEngineUploadSignatureMaterial command response. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum response buffer length. </p></li>
+<li><p><strong>fwuErrorCode</strong> – <strong>[in]</strong> Result of the FWUCrypto_VerifyFirmwareSignature function. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422FWU_UploadInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv">
+<span id="_CPPv322FWU_UploadInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="_CPPv222FWU_UploadInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="FWU_UploadInitResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t.FWU_CmdCallback_t.voidP"></span><span class="target" id="d9/d29/group__fwu__core_1gaa3ded6e2e662cd30c0c5ac57a33c20e6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_UploadInitResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span>, <a class="reference internal" href="#_CPPv417FWU_CmdCallback_t" title="FWU_CmdCallback_t"><span class="n"><span class="pre">FWU_CmdCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">cmdCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422FWU_UploadInitResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the firmware update process. </p>
+<p>
+The following actions will be done:<ul class="simple">
+<li><p>Check the header that was sent with this command</p></li>
+<li><p>Erase the necessary NVM pages for the new firmware</p></li>
+<li><p>Write the header in NVM without the “FHDR” magic number.</p></li>
+</ul>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is not immediate.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an error is immediately detected, the immediate response buffer will be filled with the error response. If the command execution was registered, the immediate response buffer is untouched and the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called at the end of the command execution.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. The command parameters are:<ul>
+<li><p>Header of the firmware that will be uploaded, see FIRMWARE_HEADER_T </p></li>
+</ul>
+</p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. In case of an error, the immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+<li><p><strong>cmdCallback</strong> – If no immediate error was detected, the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called with the event FWU_EVENT_UPLOAD_INIT ( see FWU_EventType_t ) when the command is completed. </p></li>
+<li><p><strong>pUserData</strong> – User data that will be given back when the user callback is called by the library. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421FWU_DataChunkResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t">
+<span id="_CPPv321FWU_DataChunkResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="_CPPv221FWU_DataChunkResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t"></span><span id="FWU_DataChunkResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t"></span><span class="target" id="d9/d29/group__fwu__core_1gaf0709591aa32fecb2a255ab9e2d865bd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_DataChunkResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421FWU_DataChunkResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t" title="Link to this definition"></a><br /></dt>
+<dd><p>FWU_DataChunk command response. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an error is detected, the <code class="docutils literal notranslate"><span class="pre">pBuff</span></code> immediate response buffer will contain the error message. If the command is successful, the immediate response buffer is not touched.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. The command parameters are:<ul>
+<li><p>Firmware chunk data (encrypted or not) </p></li>
+</ul>
+</p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. In case of an error, the immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430FWU_StoreFirmwareBlockResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv">
+<span id="_CPPv330FWU_StoreFirmwareBlockResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="_CPPv230FWU_StoreFirmwareBlockResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="FWU_StoreFirmwareBlockResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t.FWU_CmdCallback_t.voidP"></span><span class="target" id="d9/d29/group__fwu__core_1ga32fafeb810f35ab56e718dbff16538bb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_StoreFirmwareBlockResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span>, <a class="reference internal" href="#_CPPv417FWU_CmdCallback_t" title="FWU_CmdCallback_t"><span class="n"><span class="pre">FWU_CmdCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">cmdCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430FWU_StoreFirmwareBlockResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>FWU_StoreFirmwareBlock command response. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is not immediate. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an error is immediately detected, the immediate response buffer will be filled with the error response. If the command execution was registered, the immediate response buffer is untouched and the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called at the end of the command execution.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. No command parameters are needed for this function. </p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. In case of an error, the immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+<li><p><strong>cmdCallback</strong> – If no immediate error was detected, the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called with the event FWU_EVENT_STORE_FIRMWARE_BLOCK ( see FWU_EventType_t ) when the command is completed. </p></li>
+<li><p><strong>pUserData</strong> – User data that will be given back when the user callback is called by the library. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv434FWU_ValidateFirmwareUpdateResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv">
+<span id="_CPPv334FWU_ValidateFirmwareUpdateResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="_CPPv234FWU_ValidateFirmwareUpdateResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="FWU_ValidateFirmwareUpdateResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t.FWU_CmdCallback_t.voidP"></span><span class="target" id="d9/d29/group__fwu__core_1ga69b4e5326f208e60a130b4c78e3d9a5b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ValidateFirmwareUpdateResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span>, <a class="reference internal" href="#_CPPv417FWU_CmdCallback_t" title="FWU_CmdCallback_t"><span class="n"><span class="pre">FWU_CmdCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">cmdCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv434FWU_ValidateFirmwareUpdateResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalize a completed firmware update process. </p>
+<p>
+The following actions will be done:<ul class="simple">
+<li><p>Finalize the digest calculation.</p></li>
+<li><p>Check that the digest matches the one received at the beginning of the firmware update procedure.</p></li>
+<li><p>Verify the payload of the received firmware.</p></li>
+<li><p>Write the magic word in the firmware header.</p></li>
+</ul>
+</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is not immediate. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If an error is immediately detected, the immediate response buffer will be filled with the error response. If the command execution was registered, the immediate response buffer is untouched and the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called at the end of the command execution.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. </p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. In case of an error, the immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+<li><p><strong>cmdCallback</strong> – If no immediate error was detected, the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called with the event FWU_EVENT_VALIDATE_FIRMWARE_UPDATE ( see FWU_EventType_t ) when the command is completed. </p></li>
+<li><p><strong>pUserData</strong> – User data that will be given back when the user callback is called by the library. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418FWU_RebootResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv">
+<span id="_CPPv318FWU_RebootResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="_CPPv218FWU_RebootResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv"></span><span id="FWU_RebootResponse__uint8_tCP.uint16_t.uint8_tP.uint16_tP.uint16_t.FWU_CmdCallback_t.voidP"></span><span class="target" id="d9/d29/group__fwu__core_1ga7becce139f1560d9ec4d557aa44a5f9d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_RebootResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pCmdParams</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cmdParamsLength</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuff</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pBuffLength</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxBuffLength</span></span>, <a class="reference internal" href="#_CPPv417FWU_CmdCallback_t" title="FWU_CmdCallback_t"><span class="n"><span class="pre">FWU_CmdCallback_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">cmdCallback</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pUserData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418FWU_RebootResponsePK7uint8_t8uint16_tP7uint8_tP8uint16_t8uint16_t17FWU_CmdCallback_tPv" title="Link to this definition"></a><br /></dt>
+<dd><p>Trigger a reboot in the specified mode (EM-Core, FW updater or application). </p>
+<p>
+This function generates a response but doesn’t execute the reboot. The reboot shall be handled by the application using the <a class="reference internal" href="#d9/d29/group__fwu__core_1gab985558fca2f7bf89e1f11baea50a812"><span class="std std-ref">FWU_ExecuteReboot()</span></a> function after the response has been sent.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The command execution is immediate.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCmdParams</strong> – Pointer to the start of the command parameters. The command parameters are:<ul>
+<li><p>Reboot mode (1 byte), see FWU_RebootModes_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>cmdParamsLength</strong> – Length of the command parameters. </p></li>
+<li><p><strong>pBuff</strong> – Pointer to the immediate response buffer. The immediate response buffer will be filled with:<ul>
+<li><p>Command opcode (1 byte), see FWU_CmdOpCode_t</p></li>
+<li><p>Command status (1 byte), see FWU_ErrorCode_t </p></li>
+</ul>
+</p></li>
+<li><p><strong>pBuffLength</strong> – Pointer to the immediate response buffer length. </p></li>
+<li><p><strong>maxBuffLength</strong> – Maximum length of the immediate response buffer. </p></li>
+<li><p><strong>cmdCallback</strong> – If no immediate error was detected, the <code class="docutils literal notranslate"><span class="pre">cmdCallback</span></code> function will be called with the event FWU_EVENT_REBOOT_ASKED ( see FWU_EventType_t ). The user must send the response and wait for the transport to complete its send task, and the user may want to gracefully disconnect from the communication link before reboot. </p></li>
+<li><p><strong>pUserData</strong> – User data that will be given back when the user callback is called by the library. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417FWU_ExecuteRebootv">
+<span id="_CPPv317FWU_ExecuteRebootv"></span><span id="_CPPv217FWU_ExecuteRebootv"></span><span id="FWU_ExecuteReboot__void"></span><span class="target" id="d9/d29/group__fwu__core_1gab985558fca2f7bf89e1f11baea50a812"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_ExecuteReboot</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417FWU_ExecuteRebootv" title="Link to this definition"></a><br /></dt>
+<dd><p>Execute a reboot in the mode previouly set by function <a class="reference internal" href="#d9/d29/group__fwu__core_1ga7becce139f1560d9ec4d557aa44a5f9d"><span class="std std-ref">FWU_RebootResponse</span></a>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function shall be executed after getting the response with <a class="reference internal" href="#d9/d29/group__fwu__core_1ga7becce139f1560d9ec4d557aa44a5f9d"><span class="std std-ref">FWU_RebootResponse()</span></a> function. It allows to wait the necessary amount of time to be sure that the response is correctly sent by the transport. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv430FWU_SetUserCheckFirmwareHeader29FWU_UserCheckFirmwareHeader_t">
+<span id="_CPPv330FWU_SetUserCheckFirmwareHeader29FWU_UserCheckFirmwareHeader_t"></span><span id="_CPPv230FWU_SetUserCheckFirmwareHeader29FWU_UserCheckFirmwareHeader_t"></span><span id="FWU_SetUserCheckFirmwareHeader__FWU_UserCheckFirmwareHeader_t"></span><span class="target" id="d9/d29/group__fwu__core_1ga0b913b3b38aa92b6ef630cabd6a545b9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_SetUserCheckFirmwareHeader</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429FWU_UserCheckFirmwareHeader_t" title="FWU_UserCheckFirmwareHeader_t"><span class="n"><span class="pre">FWU_UserCheckFirmwareHeader_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pUserCheckFirmwareHeader</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430FWU_SetUserCheckFirmwareHeader29FWU_UserCheckFirmwareHeader_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the user-defined firmware header verification function. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If this function is not defined, only the EM-defined checks will be performed on the firmware header.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pUserCheckFirmwareHeader</strong> – Pointer to the user-defined header verification function. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv419FWU_EventResponse_s">
+<span id="_CPPv319FWU_EventResponse_s"></span><span id="_CPPv219FWU_EventResponse_s"></span><span id="FWU_EventResponse_s"></span><span class="target" id="d4/dc8/struct_f_w_u___event_response__s"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EventResponse_s</span></span></span><a class="headerlink" href="#_CPPv419FWU_EventResponse_s" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;fwu_cmd.h&gt;</em></div>
+<p>Firmware Update Event Response. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19FWU_EventResponse_s11responseLenE">
+<span id="_CPPv3N19FWU_EventResponse_s11responseLenE"></span><span id="_CPPv2N19FWU_EventResponse_s11responseLenE"></span><span id="FWU_EventResponse_s::responseLen__uint16_t"></span><span class="target" id="d4/dc8/struct_f_w_u___event_response__s_1a0ee963a18c3c067d6335495dff89d7f4"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">responseLen</span></span></span><a class="headerlink" href="#_CPPv4N19FWU_EventResponse_s11responseLenE" title="Link to this definition"></a><br /></dt>
+<dd><p>Response Length. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19FWU_EventResponse_s8responseE">
+<span id="_CPPv3N19FWU_EventResponse_s8responseE"></span><span id="_CPPv2N19FWU_EventResponse_s8responseE"></span><span class="target" id="d4/dc8/struct_f_w_u___event_response__s_1a84f9a0712198a2f029c19850917d55f4"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">response</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N19FWU_EventResponse_s8responseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer on the response data. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv420FWU_SignatureVerif_t">
+<span id="_CPPv320FWU_SignatureVerif_t"></span><span id="_CPPv220FWU_SignatureVerif_t"></span><span id="FWU_SignatureVerif_t"></span><span class="target" id="d0/dd7/struct_f_w_u___signature_verif__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_SignatureVerif_t</span></span></span><a class="headerlink" href="#_CPPv420FWU_SignatureVerif_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;fwu_cmd.h&gt;</em></div>
+<p>Firmware Update Signature Data. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20FWU_SignatureVerif_t9signatureE">
+<span id="_CPPv3N20FWU_SignatureVerif_t9signatureE"></span><span id="_CPPv2N20FWU_SignatureVerif_t9signatureE"></span><span id="FWU_SignatureVerif_t::signature__PointCertificate"></span><span class="target" id="d0/dd7/struct_f_w_u___signature_verif__t_1a53001802efc27bda79df934b115931d9"></span><span class="n"><span class="pre">PointCertificate</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">signature</span></span></span><a class="headerlink" href="#_CPPv4N20FWU_SignatureVerif_t9signatureE" title="Link to this definition"></a><br /></dt>
+<dd><p>Signature. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20FWU_SignatureVerif_t9publicKeyE">
+<span id="_CPPv3N20FWU_SignatureVerif_t9publicKeyE"></span><span id="_CPPv2N20FWU_SignatureVerif_t9publicKeyE"></span><span id="FWU_SignatureVerif_t::publicKey__POINT"></span><span class="target" id="d0/dd7/struct_f_w_u___signature_verif__t_1aed88e64d837884c45bda920743fb27e1"></span><span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publicKey</span></span></span><a class="headerlink" href="#_CPPv4N20FWU_SignatureVerif_t9publicKeyE" title="Link to this definition"></a><br /></dt>
+<dd><p>Public Key. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N20FWU_SignatureVerif_t6digestE">
+<span id="_CPPv3N20FWU_SignatureVerif_t6digestE"></span><span id="_CPPv2N20FWU_SignatureVerif_t6digestE"></span><span id="FWU_SignatureVerif_t::digest__uint8_tA"></span><span class="target" id="d0/dd7/struct_f_w_u___signature_verif__t_1ae8b07e21d930bf4a22a77cf2772ddacc"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">digest</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">SHA256_DIGEST_SIZE</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N20FWU_SignatureVerif_t6digestE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv425FWU_EventSignatureVerif_t">
+<span id="_CPPv325FWU_EventSignatureVerif_t"></span><span id="_CPPv225FWU_EventSignatureVerif_t"></span><span id="FWU_EventSignatureVerif_t"></span><span class="target" id="df/da5/struct_f_w_u___event_signature_verif__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_EventSignatureVerif_t</span></span></span><a class="headerlink" href="#_CPPv425FWU_EventSignatureVerif_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;fwu_cmd.h&gt;</em></div>
+<p>Firmware Update Signature Event. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25FWU_EventSignatureVerif_t8materialE">
+<span id="_CPPv3N25FWU_EventSignatureVerif_t8materialE"></span><span id="_CPPv2N25FWU_EventSignatureVerif_t8materialE"></span><span id="FWU_EventSignatureVerif_t::material__FWU_SignatureVerif_tP"></span><span class="target" id="df/da5/struct_f_w_u___event_signature_verif__t_1a6b0462f5f7216758f9a9b4134d21718a"></span><a class="reference internal" href="#_CPPv420FWU_SignatureVerif_t" title="FWU_SignatureVerif_t"><span class="n"><span class="pre">FWU_SignatureVerif_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">material</span></span></span><a class="headerlink" href="#_CPPv4N25FWU_EventSignatureVerif_t8materialE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer on the signature material. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv411FWU_Event_t">
+<span id="_CPPv311FWU_Event_t"></span><span id="_CPPv211FWU_Event_t"></span><span id="FWU_Event_t"></span><span class="target" id="dd/d28/struct_f_w_u___event__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FWU_Event_t</span></span></span><a class="headerlink" href="#_CPPv411FWU_Event_t" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;fwu_cmd.h&gt;</em></div>
+<p>Event type definition. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11FWU_Event_t4typeE">
+<span id="_CPPv3N11FWU_Event_t4typeE"></span><span id="_CPPv2N11FWU_Event_t4typeE"></span><span id="FWU_Event_t::type__FWU_EventType_t"></span><span class="target" id="dd/d28/struct_f_w_u___event__t_1ae92936ef79868d7beaff8d76480eba2b"></span><a class="reference internal" href="#_CPPv415FWU_EventType_t" title="FWU_EventType_t"><span class="n"><span class="pre">FWU_EventType_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#_CPPv4N11FWU_Event_t4typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type of fwu event. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11FWU_Event_t6statusE">
+<span id="_CPPv3N11FWU_Event_t6statusE"></span><span id="_CPPv2N11FWU_Event_t6statusE"></span><span id="FWU_Event_t::status__FWU_ErrorCode_t"></span><span class="target" id="dd/d28/struct_f_w_u___event__t_1a6288620bf6ced1cbb9e02ad8eb4202e4"></span><a class="reference internal" href="#_CPPv415FWU_ErrorCode_t" title="FWU_ErrorCode_t"><span class="n"><span class="pre">FWU_ErrorCode_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><a class="headerlink" href="#_CPPv4N11FWU_Event_t6statusE" title="Link to this definition"></a><br /></dt>
+<dd><p>Status of fwu event. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11FWU_Event_t6paramsE">
+<span id="_CPPv3N11FWU_Event_t6paramsE"></span><span id="_CPPv2N11FWU_Event_t6paramsE"></span><span class="target" id="dd/d28/struct_f_w_u___event__t_1a04c9cb463852dcc5f2274e8f44c07467"></span><span class="k"><span class="pre">union</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv411FWU_Event_t" title="FWU_Event_t"><span class="n"><span class="pre">FWU_Event_t</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">[anonymous]</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">params</span></span></span><a class="headerlink" href="#_CPPv4N11FWU_Event_t6paramsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Parameter of the fwu event. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11FWU_Event_t11responseLenE">
+<span id="_CPPv3N11FWU_Event_t11responseLenE"></span><span id="_CPPv2N11FWU_Event_t11responseLenE"></span><span id="FWU_Event_t::responseLen__uint16_t"></span><span class="target" id="dd/d28/struct_f_w_u___event__t_1ad7f7dd67683d5c04cec5a6c89401e8b8"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">responseLen</span></span></span><a class="headerlink" href="#_CPPv4N11FWU_Event_t11responseLenE" title="Link to this definition"></a><br /></dt>
+<dd><p>Response Length. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11FWU_Event_t8responseE">
+<span id="_CPPv3N11FWU_Event_t8responseE"></span><span id="_CPPv2N11FWU_Event_t8responseE"></span><span class="target" id="dd/d28/struct_f_w_u___event__t_1a15b488685cacb2dc1f3032dc07e891f6"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">response</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11FWU_Event_t8responseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Response Data. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+<section id="version-1-0">
+<h3>Version 1.0<a class="headerlink" href="#version-1-0" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial version of the firmware update core library.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../firmware_header/index.html" class="btn btn-neutral float-left" title="Firmware Header Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../emb_database/index.html" class="btn btn-neutral float-right" title="EMB Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migration guide &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MetaWare IDE Integration" href="IDEIntegration.html" />
+    <link rel="prev" title="Getting Started" href="GettingStarted.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Migration guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Migration guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-gpml-config-structure">The gPML_Config structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-new-sample-application-structure">The new sample application structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../IC/Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Migration guide</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="migration-guide">
+<h1>Migration guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The em|bleu SDK 4.x series introduces a compatibility breakdown with the previous 3.x series.
+This breakdown is described in the paragraphs hereafter that you should read carefully to see if your application falls into
+these usecases. If this is the case, the current page explains how to adapt your application to be compliant with the new
+introduced features.</p>
+</section>
+<section id="id1">
+<h2>Migration guide<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="the-gpml-config-structure">
+<h3>The gPML_Config structure<a class="headerlink" href="#the-gpml-config-structure" title="Link to this heading"></a></h3>
+<p>This structure is very important to drive the behavior of the application. A complete comprehensive description is given in the <a class="reference external" href="../../app_notes/EM9305_SoC_ImplementersGuide_v2.1.pdf">Implementer’s Guide</a> so please refer to this document.</p>
+<p>Until now, it was mandatory to explicitly add an external reference to this structure in case it is used in an application,
+like in the following example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;pml.h&quot;</span>
+<span class="k">extern</span><span class="w"> </span><span class="n">PML_Configuration_t</span><span class="w"> </span><span class="n">gPML_Config</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">gPML_Config</span><span class="p">.</span><span class="n">sleepModeForbiden</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>Now, the external reference must be removed from the user application code. By just including the <cite>pml.h</cite> file, access is given to this structure. Consequently, the above example should be translated to the following:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;pml.h&quot;</span>
+<span class="p">...</span>
+<span class="n">gPML_Config</span><span class="p">.</span><span class="n">sleepModeForbiden</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+</section>
+<section id="the-new-sample-application-structure">
+<h3>The new sample application structure<a class="headerlink" href="#the-new-sample-application-structure" title="Link to this heading"></a></h3>
+<p>The SDK’s 3.x series provides a set of sample applications based on a specific structure. However, over the time, it turned out that this structure can be improved in such a way that the code is split based on its functionality, making the understanding of the example smoother and easier.</p>
+<p>The SDK 4.x series introduces this new structure which is heavily described in the <a class="reference external" href="../../app_notes/EM9305_SoC_ImplementersGuide_v2.1.pdf">Implementer’s Guide</a> taking as a first example the Heart Rate Service sample application.
+As of now, the other sample applications have not been migrated yet to this new structure but will be fully migrated in the next SDK’s release.</p>
+<p>However, it is not mandatory that an application is translated to this new structure. Even if your application has been inspired from the old 3.x series sample application, it will still build and run properly. But be aware that for further SDK’s in the future, any added sample applications will be based on this new structure.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GettingStarted.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="IDEIntegration.html" class="btn btn-neutral float-right" title="MetaWare IDE Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The EMB Database provides a way to persistently store BLE key material exchanged during pairing. The keys are stored in NVM Info Page 1 by default and persist across power cycles. It is designed to securely store keys when the devices resets for any reason including thermal shutdown.</p>
+</section>
+<section id="example-usage">
+<h1>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The EMB Database is not designed to be used with the Packetcraft Application Framework profile (AF). The AF has a RAM database that stores similar device records which do not persist across power cycles.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This example is not to a complete application. It is only meant to point the user in the right direction to use this library.</p>
+</div>
+<p>The user application is responsible for handling receiving keys from the stack in the app and passing them to the EMB Database API. The user must initialize the record first, before handling key info from the DM event, storing into the record, before passing to the EMB Database API.</p>
+<p>From a high-level perspective, this code snippet does the following:</p>
+<ul class="simple">
+<li><p>Creates <cite>EMBDB_Record_t</cite> (pairing info) in RAM and populates various key fields during pairing.</p></li>
+<li><p>Stores pairing info in NVM after pairing completes successfully.</p></li>
+<li><p>Loads pairing info from NVM when the BLE stack initializes.</p></li>
+<li><p>Accepts encryption requests from the peer device if that peer has previously paired.</p></li>
+<li><p>Pairing info persists after power on resets.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Depending on the user application’s security needs, it may be necessary to perform additional security checks on the peer device before accepting LTK requests.</p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;emb_database_api.h&quot;</span>
+
+<span class="c1">// Database record in RAM to be stored in NVM after pairing completes.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="n">pairingInfo</span><span class="p">;</span>
+<span class="c1">// Connection ID to be stored when a connection is established.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">dmConnId_t</span><span class="w">     </span><span class="n">connId</span><span class="p">;</span>
+<span class="c1">// Storage backend for EMB Database to use. In this example, NVM Info P1 is used.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_StorageBackend_t</span><span class="w"> </span><span class="n">storageBackend</span><span class="p">;</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">getReceivedKeys</span><span class="p">(</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="n">pDmEvt</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// The emb_database has fields for each type of BLE key exchanged during</span>
+<span class="w">    </span><span class="c1">// pairing (LTK, IRK, and CSRK).</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">type</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_LOCAL_LTK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">ltk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkSecLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">secLevel</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_PEER_LTK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerLtk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">ltk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerLtkSecLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">secLevel</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerLtkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_IRK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerIrk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">irk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">BdaCpy</span><span class="p">(</span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerIrk</span><span class="p">.</span><span class="n">bdAddr</span><span class="p">,</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">irk</span><span class="p">.</span><span class="n">bdAddr</span><span class="p">);</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerIrkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">DM_KEY_CSRK</span><span class="p">:</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerCsrk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">keyData</span><span class="p">.</span><span class="n">csrk</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerCsrkSecLevel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">keyInd</span><span class="p">.</span><span class="n">secLevel</span><span class="p">;</span>
+<span class="w">            </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">peerCsrkValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// This function is called by the user application&#39;s message handler when a</span>
+<span class="c1">// Device Manager (DM) event has been received. The DM communicates back to</span>
+<span class="c1">// the user application by sending various events. In the emb_fit example,</span>
+<span class="c1">// the application&#39;s message handler is APP_FitHandler.</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">userDMEventHandler</span><span class="p">(</span><span class="n">dmEvt_t</span><span class="w"> </span><span class="o">*</span><span class="n">pDmEvt</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">event</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_RESET_CMPL_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="c1">// Initialize the EMB Database to use NVM Info P1 backend (default).</span>
+<span class="w">          </span><span class="c1">// By default EMBDB_LoadNVMInfoP1Backend sets the maxRecords to 8,</span>
+<span class="w">          </span><span class="c1">// but this can be changed to a maximum of 69 records if desired.</span>
+<span class="w">          </span><span class="c1">// storageBackend.maxRecords = 69;</span>
+<span class="w">          </span><span class="n">EMBDB_LoadNVMInfoP1Backend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">storageBackend</span><span class="p">);</span>
+<span class="w">          </span><span class="n">EMBDB_RegisterBackend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">storageBackend</span><span class="p">);</span>
+<span class="w">          </span><span class="c1">// Load the stored pairing info if it exists, otherwise create empty record.</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">EMB_DB_GET_RECORD_SUCCESS</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EMBDB_GetLastRecordStored</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pairingInfo</span><span class="p">))</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="c1">// Could setup device filtering and IRK resolution here.</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">else</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="n">EMBDB_InitializeRecord</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pairingInfo</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_CONN_OPEN_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="n">connId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">dmConnId_t</span><span class="p">)</span><span class="n">pDmEvt</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">param</span><span class="p">;</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_SEC_KEY_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="n">getReceivedKeys</span><span class="p">(</span><span class="n">pDmEvt</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_SEC_PAIR_CMPL_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="n">EMBDB_StoreRecord</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pairingInfo</span><span class="p">);</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// This example showcases using the stored LTK for encrypting the connection.</span>
+<span class="w">      </span><span class="c1">// A similar process is applied for the other BLE keys.</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">DM_SEC_LTK_REQ_IND</span><span class="p">:</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkValid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="c1">// Key has already been exchanged and stored.</span>
+<span class="w">              </span><span class="n">DmSecLtkRsp</span><span class="p">(</span><span class="n">connId</span><span class="p">,</span><span class="w"> </span><span class="n">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtkSecLevel</span><span class="p">,</span><span class="w"> </span><span class="n">pairingInfo</span><span class="p">.</span><span class="n">localLtk</span><span class="p">.</span><span class="n">key</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">else</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">              </span><span class="c1">// Key not found.</span>
+<span class="w">              </span><span class="n">DmSecLtkRsp</span><span class="p">(</span><span class="n">connId</span><span class="p">,</span><span class="w"> </span><span class="n">FALSE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">default</span><span class="o">:</span>
+<span class="w">          </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">    </span><span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><cite>recordCrc</cite> must be the last field in the EMBDB_Record_t structure.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is forbidden to store an empty record. <cite>EMBDB_StoreRecord</cite> will return a failure status if attempted.</p>
+</div>
+</section>
+<section id="changing-storage-locations">
+<h1>Changing Storage Locations<a class="headerlink" href="#changing-storage-locations" title="Link to this heading"></a></h1>
+<p>The location in which the database records are stored is configurable by changing
+the read/write backend of the database. This can be done using the <cite>EMBDB_RegisterBackend</cite>
+API. in the example above, records are stored in NVM Info page 1, but can be changed to store
+in different locations.</p>
+<p>Below is an example of how to tell the EMB Database to store records in DRAM.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;emb_database_api.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;errno.h&quot;</span>
+
+<span class="c1">// We are 8 using storage records here, but this can be configured with respect</span>
+<span class="c1">// to available space in the storage backend. If using NVM, the maximum is</span>
+<span class="c1">// 69 records using database v1.0 as this is the number of records that will</span>
+<span class="c1">// fit in an 8kB page.</span>
+<span class="cp">#define EMB_DB_MAX_RECORDS 8U</span>
+
+<span class="c1">// DRAM storage implemented using an array.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="n">databaseDRAM</span><span class="p">[</span><span class="n">EMB_DB_MAX_RECORDS</span><span class="p">];</span>
+<span class="c1">// Storage backend for EMB Database to use. In this example, DRAM is used.</span>
+<span class="k">static</span><span class="w"> </span><span class="n">EMBDB_StorageBackend_t</span><span class="w"> </span><span class="n">backendDRAM</span><span class="p">;</span>
+
+<span class="c1">// Function to erase the data. Data is only erased when requested by the user.</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">eraseDbDRAM</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00U</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">));</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Function to invalidate records.</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">invalidateRecordAtAddressDRAM</span><span class="p">(</span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="o">*</span><span class="n">address</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">address</span><span class="o">-&gt;</span><span class="n">metadata</span><span class="p">.</span><span class="n">recordValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EMB_DB_RECORD_INVALID</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Function to write records into the DRAM array.</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="nf">writeRecordAtAddressDRAM</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="o">*</span><span class="n">record</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">storeAddress</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">EMBDB_Record_t</span><span class="w"> </span><span class="o">*</span><span class="n">pRecord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">databaseDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w">         </span><span class="n">status</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">ENOSPC</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0U</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">EMB_DB_MAX_RECORDS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">storeAddress</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pRecord</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">databaseDRAM</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">record</span><span class="p">;</span>
+<span class="w">            </span><span class="n">status</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">pRecord</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// In user function where database is to be initialized...</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">userInitializeBondingDatabase</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00U</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">databaseDRAM</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">storageStartAddress</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">databaseDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">databaseSize</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="n">EMB_DB_MAX_RECORDS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">EMBDB_Record_t</span><span class="p">);</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">writeRecordAtAddress</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">writeRecordAtAddressDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">invalidateRecordAtAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">invalidateRecordAtAddressDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">eraseDatabase</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">eraseDbDRAM</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">erasedValue</span><span class="w">               </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00000000</span><span class="p">;</span>
+<span class="w">    </span><span class="n">backendDRAM</span><span class="p">.</span><span class="n">maxRecords</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="n">EMB_DB_MAX_RECORDS</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Check the registerStatus is 0 to ensure backendDRAM structure is setup</span>
+<span class="w">    </span><span class="c1">// correctly and the read/write location is suitable for the EMB Database.</span>
+<span class="w">    </span><span class="c1">// This function may return -ENXIO if the storage location is unknown to</span>
+<span class="w">    </span><span class="c1">// the SoC, but the backend may still work.</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">validationStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EMBDB_ValidateBackend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backendDRAM</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// If this status is 0, one of the function pointers are NULL.</span>
+<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">registerStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EMBDB_RegisterBackend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">backendDRAM</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

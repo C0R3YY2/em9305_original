@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I2C with EEPROM Example &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="QDEC Example" href="../qdec_example/index.html" />
+    <link rel="prev" title="I2S Example" href="../i2s_example/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../Examples.html">Sample Applications</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples/drivers.html">EM9305 Drivers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../adc_single_example/index.html">ADC in Single mode Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adc_continuous_example/index.html">ADC in Continuous mode using DMA Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../i2s_example/index.html">I2S Example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">I2C with EEPROM Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connections-of-the-eeprom">Connections of the EEPROM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-details">Implementation details</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build">Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run">Run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../qdec_example/index.html">QDEC Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_master_example/index.html">SPI Master Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../spi_slave_example/index.html">SPI Slave Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rtc_example/index.html">RTC Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ti_example/index.html">Temperature Indicator (TI) Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer_example/index.html">Timer Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../watchdog_example/index.html">Watchdog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/bluetooth.html">Bluetooth Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/firmware_update.html">Firmware Update Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/misc.html">Miscellaneous Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../Examples.html">Sample Applications</a></li>
+          <li class="breadcrumb-item"><a href="../examples/drivers.html">EM9305 Drivers</a></li>
+      <li class="breadcrumb-item active">I2C with EEPROM Example</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="i2c-with-eeprom-example">
+<h1>I2C with EEPROM Example<a class="headerlink" href="#i2c-with-eeprom-example" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The purpose of this example is to show how to use the I2C Master driver library
+with QPC to read and write on a EEPROM.</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>The output (Tx UART signal) is on GPIO7. This signal can be accessed from two header connectors (see picture below).</p>
+<a class="reference internal image-reference" href="../../_images/UART_Tx_GPIO7_connection2.jpg"><img alt="Tx/GPIO7 electrical connection :align: center" src="../../_images/UART_Tx_GPIO7_connection2.jpg" style="width: 500.0px; height: 375.0px;" /></a>
+<p>You can then connect a USB to UART device to GPIO7 and use a terminal software (for example docklight, PuTTy, …) to connect to the COM port of your device.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Double check you connected the jumpers D+(07) and D-(06) on the DVK.
+The GPIO6 and GPIO7 pins are connected by default to the USB connector.</p>
+</div>
+<p>This example read and write an EEPROM (AT24C08) using the I2C bus.</p>
+</section>
+<section id="connections-of-the-eeprom">
+<h2>Connections of the EEPROM<a class="headerlink" href="#connections-of-the-eeprom" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>I2C SCK GPIO 10</p></li>
+<li><p>I2C SDA GPIO 11</p></li>
+</ul>
+<p>VCC for EEPROM on Pin 6 of UART connector (3.3 V)</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Remove the jumpers for the level shifter for I2C bus (GPIO 10 &amp; 11) on the DVK.</p>
+</div>
+<p>After flashing the code example, it will send some messages on UART.</p>
+<a class="reference internal image-reference" href="../../_images/I2C_Example_UART_Traces.png"><img alt="UART Traces on Tx/GPIO7 :align: center" src="../../_images/I2C_Example_UART_Traces.png" style="width: 661.0px; height: 418.0px;" /></a>
+</section>
+<section id="implementation-details">
+<h2>Implementation details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<p>This example code uses the implementation of the printf example, please check documentation
+of this example for UART implementation details.</p>
+<p>I2C module shall be registered in NVM_ConfigModules() function.</p>
+<p>Then I2C config structure shall be also configured just after module is registered.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">I2C_RegisterModule</span><span class="p">();</span>
+
+<span class="n">gI2C_Config</span><span class="o">.</span><span class="n">clockFrequency</span> <span class="o">=</span> <span class="n">ClockFrequency100</span><span class="p">;</span>
+<span class="n">gI2C_Config</span><span class="o">.</span><span class="n">clockStretching</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+<span class="n">gI2C_Config</span><span class="o">.</span><span class="n">gpioSck</span> <span class="o">=</span> <span class="n">GPIO_I2C_SCK</span><span class="p">;</span>
+<span class="n">gI2C_Config</span><span class="o">.</span><span class="n">gpioSda</span> <span class="o">=</span> <span class="n">GPIO_I2C_SDA</span><span class="p">;</span>
+<span class="n">gI2C_Config</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In NVM_ConfigModules() the GPIO shall be configured at system startup (if (!PML_DidBootFromSleep()))).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Enable</span> <span class="n">inputs</span> <span class="k">for</span> <span class="n">SDA</span> <span class="ow">and</span> <span class="n">SCL</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOInputEn</span><span class="o">.</span><span class="n">r32</span> <span class="o">=</span>
+    <span class="p">(</span><span class="n">uint32_t</span><span class="p">)(</span><span class="n">GPIO_MASK_I2CM_SCK</span> <span class="o">|</span> <span class="n">GPIO_MASK_I2CM_SDA</span><span class="p">);</span>
+
+<span class="o">//</span> <span class="n">Enable</span> <span class="n">outputs</span> <span class="k">for</span> <span class="n">UART</span> <span class="n">TX</span><span class="p">,</span> <span class="n">SDA</span><span class="p">,</span> <span class="ow">and</span> <span class="n">SCL</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOOutputEn</span><span class="o">.</span><span class="n">r32</span> <span class="o">=</span>
+    <span class="p">(</span><span class="n">uint32_t</span><span class="p">)(</span><span class="n">GPIO_MASK_PIN_7</span> <span class="o">|</span> <span class="n">GPIO_MASK_I2CM_SCK</span> <span class="o">|</span> <span class="n">GPIO_MASK_I2CM_SDA</span><span class="p">);</span>
+
+<span class="o">//</span> <span class="n">Disable</span> <span class="n">pull</span><span class="o">-</span><span class="n">downs</span> <span class="n">on</span> <span class="nb">all</span> <span class="n">pins</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOPdEn</span><span class="o">.</span><span class="n">r32</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint32_t</span><span class="p">)</span><span class="mh">0x0000</span><span class="p">;</span>
+
+<span class="o">//</span> <span class="n">Enable</span> <span class="n">pull</span><span class="o">-</span><span class="n">up</span> <span class="n">on</span> <span class="n">UART</span> <span class="n">TX</span> <span class="ow">and</span> <span class="n">I2C</span> <span class="n">SCL</span> <span class="ow">and</span> <span class="n">SDA</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOPuEn</span><span class="o">.</span><span class="n">r32</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint32_t</span><span class="p">)(</span><span class="n">GPIO_MASK_PIN_7</span><span class="p">);</span>
+
+<span class="o">//</span> <span class="n">Set</span> <span class="n">GPIO0</span> <span class="n">function</span> <span class="n">to</span> <span class="n">I2C</span> <span class="n">Slave</span> <span class="n">SCL</span><span class="o">/</span><span class="n">SCK</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOOutSel2</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">GPIOOutSel10</span> <span class="o">=</span>
+    <span class="p">(</span><span class="n">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_FUNC_OUT_I2C_SCK</span><span class="p">;</span>
+
+<span class="o">//</span> <span class="n">Set</span> <span class="n">GPIO1</span> <span class="n">function</span> <span class="n">to</span> <span class="n">I2C</span> <span class="n">Slave</span> <span class="n">SDA</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOOutSel2</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">GPIOOutSel11</span> <span class="o">=</span>
+    <span class="p">(</span><span class="n">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_FUNC_OUT_I2C_SDA</span><span class="p">;</span>
+
+<span class="o">//</span> <span class="n">Set</span> <span class="n">the</span> <span class="n">UART</span> <span class="n">TX</span> <span class="n">output</span> <span class="n">function</span> <span class="n">on</span> <span class="n">GPIO7</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOOutSel1</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">GPIOOutSel7</span> <span class="o">=</span>
+    <span class="p">(</span><span class="n">uint8_t</span><span class="p">)</span><span class="n">GPIO_PIN_FUNC_OUT_UART_TXD</span><span class="p">;</span>
+
+<span class="o">//</span> <span class="n">Disable</span> <span class="n">the</span> <span class="n">UART</span> <span class="n">RX</span> <span class="nb">input</span> <span class="n">function</span>
+<span class="n">gGPIO_Config</span><span class="o">.</span><span class="n">hardwareState</span><span class="o">.</span><span class="n">RegGPIOInpSel1</span><span class="o">.</span><span class="n">regs</span><span class="o">.</span><span class="n">GPIOInSelUARTRDX</span> <span class="o">=</span>
+    <span class="p">(</span><span class="n">uint8_t</span><span class="p">)</span><span class="n">GPIO_FUNCTION_NOT_MAPPED</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>When working with I2C Master bus driver, a callback can be defined for asynchronous operation.
+This callback is called when I2C operation is finished  and post an event to the task.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">I2C_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span> <span class="n">status</span><span class="p">,</span> <span class="n">void</span><span class="o">*</span> <span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QK_ISR_ENTRY</span><span class="p">();</span>
+
+    <span class="o">//</span> <span class="n">Post</span> <span class="n">an</span> <span class="n">event</span> <span class="n">to</span> <span class="n">the</span> <span class="n">task</span><span class="o">.</span>
+    <span class="n">QEventParams</span><span class="o">*</span> <span class="n">pEvent</span> <span class="o">=</span> <span class="p">(</span><span class="n">QEventParams</span><span class="o">*</span><span class="p">)</span><span class="n">Q_NEW</span><span class="p">(</span><span class="n">QEventParams</span><span class="p">,</span> <span class="n">SIG_I2C</span><span class="p">);</span>
+    <span class="n">QACTIVE_POST</span><span class="p">(</span><span class="o">&amp;</span><span class="n">AO_Task</span><span class="o">.</span><span class="n">super</span><span class="p">,</span> <span class="p">(</span><span class="n">QEvt</span><span class="o">*</span><span class="p">)</span><span class="n">pEvent</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+
+    <span class="n">QK_ISR_EXIT</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When the application starts, the application send the EM message on the UART and
+write one byte in the EEPROM by calling I2C_WriteRegister() function.</p>
+<p>When the I2C operation finishes, the event is sent by the I2C callback. Then, the application
+receives this event and continue the I2C operation using a state for each step.</p>
+<p>The application starts to write one byte and then reads it back. It repeat this 2 times
+using different values to check that the read/write operations work with the EEPROM.</p>
+</section>
+<section id="build">
+<h2>Build<a class="headerlink" href="#build" title="Link to this heading"></a></h2>
+<p>The build target of this example is: <strong>i2c_example</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\b</span>uild
+cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--target<span class="w"> </span>i2c_example
+</pre></div>
+</div>
+</section>
+<section id="run">
+<h2>Run<a class="headerlink" href="#run" title="Link to this heading"></a></h2>
+<p>To program and run the example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>&lt;sdk&gt;<span class="se">\t</span>ools<span class="se">\b</span>lengine
+python<span class="w"> </span>blengine_cli.py<span class="w"> </span>--port<span class="o">=</span>COMYY<span class="w"> </span>run<span class="w"> </span>emsystem_prog<span class="w"> </span>..<span class="se">\.</span>.<span class="se">\b</span>uild<span class="se">\p</span>rojects<span class="se">\i</span>2c_example<span class="se">\i</span>2c_example.ihex<span class="w"> </span>--progress
+</pre></div>
+</div>
+<p>With YY = the COM port number used to program your DVK (the one connected to BRG_USB port).</p>
+<p>Then, launch your terminal software and connect to the DVK (UART port) using the second COM port dynamically created
+at connection. Note that this port is different than the one used to program the application into the flash memory.</p>
+<p>Once you have identified the right COM port, then in your terminal software, configure the speed to be 115200 bit/s
+and open the connection.</p>
+<p>You will see I2C operation done by the software with the EEPROM.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../i2s_example/index.html" class="btn btn-neutral float-left" title="I2S Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../qdec_example/index.html" class="btn btn-neutral float-right" title="QDEC Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

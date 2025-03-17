@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security libraries &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ADC Driver" href="../adc/index.html" />
+    <link rel="prev" title="NVM driver" href="../nvm/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../API.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../API.html#rom-apis">ROM APIs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../nvm/index.html">NVM driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Security libraries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes">AES</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-ecb">AES_ECB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ecc-key-management">ECC Key Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ecdh">ECDH</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prng">PRNG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sha1">SHA1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sha224">SHA224</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sha256">SHA256</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sha384">SHA384</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sha512">SHA512</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#change-log">Change Log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release-note-v1-0">Release note V1.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release-note-v1-1">Release note V1.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release-note-v2-0">Release note V2.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release-note-v3-0">Release note V3.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release-note-v3-1">Release note V3.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#release-note-v3-2">Release note V3.2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-driver-apis">SDK Driver APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#sdk-libraries-apis">SDK Libraries APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API.html#third-party-libraries-apis">Third Party Libraries APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../API.html">API</a></li>
+      <li class="breadcrumb-item active">Security libraries</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="security-libraries">
+<h1>Security libraries<a class="headerlink" href="#security-libraries" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This section provides technical information on the security libraries available in the device’s ROM.
+It lists the API that can be used by the end user application to implement security related operations for each of the
+available algorithm and also provides a comprehensive technical documentation in PDF form.
+Since all security related functions are located in the device’s ROM, there is no need for an end user application
+to embeds its own security functions, leading to a smaller application size.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="../../../security/html/index.html">Security Libraries Documentation (HTML)</a></p>
+<p><a class="reference external" href="../../../security/EM9305CryptoLibV21.pdf">Security Libraries Documentation (PDF)</a></p>
+<p><a class="reference external" href="../../../security/EM9305_Lockbits_v1.1.pdf">Lock bit management (PDF)</a></p>
+</section>
+<section id="aes">
+<h2>AES<a class="headerlink" href="#aes" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="de/d6f/group___a_e_s"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">AES</span></span></dt>
+<dd><p>AES algorithm according to FIPS 197. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.AES_BLOCK_SIZE_BYTE">
+<span class="target" id="de/d6f/group___a_e_s_1ga824fe44ef0198d72fdc59d5d6121dc69"></span><span class="sig-name descname"><span class="n"><span class="pre">AES_BLOCK_SIZE_BYTE</span></span></span> <span class="pre">16</span><a class="headerlink" href="#c.AES_BLOCK_SIZE_BYTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of an AES block in byte. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv412AES_Select_t">
+<span id="_CPPv312AES_Select_t"></span><span id="_CPPv212AES_Select_t"></span><span class="target" id="de/d6f/group___a_e_s_1gacc25f20b83c2702eba7da6572c6fca62"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_Select_t</span></span></span><a class="headerlink" href="#_CPPv412AES_Select_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Select the AES between AES hardware(128 bit only) and the AES software(all key sizes). This module only concerns the encryption or decryption of a 16-byte block. See documentation of the AES container for implicit keys. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_Select_t12AES_HARDWAREE">
+<span id="_CPPv3N12AES_Select_t12AES_HARDWAREE"></span><span id="_CPPv2N12AES_Select_t12AES_HARDWAREE"></span><span class="target" id="de/d6f/group___a_e_s_1ggacc25f20b83c2702eba7da6572c6fca62a3a05b864d0f38e01f3ca6fecd8ae8951"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HARDWARE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N12AES_Select_t12AES_HARDWAREE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES HARDWARE (only valid for 128-bit keys) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_Select_t12AES_SOFTWAREE">
+<span id="_CPPv3N12AES_Select_t12AES_SOFTWAREE"></span><span id="_CPPv2N12AES_Select_t12AES_SOFTWAREE"></span><span class="target" id="de/d6f/group___a_e_s_1ggacc25f20b83c2702eba7da6572c6fca62a7622651ca849cdbcdc5ba1fed9ba7c53"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_SOFTWARE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N12AES_Select_t12AES_SOFTWAREE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES SOFTWARE (valid for all key sizes) </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv412AES_OpMode_t">
+<span id="_CPPv312AES_OpMode_t"></span><span id="_CPPv212AES_OpMode_t"></span><span class="target" id="de/d6f/group___a_e_s_1gad4da014820a4979d3551f163b5fa291a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_OpMode_t</span></span></span><a class="headerlink" href="#_CPPv412AES_OpMode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Select the mode of operation of AES. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_OpMode_t14AES_ENCRYPTIONE">
+<span id="_CPPv3N12AES_OpMode_t14AES_ENCRYPTIONE"></span><span id="_CPPv2N12AES_OpMode_t14AES_ENCRYPTIONE"></span><span class="target" id="de/d6f/group___a_e_s_1ggad4da014820a4979d3551f163b5fa291aa4656e8bd59bf198b469865b3032d0ca5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ENCRYPTION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N12AES_OpMode_t14AES_ENCRYPTIONE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES encryption mode. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_OpMode_t14AES_DECRYPTIONE">
+<span id="_CPPv3N12AES_OpMode_t14AES_DECRYPTIONE"></span><span id="_CPPv2N12AES_OpMode_t14AES_DECRYPTIONE"></span><span class="target" id="de/d6f/group___a_e_s_1ggad4da014820a4979d3551f163b5fa291aa39be77f9136f99d5490b45e052107f64"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_DECRYPTION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N12AES_OpMode_t14AES_DECRYPTIONE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES decryption mode. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418AES_key_size_bit_t">
+<span id="_CPPv318AES_key_size_bit_t"></span><span id="_CPPv218AES_key_size_bit_t"></span><span class="target" id="de/d6f/group___a_e_s_1gaac3e01ede09059a62828b248ffa6ad29"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></span><a class="headerlink" href="#_CPPv418AES_key_size_bit_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Select the AES key size in bits. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_key_size_bit_t11AES_KEY_128E">
+<span id="_CPPv3N18AES_key_size_bit_t11AES_KEY_128E"></span><span id="_CPPv2N18AES_key_size_bit_t11AES_KEY_128E"></span><span class="target" id="de/d6f/group___a_e_s_1ggaac3e01ede09059a62828b248ffa6ad29ad8c1d2fb9e872e01f283eb3278714ae2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_128</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">128</span></span><a class="headerlink" href="#_CPPv4N18AES_key_size_bit_t11AES_KEY_128E" title="Link to this definition"></a><br /></dt>
+<dd><p>128-bit key size </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_key_size_bit_t11AES_KEY_192E">
+<span id="_CPPv3N18AES_key_size_bit_t11AES_KEY_192E"></span><span id="_CPPv2N18AES_key_size_bit_t11AES_KEY_192E"></span><span class="target" id="de/d6f/group___a_e_s_1ggaac3e01ede09059a62828b248ffa6ad29a03ffabf96649e9731c3ad6bd0fdcb765"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_192</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">192</span></span><a class="headerlink" href="#_CPPv4N18AES_key_size_bit_t11AES_KEY_192E" title="Link to this definition"></a><br /></dt>
+<dd><p>192-bit key size </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_key_size_bit_t11AES_KEY_256E">
+<span id="_CPPv3N18AES_key_size_bit_t11AES_KEY_256E"></span><span id="_CPPv2N18AES_key_size_bit_t11AES_KEY_256E"></span><span class="target" id="de/d6f/group___a_e_s_1ggaac3e01ede09059a62828b248ffa6ad29a23db44ed3285f4248d3976675a57989a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_256</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">256</span></span><a class="headerlink" href="#_CPPv4N18AES_key_size_bit_t11AES_KEY_256E" title="Link to this definition"></a><br /></dt>
+<dd><p>256-bit key size </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv419AES_key_size_byte_t">
+<span id="_CPPv319AES_key_size_byte_t"></span><span id="_CPPv219AES_key_size_byte_t"></span><span class="target" id="de/d6f/group___a_e_s_1ga9465cf5229d232b10938c92686b096aa"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_key_size_byte_t</span></span></span><a class="headerlink" href="#_CPPv419AES_key_size_byte_t" title="Link to this definition"></a><br /></dt>
+<dd><p>AES key sizes in byte. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E">
+<span id="_CPPv3N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E"></span><span id="_CPPv2N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E"></span><span class="target" id="de/d6f/group___a_e_s_1gga9465cf5229d232b10938c92686b096aaaf1641302be5579f10ec20b13d0a0f198"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_BYTE_SIZE_KEY128</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16</span></span><a class="headerlink" href="#_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY128E" title="Link to this definition"></a><br /></dt>
+<dd><p>128-bit key size(16 bytes) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E">
+<span id="_CPPv3N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E"></span><span id="_CPPv2N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E"></span><span class="target" id="de/d6f/group___a_e_s_1gga9465cf5229d232b10938c92686b096aaac9b847da416ff93ae469181656ecf234"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_BYTE_SIZE_KEY192</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">24</span></span><a class="headerlink" href="#_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY192E" title="Link to this definition"></a><br /></dt>
+<dd><p>192-bit key size(24 bytes) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E">
+<span id="_CPPv3N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E"></span><span id="_CPPv2N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E"></span><span class="target" id="de/d6f/group___a_e_s_1gga9465cf5229d232b10938c92686b096aaacc713fbd028cfdc724212309ab5a6fad"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_BYTE_SIZE_KEY256</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32</span></span><a class="headerlink" href="#_CPPv4N19AES_key_size_byte_t20AES_BYTE_SIZE_KEY256E" title="Link to this definition"></a><br /></dt>
+<dd><p>256-bit key size(32 bytes) </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv415AES_Lib_error_t">
+<span id="_CPPv315AES_Lib_error_t"></span><span id="_CPPv215AES_Lib_error_t"></span><span class="target" id="de/d6f/group___a_e_s_1ga1b17dbe99f1d33d2fc3ea54befddde04"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv415AES_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status words for AES. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t11AES_SUCCESSE">
+<span id="_CPPv3N15AES_Lib_error_t11AES_SUCCESSE"></span><span id="_CPPv2N15AES_Lib_error_t11AES_SUCCESSE"></span><span class="target" id="de/d6f/group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a234478327f40c7f5881899c5fde93d03"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t11AES_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE">
+<span id="_CPPv3N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE"></span><span id="_CPPv2N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE"></span><span class="target" id="de/d6f/group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04ab8d65333d52445ea2700b3ea151deeeb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWARE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t40AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWAREE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES Hardware only supports the key size 128-bit. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t12AES_HW_ERRORE">
+<span id="_CPPv3N15AES_Lib_error_t12AES_HW_ERRORE"></span><span id="_CPPv2N15AES_Lib_error_t12AES_HW_ERRORE"></span><span class="target" id="de/d6f/group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a358f45b6b97a352783eac5b9dd4e40bc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_HW_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t12AES_HW_ERRORE" title="Link to this definition"></a><br /></dt>
+<dd><p>An error occured in the AES hardware. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE"></span><span class="target" id="de/d6f/group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a1b33047948036b099ad1b4f3b1b6c75b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_RESULT_POINTER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t28AES_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE">
+<span id="_CPPv3N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE"></span><span id="_CPPv2N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE"></span><span class="target" id="de/d6f/group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a3c9af0b261e2869743800644f17a6b97"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_AES_TYPE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t22AES_INCORRECT_AES_TYPEE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES type Hardware or Software is not correct. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE">
+<span id="_CPPv3N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE"></span><span id="_CPPv2N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE"></span><span class="target" id="de/d6f/group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04a642c38a2633e7331e246310d210bd750"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_KEY_LENGTH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t24AES_INCORRECT_KEY_LENGTHE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES key length is not correct. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N15AES_Lib_error_t18AES_INCORRECT_MODEE">
+<span id="_CPPv3N15AES_Lib_error_t18AES_INCORRECT_MODEE"></span><span id="_CPPv2N15AES_Lib_error_t18AES_INCORRECT_MODEE"></span><span class="target" id="de/d6f/group___a_e_s_1gga1b17dbe99f1d33d2fc3ea54befddde04aa97b358be045fecbfb8fba83337cf31c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_INCORRECT_MODE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#_CPPv4N15AES_Lib_error_t18AES_INCORRECT_MODEE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES mode is not correct. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv43AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t">
+<span id="_CPPv33AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t"></span><span id="_CPPv23AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t"></span><span id="AES__AES_Select_t.uint8_tP.uint8_tP.uint8_tP.AES_key_size_bit_t.AES_OpMode_t"></span><span class="target" id="de/d6f/group___a_e_s_1gaf356b3003b71c6414f50530160a2e556"></span><a class="reference internal" href="#_CPPv415AES_Lib_error_t" title="AES_Lib_error_t"><span class="n"><span class="pre">AES_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Key</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <a class="reference internal" href="#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">KeyLength</span></span>, <a class="reference internal" href="#_CPPv412AES_OpMode_t" title="AES_OpMode_t"><span class="n"><span class="pre">AES_OpMode_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">Mode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv43AES12AES_Select_tP7uint8_tP7uint8_tP7uint8_t18AES_key_size_bit_t12AES_OpMode_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Perform AES in encryption or decryption mode with 128,192 or 256-bit key. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> Select the AES to execute. Either the AES Hardware or the AES Software </p></li>
+<li><p><strong>Key</strong> – <strong>[in]</strong> 16, 24 or 32-byte key array according to the key size </p></li>
+<li><p><strong>Message</strong> – <strong>[in]</strong> 16-byte message to encrypt or decrypt according to the mode </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> 16-byte result </p></li>
+<li><p><strong>KeyLength</strong> – <strong>[in]</strong> Length of the key in bits: 128, 192 or 256 </p></li>
+<li><p><strong>Mode</strong> – <strong>[in]</strong> Mode of operation. Either AES_ENCRYPTION or AES_DECRYPTION</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>AES_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized </p></li>
+<li><p><strong>AES_INCORRECT_KEY_LENGTH</strong> – Incorrect key length. It should be 128,192 or 256 </p></li>
+<li><p><strong>AES_INCORRECT_AES_TYPE</strong> – AES is either hardware or software </p></li>
+<li><p><strong>AES_KEY_SIZE_NOT_SUPPORTED_WITH_HARDWARE</strong> – AES Hardware is only support for 128 bit keys </p></li>
+<li><p><strong>AES_INCORRECT_MODE</strong> – Mode is either encryption or decryption</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="aes-ecb">
+<h2>AES_ECB<a class="headerlink" href="#aes-ecb" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="de/d24/group___a_e_s___e_c_b"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">AES_ECB</span></span></dt>
+<dd><p>AES in ECB mode according to NIST SP 800-38A. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv417AES_ECB_KeyType_t">
+<span id="_CPPv317AES_ECB_KeyType_t"></span><span id="_CPPv217AES_ECB_KeyType_t"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gab14370de5ee46084dd73c853476f92d3"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></span><a class="headerlink" href="#_CPPv417AES_ECB_KeyType_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Select if the key is passed by value(explicitly) or if the key is contained in a key container. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE">
+<span id="_CPPv3N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE"></span><span id="_CPPv2N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1ggab14370de5ee46084dd73c853476f92d3a39e9b3584892d29d41c31fee14a0638c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_KEY_VALUE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N17AES_ECB_KeyType_t17AES_ECB_KEY_VALUEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key value is provided explicitly by value. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE">
+<span id="_CPPv3N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE"></span><span id="_CPPv2N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1ggab14370de5ee46084dd73c853476f92d3aabd8c14d98a3c3b07cfb5e1f1593f10d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_KEY_ID</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N17AES_ECB_KeyType_t14AES_ECB_KEY_IDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key value is provided by its ID. The key is in a key container. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv419AES_ECB_Lib_error_t">
+<span id="_CPPv319AES_ECB_Lib_error_t"></span><span id="_CPPv219AES_ECB_Lib_error_t"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1ga4c2af81e0d247b6b4790993cf7f2fb70"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv419AES_ECB_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status words for AES ECB mode. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a716dcf2b9e84b3f3283134d2956a919b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t15AES_ECB_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES ECB computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a66076750e3e8e773816534395ff7adb0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCOMPATIBLE_PARAMETER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x11</span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t30AES_ECB_INCOMPATIBLE_PARAMETERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Incompatible key size with key type and AES type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a1d5710255b99db98428e3ef8333094a0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCORRECT_LENGTH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x12</span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t24AES_ECB_INCORRECT_LENGTHE" title="Link to this definition"></a><br /></dt>
+<dd><p>Incorrect length- Data must be 16 bytes long. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70ab73102bfea61bdb23ac72ed450dd52fa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCORRECT_KEY_LENGTH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x13</span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t28AES_ECB_INCORRECT_KEY_LENGTHE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key length is incorrect.It shall be 128,192 or 256. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gga4c2af81e0d247b6b4790993cf7f2fb70a5d3a971e5e9644973c7dda53238fe1f7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_INCORRECT_RESULT_POINTER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x14</span></span><a class="headerlink" href="#_CPPv4N19AES_ECB_Lib_error_t32AES_ECB_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t">
+<span id="_CPPv315AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t"></span><span id="_CPPv215AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t"></span><span id="AES_ECB_InitCtx__AES_ECB_CTXP.AES_Select_t.AES_ECB_KeyType_t.AES_key_size_bit_t.uint8_tP"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gae143885636bed4379ad08ba9b1ef1250"></span><a class="reference internal" href="#_CPPv419AES_ECB_Lib_error_t" title="AES_ECB_Lib_error_t"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_InitCtx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_ECB_CTX" title="AES_ECB_CTX"><span class="n"><span class="pre">AES_ECB_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <a class="reference internal" href="#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <a class="reference internal" href="#_CPPv417AES_ECB_KeyType_t" title="AES_ECB_KeyType_t"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <a class="reference internal" href="#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keySize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_ECB_InitCtxP11AES_ECB_CTX12AES_Select_t17AES_ECB_KeyType_t18AES_key_size_bit_tP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize an AES ECB context. Choose the underlying AES, the key type and key size. Set the key value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[out]</strong> AES ECB context to set </p></li>
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> The underlying AES: Either AES_HARDWARE or AES_SOFTWARE </p></li>
+<li><p><strong>keyType</strong> – <strong>[in]</strong> The type of the key: Either KEY_VALUE for explicitly key value or KEY_ID for a key in a key container </p></li>
+<li><p><strong>keySize</strong> – <strong>[in]</strong> The size of the key in bits : AES_KEY_128,AES_KEY_192 or AES_KEY_256 </p></li>
+<li><p><strong>key</strong> – <strong>[in]</strong> The key value(16 to 32 bytes) or the key ID (first byte)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_ECB_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_ECB_INCORRECT_KEY_LENGTH</strong> – Incorrect key length </p></li>
+<li><p><strong>AES_ECB_INCOMPATIBLE_PARAMETER</strong> – Hardware/software selection is not compatible with the key length </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv315AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv215AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="AES_ECB_Encrypt__AES_ECB_CTXP.uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1ga1f975a6c49b088fd086bd2af2357aa00"></span><a class="reference internal" href="#_CPPv419AES_ECB_Lib_error_t" title="AES_ECB_Lib_error_t"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_Encrypt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_ECB_CTX" title="AES_ECB_CTX"><span class="n"><span class="pre">AES_ECB_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeInBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_ECB_EncryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Encrypt data in ECB mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES ECB context </p></li>
+<li><p><strong>plainText</strong> – <strong>[in]</strong> Pointer on data to encrypt. It should be sizeInBytes long </p></li>
+<li><p><strong>cipherText</strong> – <strong>[out]</strong> Pointer on the result. It should be sizeInBytes long </p></li>
+<li><p><strong>sizeInBytes</strong> – <strong>[in]</strong> Size of the plaintext=Size of the cipher text in bytes. It must be a multiple of 16.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_ECB_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_ECB_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized </p></li>
+<li><p><strong>AES_ECB_INCORRECT_LENGTH</strong> – Length is not a multiple of 16 </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv315AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv215AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t"></span><span id="AES_ECB_Decrypt__AES_ECB_CTXP.uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="de/d24/group___a_e_s___e_c_b_1gadfe1a5af26cb987622df20251f79e163"></span><a class="reference internal" href="#_CPPv419AES_ECB_Lib_error_t" title="AES_ECB_Lib_error_t"><span class="n"><span class="pre">AES_ECB_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_Decrypt</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv411AES_ECB_CTX" title="AES_ECB_CTX"><span class="n"><span class="pre">AES_ECB_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cipherText</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">plainText</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeInBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_ECB_DecryptP11AES_ECB_CTXP7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Decrypt data in ECB mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES ECB context </p></li>
+<li><p><strong>cipherText</strong> – <strong>[in]</strong> Pointer on data to decrypt. It should be sizeInBytes long </p></li>
+<li><p><strong>plainText</strong> – <strong>[out]</strong> Pointer on the result. It should be sizeInBytes long </p></li>
+<li><p><strong>sizeInBytes</strong> – <strong>[in]</strong> Size of the cipher text=Size of the plaintex in bytes. It must be a multiple of 16.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_ECB_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_ECB_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized </p></li>
+<li><p><strong>AES_ECB_INCORRECT_LENGTH</strong> – Length is not a multiple of 16 </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv411AES_ECB_CTX">
+<span id="_CPPv311AES_ECB_CTX"></span><span id="_CPPv211AES_ECB_CTX"></span><span id="AES_ECB_CTX"></span><span class="target" id="dd/d18/struct_a_e_s___e_c_b___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_ECB_CTX</span></span></span><a class="headerlink" href="#_CPPv411AES_ECB_CTX" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;AES_ECB.h&gt;</em></div>
+<p>AES ECB context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX7keySizeE">
+<span id="_CPPv3N11AES_ECB_CTX7keySizeE"></span><span id="_CPPv2N11AES_ECB_CTX7keySizeE"></span><span id="AES_ECB_CTX::keySize__AES_key_size_bit_t"></span><span class="target" id="dd/d18/struct_a_e_s___e_c_b___c_t_x_1a55a894fb05526391d3f5b6ea3d220004"></span><a class="reference internal" href="#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keySize</span></span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX7keySizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX7AESTypeE">
+<span id="_CPPv3N11AES_ECB_CTX7AESTypeE"></span><span id="_CPPv2N11AES_ECB_CTX7AESTypeE"></span><span id="AES_ECB_CTX::AESType__AES_Select_t"></span><span class="target" id="dd/d18/struct_a_e_s___e_c_b___c_t_x_1a81e4c20cf15ec854fdc69b9508a5f398"></span><a class="reference internal" href="#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AESType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX7AESTypeE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES Type: Either AES_HARDWARE or AES_SOFTWARE. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX7keyTypeE">
+<span id="_CPPv3N11AES_ECB_CTX7keyTypeE"></span><span id="_CPPv2N11AES_ECB_CTX7keyTypeE"></span><span id="AES_ECB_CTX::keyType__AES_ECB_KeyType_t"></span><span class="target" id="dd/d18/struct_a_e_s___e_c_b___c_t_x_1a1c1bda3bcda253495b7b2f4bc3a2be14"></span><a class="reference internal" href="#_CPPv417AES_ECB_KeyType_t" title="AES_ECB_KeyType_t"><span class="n"><span class="pre">AES_ECB_KeyType_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keyType</span></span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX7keyTypeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key type. Either KEY_ID or KEY_VALUE </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11AES_ECB_CTX3keyE">
+<span id="_CPPv3N11AES_ECB_CTX3keyE"></span><span id="_CPPv2N11AES_ECB_CTX3keyE"></span><span id="AES_ECB_CTX::key__uint8_tA"></span><span class="target" id="dd/d18/struct_a_e_s___e_c_b___c_t_x_1a680f5c5aed809484805f4558ae95028a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11AES_ECB_CTX3keyE" title="Link to this definition"></a><br /></dt>
+<dd><p>The key value or the key index </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="ecc-key-management">
+<h2>ECC Key Management<a class="headerlink" href="#ecc-key-management" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d5/d12/group___e_c_c_k_e_y"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">ECCKEY</span></span></dt>
+<dd><p>ECC P-256 Key management functions. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422ECC_GeneratePrivateKeyP8uint32_t">
+<span id="_CPPv322ECC_GeneratePrivateKeyP8uint32_t"></span><span id="_CPPv222ECC_GeneratePrivateKeyP8uint32_t"></span><span id="ECC_GeneratePrivateKey__uint32_tP"></span><span class="target" id="d5/d12/group___e_c_c_k_e_y_1ga8f0b69b8424262777bbf11075fbc32ab"></span><span class="n"><span class="pre">ECC_Error_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECC_GeneratePrivateKey</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PrivateKey</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422ECC_GeneratePrivateKeyP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Generates an ECC private key. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>PrivateKey</strong> – <strong>[out]</strong> The generated private key, a scalar of the size of the curve (32 -bytes) </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – Successful private key generation </p></li>
+<li><p><strong>SW_ECC_RANDOM_ERROR</strong> – Error in random generation </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417ECC_ComputePubKeyP8uint32_tP5POINT">
+<span id="_CPPv317ECC_ComputePubKeyP8uint32_tP5POINT"></span><span id="_CPPv217ECC_ComputePubKeyP8uint32_tP5POINT"></span><span id="ECC_ComputePubKey__uint32_tP.POINTP"></span><span class="target" id="d5/d12/group___e_c_c_k_e_y_1ga7d30f56db016f9726a2f651ab89f68d5"></span><span class="n"><span class="pre">ECC_Error_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECC_ComputePubKey</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PrivateKey</span></span>, <span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PubKey</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417ECC_ComputePubKeyP8uint32_tP5POINT" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the ECC public key associated to a private key. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>PrivateKey</strong> – <strong>[in]</strong> ECC private key (a scalar) </p></li>
+<li><p><strong>PubKey</strong> – <strong>[out]</strong> ECC generated public key (a point in affine coordinates) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – No error occurred </p></li>
+<li><p><strong>SW_ECC_REDUCED_PRIVATE_KEY</strong> – Computation was performed but the private key was reduced modulo N </p></li>
+<li><p><strong>SW_ECC_NULL_PRIVATE_KEY</strong> – The private key is null. No computation performed. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="ecdh">
+<h2>ECDH<a class="headerlink" href="#ecdh" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="df/d4d/group___e_c_d_h"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">ECDH</span></span></dt>
+<dd><p>ECC Diffie Hellman protocol based on P-256. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t">
+<span id="_CPPv320ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t"></span><span id="_CPPv220ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t"></span><span id="ECC_ComputeSharedKey__POINTP.uint32_tP.uint32_tP"></span><span class="target" id="df/d4d/group___e_c_d_h_1ga5ba55dd30169b6551bcb799c20792042"></span><span class="n"><span class="pre">ECC_Error_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECC_ComputeSharedKey</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PubKeyA</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PrivateKeyB</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">SK</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the shared key between 2 devices. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>PubKeyA</strong> – <strong>[in]</strong> Public key of device A. It is an affine point received from device A. </p></li>
+<li><p><strong>PrivateKeyB</strong> – <strong>[in]</strong> Private key of device B. It is a scalar. </p></li>
+<li><p><strong>SK</strong> – <strong>[out]</strong> The shared key, i.e a scalar of the size of the curve. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – Successful computation </p></li>
+<li><p><strong>SW_ECC_INVALID_PUBLIC_POINT</strong> – Invalid public point </p></li>
+<li><p><strong>SW_ECC_INCORRECT_RESULT_POINTER</strong> – Invalid result buffer(SK) </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="prng">
+<h2>PRNG<a class="headerlink" href="#prng" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="db/d42/group___p_r_n_g"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">PRNG</span></span></dt>
+<dd><p>Generation of cryptographic random numbers. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.HW_DEFAULT_ENTROPY_PER_BIT">
+<span class="target" id="db/d42/group___p_r_n_g_1ga6558d4507283cd801aabef98f7e5445e"></span><span class="sig-name descname"><span class="n"><span class="pre">HW_DEFAULT_ENTROPY_PER_BIT</span></span></span> <span class="pre">0.8</span><a class="headerlink" href="#c.HW_DEFAULT_ENTROPY_PER_BIT" title="Link to this definition"></a><br /></dt>
+<dd><p><p>Default entropy per bit of the hardware RNG.</p>
+<p>The pseudo RNG requires a HW random with an entropy of 256 bits. If the HW is not perfect, thus has not an entropy of 1 per bit, we need a longer HW random string. If the entropy per bit of the HW is p , ( a number between [0,1] ) then , we need a string of 256/p bits.</p>
+<p>The code supports entropy between 0.4 and 1.</p>
+<p>By default, before the characterisation, we expect that the entropy per bit of the HW is 0.8.</p>
+</p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.HW_PRNG_DEFAULT_CONFIG">
+<span class="target" id="db/d42/group___p_r_n_g_1ga9b67e5b9e368d06307f8ab6a4b11c257"></span><span class="sig-name descname"><span class="n"><span class="pre">HW_PRNG_DEFAULT_CONFIG</span></span></span> <span class="pre">(256</span> <span class="pre">/</span> <a class="reference internal" href="#db/d42/group___p_r_n_g_1ga6558d4507283cd801aabef98f7e5445e"><span class="std std-ref"><span class="pre">HW_DEFAULT_ENTROPY_PER_BIT</span></span></a><span class="pre">)</span><a class="headerlink" href="#c.HW_PRNG_DEFAULT_CONFIG" title="Link to this definition"></a><br /></dt>
+<dd><p>Default number of hardware random bits, picked by the pseudo random generator. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv411PRNG_Core_t">
+<span id="_CPPv311PRNG_Core_t"></span><span id="_CPPv211PRNG_Core_t"></span><span class="target" id="db/d42/group___p_r_n_g_1ga01073c54eef7ae3af04a6553fba0ff70"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PRNG_Core_t</span></span></span><a class="headerlink" href="#_CPPv411PRNG_Core_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Selection of the Hardware RNG core </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11PRNG_Core_t19HW_DEFAULT_RNG_COREE">
+<span id="_CPPv3N11PRNG_Core_t19HW_DEFAULT_RNG_COREE"></span><span id="_CPPv2N11PRNG_Core_t19HW_DEFAULT_RNG_COREE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga01073c54eef7ae3af04a6553fba0ff70aca52c71cfa323d6930dd59003ebda523"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HW_DEFAULT_RNG_CORE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N11PRNG_Core_t19HW_DEFAULT_RNG_COREE" title="Link to this definition"></a><br /></dt>
+<dd><p>RNG default core is core 2. After characterization, core 2 shows better random quality. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11PRNG_Core_t6CORE_0E">
+<span id="_CPPv3N11PRNG_Core_t6CORE_0E"></span><span id="_CPPv2N11PRNG_Core_t6CORE_0E"></span><span class="target" id="db/d42/group___p_r_n_g_1gga01073c54eef7ae3af04a6553fba0ff70a079f1742ac442d4e4dd33c816257b39e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CORE_0</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N11PRNG_Core_t6CORE_0E" title="Link to this definition"></a><br /></dt>
+<dd><p>Core 0. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11PRNG_Core_t6CORE_1E">
+<span id="_CPPv3N11PRNG_Core_t6CORE_1E"></span><span id="_CPPv2N11PRNG_Core_t6CORE_1E"></span><span class="target" id="db/d42/group___p_r_n_g_1gga01073c54eef7ae3af04a6553fba0ff70ac60cdaad26caf9e5ae125dea1019d832"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CORE_1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N11PRNG_Core_t6CORE_1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Core 1. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11PRNG_Core_t6CORE_2E">
+<span id="_CPPv3N11PRNG_Core_t6CORE_2E"></span><span id="_CPPv2N11PRNG_Core_t6CORE_2E"></span><span class="target" id="db/d42/group___p_r_n_g_1gga01073c54eef7ae3af04a6553fba0ff70a91869a3fb7181c3865b0e712f66b30fd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CORE_2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N11PRNG_Core_t6CORE_2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Core 2. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N11PRNG_Core_t6CORE_3E">
+<span id="_CPPv3N11PRNG_Core_t6CORE_3E"></span><span id="_CPPv2N11PRNG_Core_t6CORE_3E"></span><span class="target" id="db/d42/group___p_r_n_g_1gga01073c54eef7ae3af04a6553fba0ff70a397b11b84d6a43a8d48f947d0c744228"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CORE_3</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N11PRNG_Core_t6CORE_3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Core 3. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv413PRNG_Health_t">
+<span id="_CPPv313PRNG_Health_t"></span><span id="_CPPv213PRNG_Health_t"></span><span class="target" id="db/d42/group___p_r_n_g_1gacb879612112a33215a68b9957035a650"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PRNG_Health_t</span></span></span><a class="headerlink" href="#_CPPv413PRNG_Health_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Health tests performed on the hardware RNG sequence </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PRNG_Health_t20DISABLE_HEALTH_TESTSE">
+<span id="_CPPv3N13PRNG_Health_t20DISABLE_HEALTH_TESTSE"></span><span id="_CPPv2N13PRNG_Health_t20DISABLE_HEALTH_TESTSE"></span><span class="target" id="db/d42/group___p_r_n_g_1ggacb879612112a33215a68b9957035a650aa8c236422a935d326568f070e2f22cdf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISABLE_HEALTH_TESTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N13PRNG_Health_t20DISABLE_HEALTH_TESTSE" title="Link to this definition"></a><br /></dt>
+<dd><p>Health tests disabled. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PRNG_Health_t19ENABLE_HEALTH_TESTSE">
+<span id="_CPPv3N13PRNG_Health_t19ENABLE_HEALTH_TESTSE"></span><span id="_CPPv2N13PRNG_Health_t19ENABLE_HEALTH_TESTSE"></span><span class="target" id="db/d42/group___p_r_n_g_1ggacb879612112a33215a68b9957035a650aac686e00e2f46f36602c4579c25121ea"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ENABLE_HEALTH_TESTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N13PRNG_Health_t19ENABLE_HEALTH_TESTSE" title="Link to this definition"></a><br /></dt>
+<dd><p>Health tests enabled. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PRNG_Health_t27HEALTH_TESTS_DEFAULT_CONFIGE">
+<span id="_CPPv3N13PRNG_Health_t27HEALTH_TESTS_DEFAULT_CONFIGE"></span><span id="_CPPv2N13PRNG_Health_t27HEALTH_TESTS_DEFAULT_CONFIGE"></span><span class="target" id="db/d42/group___p_r_n_g_1ggacb879612112a33215a68b9957035a650afccc919e5664473bfa56c24228db53da"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HEALTH_TESTS_DEFAULT_CONFIG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N13PRNG_Health_t27HEALTH_TESTS_DEFAULT_CONFIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Health tests default configuration. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv410PRNG_AES_t">
+<span id="_CPPv310PRNG_AES_t"></span><span id="_CPPv210PRNG_AES_t"></span><span class="target" id="db/d42/group___p_r_n_g_1ga747e49856d7f23f8362b82947d1dc9df"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PRNG_AES_t</span></span></span><a class="headerlink" href="#_CPPv410PRNG_AES_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Underlying AES for the post processing. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10PRNG_AES_t17AES_PRNG_HARDWAREE">
+<span id="_CPPv3N10PRNG_AES_t17AES_PRNG_HARDWAREE"></span><span id="_CPPv2N10PRNG_AES_t17AES_PRNG_HARDWAREE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga747e49856d7f23f8362b82947d1dc9dfad3a393697aba00165136bdeebe33f6b2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_PRNG_HARDWARE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N12AES_Select_t12AES_HARDWAREE" title="AES_HARDWARE"><span class="n"><span class="pre">AES_HARDWARE</span></span></a><a class="headerlink" href="#_CPPv4N10PRNG_AES_t17AES_PRNG_HARDWAREE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES Hardware. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10PRNG_AES_t17AES_PRNG_SOFTWAREE">
+<span id="_CPPv3N10PRNG_AES_t17AES_PRNG_SOFTWAREE"></span><span id="_CPPv2N10PRNG_AES_t17AES_PRNG_SOFTWAREE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga747e49856d7f23f8362b82947d1dc9dfa9c093c93894d90e95006fff1b429d062"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_PRNG_SOFTWARE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N12AES_Select_t12AES_SOFTWAREE" title="AES_SOFTWARE"><span class="n"><span class="pre">AES_SOFTWARE</span></span></a><a class="headerlink" href="#_CPPv4N10PRNG_AES_t17AES_PRNG_SOFTWAREE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES Software. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10PRNG_AES_t26HW_PRNG_DEFAULT_AES_CONFIGE">
+<span id="_CPPv3N10PRNG_AES_t26HW_PRNG_DEFAULT_AES_CONFIGE"></span><span id="_CPPv2N10PRNG_AES_t26HW_PRNG_DEFAULT_AES_CONFIGE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga747e49856d7f23f8362b82947d1dc9dfae0d78cc2686a5d8a398e472ee3a305cf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HW_PRNG_DEFAULT_AES_CONFIG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N12AES_Select_t12AES_HARDWAREE" title="AES_HARDWARE"><span class="n"><span class="pre">AES_HARDWARE</span></span></a><a class="headerlink" href="#_CPPv4N10PRNG_AES_t26HW_PRNG_DEFAULT_AES_CONFIGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Default AES is the AES hardware. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv416PRNG_Lib_error_t">
+<span id="_CPPv316PRNG_Lib_error_t"></span><span id="_CPPv216PRNG_Lib_error_t"></span><span class="target" id="db/d42/group___p_r_n_g_1ga4c9d06d23c4ec09c80d6ad0b9dbb9b16"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PRNG_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv416PRNG_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status for PRNG lib </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16PRNG_Lib_error_t10SW_PRNG_OKE">
+<span id="_CPPv3N16PRNG_Lib_error_t10SW_PRNG_OKE"></span><span id="_CPPv2N16PRNG_Lib_error_t10SW_PRNG_OKE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga4c9d06d23c4ec09c80d6ad0b9dbb9b16af137fded68bd36803214bd13188dfdfd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SW_PRNG_OK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N16PRNG_Lib_error_t10SW_PRNG_OKE" title="Link to this definition"></a><br /></dt>
+<dd><p>AES computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16PRNG_Lib_error_t31SW_PRNG_HEALTH_REPETITIVE_ERRORE">
+<span id="_CPPv3N16PRNG_Lib_error_t31SW_PRNG_HEALTH_REPETITIVE_ERRORE"></span><span id="_CPPv2N16PRNG_Lib_error_t31SW_PRNG_HEALTH_REPETITIVE_ERRORE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga4c9d06d23c4ec09c80d6ad0b9dbb9b16a17b61da7eaf53b266fed0825016eee74"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SW_PRNG_HEALTH_REPETITIVE_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N16PRNG_Lib_error_t31SW_PRNG_HEALTH_REPETITIVE_ERRORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Repetitive health test failed. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16PRNG_Lib_error_t29SW_PRNG_HEALTH_ADAPTIVE_ERRORE">
+<span id="_CPPv3N16PRNG_Lib_error_t29SW_PRNG_HEALTH_ADAPTIVE_ERRORE"></span><span id="_CPPv2N16PRNG_Lib_error_t29SW_PRNG_HEALTH_ADAPTIVE_ERRORE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga4c9d06d23c4ec09c80d6ad0b9dbb9b16add7d903110a5f24c9332181601713aa7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SW_PRNG_HEALTH_ADAPTIVE_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N16PRNG_Lib_error_t29SW_PRNG_HEALTH_ADAPTIVE_ERRORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Adaptive health test failed. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16PRNG_Lib_error_t11SW_PRNG_NOKE">
+<span id="_CPPv3N16PRNG_Lib_error_t11SW_PRNG_NOKE"></span><span id="_CPPv2N16PRNG_Lib_error_t11SW_PRNG_NOKE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga4c9d06d23c4ec09c80d6ad0b9dbb9b16a4b65610a5fd6612c4d63282eb6ebca46"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SW_PRNG_NOK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N16PRNG_Lib_error_t11SW_PRNG_NOKE" title="Link to this definition"></a><br /></dt>
+<dd><p>PRNG initialization not OK. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16PRNG_Lib_error_t32SW_PRNG_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N16PRNG_Lib_error_t32SW_PRNG_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N16PRNG_Lib_error_t32SW_PRNG_INCORRECT_RESULT_POINTERE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga4c9d06d23c4ec09c80d6ad0b9dbb9b16a88810f0d259a0cd90382a472d2b0546f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SW_PRNG_INCORRECT_RESULT_POINTER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#_CPPv4N16PRNG_Lib_error_t32SW_PRNG_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is not initialized. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16PRNG_Lib_error_t23SW_PRNG_NOT_INITIALIZEDE">
+<span id="_CPPv3N16PRNG_Lib_error_t23SW_PRNG_NOT_INITIALIZEDE"></span><span id="_CPPv2N16PRNG_Lib_error_t23SW_PRNG_NOT_INITIALIZEDE"></span><span class="target" id="db/d42/group___p_r_n_g_1gga4c9d06d23c4ec09c80d6ad0b9dbb9b16a8ef5d72beecf7fcbf9dc5965a8e0407e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SW_PRNG_NOT_INITIALIZED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N16PRNG_Lib_error_t23SW_PRNG_NOT_INITIALIZEDE" title="Link to this definition"></a><br /></dt>
+<dd><p>PRNG was not initialized. Execute InitPRNG first. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410SetPRNGCtxP8PRNG_CTX10PRNG_AES_t11PRNG_Core_t8uint32_t13PRNG_Health_t">
+<span id="_CPPv310SetPRNGCtxP8PRNG_CTX10PRNG_AES_t11PRNG_Core_t8uint32_t13PRNG_Health_t"></span><span id="_CPPv210SetPRNGCtxP8PRNG_CTX10PRNG_AES_t11PRNG_Core_t8uint32_t13PRNG_Health_t"></span><span id="SetPRNGCtx__PRNG_CTXP.PRNG_AES_t.PRNG_Core_t.uint32_t.PRNG_Health_t"></span><span class="target" id="db/d42/group___p_r_n_g_1gaa29bad9978b437c52eb6f7ab76b67bbd"></span><a class="reference internal" href="#_CPPv416PRNG_Lib_error_t" title="PRNG_Lib_error_t"><span class="n"><span class="pre">PRNG_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetPRNGCtx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48PRNG_CTX" title="PRNG_CTX"><span class="n"><span class="pre">PRNG_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ctx</span></span>, <a class="reference internal" href="#_CPPv410PRNG_AES_t" title="PRNG_AES_t"><span class="n"><span class="pre">PRNG_AES_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <a class="reference internal" href="#_CPPv411PRNG_Core_t" title="PRNG_Core_t"><span class="n"><span class="pre">PRNG_Core_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">CoreSelect</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">PRNGConfig</span></span>, <a class="reference internal" href="#_CPPv413PRNG_Health_t" title="PRNG_Health_t"><span class="n"><span class="pre">PRNG_Health_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">HealthTests</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410SetPRNGCtxP8PRNG_CTX10PRNG_AES_t11PRNG_Core_t8uint32_t13PRNG_Health_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the configuration parameters of a PRNG context. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>SetPRNGCtx only defines the parameters. It does not pick any random hardware number and does not initialize the NIST SP800-90A context. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ctx</strong> – <strong>[out]</strong> Context of the PRNG </p></li>
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> Select the underlying AES (AES_HARDWARE or AES_SOFTWARE) </p></li>
+<li><p><strong>CoreSelect</strong> – <strong>[in]</strong> Select the underlying hardware RNG core (from 0 to 3) </p></li>
+<li><p><strong>PRNGConfig</strong> – <strong>[in]</strong> Choose the number of bits required to have 256 bits of entropy (256 to 640) </p></li>
+<li><p><strong>HealthTests</strong> – <strong>[in]</strong> Determine if the health tests will be enabled or not </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SW_PRNG_OK</strong> – PRNG setting successful </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv48InitPRNGP8PRNG_CTXP7uint8_t">
+<span id="_CPPv38InitPRNGP8PRNG_CTXP7uint8_t"></span><span id="_CPPv28InitPRNGP8PRNG_CTXP7uint8_t"></span><span id="InitPRNG__PRNG_CTXP.uint8_tP"></span><span class="target" id="db/d42/group___p_r_n_g_1gaadaaf8f9c87820974a9fedc20967b8ce"></span><a class="reference internal" href="#_CPPv416PRNG_Lib_error_t" title="PRNG_Lib_error_t"><span class="n"><span class="pre">PRNG_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InitPRNG</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48PRNG_CTX" title="PRNG_CTX"><span class="n"><span class="pre">PRNG_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">MAC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48InitPRNGP8PRNG_CTXP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes the PRNG. Pick hardware random numbers to initialize the NIST SP800-90A context. Perform the health tests if required. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The PRNG must be (re)initialized when the PRNG context has been lost. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ctx</strong> – <strong>[in]</strong> Context of the PRNG </p></li>
+<li><p><strong>MAC</strong> – <strong>[in]</strong> A specific string of the device. MAC should be 6 bytes long </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_PRNG_OK</strong> – Successful initialization </p></li>
+<li><p><strong>SW_PRNG_HEALTH_REPETITIVE_ERROR</strong> – Repetitive health test failed </p></li>
+<li><p><strong>SW_PRNG_HEALTH_ADAPTIVE_ERROR</strong> – Adaptive health test failed </p></li>
+<li><p><strong>SW_PRNG_NOK</strong> – Something went wrong with underlying AES</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv47GetPRNGP8PRNG_CTX8uint32_tP8uint32_t">
+<span id="_CPPv37GetPRNGP8PRNG_CTX8uint32_tP8uint32_t"></span><span id="_CPPv27GetPRNGP8PRNG_CTX8uint32_tP8uint32_t"></span><span id="GetPRNG__PRNG_CTXP.uint32_t.uint32_tP"></span><span class="target" id="db/d42/group___p_r_n_g_1gae4f6d7356afb0dccaa946a12635542f5"></span><a class="reference internal" href="#_CPPv416PRNG_Lib_error_t" title="PRNG_Lib_error_t"><span class="n"><span class="pre">PRNG_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetPRNG</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48PRNG_CTX" title="PRNG_CTX"><span class="n"><span class="pre">PRNG_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ctx</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">NumberOfWords</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Random</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv47GetPRNGP8PRNG_CTX8uint32_tP8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Generates random values with the PRNG. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The PRNG must be (re)initialized when the PRNG context has been lost. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Ctx</strong> – <strong>[in]</strong> PRNG Ctx </p></li>
+<li><p><strong>NumberOfWords</strong> – <strong>[in]</strong> Number of 32-bit words to generate. </p></li>
+<li><p><strong>Random</strong> – <strong>[out]</strong> A buffer of NumberOfWords x 32 bits that receives the random values. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_PRNG_OK</strong> – Successful generation </p></li>
+<li><p><strong>SW_PRNG_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized. </p></li>
+<li><p><strong>SW_PRNG_NOT_INITIALIZED</strong> – The PRNG was not initialized. Execute InitPRNG first </p></li>
+<li><p><strong>SW_PRNG_NOK</strong> – Something went wrong with underlying AE </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv433AES_GenerateAuthenticateChallengeP7uint8_t">
+<span id="_CPPv333AES_GenerateAuthenticateChallengeP7uint8_t"></span><span id="_CPPv233AES_GenerateAuthenticateChallengeP7uint8_t"></span><span id="AES_GenerateAuthenticateChallenge__uint8_tP"></span><span class="target" id="db/d42/group___p_r_n_g_1ga161d2871870207ab2b5551dc1ed4518f"></span><a class="reference internal" href="#_CPPv416PRNG_Lib_error_t" title="PRNG_Lib_error_t"><span class="n"><span class="pre">PRNG_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_GenerateAuthenticateChallenge</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Challenge</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv433AES_GenerateAuthenticateChallengeP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Generates a 16-byte challenge for AES Authentication protocol. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Challenge</strong> – <strong>[out]</strong> a pointer on 16-byte result </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv48PRNG_CTX">
+<span id="_CPPv38PRNG_CTX"></span><span id="_CPPv28PRNG_CTX"></span><span id="PRNG_CTX"></span><span class="target" id="df/da2/struct_p_r_n_g___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PRNG_CTX</span></span></span><a class="headerlink" href="#_CPPv48PRNG_CTX" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;PRNG.h&gt;</em></div>
+<p>Structure of PRNG context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8PRNG_CTX9ConfigAESE">
+<span id="_CPPv3N8PRNG_CTX9ConfigAESE"></span><span id="_CPPv2N8PRNG_CTX9ConfigAESE"></span><span id="PRNG_CTX::ConfigAES__uint8_t"></span><span class="target" id="df/da2/struct_p_r_n_g___c_t_x_1ac8cf894a09c2ca4120fb14df14309684"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConfigAES</span></span></span><a class="headerlink" href="#_CPPv4N8PRNG_CTX9ConfigAESE" title="Link to this definition"></a><br /></dt>
+<dd><p>Choose AES SOFTWARE or AES HARDWARE. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8PRNG_CTX13ConfigRngCoreE">
+<span id="_CPPv3N8PRNG_CTX13ConfigRngCoreE"></span><span id="_CPPv2N8PRNG_CTX13ConfigRngCoreE"></span><span id="PRNG_CTX::ConfigRngCore__uint8_t"></span><span class="target" id="df/da2/struct_p_r_n_g___c_t_x_1ae15f7224ba1cf26d3540d79b41e5da7e"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConfigRngCore</span></span></span><a class="headerlink" href="#_CPPv4N8PRNG_CTX13ConfigRngCoreE" title="Link to this definition"></a><br /></dt>
+<dd><p>Choose the RNG core. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8PRNG_CTX17ConfigHealthTestsE">
+<span id="_CPPv3N8PRNG_CTX17ConfigHealthTestsE"></span><span id="_CPPv2N8PRNG_CTX17ConfigHealthTestsE"></span><span id="PRNG_CTX::ConfigHealthTests__uint8_t"></span><span class="target" id="df/da2/struct_p_r_n_g___c_t_x_1a5a2d437b4d6766458267c5d09f6059cd"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConfigHealthTests</span></span></span><a class="headerlink" href="#_CPPv4N8PRNG_CTX17ConfigHealthTestsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Enable or disable health tests. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8PRNG_CTX3rfuE">
+<span id="_CPPv3N8PRNG_CTX3rfuE"></span><span id="_CPPv2N8PRNG_CTX3rfuE"></span><span id="PRNG_CTX::rfu__uint8_t"></span><span class="target" id="df/da2/struct_p_r_n_g___c_t_x_1aebd238d03b91281dd5824207d1d2300e"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rfu</span></span></span><a class="headerlink" href="#_CPPv4N8PRNG_CTX3rfuE" title="Link to this definition"></a><br /></dt>
+<dd><p>Padding. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8PRNG_CTX10ConfigPRNGE">
+<span id="_CPPv3N8PRNG_CTX10ConfigPRNGE"></span><span id="_CPPv2N8PRNG_CTX10ConfigPRNGE"></span><span id="PRNG_CTX::ConfigPRNG__uint32_t"></span><span class="target" id="df/da2/struct_p_r_n_g___c_t_x_1ac5917f68d5a013bd5003e92528ea006c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConfigPRNG</span></span></span><a class="headerlink" href="#_CPPv4N8PRNG_CTX10ConfigPRNGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Choose the number of bits required to have 256 bits of entropy (256 to 640) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8PRNG_CTX7NistCTXE">
+<span id="_CPPv3N8PRNG_CTX7NistCTXE"></span><span id="_CPPv2N8PRNG_CTX7NistCTXE"></span><span id="PRNG_CTX::NistCTX__PRNG_NIST_CTX"></span><span class="target" id="df/da2/struct_p_r_n_g___c_t_x_1a39daa5286bfb1325807b7ce4fd95cf43"></span><span class="n"><span class="pre">PRNG_NIST_CTX</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NistCTX</span></span></span><a class="headerlink" href="#_CPPv4N8PRNG_CTX7NistCTXE" title="Link to this definition"></a><br /></dt>
+<dd><p>PRNG NIST context. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="sha1">
+<h2>SHA1<a class="headerlink" href="#sha1" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d4/d29/group___s_h_a1"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">SHA1</span></span></dt>
+<dd><p>SHA1 algorithm as defined in FIPS 180-4. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA1_DIGEST_SIZE">
+<span class="target" id="d4/d29/group___s_h_a1_1ga3ba9296b223f1b3c710d6b812fd860e8"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA1_DIGEST_SIZE</span></span></span> <span class="pre">20</span><a class="headerlink" href="#c.SHA1_DIGEST_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest size for SHA1 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA1_BLOCK_SIZE">
+<span class="target" id="d4/d29/group___s_h_a1_1ga4be887a15639aa78e6a129b9c8f4d2b9"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA1_BLOCK_SIZE</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.SHA1_BLOCK_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Block size for SHA1 in bytes </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv416SHA1_Lib_error_t">
+<span id="_CPPv316SHA1_Lib_error_t"></span><span id="_CPPv216SHA1_Lib_error_t"></span><span class="target" id="d4/d29/group___s_h_a1_1ga50133ec81d10e3a6d748a34c058b7bf1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv416SHA1_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status words for SHA1. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SHA1_Lib_error_t12SHA1_SUCCESSE">
+<span id="_CPPv3N16SHA1_Lib_error_t12SHA1_SUCCESSE"></span><span id="_CPPv2N16SHA1_Lib_error_t12SHA1_SUCCESSE"></span><span class="target" id="d4/d29/group___s_h_a1_1gga50133ec81d10e3a6d748a34c058b7bf1a5f27ac7ab52778aa4e4b8bf68e8bcf80"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N16SHA1_Lib_error_t12SHA1_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>SHA1 computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N16SHA1_Lib_error_t29SHA1_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N16SHA1_Lib_error_t29SHA1_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N16SHA1_Lib_error_t29SHA1_INCORRECT_RESULT_POINTERE"></span><span class="target" id="d4/d29/group___s_h_a1_1gga50133ec81d10e3a6d748a34c058b7bf1aff03ff80cb4938d8f16174b0555a3bd7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N16SHA1_Lib_error_t29SHA1_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv44SHA1P7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv34SHA1P7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv24SHA1P7uint8_tP7uint8_t8uint32_t"></span><span id="SHA1__uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="d4/d29/group___s_h_a1_1ga654cf5dca441ca8b7f772d2faf16bf23"></span><a class="reference internal" href="#_CPPv416SHA1_Lib_error_t" title="SHA1_Lib_error_t"><span class="n"><span class="pre">SHA1_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">MessageLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv44SHA1P7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the hash of the message with SHA1. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Message</strong> – <strong>[in]</strong> Message to hash </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> Digest of the message </p></li>
+<li><p><strong>MessageLength</strong> – <strong>[in]</strong> Message length in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA1_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA1_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv48SHA1InitP8SHA1_CTX">
+<span id="_CPPv38SHA1InitP8SHA1_CTX"></span><span id="_CPPv28SHA1InitP8SHA1_CTX"></span><span id="SHA1Init__SHA1_CTXP"></span><span class="target" id="d4/d29/group___s_h_a1_1ga5a3587190e6a8763873c1818403413cf"></span><a class="reference internal" href="#_CPPv416SHA1_Lib_error_t" title="SHA1_Lib_error_t"><span class="n"><span class="pre">SHA1_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1Init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48SHA1_CTX" title="SHA1_CTX"><span class="n"><span class="pre">SHA1_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48SHA1InitP8SHA1_CTX" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes a SHA1 computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctx</strong> – <strong>[out]</strong> SHA-1 context </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA1_SUCCESS</strong> – Successful initialization </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410SHA1UpdateP8SHA1_CTXP7uint8_t8uint32_t">
+<span id="_CPPv310SHA1UpdateP8SHA1_CTXP7uint8_t8uint32_t"></span><span id="_CPPv210SHA1UpdateP8SHA1_CTXP7uint8_t8uint32_t"></span><span id="SHA1Update__SHA1_CTXP.uint8_tP.uint32_t"></span><span class="target" id="d4/d29/group___s_h_a1_1ga1028a28a95885f77485c0b00b428888b"></span><a class="reference internal" href="#_CPPv416SHA1_Lib_error_t" title="SHA1_Lib_error_t"><span class="n"><span class="pre">SHA1_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1Update</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48SHA1_CTX" title="SHA1_CTX"><span class="n"><span class="pre">SHA1_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbInput</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">InputLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410SHA1UpdateP8SHA1_CTXP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Updates the context with the data given in input. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> SHA-1 context </p></li>
+<li><p><strong>pbInput</strong> – <strong>[in]</strong> Data to hash </p></li>
+<li><p><strong>InputLength</strong> – <strong>[inout]</strong> Length of the data pointed by pbInput (in bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA1_SUCCESS</strong> – Successful computation </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49SHA1FinalP8SHA1_CTXP7uint8_t">
+<span id="_CPPv39SHA1FinalP8SHA1_CTXP7uint8_t"></span><span id="_CPPv29SHA1FinalP8SHA1_CTXP7uint8_t"></span><span id="SHA1Final__SHA1_CTXP.uint8_tP"></span><span class="target" id="d4/d29/group___s_h_a1_1ga98374321ca6bf18b921d826655834e5e"></span><a class="reference internal" href="#_CPPv416SHA1_Lib_error_t" title="SHA1_Lib_error_t"><span class="n"><span class="pre">SHA1_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1Final</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv48SHA1_CTX" title="SHA1_CTX"><span class="n"><span class="pre">SHA1_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbResult</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49SHA1FinalP8SHA1_CTXP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[in]</strong> SHA-1 context </p></li>
+<li><p><strong>pbResult</strong> – <strong>[out]</strong> Final digest </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA1_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA1_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv48SHA1_CTX">
+<span id="_CPPv38SHA1_CTX"></span><span id="_CPPv28SHA1_CTX"></span><span id="SHA1_CTX"></span><span class="target" id="d5/ddb/struct_s_h_a1___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA1_CTX</span></span></span><a class="headerlink" href="#_CPPv48SHA1_CTX" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;SHA1.h&gt;</em></div>
+<p>SHA1 context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8SHA1_CTX4HashE">
+<span id="_CPPv3N8SHA1_CTX4HashE"></span><span id="_CPPv2N8SHA1_CTX4HashE"></span><span id="SHA1_CTX::Hash__uint32_tA"></span><span class="target" id="d5/ddb/struct_s_h_a1___c_t_x_1a80fc0b735784829c1fe2f6c69c52b09a"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hash</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">20</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N8SHA1_CTX4HashE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest buffer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8SHA1_CTX5BlockE">
+<span id="_CPPv3N8SHA1_CTX5BlockE"></span><span id="_CPPv2N8SHA1_CTX5BlockE"></span><span id="SHA1_CTX::Block__uint8_tA"></span><span class="target" id="d5/ddb/struct_s_h_a1___c_t_x_1ae5573bd67118fc5b8147d96f33594a32"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Block</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">64</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N8SHA1_CTX5BlockE" title="Link to this definition"></a><br /></dt>
+<dd><p>Working buffer to accumulate data to hash </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8SHA1_CTX10MessageLenE">
+<span id="_CPPv3N8SHA1_CTX10MessageLenE"></span><span id="_CPPv2N8SHA1_CTX10MessageLenE"></span><span id="SHA1_CTX::MessageLen__uint32_t"></span><span class="target" id="d5/ddb/struct_s_h_a1___c_t_x_1a0f1306baebdc3f131ddb92a2c1cff43d"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageLen</span></span></span><a class="headerlink" href="#_CPPv4N8SHA1_CTX10MessageLenE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size in bytes of the message accumulated till now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8SHA1_CTX5IndexE">
+<span id="_CPPv3N8SHA1_CTX5IndexE"></span><span id="_CPPv2N8SHA1_CTX5IndexE"></span><span id="SHA1_CTX::Index__uint8_t"></span><span class="target" id="d5/ddb/struct_s_h_a1___c_t_x_1a97cff9b8029216b555d8f0fb6546015a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><a class="headerlink" href="#_CPPv4N8SHA1_CTX5IndexE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the data accumulated in the Block buffer </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="sha224">
+<h2>SHA224<a class="headerlink" href="#sha224" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dd/d95/group___s_h_a224"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">SHA224</span></span></dt>
+<dd><p>SHA224 algorithm as defined in FIPS 180-4. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA224_DIGEST_SIZE">
+<span class="target" id="dd/d95/group___s_h_a224_1ga5cf10abb15f8976aee47a3b9fceddfe7"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA224_DIGEST_SIZE</span></span></span> <span class="pre">28</span><a class="headerlink" href="#c.SHA224_DIGEST_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest size for SHA224 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA224_INTERNAL_DIGEST_SIZE">
+<span class="target" id="dd/d95/group___s_h_a224_1ga166ffb7963e2c1e4bf625534815540d8"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA224_INTERNAL_DIGEST_SIZE</span></span></span> <span class="pre">32</span><a class="headerlink" href="#c.SHA224_INTERNAL_DIGEST_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal Digest size for SHA224 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA224_BLOCK_SIZE">
+<span class="target" id="dd/d95/group___s_h_a224_1ga32c84ed0feb743cdce5f465f5d581bca"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA224_BLOCK_SIZE</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.SHA224_BLOCK_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Block size for SHA224 in bytes </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418SHA224_Lib_error_t">
+<span id="_CPPv318SHA224_Lib_error_t"></span><span id="_CPPv218SHA224_Lib_error_t"></span><span class="target" id="dd/d95/group___s_h_a224_1ga7a491b05e970e40f58a19630af0966c6"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv418SHA224_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status words for SHA224. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA224_Lib_error_t14SHA224_SUCCESSE">
+<span id="_CPPv3N18SHA224_Lib_error_t14SHA224_SUCCESSE"></span><span id="_CPPv2N18SHA224_Lib_error_t14SHA224_SUCCESSE"></span><span class="target" id="dd/d95/group___s_h_a224_1gga7a491b05e970e40f58a19630af0966c6a6c579285e80edc273c287179e251a4b9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N18SHA224_Lib_error_t14SHA224_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>SHA224 computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA224_Lib_error_t31SHA224_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N18SHA224_Lib_error_t31SHA224_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N18SHA224_Lib_error_t31SHA224_INCORRECT_RESULT_POINTERE"></span><span class="target" id="dd/d95/group___s_h_a224_1gga7a491b05e970e40f58a19630af0966c6a9fa858a74ba647cf775111a1b51680af"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N18SHA224_Lib_error_t31SHA224_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv46SHA224P7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv36SHA224P7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv26SHA224P7uint8_tP7uint8_t8uint32_t"></span><span id="SHA224__uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="dd/d95/group___s_h_a224_1ga7929639a48382c637b285f877eb0b432"></span><a class="reference internal" href="#_CPPv418SHA224_Lib_error_t" title="SHA224_Lib_error_t"><span class="n"><span class="pre">SHA224_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">MessageLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46SHA224P7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the hash of the message with SHA224. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Message</strong> – <strong>[in]</strong> Message to hash </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> Digest of the message </p></li>
+<li><p><strong>MessageLength</strong> – <strong>[in]</strong> Message length in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA224_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA224_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410SHA224InitP10SHA224_CTX">
+<span id="_CPPv310SHA224InitP10SHA224_CTX"></span><span id="_CPPv210SHA224InitP10SHA224_CTX"></span><span id="SHA224Init__SHA224_CTXP"></span><span class="target" id="dd/d95/group___s_h_a224_1ga82ad9766d09a5d167b6d318323a35d63"></span><a class="reference internal" href="#_CPPv418SHA224_Lib_error_t" title="SHA224_Lib_error_t"><span class="n"><span class="pre">SHA224_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224Init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA224_CTX" title="SHA224_CTX"><span class="n"><span class="pre">SHA224_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410SHA224InitP10SHA224_CTX" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes a SHA224 computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctx</strong> – <strong>[out]</strong> SHA224 context </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA224_SUCCESS</strong> – Successful initialization </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412SHA224UpdateP10SHA224_CTXP7uint8_t8uint32_t">
+<span id="_CPPv312SHA224UpdateP10SHA224_CTXP7uint8_t8uint32_t"></span><span id="_CPPv212SHA224UpdateP10SHA224_CTXP7uint8_t8uint32_t"></span><span id="SHA224Update__SHA224_CTXP.uint8_tP.uint32_t"></span><span class="target" id="dd/d95/group___s_h_a224_1ga4338d4a8750f06817b6903114558329e"></span><a class="reference internal" href="#_CPPv418SHA224_Lib_error_t" title="SHA224_Lib_error_t"><span class="n"><span class="pre">SHA224_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224Update</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA224_CTX" title="SHA224_CTX"><span class="n"><span class="pre">SHA224_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbInput</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">InputLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412SHA224UpdateP10SHA224_CTXP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Updates the context with the data given in input. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> SHA224 context </p></li>
+<li><p><strong>pbInput</strong> – <strong>[in]</strong> Data to hash </p></li>
+<li><p><strong>InputLength</strong> – <strong>[inout]</strong> Length of the data pointed by pbInput (in bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA224_SUCCESS</strong> – Successful computation </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411SHA224FinalP10SHA224_CTXP7uint8_t">
+<span id="_CPPv311SHA224FinalP10SHA224_CTXP7uint8_t"></span><span id="_CPPv211SHA224FinalP10SHA224_CTXP7uint8_t"></span><span id="SHA224Final__SHA224_CTXP.uint8_tP"></span><span class="target" id="dd/d95/group___s_h_a224_1gaf3634523685102202eca06d4716322a5"></span><a class="reference internal" href="#_CPPv418SHA224_Lib_error_t" title="SHA224_Lib_error_t"><span class="n"><span class="pre">SHA224_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224Final</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA224_CTX" title="SHA224_CTX"><span class="n"><span class="pre">SHA224_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbResult</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411SHA224FinalP10SHA224_CTXP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[in]</strong> SHA224 context </p></li>
+<li><p><strong>pbResult</strong> – <strong>[out]</strong> Final digest (28 bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA224_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA224_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410SHA224_CTX">
+<span id="_CPPv310SHA224_CTX"></span><span id="_CPPv210SHA224_CTX"></span><span id="SHA224_CTX"></span><span class="target" id="d0/de1/struct_s_h_a224___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA224_CTX</span></span></span><a class="headerlink" href="#_CPPv410SHA224_CTX" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;SHA224.h&gt;</em></div>
+<p>SHA224 context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA224_CTX4HashE">
+<span id="_CPPv3N10SHA224_CTX4HashE"></span><span id="_CPPv2N10SHA224_CTX4HashE"></span><span id="SHA224_CTX::Hash__uint32_tA"></span><span class="target" id="d0/de1/struct_s_h_a224___c_t_x_1ac070c47a68b76da18583a97ca5f7391a"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hash</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA224_CTX4HashE" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal digest size </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA224_CTX5BlockE">
+<span id="_CPPv3N10SHA224_CTX5BlockE"></span><span id="_CPPv2N10SHA224_CTX5BlockE"></span><span id="SHA224_CTX::Block__uint8_tA"></span><span class="target" id="d0/de1/struct_s_h_a224___c_t_x_1ac196a2f2d696d1f0f3afc8db43f5a661"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Block</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">64</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA224_CTX5BlockE" title="Link to this definition"></a><br /></dt>
+<dd><p>Working buffer to accumulate data to hash </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA224_CTX10MessageLenE">
+<span id="_CPPv3N10SHA224_CTX10MessageLenE"></span><span id="_CPPv2N10SHA224_CTX10MessageLenE"></span><span id="SHA224_CTX::MessageLen__uint32_t"></span><span class="target" id="d0/de1/struct_s_h_a224___c_t_x_1a0b04238f2fc623d6018f60f7c687e83e"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageLen</span></span></span><a class="headerlink" href="#_CPPv4N10SHA224_CTX10MessageLenE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size in bytes of the message accumulated till now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA224_CTX5IndexE">
+<span id="_CPPv3N10SHA224_CTX5IndexE"></span><span id="_CPPv2N10SHA224_CTX5IndexE"></span><span id="SHA224_CTX::Index__uint8_t"></span><span class="target" id="d0/de1/struct_s_h_a224___c_t_x_1acf2c43648721b07d12d7cdb8a695e80e"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><a class="headerlink" href="#_CPPv4N10SHA224_CTX5IndexE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the data accumulated in the Block buffer </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="sha256">
+<h2>SHA256<a class="headerlink" href="#sha256" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d1/d2c/group___s_h_a256"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">SHA256</span></span></dt>
+<dd><p>SHA256 algorithm as defined in FIPS 180-4. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA256_DIGEST_SIZE">
+<span class="target" id="d1/d2c/group___s_h_a256_1ga81efbc0fc101b06a914f7ff9e2fbc0e9"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA256_DIGEST_SIZE</span></span></span> <span class="pre">32</span><a class="headerlink" href="#c.SHA256_DIGEST_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest size for SHA256 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA256_BLOCK_SIZE">
+<span class="target" id="d1/d2c/group___s_h_a256_1ga9c1fe69ad43d4ca74b84303a0ed64f2f"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA256_BLOCK_SIZE</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.SHA256_BLOCK_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Block size for SHA256 in bytes </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418SHA256_Lib_error_t">
+<span id="_CPPv318SHA256_Lib_error_t"></span><span id="_CPPv218SHA256_Lib_error_t"></span><span class="target" id="d1/d2c/group___s_h_a256_1ga6932b17d9d1103ed3c5c5fadcd2b20cd"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv418SHA256_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status words for SHA256. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA256_Lib_error_t14SHA256_SUCCESSE">
+<span id="_CPPv3N18SHA256_Lib_error_t14SHA256_SUCCESSE"></span><span id="_CPPv2N18SHA256_Lib_error_t14SHA256_SUCCESSE"></span><span class="target" id="d1/d2c/group___s_h_a256_1gga6932b17d9d1103ed3c5c5fadcd2b20cdac6d876d90319dcda57bef7b349b15f1a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N18SHA256_Lib_error_t14SHA256_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>SHA256 computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA256_Lib_error_t31SHA256_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N18SHA256_Lib_error_t31SHA256_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N18SHA256_Lib_error_t31SHA256_INCORRECT_RESULT_POINTERE"></span><span class="target" id="d1/d2c/group___s_h_a256_1gga6932b17d9d1103ed3c5c5fadcd2b20cda262be99ba077d2f9658b33b998ffc7fa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N18SHA256_Lib_error_t31SHA256_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv46SHA256P7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv36SHA256P7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv26SHA256P7uint8_tP7uint8_t8uint32_t"></span><span id="SHA256__uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="d1/d2c/group___s_h_a256_1gacbba550f2b0d72830f9a35f12d99f64a"></span><a class="reference internal" href="#_CPPv418SHA256_Lib_error_t" title="SHA256_Lib_error_t"><span class="n"><span class="pre">SHA256_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">MessageLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46SHA256P7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the hash of the message with SHA256. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Message</strong> – <strong>[in]</strong> Message to hash </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> Digest of the message </p></li>
+<li><p><strong>MessageLength</strong> – <strong>[in]</strong> Message length in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA256_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA256_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410SHA256InitP10SHA256_CTX">
+<span id="_CPPv310SHA256InitP10SHA256_CTX"></span><span id="_CPPv210SHA256InitP10SHA256_CTX"></span><span id="SHA256Init__SHA256_CTXP"></span><span class="target" id="d1/d2c/group___s_h_a256_1ga65af3ea3aeb6ec04aaea9c5f8f382029"></span><a class="reference internal" href="#_CPPv418SHA256_Lib_error_t" title="SHA256_Lib_error_t"><span class="n"><span class="pre">SHA256_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256Init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA256_CTX" title="SHA256_CTX"><span class="n"><span class="pre">SHA256_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410SHA256InitP10SHA256_CTX" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes a SHA256 computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctx</strong> – <strong>[out]</strong> SHA256 context </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA256_SUCCESS</strong> – Successful initialization </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412SHA256UpdateP10SHA256_CTXP7uint8_t8uint32_t">
+<span id="_CPPv312SHA256UpdateP10SHA256_CTXP7uint8_t8uint32_t"></span><span id="_CPPv212SHA256UpdateP10SHA256_CTXP7uint8_t8uint32_t"></span><span id="SHA256Update__SHA256_CTXP.uint8_tP.uint32_t"></span><span class="target" id="d1/d2c/group___s_h_a256_1ga9631b41d8fe3855c75b12bf87539fc17"></span><a class="reference internal" href="#_CPPv418SHA256_Lib_error_t" title="SHA256_Lib_error_t"><span class="n"><span class="pre">SHA256_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256Update</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA256_CTX" title="SHA256_CTX"><span class="n"><span class="pre">SHA256_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbInput</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">InputLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412SHA256UpdateP10SHA256_CTXP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Updates the context with the data given in input. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> SHA-256 context </p></li>
+<li><p><strong>pbInput</strong> – <strong>[in]</strong> data to hash </p></li>
+<li><p><strong>InputLength</strong> – <strong>[inout]</strong> Length of the data pointed by pbInput (in bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA256_SUCCESS</strong> – Successful computation </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411SHA256FinalP10SHA256_CTXP7uint8_t">
+<span id="_CPPv311SHA256FinalP10SHA256_CTXP7uint8_t"></span><span id="_CPPv211SHA256FinalP10SHA256_CTXP7uint8_t"></span><span id="SHA256Final__SHA256_CTXP.uint8_tP"></span><span class="target" id="d1/d2c/group___s_h_a256_1gae22200f9395454989af4414e8d125bec"></span><a class="reference internal" href="#_CPPv418SHA256_Lib_error_t" title="SHA256_Lib_error_t"><span class="n"><span class="pre">SHA256_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256Final</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA256_CTX" title="SHA256_CTX"><span class="n"><span class="pre">SHA256_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbResult</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411SHA256FinalP10SHA256_CTXP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[in]</strong> SHA256 context </p></li>
+<li><p><strong>pbResult</strong> – <strong>[out]</strong> Final digest (32 bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA256_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA256_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410SHA256_CTX">
+<span id="_CPPv310SHA256_CTX"></span><span id="_CPPv210SHA256_CTX"></span><span id="SHA256_CTX"></span><span class="target" id="da/db6/struct_s_h_a256___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA256_CTX</span></span></span><a class="headerlink" href="#_CPPv410SHA256_CTX" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;SHA256.h&gt;</em></div>
+<p>SHA256 context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA256_CTX4HashE">
+<span id="_CPPv3N10SHA256_CTX4HashE"></span><span id="_CPPv2N10SHA256_CTX4HashE"></span><span id="SHA256_CTX::Hash__uint32_tA"></span><span class="target" id="da/db6/struct_s_h_a256___c_t_x_1a5c1908524a4173777ce346cdc7d207c1"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hash</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA256_CTX4HashE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest buffer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA256_CTX5BlockE">
+<span id="_CPPv3N10SHA256_CTX5BlockE"></span><span id="_CPPv2N10SHA256_CTX5BlockE"></span><span id="SHA256_CTX::Block__uint8_tA"></span><span class="target" id="da/db6/struct_s_h_a256___c_t_x_1ad5f57f8b84bf1e85465b10ee4b53737d"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Block</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">64</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA256_CTX5BlockE" title="Link to this definition"></a><br /></dt>
+<dd><p>Working buffer to accumulate data to hash </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA256_CTX10MessageLenE">
+<span id="_CPPv3N10SHA256_CTX10MessageLenE"></span><span id="_CPPv2N10SHA256_CTX10MessageLenE"></span><span id="SHA256_CTX::MessageLen__uint32_t"></span><span class="target" id="da/db6/struct_s_h_a256___c_t_x_1ad9121b21aaf11d9c7c47c21b92f5b3d5"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageLen</span></span></span><a class="headerlink" href="#_CPPv4N10SHA256_CTX10MessageLenE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size in bytes of the message accumulated till now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA256_CTX5IndexE">
+<span id="_CPPv3N10SHA256_CTX5IndexE"></span><span id="_CPPv2N10SHA256_CTX5IndexE"></span><span id="SHA256_CTX::Index__uint8_t"></span><span class="target" id="da/db6/struct_s_h_a256___c_t_x_1ae9b95b33aef78c4e2ae05282a95b498a"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><a class="headerlink" href="#_CPPv4N10SHA256_CTX5IndexE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the data accumulated in the Block buffer </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="sha384">
+<h2>SHA384<a class="headerlink" href="#sha384" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d5/ddd/group___s_h_a384"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">SHA384</span></span></dt>
+<dd><p>SHA384 algorithm as defined in FIPS 180-4. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA384_DIGEST_SIZE">
+<span class="target" id="d5/ddd/group___s_h_a384_1gafb6d310df497c25c1e85af07f71ee2b3"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA384_DIGEST_SIZE</span></span></span> <span class="pre">48</span><a class="headerlink" href="#c.SHA384_DIGEST_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest size for SHA384 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA384_INTERNAL_DIGEST_SIZE">
+<span class="target" id="d5/ddd/group___s_h_a384_1ga2be383b5bc234697e46c8ab981b14d72"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA384_INTERNAL_DIGEST_SIZE</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.SHA384_INTERNAL_DIGEST_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal Digest size for SHA384 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA384_BLOCK_SIZE">
+<span class="target" id="d5/ddd/group___s_h_a384_1ga1c624ed02505ff06099f03267ccfcc48"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA384_BLOCK_SIZE</span></span></span> <span class="pre">128</span><a class="headerlink" href="#c.SHA384_BLOCK_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Block size for SHA384 in bytes </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418SHA384_Lib_error_t">
+<span id="_CPPv318SHA384_Lib_error_t"></span><span id="_CPPv218SHA384_Lib_error_t"></span><span class="target" id="d5/ddd/group___s_h_a384_1ga919181c3e4c73fae9bdfaf265bfce98a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv418SHA384_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status words for SHA384. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA384_Lib_error_t14SHA384_SUCCESSE">
+<span id="_CPPv3N18SHA384_Lib_error_t14SHA384_SUCCESSE"></span><span id="_CPPv2N18SHA384_Lib_error_t14SHA384_SUCCESSE"></span><span class="target" id="d5/ddd/group___s_h_a384_1gga919181c3e4c73fae9bdfaf265bfce98aa07a6673f534a1caede7ee4ffb2b44d8c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N18SHA384_Lib_error_t14SHA384_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>SHA384 computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA384_Lib_error_t31SHA384_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N18SHA384_Lib_error_t31SHA384_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N18SHA384_Lib_error_t31SHA384_INCORRECT_RESULT_POINTERE"></span><span class="target" id="d5/ddd/group___s_h_a384_1gga919181c3e4c73fae9bdfaf265bfce98aa2922af919586cf278cbad4da096eff97"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N18SHA384_Lib_error_t31SHA384_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv46SHA384P7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv36SHA384P7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv26SHA384P7uint8_tP7uint8_t8uint32_t"></span><span id="SHA384__uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="d5/ddd/group___s_h_a384_1ga86f95b0514fb59f9d2c8a472944c1018"></span><a class="reference internal" href="#_CPPv418SHA384_Lib_error_t" title="SHA384_Lib_error_t"><span class="n"><span class="pre">SHA384_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">MessageLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46SHA384P7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the hash of the message with SHA384. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Message</strong> – <strong>[in]</strong> Message to hash </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> Digest of the message </p></li>
+<li><p><strong>MessageLength</strong> – <strong>[in]</strong> Message length in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA384_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA384_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410SHA384InitP10SHA384_CTX">
+<span id="_CPPv310SHA384InitP10SHA384_CTX"></span><span id="_CPPv210SHA384InitP10SHA384_CTX"></span><span id="SHA384Init__SHA384_CTXP"></span><span class="target" id="d5/ddd/group___s_h_a384_1gad128abcffbb8fd19d43806ed523bfd0e"></span><a class="reference internal" href="#_CPPv418SHA384_Lib_error_t" title="SHA384_Lib_error_t"><span class="n"><span class="pre">SHA384_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384Init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA384_CTX" title="SHA384_CTX"><span class="n"><span class="pre">SHA384_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410SHA384InitP10SHA384_CTX" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes a SHA384 computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctx</strong> – <strong>[out]</strong> SHA384 context </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA384_SUCCESS</strong> – Successful initialization </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412SHA384UpdateP10SHA384_CTXP7uint8_t8uint32_t">
+<span id="_CPPv312SHA384UpdateP10SHA384_CTXP7uint8_t8uint32_t"></span><span id="_CPPv212SHA384UpdateP10SHA384_CTXP7uint8_t8uint32_t"></span><span id="SHA384Update__SHA384_CTXP.uint8_tP.uint32_t"></span><span class="target" id="d5/ddd/group___s_h_a384_1ga47591ab370fcc147df07972ff806d159"></span><a class="reference internal" href="#_CPPv418SHA384_Lib_error_t" title="SHA384_Lib_error_t"><span class="n"><span class="pre">SHA384_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384Update</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA384_CTX" title="SHA384_CTX"><span class="n"><span class="pre">SHA384_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbInput</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">InputLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412SHA384UpdateP10SHA384_CTXP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Updates the context with the data given in input. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> SHA384 context </p></li>
+<li><p><strong>pbInput</strong> – <strong>[in]</strong> data to hash </p></li>
+<li><p><strong>InputLength</strong> – <strong>[inout]</strong> length of the data pointed by pbInput(in bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA384_SUCCESS</strong> – Successful computation </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411SHA384FinalP10SHA384_CTXP7uint8_t">
+<span id="_CPPv311SHA384FinalP10SHA384_CTXP7uint8_t"></span><span id="_CPPv211SHA384FinalP10SHA384_CTXP7uint8_t"></span><span id="SHA384Final__SHA384_CTXP.uint8_tP"></span><span class="target" id="d5/ddd/group___s_h_a384_1ga1f0eb22359d9675cdb6a6b195df5b6e1"></span><a class="reference internal" href="#_CPPv418SHA384_Lib_error_t" title="SHA384_Lib_error_t"><span class="n"><span class="pre">SHA384_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384Final</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA384_CTX" title="SHA384_CTX"><span class="n"><span class="pre">SHA384_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbResult</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411SHA384FinalP10SHA384_CTXP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[in]</strong> SHA384 context </p></li>
+<li><p><strong>pbResult</strong> – <strong>[out]</strong> Final digest (48 bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA384_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA384_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410SHA384_CTX">
+<span id="_CPPv310SHA384_CTX"></span><span id="_CPPv210SHA384_CTX"></span><span id="SHA384_CTX"></span><span class="target" id="da/d39/struct_s_h_a384___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA384_CTX</span></span></span><a class="headerlink" href="#_CPPv410SHA384_CTX" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;SHA384.h&gt;</em></div>
+<p>SHA384 context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA384_CTX4HashE">
+<span id="_CPPv3N10SHA384_CTX4HashE"></span><span id="_CPPv2N10SHA384_CTX4HashE"></span><span id="SHA384_CTX::Hash__uint32_tA"></span><span class="target" id="da/d39/struct_s_h_a384___c_t_x_1a3f7ff0254c7de52d59f22fa9e1ece67f"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hash</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">64</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA384_CTX4HashE" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal digest size </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA384_CTX5BlockE">
+<span id="_CPPv3N10SHA384_CTX5BlockE"></span><span id="_CPPv2N10SHA384_CTX5BlockE"></span><span id="SHA384_CTX::Block__uint8_tA"></span><span class="target" id="da/d39/struct_s_h_a384___c_t_x_1a703b45f168c7c9cc37e8f0e1611d5abf"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Block</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">128</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA384_CTX5BlockE" title="Link to this definition"></a><br /></dt>
+<dd><p>Working buffer to accumulate data to hash </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA384_CTX10MessageLenE">
+<span id="_CPPv3N10SHA384_CTX10MessageLenE"></span><span id="_CPPv2N10SHA384_CTX10MessageLenE"></span><span id="SHA384_CTX::MessageLen__uint32_t"></span><span class="target" id="da/d39/struct_s_h_a384___c_t_x_1a6809bec86cd3d0cd22b840a26f85a86c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageLen</span></span></span><a class="headerlink" href="#_CPPv4N10SHA384_CTX10MessageLenE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size in bytes of the message accumulated till now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA384_CTX5IndexE">
+<span id="_CPPv3N10SHA384_CTX5IndexE"></span><span id="_CPPv2N10SHA384_CTX5IndexE"></span><span id="SHA384_CTX::Index__uint8_t"></span><span class="target" id="da/d39/struct_s_h_a384___c_t_x_1a35bc5be348005ad04f2bb9ab407a4eff"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><a class="headerlink" href="#_CPPv4N10SHA384_CTX5IndexE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the data accumulated in the Block buffer </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="sha512">
+<h2>SHA512<a class="headerlink" href="#sha512" title="Link to this heading"></a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="d4/dca/group___s_h_a512"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">SHA512</span></span></dt>
+<dd><p>SHA512 algorithm as defined in FIPS 180-4. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA512_DIGEST_SIZE">
+<span class="target" id="d4/dca/group___s_h_a512_1ga67f489f3eee39c447a6db3ba34ef75f2"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_DIGEST_SIZE</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.SHA512_DIGEST_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest size for SHA512 in bytes </p>
+</dd></dl>
+
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.SHA512_BLOCK_SIZE">
+<span class="target" id="d4/dca/group___s_h_a512_1gac7071364cb94c9fcce009ba16a4bdca1"></span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_BLOCK_SIZE</span></span></span> <span class="pre">128</span><a class="headerlink" href="#c.SHA512_BLOCK_SIZE" title="Link to this definition"></a><br /></dt>
+<dd><p>Block size for SHA512 in bytes </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418SHA512_Lib_error_t">
+<span id="_CPPv318SHA512_Lib_error_t"></span><span id="_CPPv218SHA512_Lib_error_t"></span><span class="target" id="d4/dca/group___s_h_a512_1gaf12f9344cfb4197db755acc12bcb732f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv418SHA512_Lib_error_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Error status words for SHA512. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA512_Lib_error_t14SHA512_SUCCESSE">
+<span id="_CPPv3N18SHA512_Lib_error_t14SHA512_SUCCESSE"></span><span id="_CPPv2N18SHA512_Lib_error_t14SHA512_SUCCESSE"></span><span class="target" id="d4/dca/group___s_h_a512_1ggaf12f9344cfb4197db755acc12bcb732facff44a3430ff41d9cc02a2f75ad4aa2b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N18SHA512_Lib_error_t14SHA512_SUCCESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>SHA512 computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE"></span><span class="target" id="d4/dca/group___s_h_a512_1ggaf12f9344cfb4197db755acc12bcb732fa25fa221d20bfffd89d27f8340e828b7c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N18SHA512_Lib_error_t31SHA512_INCORRECT_RESULT_POINTERE" title="Link to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv46SHA512P7uint8_tP7uint8_t8uint32_t">
+<span id="_CPPv36SHA512P7uint8_tP7uint8_t8uint32_t"></span><span id="_CPPv26SHA512P7uint8_tP7uint8_t8uint32_t"></span><span id="SHA512__uint8_tP.uint8_tP.uint32_t"></span><span class="target" id="d4/dca/group___s_h_a512_1ga71daadc728c3a03d0d12d369ed3c1a6f"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Message</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Result</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">MessageLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46SHA512P7uint8_tP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the hash of the message with SHA512. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Message</strong> – <strong>[in]</strong> Message to hash </p></li>
+<li><p><strong>Result</strong> – <strong>[out]</strong> Digest of the message </p></li>
+<li><p><strong>MessageLength</strong> – <strong>[in]</strong> Message length in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA512_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA512_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv410SHA512InitP10SHA512_CTX">
+<span id="_CPPv310SHA512InitP10SHA512_CTX"></span><span id="_CPPv210SHA512InitP10SHA512_CTX"></span><span id="SHA512Init__SHA512_CTXP"></span><span class="target" id="d4/dca/group___s_h_a512_1ga5bf03a0e211c5df19bc524a871249f05"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512Init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA512_CTX" title="SHA512_CTX"><span class="n"><span class="pre">SHA512_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410SHA512InitP10SHA512_CTX" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes a SHA512 computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctx</strong> – <strong>[out]</strong> SHA512 context </p>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA512_SUCCESS</strong> – Successful initialization </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv412SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t">
+<span id="_CPPv312SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t"></span><span id="_CPPv212SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t"></span><span id="SHA512Update__SHA512_CTXP.uint8_tP.uint32_t"></span><span class="target" id="d4/dca/group___s_h_a512_1ga6ab00f9363f777bddc1cb05248690471"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512Update</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA512_CTX" title="SHA512_CTX"><span class="n"><span class="pre">SHA512_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbInput</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">InputLength</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv412SHA512UpdateP10SHA512_CTXP7uint8_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> SHA-512 context </p></li>
+<li><p><strong>pbInput</strong> – <strong>[in]</strong> data to hash </p></li>
+<li><p><strong>InputLength</strong> – <strong>[inout]</strong> length of the data pointed by pbInput (in byte) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>SHA512_SUCCESS</strong> – Successful computation </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411SHA512FinalP10SHA512_CTXP7uint8_t">
+<span id="_CPPv311SHA512FinalP10SHA512_CTXP7uint8_t"></span><span id="_CPPv211SHA512FinalP10SHA512_CTXP7uint8_t"></span><span id="SHA512Final__SHA512_CTXP.uint8_tP"></span><span class="target" id="d4/dca/group___s_h_a512_1ga4947fddec5a170e3adf2833103dad163"></span><a class="reference internal" href="#_CPPv418SHA512_Lib_error_t" title="SHA512_Lib_error_t"><span class="n"><span class="pre">SHA512_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512Final</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410SHA512_CTX" title="SHA512_CTX"><span class="n"><span class="pre">SHA512_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pbResult</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411SHA512FinalP10SHA512_CTXP7uint8_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Finalizes the hash computation and returns the result. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[in]</strong> SHA512 context </p></li>
+<li><p><strong>pbResult</strong> – <strong>[out]</strong> Final digest (64 bytes) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SHA512_SUCCESS</strong> – Successful computation </p></li>
+<li><p><strong>SHA512_INCORRECT_RESULT_POINTER</strong> – Result buffer not initialized </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410SHA512_CTX">
+<span id="_CPPv310SHA512_CTX"></span><span id="_CPPv210SHA512_CTX"></span><span id="SHA512_CTX"></span><span class="target" id="db/d89/struct_s_h_a512___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHA512_CTX</span></span></span><a class="headerlink" href="#_CPPv410SHA512_CTX" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;SHA512.h&gt;</em></div>
+<p>SHA512 context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX4HashE">
+<span id="_CPPv3N10SHA512_CTX4HashE"></span><span id="_CPPv2N10SHA512_CTX4HashE"></span><span id="SHA512_CTX::Hash__uint32_tA"></span><span class="target" id="db/d89/struct_s_h_a512___c_t_x_1af864b62750339316ce59399cf798dbec"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hash</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">64</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX4HashE" title="Link to this definition"></a><br /></dt>
+<dd><p>Digest buffer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX5BlockE">
+<span id="_CPPv3N10SHA512_CTX5BlockE"></span><span id="_CPPv2N10SHA512_CTX5BlockE"></span><span id="SHA512_CTX::Block__uint8_tA"></span><span class="target" id="db/d89/struct_s_h_a512___c_t_x_1a3b7cc1d05cc19a19e26067d2b34487e3"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Block</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">128</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX5BlockE" title="Link to this definition"></a><br /></dt>
+<dd><p>Working buffer to accumulate data to hash </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX10MessageLenE">
+<span id="_CPPv3N10SHA512_CTX10MessageLenE"></span><span id="_CPPv2N10SHA512_CTX10MessageLenE"></span><span id="SHA512_CTX::MessageLen__uint32_t"></span><span class="target" id="db/d89/struct_s_h_a512___c_t_x_1ad1f9f46b29d15504a8a736e13432d8f1"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MessageLen</span></span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX10MessageLenE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size in bytes of the message accumulated till now </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10SHA512_CTX5IndexE">
+<span id="_CPPv3N10SHA512_CTX5IndexE"></span><span id="_CPPv2N10SHA512_CTX5IndexE"></span><span id="SHA512_CTX::Index__uint8_t"></span><span class="target" id="db/d89/struct_s_h_a512___c_t_x_1a4643caac8775c9b775161873e1820d1c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Index</span></span></span><a class="headerlink" href="#_CPPv4N10SHA512_CTX5IndexE" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the data accumulated in the Block buffer </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Link to this heading"></a></h2>
+</section>
+<section id="release-note-v1-0">
+<h2>Release note V1.0<a class="headerlink" href="#release-note-v1-0" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>(validation)Add SHA1, SHA224,SHA256, SHA384 and SHA512 NIST tests. Tests in line with test plan.</p></li>
+<li><p>(validation)Add ECDSA NIST tests + wrong parameters + invalid signature.Tests in line with test plan.</p></li>
+<li><p>(validation)Add ECCECDH NIST tests+ wrong parameters +  specif infinity point tests.Tests in line with test plan.</p></li>
+<li><p>(lib)Improve RAM management of ECDSA</p></li>
+<li><p>(lib)Add a sanity check on public key ECDSA</p></li>
+<li><p>(lib)Enable RNG init in ECC for the first time the context is initlaized</p></li>
+<li><p>(lib)slighly Improve PRNG Lib Timing (health tests)</p></li>
+<li><p>(lib) Compilation in release configuration:
+* Optimisation for fastest libs
+* remove debug info</p></li>
+<li><p>(lib) Fix a bug when Health tests are not successful</p></li>
+<li><p>(validation) Move test vectors in NVM (NVM_CONST) to avoid exploding the data segment</p></li>
+</ul>
+</section>
+<section id="release-note-v1-1">
+<h2>Release note V1.1<a class="headerlink" href="#release-note-v1-1" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>(lib) Add AES ECB lib using both the AES with implicitly key or AES with key containers</p></li>
+<li><p>(lib) Add a function AES_GenerateAuthenticateChallenge in PRNG lib dedicated to the External authentication with AESSetPRNGCtx</p></li>
+<li><p>(lib) Add a function SetPRNGCtx that set a PRNG context without picking the HW RNG</p></li>
+<li><p>(lib) Modify the ECCGenerateRandom internal function , to use SetPRNGCtx for ECC functions that need RNG (GeneratePrivateKey, Generate the schnoor challenge)</p></li>
+<li><p>(Validation) : Modify Validation_ECC, Validation Schnoor accordingly to set up the PRNG context</p></li>
+<li><p>(Validation) : Modify Validation_PRNG accordingly to set up the PRNG context</p></li>
+<li><p>(Validation): Add Validation_AuthAES.c to validation the new AES_GenerateAuthenticateChallenge function</p></li>
+<li><p>(Validation): Add Validation_AES_ECB_128.c,Validation_AES_ECB_192.c,Validation_AES_ECB_256.c,alidation_AES_ECB_Error.c to test AES_ECB lib</p></li>
+</ul>
+</section>
+<section id="release-note-v2-0">
+<h2>Release note V2.0<a class="headerlink" href="#release-note-v2-0" title="Link to this heading"></a></h2>
+<p>V1.1 are the ROM libs in Di01.
+V2.x are the NVM libs (Di01)
+* (lib) Add ECC Verify Pub Key lib</p>
+</section>
+<section id="release-note-v3-0">
+<h2>Release note V3.0<a class="headerlink" href="#release-note-v3-0" title="Link to this heading"></a></h2>
+<p>V3.0 are ROM libs for di03 (second ROM mask)
+* (lib) : Switch to 2019.09 tool set
+* (lib) : include ECC Verify PubKey API in ECC lib
+* (lib) : select core 2 as default RNG core
+* (lib) : Add AES_ECB
+* (lib) : Add AES_CBC
+* (lib) : Add AES_CTR
+* (lib) : Add AES_CMAC
+* (lib) : Add AES_GCM</p>
+<ul class="simple">
+<li><p>(validation): Add Validation_AES_ECB_128</p></li>
+<li><p>(validation): Add Validation_AES_ECB_192</p></li>
+<li><p>(validation): Add Validation_AES_ECB_256</p></li>
+<li><p>(validation): Add Validation_AES_ECB_Error</p></li>
+<li><p>(validation): Add Validation_AES_CBC_128</p></li>
+<li><p>(validation): Add Validation_AES_CBC_192</p></li>
+<li><p>(validation): Add Validation_AES_CBC_256</p></li>
+<li><p>(validation): Add Validation_AES_CBC_Error</p></li>
+<li><p>(validation): Add Validation_AES_CTR_128</p></li>
+<li><p>(validation): Add Validation_AES_CTR_192</p></li>
+<li><p>(validation): Add Validation_AES_CTR_256</p></li>
+<li><p>(validation): Add Validation_AES_CTR_Error</p></li>
+<li><p>(validation): Add Validation_AES_CMAC_128</p></li>
+<li><p>(validation): Add Validation_AES_CMAC_192</p></li>
+<li><p>(validation): Add Validation_AES_CMAC_256</p></li>
+<li><p>(validation): Add Validation_AES_CMAC_Error</p></li>
+<li><p>(validation): Add Validation_AES_GCM_128</p></li>
+<li><p>(validation): Add Validation_AES_GCM_192</p></li>
+<li><p>(validation): Add Validation_AES_GCM_256</p></li>
+<li><p>(validation): Add Validation_AES_GCM_Error</p></li>
+</ul>
+</section>
+<section id="release-note-v3-1">
+<h2>Release note V3.1<a class="headerlink" href="#release-note-v3-1" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>(lib) : Add AES_CCM library</p></li>
+<li><p>(lib) : Add null pointer test for AES GCM</p></li>
+<li><p>(lib) : Add null pointer test for ECDH</p></li>
+<li><p>(lib) : PRNG.h Inverse order of headers</p></li>
+<li><p>(lib) : Improve doxygen documentation of .h file</p></li>
+<li><p>(Validation): Add Validation_AES_CCM_128.c,Validation_AES_CCM_192.c,Validation_AES_CCM_256.c,alidation_AES_CCM_Error.c to test AES_CCM lib</p></li>
+<li><p>(Validation): Clean headers</p></li>
+</ul>
+</section>
+<section id="release-note-v3-2">
+<h2>Release note V3.2<a class="headerlink" href="#release-note-v3-2" title="Link to this heading"></a></h2>
+<p>The main purpose of this release is mainly cleaning to generate clean cryptolib document. It adds examples , refered in the documentation.</p>
+<p>PRNG.h was also modified to correct blatant spelling mistake
+-(lib) Modify PRNG.h- Error status SW_PRNG_NOT_INITIALZED was corrected into SW_PRNG_NOT_INITIALIZED (missing I before the Z)
+NB: this status is used in PRNG lib, ECC lib but not out of the libs.</p>
+<ul class="simple">
+<li><p>(lib) clean up headers</p></li>
+<li><p>(Doc) generared html and PDF is provided. (later might be generated in the project)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../nvm/index.html" class="btn btn-neutral float-left" title="NVM driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../adc/index.html" class="btn btn-neutral float-right" title="ADC Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

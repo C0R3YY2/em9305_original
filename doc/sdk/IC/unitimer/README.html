@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; EM9305 4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=665bc78d" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=0cd558ae"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ReleaseNotes.html">emb Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/GettingStarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/MigrationGuide.html">Migration guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/IDEIntegration.html">MetaWare IDE Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/CMakeBuild.html">CMake and build procedure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/rom.html">ROM Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Bluetooth.html">Bluetooth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../emcore/index.html">EM-Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FirmwareUpdate.html">Firmware Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Lifecycle.html">EM9305 Lifecycle Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Examples.html">Sample Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Links.html">Links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/ApplicationNotes.html">Application Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/HowTo.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/FAQ.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sections/Limitations.html">Known limitations &amp; constraints</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EM9305</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>The universal timer driver provides functionality to start and stop one-shot, expresso,
+and periodic timers.</p>
+<p>The accuracy of the timer is directly affected by the accuracy of the high frequency clock
+source. However, the universal timer does not explicitly set the clock source. The clock source
+has to be set by the application in the initialization function by calling the <code class="docutils literal notranslate"><span class="pre">PML_SetHfClkSource()</span></code>
+function.</p>
+<p>All timers use an ISR mechanism that implies a user callback definition. This callback is executed
+each time the corresponding timer expired.</p>
+<p>The prototype of this user callback is be the following:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// User defined data structure to be used within the Timer user callback.</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="p">}</span><span class="w"> </span><span class="n">UserDefinedType_t</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">Timer_ISR_Callback</span><span class="p">(</span><span class="n">Driver_Status_t</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pUserData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// User Code</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">DRIVER_STATUS_OK</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// Cast the data pointer to the user defined data structure.</span>
+<span class="w">      </span><span class="n">UserDefinedType_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">UserDefinedType_t</span><span class="o">*</span><span class="p">)</span><span class="n">pUserData</span><span class="p">;</span>
+
+<span class="w">      </span><span class="c1">// Do any relevant processing here.</span>
+<span class="w">      </span><span class="p">...</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Driver_Status_t</span></code> type is defined in <code class="docutils literal notranslate"><span class="pre">&lt;SDK&gt;\libs\em_hw_api\includes\driver.h</span></code>. If everything is OK,
+the <code class="docutils literal notranslate"><span class="pre">status</span></code> variable shall be equal to <code class="docutils literal notranslate"><span class="pre">DRIVER_STATUS_OK</span></code>. Otherwise, when an error occurred in the
+driver, this variable should then be equal to <code class="docutils literal notranslate"><span class="pre">DRIVER_STATUS_ERROR</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pUserData</span></code> parameter can be a pointer to a memory area that has been passed to the Timer driver at timer
+creation. This memory area shall exist at the time the timer callback function is called.
+Thus, in the user defined timer callback, this pointer can be cast to a user defined data structure (see code above)
+or simply to an integer value that is passed when creating the timer like in the following example:</p>
+<p>Then in the timer callback, the parameter value can be retrieved with the following code snippet:</p>
+<section id="one-shot-timer">
+<h2>One-shot timer<a class="headerlink" href="#one-shot-timer" title="Link to this heading"></a></h2>
+<p>The one-shot timer is a timer that executes a callback function once after a specified amount of time.
+This timer is started immediately and automatically after it has been created. After the callback
+function has been executed, the timer is automatically deleted.</p>
+<p>Example of one-shot timer usage:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start a one-shot timer of 5ms</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_OneshotDelay</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"> </span><span class="c1">// 5ms</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="expresso-timer">
+<h2>Expresso timer<a class="headerlink" href="#expresso-timer" title="Link to this heading"></a></h2>
+<p>The expresso timer is also a timer that executes a callback function after a specified amount of
+time. But unlike the one-shot timer, the expresso timer has to be manually started after it has been created.
+After the callback function has been executed, the expresso timer is not deleted and can be reused at will by calling
+again the <code class="docutils literal notranslate"><span class="pre">Timer_Enable()</span></code> function. When not needed anylonger, the timer can be manually deleted using the
+<code class="docutils literal notranslate"><span class="pre">Timer_UnschedulePolling()</span></code> function.</p>
+<p>Example of expresso timer usage:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start an expresso timer of 5ms</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_ExpressoDelay</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// enable the timer for one execution</span>
+<span class="n">Timer_Enable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+
+<span class="p">...</span><span class="w"> </span><span class="c1">// the timer could be reused several times using the Timer_Enable function</span>
+
+<span class="c1">// Delete the timer once it is not used anymore.</span>
+<span class="n">Timer_UnschedulePolling</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="periodic-timer">
+<h2>Periodic timer<a class="headerlink" href="#periodic-timer" title="Link to this heading"></a></h2>
+<p>The periodic timer is a timer that executes a callback function at a specified frequency on a periodic basis.
+This timer shall also be started manually after its creation since it is not automatically started.
+It can be stopped using the <code class="docutils literal notranslate"><span class="pre">Timer_Disable()</span></code> function and deleted with the <code class="docutils literal notranslate"><span class="pre">Timer_UnschedulePolling()</span></code> function.
+Using this type of timer optimizes the power consumption by synchronising it with other timers running at the same
+frequency.</p>
+<p>Example of periodic timer usage:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start a periodic timer of 5ms (200Hz). It will be started in sync with other already</span>
+<span class="c1">// created timers with the same frequency.</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_SchedulePolling</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// enable the timer</span>
+<span class="n">Timer_Enable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="c1">// disable the timer</span>
+<span class="n">Timer_Disable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+
+<span class="p">...</span><span class="w"> </span><span class="c1">// the timer could be reused several times using the Timer_Enable and Timer_Disable function</span>
+
+<span class="c1">// Delete the timer once it is not used anymore.</span>
+<span class="n">Timer_UnschedulePolling</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It is also possible to create periodic timer that will not be synchronised with other timers running at the same frequency.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">Timer_Enable()</span></code> function is called, the timer is immediately started.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// start a periodic timer of 5ms (200Hz)</span>
+<span class="kt">int8_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Timer_SchedulePollingImmediately</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Timer_ISR_Callback</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+
+<span class="c1">// enable the timer</span>
+<span class="n">Timer_Enable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="c1">// Wait 6 ms for the timer callback to be executed.</span>
+<span class="n">COMMON_WaitUs</span><span class="p">(</span><span class="mi">6000</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="c1">// disable the timer</span>
+<span class="n">Timer_Disable</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+<span class="p">...</span><span class="w"> </span><span class="c1">// the timer could be reused several times using the Timer_Enable and Timer_Disable function</span>
+
+<span class="c1">// Delete the timer once it is not used anymore.</span>
+<span class="n">Timer_UnschedulePolling</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Contrary to the <code class="docutils literal notranslate"><span class="pre">Timer_SchedulePolling()</span></code> function, The <code class="docutils literal notranslate"><span class="pre">Timer_SchedulePollingImmediately()</span></code> function doesn’t synchronize
+the new timer with other timers running at the same frequency. This leads to a power consumption that will not be optimized.</p>
+</div>
+</section>
+<section id="timers-and-sleep-mode">
+<h2>Timers and sleep mode<a class="headerlink" href="#timers-and-sleep-mode" title="Link to this heading"></a></h2>
+<p>When a periodic timer is used, its activity has to be resumed when waking up from sleep mode, otherwise the timer will not be
+reactivated. This is why the function <code class="docutils literal notranslate"><span class="pre">Timer_Resume()</span></code> shall be called in the <code class="docutils literal notranslate"><span class="pre">NVM_ApplicationEntry()</span></code> function.
+An example of this is shown in the following code snippet.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">NVM_ConfigModules</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Register the timer module before actually using it.</span>
+<span class="w">  </span><span class="n">Timer_RegisterModule</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Enable timer usage in persistent memory.</span>
+<span class="w">  </span><span class="n">gTimer_Config</span><span class="p">.</span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// Do here other first stage initializations</span>
+<span class="p">}</span>
+
+<span class="n">NO_RETURN</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">NVM_ApplicationEntry</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">  </span><span class="c1">// Enable interruptions (seti instruction)</span>
+<span class="w">  </span><span class="n">IRQ_EnableInterrupts</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Resume already created timer(s). It will be effective only when resuming from sleep.</span>
+<span class="w">  </span><span class="n">Timer_Resume</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Do other initializations depending on where does the system come from.</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">PML_DidBootFromSleep</span><span class="p">())</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Do any initialization when resuming from sleep.</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Do any initialization after a POR or SW reset.</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There is no need to test if the system is resuming from sleep or not before calling the <code class="docutils literal notranslate"><span class="pre">Timer_Resume()</span></code> function.
+This check is automatically integrated into this function and in case the system does not resume from sleep, then calling
+this function will have no effect.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023-2024, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

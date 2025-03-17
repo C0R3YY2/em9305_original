@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>authentication Procedures &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ble Procedures" href="ble.html" />
+    <link rel="prev" title="EMSystem Procedures" href="EMSystem.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../procedures.html#procedures-references">Procedures references</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="EM9304commands.html">EM9304commands Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EMSystem.html">EMSystem Procedures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">authentication Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#write-configuration-data-nvm">write_configuration_data_nvm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#authenticate">authenticate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ble.html">ble Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firmware_update.html">firmware_update Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gap.html">gap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gatt.html">gatt Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hci.html">hci Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="key_container.html">key_container Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l2cap.html">l2cap Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvm_info.html">nvm_info Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sm.html">sm Procedures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unity.html">unity Procedures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../procedures.html">BLEngine Procedures</a></li>
+      <li class="breadcrumb-item active">authentication Procedures</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="authentication-procedures">
+<h1>authentication Procedures<a class="headerlink" href="#authentication-procedures" title="Link to this heading"></a></h1>
+<input class="search input" type="text" placeholder="Live Search" style="width: 100%; padding: 10px;">
+<div>&nbsp</div>
+<div id="search-loader" style="display:none;">please wait...</div><section id="write-configuration-data-nvm">
+<span id="proc-write-configuration-data-nvm"></span><h2><a class="reference internal" href="#write-configuration-data-nvm">write_configuration_data_nvm</a><a class="headerlink" href="#write-configuration-data-nvm" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Write the Configuration Data in NVM</p>
+</div></blockquote>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.authentication</span> <span class="kn">import</span> <span class="n">write_configuration_data_nvm</span>
+
+<span class="n">write_configuration_data_nvm</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>write_configuration_data_nvm<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--em<span class="o">]</span>
+<span class="w">                                     </span><span class="o">[</span>--private_key<span class="w"> </span>PRIVATE_KEY<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--em</span></kbd></dt>
+<dd><p>EM level</p>
+</dd>
+<dt><kbd><span class="option">--private_key <var>PRIVATE_KEY</var></span></kbd></dt>
+<dd><p>Private Key, optional, will look in the config file:
+[USER_AUTH] secrete_key=0xXXXXX</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">write_configuration_data_nvm</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Write the Configuration Data in NVM</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">if</span> <span class="n">em</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">authconf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;AUTH_EM&quot;</span><span class="p">]</span>
+        <span class="n">configuration_data_info_page</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">public_keys_block_addr</span>   <span class="o">=</span> <span class="mh">0x407D80</span>
+        <span class="n">hw_lock_bits_block_addr</span>  <span class="o">=</span> <span class="mh">0x407D00</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;EmAuthRequired&quot;</span><span class="p">:</span>   <span class="p">(</span> <span class="mh">0x407F08</span><span class="p">,</span> <span class="mh">0x6A53B14D</span> <span class="p">),</span>
+                  <span class="s2">&quot;NvmP3Programmed&quot;</span><span class="p">:</span>  <span class="p">(</span> <span class="mh">0x407F00</span><span class="p">,</span> <span class="mh">0x4EA6D18B</span> <span class="p">)</span> <span class="p">}</span>
+        <span class="n">trimming_data_block_addr</span> <span class="o">=</span> <span class="mh">0x407C80</span>
+        <span class="n">device_id_block_addr</span>     <span class="o">=</span> <span class="mh">0x407C40</span>
+        <span class="n">mac_address_block_addr</span>   <span class="o">=</span> <span class="mh">0x407C00</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">authconf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;AUTH_USER&quot;</span><span class="p">]</span>
+        <span class="n">configuration_data_info_page</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">public_keys_block_addr</span>   <span class="o">=</span> <span class="mh">0x405D80</span>
+        <span class="n">hw_lock_bits_block_addr</span>  <span class="o">=</span> <span class="mh">0x405D00</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;UserAuthRequired&quot;</span><span class="p">:</span> <span class="p">(</span> <span class="mh">0x405F08</span><span class="p">,</span> <span class="mh">0x6A53B14D</span> <span class="p">),</span>
+                  <span class="s2">&quot;NvmReadLock&quot;</span><span class="p">:</span>      <span class="p">(</span> <span class="mh">0x405F00</span><span class="p">,</span> <span class="mh">0x4EA6D18B</span> <span class="p">)</span> <span class="p">}</span>
+        <span class="n">trimming_data_block_addr</span> <span class="o">=</span> <span class="mh">0x405C80</span>
+
+    <span class="c1"># Erase the previous configuration data.</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_NVM_Erase_Page&#39;</span><span class="p">,</span> <span class="n">Area</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Page</span><span class="o">=</span><span class="n">configuration_data_info_page</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Failed to erase the previous configuration data!&quot;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">em</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># Erase the previous private key.</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_NVM_Erase_Page&#39;</span><span class="p">,</span> <span class="n">Area</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">Page</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Failed to erase the previous private key!&quot;</span>
+
+        <span class="c1"># Get the private key.</span>
+        <span class="n">private_key</span> <span class="o">=</span> <span class="n">private_key</span> <span class="ow">or</span> <span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;AuthenticationPrivateKey&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">private_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Please provide a private Key!&quot;</span>
+        <span class="n">private_key</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Write the private key.</span>
+        <span class="n">private_key</span> <span class="o">=</span> <span class="n">private_key</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSS_USER_Write_Private_Key&#39;</span><span class="p">,</span> <span class="n">Private_Key</span><span class="o">=</span><span class="n">private_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Failed to write the private key!&quot;</span>
+
+    <span class="c1"># Write the public keys block.</span>
+    <span class="n">public_keys_block</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+    <span class="n">public_keys_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;PatchSignaturePublicKey&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+    <span class="n">public_keys_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;PatchSignaturePublicKey&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">em</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">public_keys_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;AuthenticationPublicKey&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+        <span class="n">public_keys_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;AuthenticationPublicKey&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+    <span class="n">public_keys_block_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">public_keys_block</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">public_keys_block</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">crc32</span><span class="p">(</span><span class="n">public_keys_block</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">public_keys_block</span>
+    <span class="n">public_keys_block</span> <span class="o">=</span> <span class="n">public_keys_block_length</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">public_keys_block</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_Write_At_Address&#39;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="n">public_keys_block_addr</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="n">public_keys_block</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Failed to write the public keys block!&quot;</span>
+
+    <span class="c1"># Write the lock bits block.</span>
+    <span class="n">hw_lock_bits</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span> <span class="n">RegNvmLockMain0_ADDR</span><span class="p">,</span>  <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegNvmLockMain0&quot;</span> <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+        <span class="p">(</span> <span class="n">RegNvmLockMain1_ADDR</span><span class="p">,</span>  <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegNvmLockMain1&quot;</span> <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+        <span class="p">(</span> <span class="n">RegNvmLockInfo_ADDR</span><span class="p">,</span>   <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegNvmLockInfo&quot;</span>  <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+        <span class="p">(</span> <span class="n">RegNvmLockMaster_ADDR</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegNvmLockMaster&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+        <span class="p">(</span> <span class="n">RegNvmKcLockKey_ADDR</span><span class="p">,</span>  <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegNvmKcLockKey&quot;</span> <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+        <span class="p">(</span> <span class="n">RegPmlLockBits_ADDR</span><span class="p">,</span>   <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegPmlLockBits&quot;</span>  <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">hw_lock_bits_block</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">hw_lock_bits_item</span> <span class="ow">in</span> <span class="n">hw_lock_bits</span><span class="p">:</span>
+        <span class="n">hw_lock_bits_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">hw_lock_bits_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+        <span class="n">hw_lock_bits_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">hw_lock_bits_item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+    <span class="n">hw_lock_bits_block_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hw_lock_bits_block</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">hw_lock_bits_block</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">crc32</span><span class="p">(</span><span class="n">hw_lock_bits_block</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">hw_lock_bits_block</span>
+    <span class="n">hw_lock_bits_block</span> <span class="o">=</span> <span class="n">hw_lock_bits_block_length</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">hw_lock_bits_block</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_Write_At_Address&#39;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="n">hw_lock_bits_block_addr</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="n">hw_lock_bits_block</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Failed to write the lock bits block!&quot;</span>
+
+    <span class="c1"># Write the trimming data block.</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">em</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">trimming_data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span> <span class="n">RegPmlTrim_ADDR</span><span class="p">,</span>          <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegPmlTrim&quot;</span>         <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">(</span> <span class="n">RegNvmRedunCfg_ADDR</span><span class="p">,</span>      <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegNvmRedunCfg&quot;</span>     <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">(</span> <span class="n">RegNvmTime_ADDR</span><span class="p">,</span>          <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;RegNvmTime&quot;</span>         <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">(</span> <span class="n">REG_RF_XO_SEQ_DIG_ADDR</span><span class="p">,</span>   <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;REG_RF_XO_SEQ_DIG&quot;</span>  <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">(</span> <span class="n">REG_RF_XO_DEBUG_DIG_ADDR</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;REG_RF_XO_DEBUG_DIG&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">trimming_data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span> <span class="n">REG_RF_XO_SEQ_DIG_ADDR</span><span class="p">,</span>   <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;REG_RF_XO_SEQ_DIG&quot;</span>  <span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+            <span class="p">(</span> <span class="n">REG_RF_XO_DEBUG_DIG_ADDR</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;REG_RF_XO_DEBUG_DIG&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="p">),</span>
+        <span class="p">]</span>
+    <span class="n">trimming_data_block</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">trimming_data_item</span> <span class="ow">in</span> <span class="n">trimming_data</span><span class="p">:</span>
+        <span class="n">trimming_data_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trimming_data_item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+        <span class="n">trimming_data_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trimming_data_item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+    <span class="n">trimming_data_block_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">trimming_data_block</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">trimming_data_block</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">crc32</span><span class="p">(</span><span class="n">trimming_data_block</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">trimming_data_block</span>
+    <span class="n">trimming_data_block</span> <span class="o">=</span> <span class="n">trimming_data_block_length</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">trimming_data_block</span>
+    <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_Write_At_Address&#39;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="n">trimming_data_block_addr</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="n">trimming_data_block</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Failed to write the trimming data block!&quot;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">em</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># Write the Device ID block.</span>
+        <span class="n">device_id_block</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+        <span class="n">device_id_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;DeviceID&quot;</span><span class="p">],</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">device_id_block</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">device_id_block</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">56</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;The Device ID length shall not be greater than 56B and shall be a multiple of 4B!&quot;</span>
+        <span class="n">device_id_block_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">device_id_block</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">device_id_block</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">crc32</span><span class="p">(</span><span class="n">device_id_block</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">device_id_block</span>
+        <span class="n">device_id_block</span> <span class="o">=</span> <span class="n">device_id_block_length</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">device_id_block</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_Write_At_Address&#39;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="n">device_id_block_addr</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="n">device_id_block</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Failed to write the Device ID block!&quot;</span>
+
+        <span class="c1"># Write the MAC address block.</span>
+        <span class="n">mac_address_block</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+        <span class="n">mac_address_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">authconf</span><span class="p">[</span><span class="s2">&quot;MacAddress&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">))]))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mac_address_block</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Invalid MAC address!&quot;</span>
+        <span class="n">mac_address_block</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">mac_address_block_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mac_address_block</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">mac_address_block</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">crc32</span><span class="p">(</span><span class="n">mac_address_block</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">mac_address_block</span>
+        <span class="n">mac_address_block</span> <span class="o">=</span> <span class="n">mac_address_block_length</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">mac_address_block</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_Write_At_Address&#39;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="n">mac_address_block_addr</span><span class="p">,</span> <span class="n">Data</span><span class="o">=</span><span class="n">mac_address_block</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Failed to write the MAC address block!&quot;</span>
+
+    <span class="c1"># Write the flags.</span>
+    <span class="k">for</span> <span class="n">flag_name</span><span class="p">,</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">flags</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">authconf</span><span class="p">[</span><span class="n">flag_name</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;sure&quot;</span><span class="p">]:</span>
+            <span class="n">flag_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">()</span>
+            <span class="n">flag_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+            <span class="n">flag_data</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="mh">0xFFFFFFFF</span> <span class="o">-</span> <span class="n">flag</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">))</span>
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSMM_Write_At_Address&#39;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Data</span><span class="o">=</span><span class="n">flag_data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;Failed to write the flags!&quot;</span>
+
+    <span class="c1"># Success!</span>
+    <span class="k">return</span> <span class="s2">&quot;Configuration data written successfully!&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr></section>
+<section id="authenticate">
+<span id="proc-authenticate"></span><h2><a class="reference internal" href="#authenticate">authenticate</a><a class="headerlink" href="#authenticate" title="Link to this heading"></a></h2>
+<p>EMS Authentication</p>
+<p><strong>API usage</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.hci.procedures.authentication</span> <span class="kn">import</span> <span class="n">authenticate</span>
+
+<span class="n">authenticate</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">server_url</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>CLI usage</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>blengine<span class="w"> </span>run<span class="w"> </span>authenticate<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--em<span class="o">]</span><span class="w"> </span><span class="o">[</span>--private_key<span class="w"> </span>PRIVATE_KEY<span class="o">]</span>
+<span class="w">                     </span><span class="o">[</span>--server_url<span class="w"> </span>SERVER_URL<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">--em</span></kbd></dt>
+<dd><p>EM level</p>
+</dd>
+<dt><kbd><span class="option">--private_key <var>PRIVATE_KEY</var></span></kbd></dt>
+<dd><p>Private Key (0xfffffffffffffffffffffffffffffffffffffff
+fffffffffffffffffffffffff format)</p>
+</dd>
+<dt><kbd><span class="option">--server_url <var>SERVER_URL</var></span></kbd></dt>
+<dd><p>URL of the Authentication Server</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<details>
+<summary><a>Show Procedure Source Code</a></summary><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">em</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">private_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">server_url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;EMS Authentication&#39;&#39;&#39;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Authentication Procedure&quot;</span><span class="p">)</span>
+    <span class="c1"># EM - Use Schnorr authentication.</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">em</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AUTH_EM&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;AUTH_EM entry not found in current config&quot;</span>
+
+        <span class="n">authconf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;AUTH_EM&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Check if private key is provided as a parameter, or if authentication</span>
+        <span class="c1"># is performed via an Authentication Server.</span>
+
+        <span class="c1"># if private_key is None and ((&quot;AUTH_SERVER&quot; not in config.config or config.config[&quot;AUTH_SERVER&quot;].get(&quot;local_test_private_key&quot;) is None)) and server_url is None and (&quot;AUTH_SERVER&quot; not in config.config or config.config[&quot;AUTH_SERVER&quot;].get(&quot;auth_server_url&quot;) is not None):</span>
+        <span class="c1">#     return &quot;Please provide a private Key or an Authentication Server URL either via configuration file or via procedure parameters&quot;</span>
+
+        <span class="c1"># Generate a prover challenge and compute the commitement.</span>
+        <span class="n">prover_challenge</span> <span class="o">=</span> <span class="n">SchnorrAuthentication</span><span class="o">.</span><span class="n">generate_prover_challenge</span><span class="p">()</span>
+        <span class="n">commitment</span> <span class="o">=</span> <span class="n">SchnorrAuthentication</span><span class="o">.</span><span class="n">generate_commitment</span><span class="p">(</span><span class="n">prover_challenge</span><span class="p">)</span>
+
+        <span class="c1"># Send the commitment and get a verifier challenge.</span>
+        <span class="n">commitment_x</span> <span class="o">=</span> <span class="n">commitment</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+        <span class="n">commitment_y</span> <span class="o">=</span> <span class="n">commitment</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSS_EM_Get_Challenge&#39;</span><span class="p">,</span> <span class="n">Commitment_X</span><span class="o">=</span><span class="n">commitment_x</span><span class="p">,</span> <span class="n">Commitment_Y</span><span class="o">=</span><span class="n">commitment_y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Authentication failed! canot get challenge, status </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+        <span class="n">verifier_challenge</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Verifier_Challenge&quot;</span><span class="p">)</span>
+        <span class="n">verifier_challenge</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">verifier_challenge</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Compute the signature.</span>
+        <span class="k">if</span> <span class="n">private_key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;EM_AUTH&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="n">private_key</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;EM_AUTH&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;private_key&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">private_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">private_key</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+            <span class="n">signature</span> <span class="o">=</span> <span class="n">SchnorrAuthentication</span><span class="o">.</span><span class="n">generate_signature</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="n">verifier_challenge</span><span class="p">,</span> <span class="n">prover_challenge</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use Server</span>
+
+            <span class="k">if</span> <span class="n">server_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;EM_AUTH&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                    <span class="n">server_url</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;EM_AUTH&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;auth_server_url&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">server_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;URL not found, provide auth_server_url entry under EM_AUTH section in config file or with --server_url&quot;</span>
+
+            <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSS_EM_Read_Public_Key&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+                <span class="c1"># Must try to read key in ROM V1 via EMSMM NVM Read At Address command.</span>
+                <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSMM_Read_At_Address&quot;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="mh">0x00407D80</span><span class="o">+</span><span class="mi">8</span><span class="o">+</span><span class="mi">64</span><span class="p">,</span> <span class="n">Data_Length</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+                <span class="n">em_akx</span> <span class="o">=</span>  <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Data&quot;</span><span class="p">)</span>
+                <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSMM_Read_At_Address&quot;</span><span class="p">,</span> <span class="n">Start_Address</span><span class="o">=</span><span class="mh">0x00407D80</span><span class="o">+</span><span class="mi">8</span><span class="o">+</span><span class="mi">96</span><span class="p">,</span> <span class="n">Data_Length</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+                <span class="n">em_aky</span> <span class="o">=</span>  <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Data&quot;</span><span class="p">)</span>
+                <span class="n">xi</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">em_akx</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+                <span class="n">yi</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">em_aky</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">xi</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Public_Key_X&quot;</span><span class="p">),</span><span class="s1">&#39;little&#39;</span><span class="p">)</span>
+                <span class="n">yi</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Public_Key_Y&quot;</span><span class="p">),</span><span class="s1">&#39;little&#39;</span><span class="p">)</span>
+
+            <span class="n">xs</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:064d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ASCII&#39;</span><span class="p">)</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:064d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">yi</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ASCII&#39;</span><span class="p">)</span>
+
+            <span class="n">xys</span><span class="o">=</span> <span class="n">xs</span><span class="o">+</span><span class="n">ys</span>
+            <span class="n">hxys</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">xys</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+            <span class="n">context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLContext</span><span class="p">(</span><span class="n">ssl</span><span class="o">.</span><span class="n">PROTOCOL_SSLv23</span><span class="p">)</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">server_url</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+            <span class="n">auth_request16</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;schnorr&quot;</span><span class="p">:{</span>
+                    <span class="s2">&quot;base&quot;</span><span class="p">:</span><span class="s2">&quot;16&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;public_hash&quot;</span><span class="p">:</span><span class="n">hxys</span><span class="p">,</span>
+                    <span class="s2">&quot;verifier&quot;</span><span class="p">:</span><span class="nb">hex</span><span class="p">(</span><span class="n">verifier_challenge</span><span class="p">),</span>
+                    <span class="s2">&quot;prover&quot;</span><span class="p">:</span><span class="nb">hex</span><span class="p">(</span><span class="n">prover_challenge</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connecting to Key Management Service&quot;</span><span class="p">)</span>
+            <span class="n">json_auth_request</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">auth_request16</span><span class="p">)</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;/schnorr&#39;</span><span class="p">,</span> <span class="n">json_auth_request</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="c1"># print(response)</span>
+            <span class="n">rsp</span> <span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;schnorr&quot;</span> <span class="ow">in</span> <span class="n">rsp</span><span class="p">):</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rsp</span><span class="p">[</span><span class="s2">&quot;schnorr&quot;</span><span class="p">][</span><span class="s2">&quot;status&quot;</span><span class="p">],</span><span class="mi">16</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mh">0x00</span><span class="p">:</span> <span class="c1"># Success</span>
+                    <span class="n">base</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rsp</span><span class="p">[</span><span class="s2">&quot;schnorr&quot;</span><span class="p">][</span><span class="s2">&quot;base&quot;</span><span class="p">])</span>
+                    <span class="n">signature</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rsp</span><span class="p">[</span><span class="s2">&quot;schnorr&quot;</span><span class="p">][</span><span class="s2">&quot;signature&quot;</span><span class="p">],</span> <span class="n">base</span><span class="p">)</span>
+                    <span class="n">product_version</span> <span class="o">=</span> <span class="n">rsp</span><span class="p">[</span><span class="s2">&quot;schnorr&quot;</span><span class="p">][</span><span class="s2">&quot;product_version&quot;</span><span class="p">]</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Signature Received from Key Management Service (Version: </span><span class="si">{0}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">product_version</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Error Received from Key Management Service (</span><span class="si">{0}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">status</span><span class="p">)))</span>
+                    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Auth failed: </span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">auth_status_def</span><span class="p">[</span><span class="n">status</span><span class="p">],</span><span class="nb">hex</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+
+        <span class="c1"># Send the signature.</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSS_EM_Authenticate&quot;</span><span class="p">,</span> <span class="n">Signature</span><span class="o">=</span><span class="n">signature</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Authentication failed! status </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="c1"># USER - Use AES authentication.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># authconf = config.config[&quot;USER_AUTH&quot;]</span>
+
+        <span class="c1"># Get the private key.</span>
+        <span class="k">if</span> <span class="n">private_key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;USER_AUTH&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="n">private_key</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;USER_AUTH&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;secrete_key&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">private_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;Private key not found ! add --help to get help.&quot;&quot;&quot;</span>
+
+        <span class="n">private_key</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Get a verifier challenge.</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;EMSS_USER_Get_Challenge&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Authentication failed! status </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+        <span class="n">verifier_challenge</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Verifier_Challenge&quot;</span><span class="p">)</span>
+        <span class="n">verifier_challenge</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">verifier_challenge</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Compute the signature.</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">AESAuthentication</span><span class="o">.</span><span class="n">generate_signature</span><span class="p">(</span><span class="n">private_key</span><span class="p">,</span> <span class="n">verifier_challenge</span><span class="p">)</span>
+
+        <span class="c1"># Send the signature.</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;little&#39;</span><span class="p">)</span>
+        <span class="n">pkt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;EMSS_USER_Authenticate&quot;</span><span class="p">,</span> <span class="n">Signature</span><span class="o">=</span><span class="n">signature</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pkt</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mh">0x00</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Authentication failed! status </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pkt</span><span class="o">.</span><span class="n">status_text</span>
+
+    <span class="c1"># Success!</span>
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Authentication succeeded!&quot;</span>
+</pre></div>
+</div>
+</details>
+<hr><p>this page is auto generated by BLEngine/docs/procedures.py</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="EMSystem.html" class="btn btn-neutral float-left" title="EMSystem Procedures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ble.html" class="btn btn-neutral float-right" title="ble Procedures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

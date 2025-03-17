@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HCI Device API &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Product Lifecycle" href="Product-Lifecycle.html" />
+    <link rel="prev" title="NVM Configuration" href="NVM-Information.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">HCI Device API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vocabulary-and-setup">Vocabulary and setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-device-usage">Local Device Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#useful-properties-and-methods">Useful Properties and methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#remote-device-usage">Remote Device Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-example">Basic Example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-scan-usage">Advanced Scan Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advertising">Advertising</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#advertising-custom-data">Advertising Custom Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-custom-advertising-data">Parsing custom advertising data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/blengine.html">blengine package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">HCI Device API</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hci-device-api">
+<h1>HCI Device API<a class="headerlink" href="#hci-device-api" title="Link to this heading"></a></h1>
+<section id="vocabulary-and-setup">
+<h2>Vocabulary and setup<a class="headerlink" href="#vocabulary-and-setup" title="Link to this heading"></a></h2>
+<p>For clarity we talk about <em>Local Device</em> and <em>Remote Device</em> in this section according to the picture exposed below.</p>
+<p><img alt="Local vs remote device" src="../_images/Local_and_remote_devices.png" /></p>
+<p>This picture shows several so called <em>Local Devices</em> and several <em>Remote Devices</em>. The number of these devices ranges from 0 to the infinity (in theory).
+The local devices are connected to the host computer through USB links. Each link creates a virtual serial communication port by which the local device will receive HCI commands.</p>
+<p>Each local device is managed on the computer side by an instance of this object. One instance opens one specific communication port so it can communicate with one single physical local device through a set of HCI commands.</p>
+<p>Depending on the scenario, the Local Device can be configured in either Central or Peripheral Role.</p>
+<p>A <em>Remote Device</em> is a Bluetooth device in the surrounding of the Local Device. It is either discovered by a local device via a scan or it discovers and connects to the local device if the local device is in Connectable Advertising State.</p>
+<p>In this setup, one local device instance can instruct its connected local device to scan the surrounding BLE environment to find remote devices. This might end up in having several remote devices controlled by one single local device through its corresponding local device instance.</p>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Enable communication with a Bluetooth LE Controller via HCI in a simple way.</p>
+<p>These Classes implement a high-level representation of a Low Energy Bluetooth device.</p>
+<ul class="simple">
+<li><p>Common HCI Commands convenience functions (setName etc…)</p></li>
+<li><p>Legacy and Low Energy Extended Scan support</p></li>
+<li><p>Legacy and Extended Advertising Support</p></li>
+</ul>
+<p>To work with local device (dongles), a <code class="docutils literal notranslate"><span class="pre">HCILocalDevice</span></code> instance can be used.
+This class inherits from the <code class="docutils literal notranslate"><span class="pre">BLEDevice</span></code> and has specific functions and attributes to work
+with. It retains a list of remotes devices automatically created and updated when
+the device performs a scan.</p>
+<p>The remote devices class instances <code class="docutils literal notranslate"><span class="pre">HCIRemoteDevices</span></code> created by a local device
+implements all the functions related to a remote device from the local one. For that, it relies on the engine to send commands to the remote devices.
+It is not recommended to directly create a <code class="docutils literal notranslate"><span class="pre">HCIRemoteDevice</span></code>. It’s better to grab an instance by using the <code class="docutils literal notranslate"><span class="pre">HCILocalDevice.get_device()</span></code> function.</p>
+<p>The class supports both Legacy and Extended Advertising, the choice is automatically following the LE Features</p>
+<p>One thing to be noted is that, regarding a <code class="docutils literal notranslate"><span class="pre">remote_device</span></code> instance, it always belongs to a local device, the usage of the local device engine to send command is transparent and implicit, i.e.:</p>
+<ul class="simple">
+<li><p>you call <code class="docutils literal notranslate"><span class="pre">remote_device.connect()</span></code> to connect to a remote device, and not <code class="docutils literal notranslate"><span class="pre">local_device.connect(remote_device)</span></code></p></li>
+<li><p>Advertisements are processed and stored by each Remote Devices.</p></li>
+</ul>
+</section>
+<section id="local-device-usage">
+<h2>Local Device Usage<a class="headerlink" href="#local-device-usage" title="Link to this heading"></a></h2>
+<p>An HCILocalDevice needs a configured engine to communicate with the device and optionally the Bluetooth address and a name to identify it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine</span> <span class="kn">import</span> <span class="n">enable_cli_args</span>
+<span class="kn">from</span> <span class="nn">blengine.core</span> <span class="kn">import</span> <span class="n">transport</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">blengine.hci.devices</span> <span class="kn">import</span> <span class="n">HCILocalDevice</span>
+
+
+<span class="c1"># initiate root logger with name and get the instance</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;MyFirstScript&quot;</span><span class="p">)</span>
+
+<span class="c1"># get default blengine options</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">enable_cli_args</span><span class="p">()</span>
+
+
+<span class="c1"># get 9305 config</span>
+<span class="n">conf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;9305&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create an HCiEngine from device provided be the --device cli arg</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">HCIEngine</span><span class="p">(</span><span class="n">transport</span><span class="o">.</span><span class="n">serial_from_config</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+
+<span class="c1"># Create a local device relying on the previously created engine.</span>
+<span class="n">local_device</span> <span class="o">=</span> <span class="n">HCILocalDevice</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>You can also optionally provide a predefined Bluetooth mac address and a custom name if needed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">blengine.utils.MacAddress</span> <span class="kn">import</span> <span class="n">mac</span>
+
+<span class="n">local_device</span> <span class="o">=</span> <span class="n">HCILocalDevice</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">bd_addr</span> <span class="o">=</span> <span class="n">mac</span><span class="p">(</span><span class="s2">&quot;AA:BB:CC:DD:EE:FF&quot;</span><span class="p">),</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MYDEVICE&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="useful-properties-and-methods">
+<h2>Useful Properties and methods<a class="headerlink" href="#useful-properties-and-methods" title="Link to this heading"></a></h2>
+<p>Once a Device is created, it’s useful to gather some data from the connected device to determine its capabilities.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+
+<span class="n">infos</span> <span class="o">=</span> <span class="n">local_device</span><span class="o">.</span><span class="n">get_device_infos</span><span class="p">()</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">infos</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_device_infos</span></code> function calls the <code class="docutils literal notranslate"><span class="pre">HCI.get_local_device_infos</span></code> procedure, which will populate the <code class="docutils literal notranslate"><span class="pre">local_device.device_infos</span></code> dictionary with relevant and useful information.</p>
+<p>It will return something like this on a BLE Controller:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;Advertising_TX_Power_Level&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="s1">&#39;Bluetooth_Version&#39;</span><span class="p">:</span> <span class="s1">&#39;5.3&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Company&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+ <span class="s1">&#39;Device_Model&#39;</span><span class="p">:</span> <span class="s1">&#39;EM9305&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Firmware&#39;</span><span class="p">:</span> <span class="s1">&#39;EMSHI&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Firmware_Version&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;HCI_SubVersion&#39;</span><span class="p">:</span> <span class="mi">514</span><span class="p">,</span>
+ <span class="s1">&#39;HCI_Version&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+ <span class="s1">&#39;LE_Features&#39;</span><span class="p">:</span> <span class="s1">&#39;1111111110010010100000000000000000000000000000000000000000000000&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;LE_Supported_Features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;LE Encryption&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Connection Parameters Request procedure&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Extended Reject Indication&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Peripheral-initiated Features Exchange&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;LE Ping&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;LE Data Packet Length Extension&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;LL Privacy&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Extended Scanner Filter Policies &#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;LE 2M PHY&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;LE Coded PHY&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Channel Selection Algorithm #2&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Minimum Number of Used Channels procedure&#39;</span><span class="p">],</span>
+ <span class="s1">&#39;LE_Supported_States&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
+ <span class="s1">&#39;LMP_Features&#39;</span><span class="p">:</span> <span class="s1">&#39;0000000000000000000000000000000000000110000000000000000000000000&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;LMP_Features_Page_1&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;LMP_Features_Page_2&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;LMP_Subversion&#39;</span><span class="p">:</span> <span class="mi">4608</span><span class="p">,</span>
+ <span class="s1">&#39;LMP_Supported_Features&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;BR/EDR Not Supported&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;LE Supported (Controller)&#39;</span><span class="p">],</span>
+ <span class="s1">&#39;LMP_Version&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+ <span class="s1">&#39;MAC&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;Max_CTE_Length&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;Max_Switching_Pattern_Length&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;Max_TX_Power&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+ <span class="s1">&#39;Min_TX_Power&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="s1">&#39;Num_Antennae&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;Num_Supported_Advertising_Sets&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;RF_RX_Path_Compensation_Value&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="s1">&#39;RF_TX_Path_Compensation_Value&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+ <span class="s1">&#39;Suggested_Max_TX_Octets&#39;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span>
+ <span class="s1">&#39;Suggested_Max_TX_Time&#39;</span><span class="p">:</span> <span class="mi">328</span><span class="p">,</span>
+ <span class="s1">&#39;Supported_Max_TX_Octets&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+ <span class="s1">&#39;Supported_Switching_Sampling_Rates&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="remote-device-usage">
+<h2>Remote Device Usage<a class="headerlink" href="#remote-device-usage" title="Link to this heading"></a></h2>
+<p>The simple way to create a remote device object is to scan the surrounding environment by using the  <code class="docutils literal notranslate"><span class="pre">local_device.scan()</span></code> function.</p>
+<p>When scanning, the local device collects the advertisment packets and updates the <code class="docutils literal notranslate"><span class="pre">local_device.remote_devices</span></code> list accordingly.</p>
+<p>This enables triggering events directly on the remote device, once a remote device is created.</p>
+<ul class="simple">
+<li><p>Advertising Report (Extended, Directed, Etc…)</p></li>
+<li><p>Disconnection</p></li>
+<li><p>PHY Update</p></li>
+<li><p>Connection Parameters Update</p></li>
+<li><p>Etc…</p></li>
+</ul>
+</section>
+<section id="basic-example">
+<h2>Basic Example<a class="headerlink" href="#basic-example" title="Link to this heading"></a></h2>
+<p>The following example scans and connects to a remote device.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">blengine</span> <span class="kn">import</span> <span class="n">enable_cli_args</span>
+<span class="kn">from</span> <span class="nn">blengine.core</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">blengine.core.config</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">blengine.core.transport</span> <span class="kn">import</span> <span class="n">serial_from_config</span>
+<span class="kn">from</span> <span class="nn">blengine.hci.engine</span> <span class="kn">import</span> <span class="n">HciEngine</span>
+<span class="kn">from</span> <span class="nn">blengine.hci.devices</span> <span class="kn">import</span> <span class="n">HCILocalDevice</span>
+<span class="kn">from</span> <span class="nn">blengine.utils.macaddress</span> <span class="kn">import</span> <span class="n">mac</span>
+
+<span class="kn">from</span> <span class="nn">blengine.hci.procedures.EMSystem</span> <span class="kn">import</span> <span class="n">emsystem_prog</span>
+
+<span class="c1"># initiate root logger with name and get the instance</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s2">&quot;MyFirstScript&quot;</span><span class="p">)</span>
+
+<span class="c1"># get default blengine options</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">enable_cli_args</span><span class="p">()</span>
+
+<span class="c1"># get 9305 config</span>
+<span class="n">conf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;9305&quot;</span><span class="p">)</span>
+
+<span class="c1"># create an hci engine with serial transport</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">HciEngine</span><span class="p">(</span><span class="n">serial_from_config</span><span class="p">(</span><span class="n">conf</span><span class="p">))</span>
+
+<span class="c1"># create a Local Device</span>
+<span class="n">local_device</span> <span class="o">=</span> <span class="n">HCILocalDevice</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="c1"># Set all events</span>
+<span class="n">local_device</span><span class="o">.</span><span class="n">set_event_mask</span><span class="p">(</span><span class="n">mask</span> <span class="o">=</span> <span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">,</span> 
+                            <span class="n">mask_page_2</span> <span class="o">=</span> <span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">,</span> 
+                            <span class="n">LE_mask</span><span class="o">=</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>
+
+<span class="c1"># scan for 3 seconds</span>
+<span class="n">local_device</span><span class="o">.</span><span class="n">start_scan</span><span class="p">()</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">local_device</span><span class="o">.</span><span class="n">stop_scan</span><span class="p">()</span>
+
+<span class="c1"># get a remote device</span>
+<span class="n">remote</span> <span class="o">=</span> <span class="n">local_device</span><span class="o">.</span><span class="n">get_nearest_device</span><span class="p">()</span>
+<span class="c1">#remote = local_device.get_device(name=&quot;TARGET_DEVICE&quot;)</span>
+<span class="c1"># or by mac address</span>
+<span class="c1"># remote = local_device.get_device(addr=&quot;00:22:33:22:00:22&quot;)</span>
+
+<span class="k">assert</span> <span class="n">remote</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;remote device not found&quot;</span>
+
+<span class="n">remote</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;remote device :</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">remote</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connection Handle </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">remote</span><span class="o">.</span><span class="n">conn_handle</span><span class="p">)</span>
+
+<span class="n">remote</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="advanced-scan-usage">
+<h3>Advanced Scan Usage<a class="headerlink" href="#advanced-scan-usage" title="Link to this heading"></a></h3>
+<p>This script shows how to access to received advertisements and other useful remote device functions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="o">...</span> <span class="n">init</span> <span class="n">stuff</span> <span class="o">...</span>
+
+<span class="n">local_device</span> <span class="o">=</span> <span class="n">HCILocalDevice</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;start scan&quot;</span><span class="p">)</span>
+
+<span class="c1"># scan for 3 seconds</span>
+<span class="n">local_device</span><span class="o">.</span><span class="n">start_scan</span><span class="p">()</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">local_device</span><span class="o">.</span><span class="n">stop_scan</span><span class="p">()</span>
+
+<span class="c1"># show infos for each devices discovered</span>
+<span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">local_device</span><span class="o">.</span><span class="n">remote_devices</span><span class="p">:</span>
+
+    <span class="c1"># show name and device addre</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;discovered </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&lt;noname&gt;&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">.</span><span class="n">bd_addr</span><span class="p">))</span>
+    
+    <span class="c1"># show interval and rssi</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">compute_interval</span><span class="p">()</span>
+    <span class="n">rssi</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">compute_rssi</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">mean interval: </span><span class="si">%s</span><span class="s2"> ms&quot;</span> <span class="o">%</span> <span class="n">interval</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">mean rssi: </span><span class="si">%s</span><span class="s2"> dBm&quot;</span> <span class="o">%</span> <span class="n">rssi</span><span class="p">)</span>
+    
+    <span class="c1"># show advertisements decoded data</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">advertisements:&quot;</span><span class="p">)</span>
+    <span class="c1"># device. advertisiements is a simple dictionary with PDU name as key and decoded data as value</span>
+    <span class="k">for</span> <span class="n">adv_name</span><span class="p">,</span> <span class="n">adv_data</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">advertisements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">adv_name</span><span class="p">,</span> <span class="n">adv_data</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advertising">
+<h2>Advertising<a class="headerlink" href="#advertising" title="Link to this heading"></a></h2>
+<section id="advertising-custom-data">
+<h3>Advertising Custom Data<a class="headerlink" href="#advertising-custom-data" title="Link to this heading"></a></h3>
+<p>This script shows how to set custom or standard advertising data PDU and advertise it for 15 seconds.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCustomAdvertisingData</span><span class="p">(</span><span class="n">GenericPacket</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Custom packet data defintion in a packet for easy decoding by another device</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;Custom Manufacturer Data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="n">Fragment</span><span class="p">(</span><span class="s2">&quot;somebytes&quot;</span><span class="p">,</span> <span class="n">structure</span> <span class="o">=</span> <span class="s2">&quot;&lt;HB&quot;</span><span class="p">),</span>
+            <span class="n">Fragment</span><span class="p">(</span><span class="s2">&quot;iamutf8&quot;</span><span class="p">,</span> <span class="n">structure</span> <span class="o">=</span> <span class="s2">&quot;utf8&quot;</span><span class="p">),</span>
+            <span class="n">Fragment</span><span class="p">(</span><span class="s2">&quot;canbeanything&quot;</span><span class="p">,</span> <span class="n">structure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">])</span>
+
+<span class="c1"># create a basic custom packet for writing on the dut</span>
+<span class="n">custom_adv_packet</span> <span class="o">=</span> <span class="n">MyCustomAdvertisingData</span><span class="p">()</span>
+
+<span class="n">custom_adv_packet</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;somebytes&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="mh">0x1234</span><span class="p">,</span> <span class="mh">0x56</span> <span class="p">])</span>
+<span class="n">custom_adv_packet</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;iamutf8&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="n">custom_adv_packet</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;canbeanything&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;world&#39;</span><span class="p">)</span>
+<span class="c1">#</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">HciEngine</span><span class="p">(</span><span class="n">serial_from_config</span><span class="p">(</span><span class="n">conf</span><span class="p">))</span>
+
+<span class="n">local_device</span> <span class="o">=</span> <span class="n">HCILocalDevice</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">advertising_data_dict</span> <span class="o">=</span> <span class="p">{</span>
+<span class="c1"># supported flags :</span>
+     <span class="c1"># GAP_AD_Flags</span>
+     <span class="c1"># GAP_AD_UUID_Incomplete_List_32</span>
+     <span class="c1"># GAP_AD_UUID_Complete_List_32</span>
+     <span class="c1"># GAP_AD_UUID_Incomplete_List_128</span>
+     <span class="c1"># GAP_AD_UUID_Complete_List_128</span>
+     <span class="c1"># GAP_AD_Short_Local_Name</span>
+     <span class="c1"># GAP_AD_TX_Power</span>
+     <span class="c1"># GAP_AD_Service_Data_16</span>
+     <span class="c1"># GAP_AD_Service_Data_32</span>
+     <span class="c1"># GAP_AD_Service_Data_128</span>
+    <span class="c1"># GAP_UUID_Incomplete_List_16&quot;</span>
+        <span class="s2">&quot;GAP_AD_Short_Local_Name&quot;</span><span class="p">:</span> <span class="s2">&quot;ADV&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GAP_AD_Manufacturer_Specific_Data&quot;</span><span class="p">:</span> <span class="n">custom_adv_packet</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="p">}</span>
+
+<span class="n">pkt</span> <span class="o">=</span> <span class="n">local_device</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;LE_Set_Extended_Advertising_Parameters&quot;</span><span class="p">,</span>
+            <span class="n">Advertising_Handle</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+            <span class="n">Advertising_Event_Properties</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span> <span class="c1"># Connectable. Bit 4 = 0 for Extended Advertising</span>
+            <span class="n">Primary_Advertising_Interval_Min</span><span class="o">=</span><span class="mh">0x000050</span><span class="p">,</span>
+            <span class="n">Primary_Advertising_Interval_Max</span><span class="o">=</span><span class="mh">0x000080</span><span class="p">,</span>
+            <span class="n">Peer_Address</span><span class="o">=</span><span class="n">local_device</span><span class="o">.</span><span class="n">bd_addr</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<span class="n">adv_data</span> <span class="o">=</span> <span class="n">local_device</span><span class="o">.</span><span class="n">set_advertising_data</span><span class="p">(</span><span class="n">advertising_data_dict</span><span class="p">)</span>
+
+<span class="n">local_device</span><span class="o">.</span><span class="n">start_advertising</span><span class="p">()</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">local_device</span><span class="o">.</span><span class="n">stop_advertising</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</section>
+<section id="parsing-custom-advertising-data">
+<h3>Parsing custom advertising data<a class="headerlink" href="#parsing-custom-advertising-data" title="Link to this heading"></a></h3>
+<p>In combination with the custom advertising script below, this script decodes the custom manufacturer data packets.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">remote_name</span> <span class="o">=</span> <span class="s2">&quot;ADV&quot;</span>
+
+<span class="k">class</span> <span class="nc">MyCustomAdvertisingData</span><span class="p">(</span><span class="n">GenericPacket</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Custom packet data definition in a packet for easy decoding by another device</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;Custom Manufacturer Data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="n">Fragment</span><span class="p">(</span><span class="s2">&quot;somebytes&quot;</span><span class="p">,</span> <span class="n">structure</span> <span class="o">=</span> <span class="s2">&quot;&lt;HB&quot;</span><span class="p">),</span>
+            <span class="n">Fragment</span><span class="p">(</span><span class="s2">&quot;iamutf8&quot;</span><span class="p">,</span> <span class="n">structure</span> <span class="o">=</span> <span class="s2">&quot;utf8&quot;</span><span class="p">),</span>
+            <span class="n">Fragment</span><span class="p">(</span><span class="s2">&quot;canbeanything&quot;</span><span class="p">,</span> <span class="n">structure</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">])</span>
+
+<span class="c1"># cerate a basic custom packet for writing on the dut</span>
+<span class="n">custom_adv_packet</span> <span class="o">=</span> <span class="n">MyCustomAdvertisingData</span><span class="p">()</span>
+<span class="n">local_device</span> <span class="o">=</span> <span class="n">HCILocalDevice</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="n">local_device</span><span class="o">.</span><span class="n">set_event_mask</span><span class="p">(</span><span class="n">mask</span> <span class="o">=</span> <span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">,</span> 
+                            <span class="n">mask_page_2</span> <span class="o">=</span> <span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">,</span> 
+                            <span class="n">LE_mask</span><span class="o">=</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="p">)</span>
+
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;start scan&quot;</span><span class="p">)</span>
+
+<span class="c1"># scan for 3 seconds</span>
+<span class="n">local_device</span><span class="o">.</span><span class="n">start_scan</span><span class="p">()</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">local_device</span><span class="o">.</span><span class="n">stop_scan</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">local_device</span><span class="o">.</span><span class="n">remote_devices</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+<span class="n">remote</span> <span class="o">=</span> <span class="n">local_device</span><span class="o">.</span><span class="n">get_device</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">remote_name</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">remote</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Remote device not found&quot;</span>
+
+<span class="c1"># show name and device addre</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;discovered </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">remote</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&lt;noname&gt;&quot;</span><span class="p">,</span> <span class="n">remote</span><span class="o">.</span><span class="n">bd_addr</span><span class="p">))</span>
+
+<span class="n">custom_adv_packet</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">remote</span><span class="o">.</span><span class="n">advertisements</span><span class="p">[</span><span class="s2">&quot;GAP_AD_Manufacturer_Specific_Data&quot;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">custom_adv_packet</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="NVM-Information.html" class="btn btn-neutral float-left" title="NVM Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Product-Lifecycle.html" class="btn btn-neutral float-right" title="Product Lifecycle" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECC P-256 &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ECC Error Enumeration" href="ECCEnum.html" />
+    <link rel="prev" title="ECC Functions" href="ECC_FUNCTIONS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ECC P-256</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#curve-parameters">Curve Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-size">Data size</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ECCEnum.html">ECC Error Enumeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCKey.html">ECC Key management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECDH.html">ECDH - Diffie Hellman key agreement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECDSA.html">ECDSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Schnoor.html">ECC Schnorr’s Authentication protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ECC_FUNCTIONS.html">ECC Functions</a> &raquo;</li>
+      <li>ECC P-256</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ecc-p-256">
+<span id="ecc-p256-label"></span><h1>ECC P-256<a class="headerlink" href="#ecc-p-256" title="Permalink to this headline"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h2>
+<p>The underlying curve used for all the ECC-based functions is <strong>P-256</strong>.  This curve is also refered as <strong>secp256r1</strong>.</p>
+<p>P-256 is the curve used for BLE pairing.</p>
+<p>The curve is fully defined in SEC2 standard.</p>
+<p>[1] SEC2: Recommended Elliptic Curve Domain Parameters</p>
+<p><a class="reference external" href="https://www.secg.org/SEC2-Ver-1.0.pdf">SEC2</a>: <a class="reference external" href="https://www.secg.org/SEC2-Ver-1.0.pdf">https://www.secg.org/SEC2-Ver-1.0.pdf</a></p>
+</section>
+<section id="curve-parameters">
+<h2>Curve Parameters<a class="headerlink" href="#curve-parameters" title="Permalink to this headline"></a></h2>
+<p>The curve has the following parameters.</p>
+<p>The prime factor <em>p</em> is:</p>
+<p><code class="docutils literal notranslate"><span class="pre">p=</span> <span class="pre">FFFFFFFF</span> <span class="pre">00000001</span> <span class="pre">00000000</span> <span class="pre">00000000</span> <span class="pre">00000000</span> <span class="pre">FFFFFFFF</span> <span class="pre">FFFFFFFF</span> <span class="pre">FFFFFFFF</span></code></p>
+<p>i.e:</p>
+<p>p=2<sup>224</sup> (2<sup>32</sup>-1) + 2<sup>192</sup> +2<sup>96</sup> -1</p>
+<p>The curve parameters <em>a</em> and <em>b</em> are:</p>
+<p><code class="docutils literal notranslate"><span class="pre">a=FFFFFFFF</span> <span class="pre">00000001</span> <span class="pre">00000000</span> <span class="pre">00000000</span> <span class="pre">00000000</span> <span class="pre">FFFFFFFF</span> <span class="pre">FFFFFFFF</span> <span class="pre">FFFFFFFC</span></code></p>
+<p>that is to say <code class="docutils literal notranslate"><span class="pre">a=-3</span> <span class="pre">mod</span> <span class="pre">p.</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=5AC635D8</span> <span class="pre">AA3A93E7</span> <span class="pre">B3EBBD55</span> <span class="pre">769886BC</span> <span class="pre">651D06B0</span> <span class="pre">CC53B0F6</span> <span class="pre">3BCE3C3E</span> <span class="pre">27D2604B</span></code></p>
+<p>The generator <em>point G</em> is:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">G</span> <span class="pre">=</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">6B17D1F2</span> <span class="pre">E12C4247</span> <span class="pre">F8BCE6E5</span> <span class="pre">63A440F2</span> <span class="pre">77037D81</span> <span class="pre">2DEB33A0</span> <span class="pre">F4A13945</span> <span class="pre">D898C296,</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">4FE342E2</span> <span class="pre">FE1A7F9B</span> <span class="pre">8EE7EB4A</span> <span class="pre">7C0F9E16</span> <span class="pre">2BCE3357</span> <span class="pre">6B315ECE</span> <span class="pre">CBB64068</span> <span class="pre">37BF51F5</span></code></p>
+</dd>
+</dl>
+<p>The <em>order of G</em> is</p>
+<p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">FFFFFFFF</span> <span class="pre">00000000</span> <span class="pre">FFFFFFFF</span> <span class="pre">FFFFFFFF</span> <span class="pre">BCE6FAAD</span> <span class="pre">A7179E84</span> <span class="pre">F3B9CAC2</span> <span class="pre">FC632551</span></code></p>
+<p>The <em>cofactor</em> is <code class="docutils literal notranslate"><span class="pre">1</span></code>.
+It means that the group formed by the points on the curve has no subgroup.</p>
+</section>
+<section id="data-size">
+<h2>Data size<a class="headerlink" href="#data-size" title="Permalink to this headline"></a></h2>
+<p>A <strong>scalar</strong> (for instance a private key) on P-256 is 256-bit long.</p>
+<p>A <strong>point</strong> (for instance a public key) on P-256 is composed of two coordinates <em>x</em> and <em>y</em>. Each coordinate is 256-bit long.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ECC_FUNCTIONS.html" class="btn btn-neutral float-left" title="ECC Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ECCEnum.html" class="btn btn-neutral float-right" title="ECC Error Enumeration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

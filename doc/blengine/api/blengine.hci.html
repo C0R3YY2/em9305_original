@@ -1,0 +1,1397 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>blengine.hci package &mdash; BLEngine 1.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1d24b1d9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/js/search.js?v=a5c8da7a"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="blengine.hci.packets package" href="blengine.hci.packets.html" />
+    <link rel="prev" title="blengine.core package" href="blengine.core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo_h_small.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Getting-Started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html">CLI Usage and options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#blengine-commands">Blengine Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Usage.html#python-module-usage">Python Module Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/NVM-Information.html">NVM Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/HCI-Device-API.html">HCI Device API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Product-Lifecycle.html">Product Lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/Releases-Notes.html">Releases Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9304.html">9304 Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wiki/howto/9305.html">9305 Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../packets.html">HCI Packets List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedures.html">BLEngine Procedures</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="blengine.html">blengine package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blengine.html#blengine.enable_cli_args"><code class="docutils literal notranslate"><span class="pre">enable_cli_args()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.html#blengine.keyboardInterruptHandler"><code class="docutils literal notranslate"><span class="pre">keyboardInterruptHandler()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.html#blengine.print_developer_and_version_info"><code class="docutils literal notranslate"><span class="pre">print_developer_and_version_info()</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="blengine.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="blengine.bridge.html">blengine.bridge package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.core.html">blengine.core package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">blengine.hci package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-blengine.hci.devices">blengine.hci.devices module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-blengine.hci.engine">blengine.hci.engine module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-blengine.hci.protocol">blengine.hci.protocol module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.host.html">blengine.host package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.utils.html">blengine.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.html#module-blengine.cli">blengine.cli module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: white" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BLEngine</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="blengine.html">blengine package</a></li>
+      <li class="breadcrumb-item active">blengine.hci package</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-blengine.hci">
+<span id="blengine-hci-package"></span><h1>blengine.hci package<a class="headerlink" href="#module-blengine.hci" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="blengine.hci.packets.html">blengine.hci.packets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.ACL">blengine.hci.packets.ACL module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.ACL.HCIACLPacket"><code class="docutils literal notranslate"><span class="pre">HCIACLPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.ACL.HCIACLPacket.before_encode"><code class="docutils literal notranslate"><span class="pre">HCIACLPacket.before_encode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.ACL.HCIACLPacket.clear_acl_header"><code class="docutils literal notranslate"><span class="pre">HCIACLPacket.clear_acl_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.ACL.HCIACLPacket.decode_acl_header"><code class="docutils literal notranslate"><span class="pre">HCIACLPacket.decode_acl_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.ACL.HCIACLPacket.encode_acl_header"><code class="docutils literal notranslate"><span class="pre">HCIACLPacket.encode_acl_header()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.DVKcommands">blengine.hci.packets.DVKcommands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.DVKcommands.DVKCmdPacket"><code class="docutils literal notranslate"><span class="pre">DVKCmdPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.DVKcommands.DVKCmdPacket.uid"><code class="docutils literal notranslate"><span class="pre">DVKCmdPacket.uid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.DVKcommands.r_dvk_cmd"><code class="docutils literal notranslate"><span class="pre">r_dvk_cmd()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.EM9304commands">blengine.hci.packets.EM9304commands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#em-commands">EM Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9304commands.Em9304CmdPacket"><code class="docutils literal notranslate"><span class="pre">Em9304CmdPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9304commands.Em9304CmdPacket.ogfocf_from_opcode"><code class="docutils literal notranslate"><span class="pre">Em9304CmdPacket.ogfocf_from_opcode()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9304commands.r"><code class="docutils literal notranslate"><span class="pre">r()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.EM9305commands">blengine.hci.packets.EM9305commands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#em9305-commands">EM9305 Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.EM9305CmdPacket"><code class="docutils literal notranslate"><span class="pre">EM9305CmdPacket</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.FWUCmdPacket"><code class="docutils literal notranslate"><span class="pre">FWUCmdPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.FWUCmdPacket.on_command_complete"><code class="docutils literal notranslate"><span class="pre">FWUCmdPacket.on_command_complete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.FWUCmdPacket.uid"><code class="docutils literal notranslate"><span class="pre">FWUCmdPacket.uid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.r"><code class="docutils literal notranslate"><span class="pre">r()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.r_fwu"><code class="docutils literal notranslate"><span class="pre">r_fwu()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.register_emsas_cmd"><code class="docutils literal notranslate"><span class="pre">register_emsas_cmd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EM9305commands.unregister_emsas_cmd"><code class="docutils literal notranslate"><span class="pre">unregister_emsas_cmd()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.EMcommands">blengine.hci.packets.EMcommands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EMcommands.EmCmdPacket"><code class="docutils literal notranslate"><span class="pre">EmCmdPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EMcommands.EmCmdPacket.ogfocf_from_opcode"><code class="docutils literal notranslate"><span class="pre">EmCmdPacket.ogfocf_from_opcode()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.EMcommands.r"><code class="docutils literal notranslate"><span class="pre">r()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.commands">blengine.hci.packets.commands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#hci-commands">HCI Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.decode_response"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.decode_response()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.expect_response_packets"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.expect_response_packets</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.long_repr"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.long_repr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.on_command_complete"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.on_command_complete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.on_command_status"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.on_command_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.on_other_response_event"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.on_other_response_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.on_send"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.on_send()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.short_repr"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.short_repr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.GenericCmdPacket.update_status_text"><code class="docutils literal notranslate"><span class="pre">GenericCmdPacket.update_status_text()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.HCICmdPacket"><code class="docutils literal notranslate"><span class="pre">HCICmdPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.HCICmdPacket.on_command_complete"><code class="docutils literal notranslate"><span class="pre">HCICmdPacket.on_command_complete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.HCICmdPacket.on_command_status"><code class="docutils literal notranslate"><span class="pre">HCICmdPacket.on_command_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.HCICmdPacket.on_wrap"><code class="docutils literal notranslate"><span class="pre">HCICmdPacket.on_wrap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.HCICmdPacket.set_length"><code class="docutils literal notranslate"><span class="pre">HCICmdPacket.set_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.HCICmdPacket.size"><code class="docutils literal notranslate"><span class="pre">HCICmdPacket.size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.HCICmdPacket.uid"><code class="docutils literal notranslate"><span class="pre">HCICmdPacket.uid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.ResponseStatusException"><code class="docutils literal notranslate"><span class="pre">ResponseStatusException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.bytes_to_bits"><code class="docutils literal notranslate"><span class="pre">bytes_to_bits()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.commands.r"><code class="docutils literal notranslate"><span class="pre">r()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.events">blengine.hci.packets.events module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.EMSASEventPacket"><code class="docutils literal notranslate"><span class="pre">EMSASEventPacket</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.FirmwareUpdateEvent"><code class="docutils literal notranslate"><span class="pre">FirmwareUpdateEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIEventPacket"><code class="docutils literal notranslate"><span class="pre">HCIEventPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIEventPacket.before_encode"><code class="docutils literal notranslate"><span class="pre">HCIEventPacket.before_encode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIEventPacket.debug"><code class="docutils literal notranslate"><span class="pre">HCIEventPacket.debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIEventPacket.received"><code class="docutils literal notranslate"><span class="pre">HCIEventPacket.received()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIEventPacket.uid"><code class="docutils literal notranslate"><span class="pre">HCIEventPacket.uid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIMetaEventPacket"><code class="docutils literal notranslate"><span class="pre">HCIMetaEventPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIMetaEventPacket.uid"><code class="docutils literal notranslate"><span class="pre">HCIMetaEventPacket.uid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIVendorEventPacket"><code class="docutils literal notranslate"><span class="pre">HCIVendorEventPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.HCIVendorEventPacket.uid"><code class="docutils literal notranslate"><span class="pre">HCIVendorEventPacket.uid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.UnityEventPacket"><code class="docutils literal notranslate"><span class="pre">UnityEventPacket</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.aci_event"><code class="docutils literal notranslate"><span class="pre">aci_event</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.compute_rssi"><code class="docutils literal notranslate"><span class="pre">compute_rssi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.r"><code class="docutils literal notranslate"><span class="pre">r()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.r_meta"><code class="docutils literal notranslate"><span class="pre">r_meta()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.register_emsas_event"><code class="docutils literal notranslate"><span class="pre">register_emsas_event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.register_fw_update_event"><code class="docutils literal notranslate"><span class="pre">register_fw_update_event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.register_hci_vs_event"><code class="docutils literal notranslate"><span class="pre">register_hci_vs_event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.register_unity_event"><code class="docutils literal notranslate"><span class="pre">register_unity_event()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.events.unregister_emsas_event"><code class="docutils literal notranslate"><span class="pre">unregister_emsas_event()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.hci">blengine.hci.packets.hci module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.ACL_DATA"><code class="docutils literal notranslate"><span class="pre">ACL_DATA</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCIPacket"><code class="docutils literal notranslate"><span class="pre">HCIPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCIPacket.on_received"><code class="docutils literal notranslate"><span class="pre">HCIPacket.on_received()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCI_802_15_4_CMD"><code class="docutils literal notranslate"><span class="pre">HCI_802_15_4_CMD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCI_802_15_4_DATA"><code class="docutils literal notranslate"><span class="pre">HCI_802_15_4_DATA</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCI_802_15_4_EVENT"><code class="docutils literal notranslate"><span class="pre">HCI_802_15_4_EVENT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCI_CMD"><code class="docutils literal notranslate"><span class="pre">HCI_CMD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCI_CMD_PKT"><code class="docutils literal notranslate"><span class="pre">HCI_CMD_PKT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCI_EVT"><code class="docutils literal notranslate"><span class="pre">HCI_EVT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.HCI_EVT_PKT"><code class="docutils literal notranslate"><span class="pre">HCI_EVT_PKT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.ISO_DATA"><code class="docutils literal notranslate"><span class="pre">ISO_DATA</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.ResponseStatusException"><code class="docutils literal notranslate"><span class="pre">ResponseStatusException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.SCO_DATA"><code class="docutils literal notranslate"><span class="pre">SCO_DATA</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.get_status_text"><code class="docutils literal notranslate"><span class="pre">get_status_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.hci.register_hci_packet"><code class="docutils literal notranslate"><span class="pre">register_hci_packet()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.packets.html#module-blengine.hci.packets.iso">blengine.hci.packets.iso module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.HCIISOPacket"><code class="docutils literal notranslate"><span class="pre">HCIISOPacket</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.HCIISOPacket.clear_iso_header"><code class="docutils literal notranslate"><span class="pre">HCIISOPacket.clear_iso_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.HCIISOPacket.decode_iso_header"><code class="docutils literal notranslate"><span class="pre">HCIISOPacket.decode_iso_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.HCIISOPacket.encode_iso_header"><code class="docutils literal notranslate"><span class="pre">HCIISOPacket.encode_iso_header()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.ISODataLoad"><code class="docutils literal notranslate"><span class="pre">ISODataLoad</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.ISODataLoad.before_decode"><code class="docutils literal notranslate"><span class="pre">ISODataLoad.before_decode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.ISODataLoad.before_encode"><code class="docutils literal notranslate"><span class="pre">ISODataLoad.before_encode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.packets.html#blengine.hci.packets.iso.ISODataLoad.decode_length_status"><code class="docutils literal notranslate"><span class="pre">ISODataLoad.decode_length_status()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blengine.hci.procedures.html">blengine.hci.procedures package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.EM9304commands">blengine.hci.procedures.EM9304commands module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Destination_Memory_t"><code class="docutils literal notranslate"><span class="pre">Destination_Memory_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Destination_Memory_t.IRAM"><code class="docutils literal notranslate"><span class="pre">Destination_Memory_t.IRAM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Destination_Memory_t.OTP"><code class="docutils literal notranslate"><span class="pre">Destination_Memory_t.OTP</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.EM9304_Write_Patch"><code class="docutils literal notranslate"><span class="pre">EM9304_Write_Patch</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.EM9304_Write_Patch.Check_Version"><code class="docutils literal notranslate"><span class="pre">EM9304_Write_Patch.Check_Version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.EM9304_Write_Patch.Run"><code class="docutils literal notranslate"><span class="pre">EM9304_Write_Patch.Run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.EM9304_Write_Patch.Run_After"><code class="docutils literal notranslate"><span class="pre">EM9304_Write_Patch.Run_After()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.EM9304_Write_Patch.Run_Before"><code class="docutils literal notranslate"><span class="pre">EM9304_Write_Patch.Run_Before()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.EM9304_Write_Patch.Start"><code class="docutils literal notranslate"><span class="pre">EM9304_Write_Patch.Start()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.EM9304_Write_Patch.get_local_address"><code class="docutils literal notranslate"><span class="pre">EM9304_Write_Patch.get_local_address()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Writepatch_status_t"><code class="docutils literal notranslate"><span class="pre">Writepatch_status_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Writepatch_status_t.FAILURE"><code class="docutils literal notranslate"><span class="pre">Writepatch_status_t.FAILURE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Writepatch_status_t.FAILURE_CONTINUE"><code class="docutils literal notranslate"><span class="pre">Writepatch_status_t.FAILURE_CONTINUE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Writepatch_status_t.FAILURE_VERSION"><code class="docutils literal notranslate"><span class="pre">Writepatch_status_t.FAILURE_VERSION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Writepatch_status_t.INVALID_PARAM"><code class="docutils literal notranslate"><span class="pre">Writepatch_status_t.INVALID_PARAM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Writepatch_status_t.RESPONSE_WRONG"><code class="docutils literal notranslate"><span class="pre">Writepatch_status_t.RESPONSE_WRONG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.Writepatch_status_t.SUCCESS"><code class="docutils literal notranslate"><span class="pre">Writepatch_status_t.SUCCESS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.em9304_em_transmitter_test_end"><code class="docutils literal notranslate"><span class="pre">em9304_em_transmitter_test_end()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.em9304_read_register"><code class="docutils literal notranslate"><span class="pre">em9304_read_register()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.em9304_version"><code class="docutils literal notranslate"><span class="pre">em9304_version()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.em9304_write_patch"><code class="docutils literal notranslate"><span class="pre">em9304_write_patch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EM9304commands.em9304_write_register"><code class="docutils literal notranslate"><span class="pre">em9304_write_register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.EMSystem">blengine.hci.procedures.EMSystem module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.check_hex"><code class="docutils literal notranslate"><span class="pre">check_hex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.decode_fw_header"><code class="docutils literal notranslate"><span class="pre">decode_fw_header()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.emsmm_read_register"><code class="docutils literal notranslate"><span class="pre">emsmm_read_register()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.emsmm_write_register"><code class="docutils literal notranslate"><span class="pre">emsmm_write_register()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.emsystem_prog"><code class="docutils literal notranslate"><span class="pre">emsystem_prog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.emsystem_write_hex"><code class="docutils literal notranslate"><span class="pre">emsystem_write_hex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.enter_conf_mode"><code class="docutils literal notranslate"><span class="pre">enter_conf_mode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.erase_main"><code class="docutils literal notranslate"><span class="pre">erase_main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.get_fw_headers"><code class="docutils literal notranslate"><span class="pre">get_fw_headers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.invalidate_key"><code class="docutils literal notranslate"><span class="pre">invalidate_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.nvm_write_word"><code class="docutils literal notranslate"><span class="pre">nvm_write_word()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.parse_ihex_file"><code class="docutils literal notranslate"><span class="pre">parse_ihex_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.power_cycle"><code class="docutils literal notranslate"><span class="pre">power_cycle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.restart"><code class="docutils literal notranslate"><span class="pre">restart()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.select_transport_dvk_device"><code class="docutils literal notranslate"><span class="pre">select_transport_dvk_device()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.write_and_check_ihex"><code class="docutils literal notranslate"><span class="pre">write_and_check_ihex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.write_hex"><code class="docutils literal notranslate"><span class="pre">write_hex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.write_keys_to_kc"><code class="docutils literal notranslate"><span class="pre">write_keys_to_kc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.EMSystem.write_raw"><code class="docutils literal notranslate"><span class="pre">write_raw()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.authentication">blengine.hci.procedures.authentication module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.authentication.authenticate"><code class="docutils literal notranslate"><span class="pre">authenticate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.authentication.write_configuration_data_nvm"><code class="docutils literal notranslate"><span class="pre">write_configuration_data_nvm()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.ble">blengine.hci.procedures.ble module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.LE_ADV_FLAGS"><code class="docutils literal notranslate"><span class="pre">LE_ADV_FLAGS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.LE_ADV_ROLES"><code class="docutils literal notranslate"><span class="pre">LE_ADV_ROLES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.add_device_filter_accept_list"><code class="docutils literal notranslate"><span class="pre">add_device_filter_accept_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.add_device_resolving_list"><code class="docutils literal notranslate"><span class="pre">add_device_resolving_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.apply_advertising_parameters"><code class="docutils literal notranslate"><span class="pre">apply_advertising_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.apply_per_advertising_parameters"><code class="docutils literal notranslate"><span class="pre">apply_per_advertising_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.clear_filter_accept_list"><code class="docutils literal notranslate"><span class="pre">clear_filter_accept_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.clear_resolving_list"><code class="docutils literal notranslate"><span class="pre">clear_resolving_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.connect"><code class="docutils literal notranslate"><span class="pre">connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.connect_ext"><code class="docutils literal notranslate"><span class="pre">connect_ext()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.disconnect"><code class="docutils literal notranslate"><span class="pre">disconnect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.get_conn_handle"><code class="docutils literal notranslate"><span class="pre">get_conn_handle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.make_advertising_data"><code class="docutils literal notranslate"><span class="pre">make_advertising_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.read_Resolving_list_size"><code class="docutils literal notranslate"><span class="pre">read_Resolving_list_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.read_filter_accept_list_size"><code class="docutils literal notranslate"><span class="pre">read_filter_accept_list_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.scan"><code class="docutils literal notranslate"><span class="pre">scan()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_advertising_data"><code class="docutils literal notranslate"><span class="pre">set_advertising_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_advertising_parameters"><code class="docutils literal notranslate"><span class="pre">set_advertising_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_legacy_advertising_data"><code class="docutils literal notranslate"><span class="pre">set_legacy_advertising_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_manufacturer_data"><code class="docutils literal notranslate"><span class="pre">set_manufacturer_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_mode"><code class="docutils literal notranslate"><span class="pre">set_mode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_name"><code class="docutils literal notranslate"><span class="pre">set_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_periodic_advertising_parameters"><code class="docutils literal notranslate"><span class="pre">set_periodic_advertising_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_private_address"><code class="docutils literal notranslate"><span class="pre">set_private_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_role"><code class="docutils literal notranslate"><span class="pre">set_role()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.set_scan_response_data"><code class="docutils literal notranslate"><span class="pre">set_scan_response_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.start_advertising"><code class="docutils literal notranslate"><span class="pre">start_advertising()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.stop_advertising"><code class="docutils literal notranslate"><span class="pre">stop_advertising()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.ble.update_phy"><code class="docutils literal notranslate"><span class="pre">update_phy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.firmware_update">blengine.hci.procedures.firmware_update module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.firmware_update"><code class="docutils literal notranslate"><span class="pre">firmware_update()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_crypto_engine_init"><code class="docutils literal notranslate"><span class="pre">fwu_crypto_engine_init()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_crypto_engine_upload_signature_material"><code class="docutils literal notranslate"><span class="pre">fwu_crypto_engine_upload_signature_material()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_firmware_upload_init"><code class="docutils literal notranslate"><span class="pre">fwu_firmware_upload_init()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_firmware_write_data_block"><code class="docutils literal notranslate"><span class="pre">fwu_firmware_write_data_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_get_firmware_area_count"><code class="docutils literal notranslate"><span class="pre">fwu_get_firmware_area_count()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_get_firmware_info"><code class="docutils literal notranslate"><span class="pre">fwu_get_firmware_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_get_firmware_update_information"><code class="docutils literal notranslate"><span class="pre">fwu_get_firmware_update_information()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_reboot"><code class="docutils literal notranslate"><span class="pre">fwu_reboot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_store_firmware_block"><code class="docutils literal notranslate"><span class="pre">fwu_store_firmware_block()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.firmware_update.fwu_validate_firmware_update"><code class="docutils literal notranslate"><span class="pre">fwu_validate_firmware_update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.fota">blengine.hci.procedures.fota module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota"><code class="docutils literal notranslate"><span class="pre">Fota</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.BLEGATTEVENT_INDICATION"><code class="docutils literal notranslate"><span class="pre">Fota.BLEGATTEVENT_INDICATION()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_Check_Container_Is_Created"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_Check_Container_Is_Created()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_Invalid_Patch"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_Invalid_Patch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_List_Patches"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_List_Patches()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_Off"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_Off()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_On"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_On()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_Reset"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_Reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_Run"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_Run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_Version"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_Version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Fota_Write_Patch"><code class="docutils literal notranslate"><span class="pre">Fota.Fota_Write_Patch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Get_Containers"><code class="docutils literal notranslate"><span class="pre">Fota.Get_Containers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Get_Handles"><code class="docutils literal notranslate"><span class="pre">Fota.Get_Handles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Get_Version"><code class="docutils literal notranslate"><span class="pre">Fota.Get_Version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Is_Version_Supported"><code class="docutils literal notranslate"><span class="pre">Fota.Is_Version_Supported()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota.Memory_Address_Check"><code class="docutils literal notranslate"><span class="pre">Fota.Memory_Address_Check()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t"><code class="docutils literal notranslate"><span class="pre">Fota_status_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_CONTAINERS"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_CONTAINERS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_INVALID_PATCH"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_INVALID_PATCH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_LIST_PATCHES"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_LIST_PATCHES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_OFF"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_OFF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_ON"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_ON</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_RESET"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_RESET</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_VERSION"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_VERSION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.FAILURE_WRITE_PATCH"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.FAILURE_WRITE_PATCH</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.INVALID_PARAM"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.INVALID_PARAM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.RESPONSE_WRONG"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.RESPONSE_WRONG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.fota.Fota_status_t.SUCCESS"><code class="docutils literal notranslate"><span class="pre">Fota_status_t.SUCCESS</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.hci">blengine.hci.procedures.hci module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.bitfield_map"><code class="docutils literal notranslate"><span class="pre">bitfield_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.connect"><code class="docutils literal notranslate"><span class="pre">connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.disconnect"><code class="docutils literal notranslate"><span class="pre">disconnect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.get_local_device_infos"><code class="docutils literal notranslate"><span class="pre">get_local_device_infos()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.get_remote_device_infos"><code class="docutils literal notranslate"><span class="pre">get_remote_device_infos()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.hci_init"><code class="docutils literal notranslate"><span class="pre">hci_init()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.inquiry"><code class="docutils literal notranslate"><span class="pre">inquiry()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.scan"><code class="docutils literal notranslate"><span class="pre">scan()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.send_acl_data"><code class="docutils literal notranslate"><span class="pre">send_acl_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.send_iso_data"><code class="docutils literal notranslate"><span class="pre">send_iso_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.set_event_mask"><code class="docutils literal notranslate"><span class="pre">set_event_mask()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.hci.test_tmp"><code class="docutils literal notranslate"><span class="pre">test_tmp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.key_container">blengine.hci.procedures.key_container module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.key_container.clear_key_container"><code class="docutils literal notranslate"><span class="pre">clear_key_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.key_container.decrypt_with_kc"><code class="docutils literal notranslate"><span class="pre">decrypt_with_kc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.key_container.encrypt_with_kc"><code class="docutils literal notranslate"><span class="pre">encrypt_with_kc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.key_container.invalidate_key"><code class="docutils literal notranslate"><span class="pre">invalidate_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.key_container.write_key"><code class="docutils literal notranslate"><span class="pre">write_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.nvm_info">blengine.hci.procedures.nvm_info module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.nvm_info.nvm_dump"><code class="docutils literal notranslate"><span class="pre">nvm_dump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.nvm_info.nvm_dump_to_ihex"><code class="docutils literal notranslate"><span class="pre">nvm_dump_to_ihex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.nvm_info.nvm_erase"><code class="docutils literal notranslate"><span class="pre">nvm_erase()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.nvm_info.nvm_read"><code class="docutils literal notranslate"><span class="pre">nvm_read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.nvm_info.nvm_write"><code class="docutils literal notranslate"><span class="pre">nvm_write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.nvm_info.read_nvm_info_blocks"><code class="docutils literal notranslate"><span class="pre">read_nvm_info_blocks()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.platform">blengine.hci.procedures.platform module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Bus_t"><code class="docutils literal notranslate"><span class="pre">Bus_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Bus_t.I2C"><code class="docutils literal notranslate"><span class="pre">Bus_t.I2C</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Bus_t.SERIAL"><code class="docutils literal notranslate"><span class="pre">Bus_t.SERIAL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Bus_t.SPI"><code class="docutils literal notranslate"><span class="pre">Bus_t.SPI</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Ic_Id_t"><code class="docutils literal notranslate"><span class="pre">Ic_Id_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Ic_Id_t.EM7198"><code class="docutils literal notranslate"><span class="pre">Ic_Id_t.EM7198</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Ic_Id_t.EM9304"><code class="docutils literal notranslate"><span class="pre">Ic_Id_t.EM9304</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Ic_Id_t.EM9305"><code class="docutils literal notranslate"><span class="pre">Ic_Id_t.EM9305</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Transport_Mode_t"><code class="docutils literal notranslate"><span class="pre">Transport_Mode_t</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Transport_Mode_t.DEFAULT"><code class="docutils literal notranslate"><span class="pre">Transport_Mode_t.DEFAULT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Transport_Mode_t.FAST"><code class="docutils literal notranslate"><span class="pre">Transport_Mode_t.FAST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.Transport_Mode_t.STANDARD"><code class="docutils literal notranslate"><span class="pre">Transport_Mode_t.STANDARD</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.autoload_json_folder"><code class="docutils literal notranslate"><span class="pre">autoload_json_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.get_memory_infos_from_address"><code class="docutils literal notranslate"><span class="pre">get_memory_infos_from_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.get_nvm_configuration"><code class="docutils literal notranslate"><span class="pre">get_nvm_configuration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.get_nvm_infos_config"><code class="docutils literal notranslate"><span class="pre">get_nvm_infos_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.get_rom_version"><code class="docutils literal notranslate"><span class="pre">get_rom_version()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.nvm_base_address"><code class="docutils literal notranslate"><span class="pre">nvm_base_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.nvm_check_configuration"><code class="docutils literal notranslate"><span class="pre">nvm_check_configuration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.nvm_info_page3"><code class="docutils literal notranslate"><span class="pre">nvm_info_page3()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.nvm_packet_size"><code class="docutils literal notranslate"><span class="pre">nvm_packet_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.platform.nvm_swap_size"><code class="docutils literal notranslate"><span class="pre">nvm_swap_size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blengine.hci.procedures.html#module-blengine.hci.procedures.unity">blengine.hci.procedures.unity module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.TestCase"><code class="docutils literal notranslate"><span class="pre">TestCase</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.TestGroup"><code class="docutils literal notranslate"><span class="pre">TestGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.TestGroup.addTest"><code class="docutils literal notranslate"><span class="pre">TestGroup.addTest()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.Unity"><code class="docutils literal notranslate"><span class="pre">Unity</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.Unity.groups"><code class="docutils literal notranslate"><span class="pre">Unity.groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.Unity.initialized"><code class="docutils literal notranslate"><span class="pre">Unity.initialized</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.Unity.result_str"><code class="docutils literal notranslate"><span class="pre">Unity.result_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.Unity.status"><code class="docutils literal notranslate"><span class="pre">Unity.status</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.unity_deinit"><code class="docutils literal notranslate"><span class="pre">unity_deinit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.unity_init"><code class="docutils literal notranslate"><span class="pre">unity_init()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.unity_register_tests"><code class="docutils literal notranslate"><span class="pre">unity_register_tests()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.unity_run"><code class="docutils literal notranslate"><span class="pre">unity_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blengine.hci.procedures.html#blengine.hci.procedures.unity.unity_run_all"><code class="docutils literal notranslate"><span class="pre">unity_run_all()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-blengine.hci.devices">
+<span id="blengine-hci-devices-module"></span><h2>blengine.hci.devices module<a class="headerlink" href="#module-blengine.hci.devices" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.devices.</span></span><span class="sig-name descname"><span class="pre">HCIDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIDevice" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.services.EventService" title="blengine.core.services.EventService"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventService</span></code></a></p>
+<p>A HCI Device represent a Generic Bluetooth Device that can manipulate an
+Engine. It use BLE commands.</p>
+<p>The constructor set the following:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – A reference to the actual <code class="xref py py-class docutils literal notranslate"><span class="pre">blengine.hci.engine.HCIEngine</span></code>
+engine used to communicate with the device</p></li>
+<li><p><strong>bd_addr</strong> – optional, the actual bluetooth MAC Address of the device</p></li>
+<li><p><strong>name</strong> – optional, the common name used for the device, it’s a convience attribute,
+defaulted to the bd_addr or noname by default.</p></li>
+<li><p><strong>conn_handle</strong> – optional, the connection handle used in many layers of the bluetooth</p></li>
+</ul>
+</dd>
+</dl>
+<p>The others attributes provided by this class are</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr_type</strong> – The type of the bd_addr, defaulted to 0x00</p></li>
+<li><p><strong>type</strong> – String, defaulted to “Generic BLE Device”</p></li>
+<li><p><strong>services</strong> – List of <a class="reference internal" href="blengine.host.html#blengine.host.gatt.BLEService" title="blengine.host.gatt.BLEService"><code class="xref py py-class docutils literal notranslate"><span class="pre">blengine.host.gatt.BLEService</span></code></a> instances</p></li>
+<li><p><strong>mode</strong> – Bluetooth mode</p></li>
+<li><p><strong>role</strong> – Bluetooth role</p></li>
+<li><p><strong>is_client</strong> – Is the device client or not</p></li>
+<li><p><strong>conn_handle</strong> – The device conn_handle</p></li>
+<li><p><strong>logger</strong> – Device logger (the name is the same as the device)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIDevice.is_legacy">
+<span class="sig-name descname"><span class="pre">is_legacy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIDevice.is_legacy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIDevice.set_mode">
+<span class="sig-name descname"><span class="pre">set_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIDevice.set_mode" title="Link to this definition"></a></dt>
+<dd><p>Sets the Bluetooth Mode.</p>
+<p>Please refer to <code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.self.hci_procs.set_mode()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>int</em><em> or </em><em>string</em>) – mode</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>procedure return value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(bool, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIDevice.set_name">
+<span class="sig-name descname"><span class="pre">set_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIDevice.set_name" title="Link to this definition"></a></dt>
+<dd><p>Set the name of the bluetooth device.</p>
+<p>Please refer to <a class="reference internal" href="blengine.host.procedures.html#blengine.host.procedures.gap.set_name" title="blengine.host.procedures.gap.set_name"><code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.procedures.gap.set_name()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>procedure return value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(bool, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIDevice.set_role">
+<span class="sig-name descname"><span class="pre">set_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIDevice.set_role" title="Link to this definition"></a></dt>
+<dd><p>Sets the Bluetooth role.</p>
+<p>Please refer to <code class="xref py py-func docutils literal notranslate"><span class="pre">blengine.host.self.hci_procs.set_role()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>role</strong> (<em>int</em><em> or </em><em>string</em>) – the Role</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>procedure return</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple(bool, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIDeviceException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.devices.</span></span><span class="sig-name descname"><span class="pre">HCIDeviceException</span></span><a class="headerlink" href="#blengine.hci.devices.HCIDeviceException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.devices.</span></span><span class="sig-name descname"><span class="pre">HCILocalDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#blengine.hci.devices.HCIDevice" title="blengine.hci.devices.HCIDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">HCIDevice</span></code></a></p>
+<p>A Local device represent a bluetooth chip directly connected to the computer (a dongle)</p>
+<p>the conn_handle of a local device is always 0, obviously the same engine cannot be used by more than one LocalDevice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dyn_attrs</strong> – Define by names the attributes wich have dynamic sizes</p></li>
+<li><p><strong>remote_devices</strong> – A List of <code class="xref py py-class docutils literal notranslate"><span class="pre">BLERemoteDevice</span></code> remotes bluetooth devices: list</p></li>
+<li><p><strong>attributes_sizes</strong> – Attributes size defined by this device, see <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_attribute_size()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.disconnect" title="Link to this definition"></a></dt>
+<dd><p>see <code class="xref py py-meth docutils literal notranslate"><span class="pre">blengine.host.self.hci_procs.disconnect()</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.add_device">
+<span class="sig-name descname"><span class="pre">add_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_address_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.add_device" title="Link to this definition"></a></dt>
+<dd><p>Adds a device, return existing instance if it exist already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bd_addr</strong> (<em>{ type_description }</em>) – The bd address</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Device</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BleRemoteDevice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.add_device_to_filter_accept_list">
+<span class="sig-name descname"><span class="pre">add_device_to_filter_accept_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.add_device_to_filter_accept_list" title="Link to this definition"></a></dt>
+<dd><p>Add a peer device to the Filter Accept List.</p>
+<p>If Clear is enabled, the Filter Accept List will be cleared before adding the device.</p>
+<p>This function shall not be used when:
+- any advertising filter policy uses the Filter Accept List and advertising is enabled,
+- the scanning filter policy uses the Filter Accept List and scanning is enabled,
+- the initiator filter policy uses the Filter Accept List and an HCI_LE_Create_Connection or HCI_LE_Extended_Create_Connection command is pending.</p>
+<p>When a Controller cannot add a device to the Filter Accept List because there is no space available, it shall return the error code Memory Capacity Exceeded (0x07).
+If the device is already in the Filter Accept List, the Controller should not add the device to the Filter Accept List again and should return success</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> – The bluetooth mac address of the device to be added to the Filter Accept List</p></li>
+<li><p><strong>address_type</strong> – The address type of the device to be added (0x00 for Public Address, 0x01 for Random Address, 0xFF for Anonymous Advertisements)</p></li>
+<li><p><strong>clear</strong> – Enable to clear the Filter Accept List before adding the device</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.add_device_to_resolving_list">
+<span class="sig-name descname"><span class="pre">add_device_to_resolving_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peer_identity_address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peer_irk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_irk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peer_identity_address_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.add_device_to_resolving_list" title="Link to this definition"></a></dt>
+<dd><p>Add one device to the resolving list used to generate and resolve Resolvable Private Addresses in the Controller.</p>
+<p>If Clear is enabled, the Resolving List will be cleared before adding the device.</p>
+<p>This function shall not be used when address resolution is enabled in the Controller and::
+- Advertising (other than periodic advertising) is enabled,
+- Scanning is enabled, or
+- an HCI_LE_Create_Connection, HCI_LE_Extended_Create_Connection, or HCI_LE_Periodic_Advertising_Create_Sync command is pending.</p>
+<p>This command may be used at any time when address resolution is disabled in the Controller.</p>
+<p>The added device shall be set to Network Privacy mode.</p>
+<p>When a Controller cannot add a device to the list because there is no space available, it shall return the error code Memory Capacity Exceeded (0x07).</p>
+<p>If an entry already exists in the resolving list with the same four parameter values, the Controller shall either reject the command or not add the device to
+the resolving list again and return success. If the command is rejected then the error code Invalid HCI Command Parameters (0x12) should be used.</p>
+<p>If there is an existing entry in the resolving list with the same Peer_Identity_Address and Peer_Identity_Address_Type, or with the same
+Peer_IRK, the Controller should return the error code Invalid HCI Command Parameters (0x12).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peer_identity_address</strong> – Public or Random (static) Identity Address of the peer device to be added to the Resolving List</p></li>
+<li><p><strong>peer_identity_address_type</strong> – Bluetooth Address Type of the peer device to be added. 0x00 for Public Identity Address or 0x01 for Random (static) Identity Address</p></li>
+<li><p><strong>peer_irk</strong> – IRK of the peer device</p></li>
+<li><p><strong>local_irk</strong> – IRK of the local device</p></li>
+<li><p><strong>clear</strong> – Enable to clear the Resolving List before adding the device</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.advertising_callback">
+<span class="sig-name descname"><span class="pre">advertising_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.advertising_callback" title="Link to this definition"></a></dt>
+<dd><p>Create or update a remote device and trigger <code class="docutils literal notranslate"><span class="pre">on_advertising_pkt</span></code> event.</p>
+<p>Also trigger an on_remote_device_event on this device (unused)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pkt</strong> – The packet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.connect_by_addr">
+<span class="sig-name descname"><span class="pre">connect_by_addr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addr_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_window_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_timeout_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.connect_by_addr" title="Link to this definition"></a></dt>
+<dd><p>Connect to a device with the mac addr, for convenience when you already
+know the mac address of the remote device, or your name is André.</p>
+<p>if the diven bd addr is not in the remote devices, it create a remote
+device and conect to it.</p>
+<p>This function call be called without the need to call scan()
+before-hand.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>addr_type</strong> – The address type</p></li>
+<li><p><strong>retry</strong> – The retry</p></li>
+<li><p><strong>scan_interval_ms</strong> – The scan interval milliseconds</p></li>
+<li><p><strong>scan_window_ms</strong> – The scan window milliseconds</p></li>
+<li><p><strong>conn_interval_ms</strong> – The connection interval milliseconds</p></li>
+<li><p><strong>conn_timeout_ms</strong> – The connection timeout milliseconds</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The device if connected successfully, otherwise None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="blengine.host.html#blengine.host.devices.BLERemoteDevice" title="blengine.host.devices.BLERemoteDevice">BLERemoteDevice</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.extended_advertising_callback">
+<span class="sig-name descname"><span class="pre">extended_advertising_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.extended_advertising_callback" title="Link to this definition"></a></dt>
+<dd><p>Create or update a remote device and trigger <code class="docutils literal notranslate"><span class="pre">on_extended_advertising_pkt</span></code> event.</p>
+<p>Also trigger an on_remote_device_event on this device (unused)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pkt</strong> – The packet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.filter_devices">
+<span class="sig-name descname"><span class="pre">filter_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.filter_devices" title="Link to this definition"></a></dt>
+<dd><p>Filter devices list as specified, many parameters can be defined,
+if so it filter non-exclusively with the non-null parameters.</p>
+<p>Available filters:
+- bd_addr: MAC Addr of the device (must be an bytearray)
+- name : search a string in the device name
+- uuid: search in the device service list (uuid format)
+- max_rssi and min_rssi : define an rssi range in dBm (int)</p>
+<p>max_rssi and min_rssi are defaulted to 20 and -127 respectively</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>name</strong> – The name</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>min_rssi</strong> – The minimum rssi</p></li>
+<li><p><strong>max_rssi</strong> – The maximum rssi</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A device list</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An array of device, maybe empty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.get_device">
+<span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rssi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.get_device" title="Link to this definition"></a></dt>
+<dd><p>Get a unique remote device, if many are found, return the first one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bd_addr</strong> – The bd address</p></li>
+<li><p><strong>name</strong> – The name</p></li>
+<li><p><strong>uuid</strong> – The uuid</p></li>
+<li><p><strong>min_rssi</strong> – The minimum rssi</p></li>
+<li><p><strong>max_rssi</strong> – The maximum rssi</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The device.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BleRemoteDevice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.get_device_infos">
+<span class="sig-name descname"><span class="pre">get_device_infos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.get_device_infos" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.get_nearest_device">
+<span class="sig-name descname"><span class="pre">get_nearest_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.get_nearest_device" title="Link to this definition"></a></dt>
+<dd><p>get the nearest of remote devices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The nearest device.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>BleRemoteDevice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.on_connection_complete">
+<span class="sig-name descname"><span class="pre">on_connection_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.on_connection_complete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.on_connection_parameter_request">
+<span class="sig-name descname"><span class="pre">on_connection_parameter_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.on_connection_parameter_request" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.on_disconnect">
+<span class="sig-name descname"><span class="pre">on_disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.on_disconnect" title="Link to this definition"></a></dt>
+<dd><p>disconnect callback</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.program">
+<span class="sig-name descname"><span class="pre">program</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.program" title="Link to this definition"></a></dt>
+<dd><p>program the device with a given file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> – The file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.reset" title="Link to this definition"></a></dt>
+<dd><p>Perform a HCI Reset</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.scan_response_callback">
+<span class="sig-name descname"><span class="pre">scan_response_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.scan_response_callback" title="Link to this definition"></a></dt>
+<dd><p>Create or update a remote device and trigger <code class="docutils literal notranslate"><span class="pre">on_scan_response_pkt</span></code> event.</p>
+<p>Also trigger an on_remote_device_event on this device (unused)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pkt</strong> – The packet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.set_advertising_data">
+<span class="sig-name descname"><span class="pre">set_advertising_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adv_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.set_advertising_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.set_advertising_parameters">
+<span class="sig-name descname"><span class="pre">set_advertising_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dico</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.set_advertising_parameters" title="Link to this definition"></a></dt>
+<dd><p>#Interval_Min=0x0800,
+#Interval_Max=0x0800,
+#Properties=0x01,
+#Type=0x02,
+#Own_Address_Type=0,
+#Peer_Address_Type=0,
+#Peer_Address=None,
+#Channel_Map=0x07,
+#Filter_Policy=0x00,
+#TX_Power=19,
+#Primary_PHY=0x01,
+#Secondary_Max_Skip=0x00,
+#Secondary_PHY=0x02,
+#SID=0,
+#Scan_Request_Notification_Enable=0):</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.set_event_mask">
+<span class="sig-name descname"><span class="pre">set_event_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_page_2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LE_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.set_event_mask" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.set_private_address">
+<span class="sig-name descname"><span class="pre">set_private_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">advertising_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_irk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">bytearray(b'\xea^o\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolvable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.set_private_address" title="Link to this definition"></a></dt>
+<dd><p>Set the local device random private address for Advertising, Scanning or Initiating connection with privacy</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.sort_devices">
+<span class="sig-name descname"><span class="pre">sort_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.sort_devices" title="Link to this definition"></a></dt>
+<dd><p>Sort the devices list by attribute name,
+to sort it by name <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;name&quot;)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;rssi&quot;)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">device.sort_device(&quot;interval&quot;)</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.start_advertising">
+<span class="sig-name descname"><span class="pre">start_advertising</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">advertising_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_sets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.start_advertising" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.start_scan">
+<span class="sig-name descname"><span class="pre">start_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_window_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">own_address_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scanning_filter_policy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scanning_phys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_duplicates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.start_scan" title="Link to this definition"></a></dt>
+<dd><p>call gap.scan and populate self.remote_devices with BLERemoteDevices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – The keywords arguments</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>status</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.stop_advertising">
+<span class="sig-name descname"><span class="pre">stop_advertising</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">advertising_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_sets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_events</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.stop_advertising" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.stop_scan">
+<span class="sig-name descname"><span class="pre">stop_scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.stop_scan" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCILocalDevice.toggle_scan">
+<span class="sig-name descname"><span class="pre">toggle_scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCILocalDevice.toggle_scan" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.devices.</span></span><span class="sig-name descname"><span class="pre">HCIRemoteDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_addr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd_add_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#blengine.hci.devices.HCIDevice" title="blengine.hci.devices.HCIDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">HCIDevice</span></code></a></p>
+<p>A Remote Device is any device that is usable by a local device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> – A HCIengine</p></li>
+<li><p><strong>bd_addr</strong> – The mac address of the device</p></li>
+<li><p><strong>name</strong> – A default name</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.can_connect">
+<span class="sig-name descname"><span class="pre">can_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.can_connect" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.can_sync">
+<span class="sig-name descname"><span class="pre">can_sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.can_sync" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.compute_interval">
+<span class="sig-name descname"><span class="pre">compute_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method=&lt;function</span> <span class="pre">median&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.compute_interval" title="Link to this definition"></a></dt>
+<dd><p>compute intervals and compute the mean of it, on the given segment if
+advertisments packets recevied, via the given method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(&lt;beginnnig&gt;,&lt;end&gt;,&lt;interval&gt;)</p></li>
+<li><p><strong>method</strong> – The statistics function to process the rssi’s
+array default to <code class="docutils literal notranslate"><span class="pre">statistics.median</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The interval.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.compute_rssi">
+<span class="sig-name descname"><span class="pre">compute_rssi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method=&lt;function</span> <span class="pre">median&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.compute_rssi" title="Link to this definition"></a></dt>
+<dd><p>compute a mean of rssi’s on the given segment of advertisments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(&lt;beginnnig&gt;,&lt;end&gt;,&lt;interval&gt;)</p></li>
+<li><p><strong>method</strong> – The statistics function to process the rssi’s
+array default to <code class="docutils literal notranslate"><span class="pre">statistics.median</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rssi.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">retry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_interval_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_window_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_interval_min_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_interval_max_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn_timeout_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_latency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_ce_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_ce_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initiating_phys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_policy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.connect" title="Link to this definition"></a></dt>
+<dd><p>connect to this remote device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>retry</strong> – The retry</p></li>
+<li><p><strong>scan_interval_ms</strong> – The scan interval milliseconds</p></li>
+<li><p><strong>scan_window_ms</strong> – The scan window milliseconds</p></li>
+<li><p><strong>conn_interval_ms</strong> – The connection interval milliseconds</p></li>
+<li><p><strong>conn_timeout_ms</strong> – The connection timeout milliseconds</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>connection successful flag</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.disconnect" title="Link to this definition"></a></dt>
+<dd><p>disconnect this device</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>status</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.get_intervals">
+<span class="sig-name descname"><span class="pre">get_intervals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.get_intervals" title="Link to this definition"></a></dt>
+<dd><p>Return an array of float representing the intervals betweem
+advertisements packet given segment and filtered by filter_func
+function, at the given resolution (default to 1ms).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>segment</strong> – The segment (tuple format)
+(&lt;beginnnig&gt;,&lt;end&gt;,&lt;interval&gt;)</p></li>
+<li><p><strong>filter_func</strong> – the function used to filter the
+adverstisements</p></li>
+<li><p><strong>resolution_ms</strong> – The resolution milliseconds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The intervals.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of intervals numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_advertising_pkt">
+<span class="sig-name descname"><span class="pre">on_advertising_pkt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adv_pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_advertising_pkt" title="Link to this definition"></a></dt>
+<dd><p>This function is triggered by the local device linked to this device on each advertising packet received,
+AD Packet Callback will update varying things on this device :</p>
+<ul class="simple">
+<li><p>mean interval</p></li>
+<li><p>mean rssi</p></li>
+<li><p>local name</p></li>
+<li><p>address</p></li>
+<li><p>mode</p></li>
+</ul>
+<p>Also, for each Advertising Data Packet decoded this function will trig a named event
+that have the same name as the Advertising Data packet.
+Ref Needed (see GAP_AD_Struct class in blengine.host.packets.ad)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>adv_pkt</strong> – The advertising packet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_biginfo_report">
+<span class="sig-name descname"><span class="pre">on_biginfo_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_biginfo_report" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_channel_selection">
+<span class="sig-name descname"><span class="pre">on_channel_selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_channel_selection" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_connection_complete">
+<span class="sig-name descname"><span class="pre">on_connection_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_connection_complete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_connection_update_event">
+<span class="sig-name descname"><span class="pre">on_connection_update_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_connection_update_event" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_data_length_change">
+<span class="sig-name descname"><span class="pre">on_data_length_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_data_length_change" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_disconnect">
+<span class="sig-name descname"><span class="pre">on_disconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_disconnect" title="Link to this definition"></a></dt>
+<dd><p>disconnect callback</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_generate_DHkey_complete">
+<span class="sig-name descname"><span class="pre">on_generate_DHkey_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_generate_DHkey_complete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_periodic_adv_report">
+<span class="sig-name descname"><span class="pre">on_periodic_adv_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_periodic_adv_report" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_phy_update">
+<span class="sig-name descname"><span class="pre">on_phy_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_phy_update" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_read_local_public_key_complete">
+<span class="sig-name descname"><span class="pre">on_read_local_public_key_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_read_local_public_key_complete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_sync_established">
+<span class="sig-name descname"><span class="pre">on_sync_established</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_sync_established" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.on_sync_lost">
+<span class="sig-name descname"><span class="pre">on_sync_lost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.on_sync_lost" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.refresh_device_infos">
+<span class="sig-name descname"><span class="pre">refresh_device_infos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.refresh_device_infos" title="Link to this definition"></a></dt>
+<dd><p>Get Informations from the last advertising packet</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.sync">
+<span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sync_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3840</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sync_CTE_Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.sync" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.terminate_sync">
+<span class="sig-name descname"><span class="pre">terminate_sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.terminate_sync" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.devices.HCIRemoteDevice.update_adv_data">
+<span class="sig-name descname"><span class="pre">update_adv_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adv_data_pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.devices.HCIRemoteDevice.update_adv_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-blengine.hci.engine">
+<span id="blengine-hci-engine-module"></span><h2>blengine.hci.engine module<a class="headerlink" href="#module-blengine.hci.engine" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.engine.EmptyPacketException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.engine.</span></span><span class="sig-name descname"><span class="pre">EmptyPacketException</span></span><a class="headerlink" href="#blengine.hci.engine.EmptyPacketException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#blengine.hci.engine.EngineException" title="blengine.hci.engine.EngineException"><code class="xref py py-class docutils literal notranslate"><span class="pre">EngineException</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.engine.EngineException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.engine.</span></span><span class="sig-name descname"><span class="pre">EngineException</span></span><a class="headerlink" href="#blengine.hci.engine.EngineException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blengine.hci.engine.HciEngine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.engine.</span></span><span class="sig-name descname"><span class="pre">HciEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EM9305'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.engine.HciEngine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.engine.PacketEngine" title="blengine.core.engine.PacketEngine"><code class="xref py py-class docutils literal notranslate"><span class="pre">PacketEngine</span></code></a></p>
+<p>Manage HCI communication with the transport layer</p>
+<p>Create a new engine based on the given transport and protocol</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transport</strong> (<a class="reference internal" href="blengine.core.html#blengine.core.transport.Transport" title="blengine.core.transport.Transport"><em>Transport</em></a>) – The transport instance</p></li>
+<li><p><strong>protocol</strong> (<a class="reference internal" href="blengine.core.html#blengine.core.protocols.Protocol" title="blengine.core.protocols.Protocol"><em>Protocol</em></a>) – The protocol class to use (not the instance)</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – the engine name, default to “PacketEngine”</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.engine.HciEngine.detect_fw_stack">
+<span class="sig-name descname"><span class="pre">detect_fw_stack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.engine.HciEngine.detect_fw_stack" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.engine.HciEngine.enable_L2CAP_support">
+<span class="sig-name descname"><span class="pre">enable_L2CAP_support</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.engine.HciEngine.enable_L2CAP_support" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.engine.HciEngine.enable_device_mode_support">
+<span class="sig-name descname"><span class="pre">enable_device_mode_support</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.engine.HciEngine.enable_device_mode_support" title="Link to this definition"></a></dt>
+<dd><p>Enable device mode support by binding events from device_mode_events to
+engine.device_mode attribute.</p>
+<p>thoses will be automatically unbind at engine stop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.engine.HciEngine.handle_packet">
+<span class="sig-name descname"><span class="pre">handle_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.engine.HciEngine.handle_packet" title="Link to this definition"></a></dt>
+<dd><p>Process incoming packet and trigger events</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.engine.HciEngine.send_pkt">
+<span class="sig-name descname"><span class="pre">send_pkt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_ack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.engine.HciEngine.send_pkt" title="Link to this definition"></a></dt>
+<dd><p>call the base send_pkt but listen to exceptions, raise them only
+if self.strict_mode attribute is True else log them at error level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pkt</strong> – The packet</p></li>
+<li><p><strong>wait_ack</strong> – The wait acknowledge</p></li>
+<li><p><strong>timeout</strong> – The timeout</p></li>
+<li><p><strong>retry</strong> – The retry</p></li>
+<li><p><strong>callback</strong> – The callback</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.engine.HciEngine.wrap_for_9304">
+<span class="sig-name descname"><span class="pre">wrap_for_9304</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.engine.HciEngine.wrap_for_9304" title="Link to this definition"></a></dt>
+<dd><p>9304 special ACI user defined command wrapper for hci commands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pkt</strong> – The packet</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.engine.IncompletePacketException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.engine.</span></span><span class="sig-name descname"><span class="pre">IncompletePacketException</span></span><a class="headerlink" href="#blengine.hci.engine.IncompletePacketException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#blengine.hci.engine.EngineException" title="blengine.hci.engine.EngineException"><code class="xref py py-class docutils literal notranslate"><span class="pre">EngineException</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="module-blengine.hci.protocol">
+<span id="blengine-hci-protocol-module"></span><h2>blengine.hci.protocol module<a class="headerlink" href="#module-blengine.hci.protocol" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="blengine.hci.protocol.HCIPacketProtocol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.protocol.</span></span><span class="sig-name descname"><span class="pre">HCIPacketProtocol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.protocol.HCIPacketProtocol" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.protocols.Protocol" title="blengine.core.protocols.Protocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></a></p>
+<p>Manage HCI communication with the transport layer</p>
+<p>Init the service</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.protocol.HCIPacketProtocol.clear_buffer">
+<span class="sig-name descname"><span class="pre">clear_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.protocol.HCIPacketProtocol.clear_buffer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.protocol.HCIPacketProtocol.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.protocol.HCIPacketProtocol.parse" title="Link to this definition"></a></dt>
+<dd><p>this function read the buffer and parse it to packets objects</p>
+<p>this run automagically since it’s attached to the produce function of the protocol</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.protocol.HCIPacketProtocol.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.protocol.HCIPacketProtocol.stop" title="Link to this definition"></a></dt>
+<dd><p>Forget transport</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.protocol.HCIPacketProtocol.update_ack_list">
+<span class="sig-name descname"><span class="pre">update_ack_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.protocol.HCIPacketProtocol.update_ack_list" title="Link to this definition"></a></dt>
+<dd><p>for each packets in the need_ack list, trigger the on_&lt;packet name&gt; event,
+with the parameter &lt;packet&gt; as a parameter,
+if the function return false, remove the current packet from the list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.protocol.HCIPacketProtocol.wait_ack">
+<span class="sig-name descname"><span class="pre">wait_ack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.protocol.HCIPacketProtocol.wait_ack" title="Link to this definition"></a></dt>
+<dd><p>This function block until packet is not in the need_ack list anymore
+or timeout (in seconds) is reached</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blengine.hci.protocol.HCIPacketProtocol.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_ack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blengine.hci.protocol.HCIPacketProtocol.write" title="Link to this definition"></a></dt>
+<dd><p>Send a packet object to the transport</p>
+<p>if wait_ack is true, block until a response (ack) for the particular packet is received
+or a timeout</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.protocol.IncompletePacketException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.protocol.</span></span><span class="sig-name descname"><span class="pre">IncompletePacketException</span></span><a class="headerlink" href="#blengine.hci.protocol.IncompletePacketException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.protocols.ProtocolException" title="blengine.core.protocols.ProtocolException"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtocolException</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.protocol.RXDataException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.protocol.</span></span><span class="sig-name descname"><span class="pre">RXDataException</span></span><a class="headerlink" href="#blengine.hci.protocol.RXDataException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.protocols.ProtocolException" title="blengine.core.protocols.ProtocolException"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtocolException</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.protocol.ReadTimeoutException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.protocol.</span></span><span class="sig-name descname"><span class="pre">ReadTimeoutException</span></span><a class="headerlink" href="#blengine.hci.protocol.ReadTimeoutException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.protocols.ProtocolException" title="blengine.core.protocols.ProtocolException"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtocolException</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.protocol.ResponseParametersException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.protocol.</span></span><span class="sig-name descname"><span class="pre">ResponseParametersException</span></span><a class="headerlink" href="#blengine.hci.protocol.ResponseParametersException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.protocols.ProtocolException" title="blengine.core.protocols.ProtocolException"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtocolException</span></code></a></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="blengine.hci.protocol.ResponseTimeoutException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blengine.hci.protocol.</span></span><span class="sig-name descname"><span class="pre">ResponseTimeoutException</span></span><a class="headerlink" href="#blengine.hci.protocol.ResponseTimeoutException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="blengine.core.html#blengine.core.protocols.ProtocolException" title="blengine.core.protocols.ProtocolException"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProtocolException</span></code></a></p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="blengine.core.html" class="btn btn-neutral float-left" title="blengine.core package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="blengine.hci.packets.html" class="btn btn-neutral float-right" title="blengine.hci.packets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EM Microelectronic.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

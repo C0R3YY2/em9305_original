@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES CMAC &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AES CCM" href="AES_CCM.html" />
+    <link rel="prev" title="AES Counter mode(CTR)" href="AES_CTR.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="AESModes.html">AES modes and MAC</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="AES_ECB.html">AES Electronic Code Book mode (ECB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CBC.html">AES Cipher Block Chaining mode (CBC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CTR.html">AES Counter mode(CTR)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AES CMAC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-cmac-authentication-mode">The CMAC authentication mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#underlying-aes">Underlying AES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#aes-type">AES Type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#aes-key-size-in-bits">AES Key size in bits</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#explicit-key-or-key-container">Explicit key or key container</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#error-status">Error status</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-cmac-initctx">AES_CMAC_InitCtx</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#prototype">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-cmac-compute">AES_CMAC_Compute</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">Return values</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aes-cmac-getmac">AES_CMAC_GetMAC</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id5">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id6">Prototype</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id7">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id8">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performances">Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-time">Execution time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="AES_CCM.html">AES CCM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AES_GCM.html">AES GCM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="AESModes.html">AES modes and MAC</a> &raquo;</li>
+      <li>AES CMAC</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aes-cmac">
+<span id="aes-cmac-label"></span><h1>AES CMAC<a class="headerlink" href="#aes-cmac" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] NIST SP 800-38B: Recommendation for Block Cipher Modes of Operation: The CMAC Mode for Authentication</p>
+<p><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38b.pdf">NIST SP800-38B</a>: <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38b.pdf">https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38b.pdf</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this chapter is to describe the functionality of the library <strong>AES CMAC</strong>.</p>
+<dl class="simple">
+<dt>This chapter:</dt><dd><ul class="simple">
+<li><p>describes the API, including the prototype, the parameters, the error codes etc…</p></li>
+<li><p>provides the performances of the function.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="the-cmac-authentication-mode">
+<h2>The CMAC authentication mode<a class="headerlink" href="#the-cmac-authentication-mode" title="Permalink to this headline"></a></h2>
+<p>This library implements AES CMAC algorithm according to the specification NIST SP 800-38B[1].</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>AES CMAC is a message authentication code (MAC) algorithm that is based on AES.</p></li>
+<li><p>As a MAC algorithm , CMAC is used to ensure the data origin and the data integrity.</p></li>
+<li><p>AES CMAC does <strong>not</strong> encrypt\decrypt data.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>AES CMAC should not be confused with AES CBC_MAC which uses the last result of AES_CBC to produce a MAC. AES CBC_MAC is insecure to ensure data integrity.</p>
+</div>
+<p>Two flavors of CMAC exit depending if the message size is a multiple of 16 bytes or not.</p>
+<dl class="simple">
+<dt><strong>When the message size is a multiple of 16 bytes</strong>:</dt><dd><ul class="simple">
+<li><p>The first block of 16 bytes is encrypted.</p></li>
+<li><p>Each following block of 16 bytes is XORed with the previous AES result, before being encrypted itself.</p></li>
+<li><p>The latest block is XORed with K1, and the previous AES result. It is then encrypted.</p></li>
+<li><p>The MAC is then composed of the first <em>l</em> bytes of the previous result, where <em>l</em> is the desired MAC length.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Next figure shows the first flavor.</p>
+<img alt="_images/AES_CMAC_K1.png" src="_images/AES_CMAC_K1.png" />
+<dl class="simple">
+<dt><strong>When the message size is NOT a multiple of 16 bytes</strong>:</dt><dd><ul class="simple">
+<li><p>The first block of 16 bytes is encrypted.</p></li>
+<li><p>Each following block of 16 bytes is XORed with the previous AES result, before being encrypted itself.</p></li>
+<li><p>The latest block is padded with 0x10 and as many 0x00 bytes necessary to complete the block,</p></li>
+<li><p>The intermediate result is XORed with K2 and previous AES result and then encrypted.</p></li>
+<li><p>The MAC is then composed of the first <em>l</em> bytes of the previous result, where <em>l</em> is the desired MAC length.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Next figure shows the second flavor.</p>
+<img alt="_images/AES_CMAC_K2.png" src="_images/AES_CMAC_K2.png" />
+<dl class="simple">
+<dt>Remarks:</dt><dd><ul class="simple">
+<li><p>K1 and K2 are derived from the master key K. The way they are derived is described in [1].</p></li>
+<li><p>The message to MAC can be of any size. It is not necessarily a multiple of 16 bytes.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="underlying-aes">
+<h2>Underlying AES<a class="headerlink" href="#underlying-aes" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>EM9305 embeds:</dt><dd><ul class="simple">
+<li><p>A software AES that manages the key sizes (128, 192 and 256).</p></li>
+<li><p>A hardware AES that only manages 128-bit key size.</p></li>
+</ul>
+</dd>
+<dt>The hardware AES can be invoked:</dt><dd><ul class="simple">
+<li><p>either with a key given explicitly</p></li>
+<li><p>or with a key stored in a key container. In this case, the ID of the key is provided to the AES.</p></li>
+</ul>
+</dd>
+</dl>
+<p>AES CMAC APIs interface both the AES Software and the AES hardware. When AES hardware is used, the APIs allow the use of an explicit key or the use of a key container.</p>
+<p>Next figure shows which AES is executed, according to the various options.</p>
+<blockquote>
+<div><img alt="_images/AES_Select.png" src="_images/AES_Select.png" />
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<section id="aes-type">
+<h4>AES Type<a class="headerlink" href="#aes-type" title="Permalink to this headline"></a></h4>
+<p>The underlying algorithm is chosen with the following macro: <a class="reference internal" href="AES.html#aes-hw-sw-label"><span class="std std-ref">AES type</span></a></p>
+</section>
+<section id="aes-key-size-in-bits">
+<h4>AES Key size in bits<a class="headerlink" href="#aes-key-size-in-bits" title="Permalink to this headline"></a></h4>
+<p>The key size is chosen with the macro defined here: <a class="reference internal" href="AES.html#aes-key-size-bits-label"><span class="std std-ref">AES Key size in bits</span></a></p>
+</section>
+<section id="explicit-key-or-key-container">
+<h4>Explicit key or key container<a class="headerlink" href="#explicit-key-or-key-container" title="Permalink to this headline"></a></h4>
+<p>The choice between a key provided by value or implicitly with a key container ID is given by the following enumeration:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv418AES_CMAC_KeyType_t">
+<span id="_CPPv318AES_CMAC_KeyType_t"></span><span id="_CPPv218AES_CMAC_KeyType_t"></span><span class="target" id="group___a_e_s___c_m_a_c_1ga538929b03b840b7c8638ae9d93480f9a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_KeyType_t</span></span></span><a class="headerlink" href="#_CPPv418AES_CMAC_KeyType_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Select if the key is passed by value(explicitly) or if the key is contained in a key container. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_CMAC_KeyType_t18AES_CMAC_KEY_VALUEE">
+<span id="_CPPv3N18AES_CMAC_KeyType_t18AES_CMAC_KEY_VALUEE"></span><span id="_CPPv2N18AES_CMAC_KeyType_t18AES_CMAC_KEY_VALUEE"></span><span class="target" id="group___a_e_s___c_m_a_c_1gga538929b03b840b7c8638ae9d93480f9aaa3658f84418e89403d99e64a11ed1208"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_KEY_VALUE</span></span></span><a class="headerlink" href="#_CPPv4N18AES_CMAC_KeyType_t18AES_CMAC_KEY_VALUEE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provided explicitly by value. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N18AES_CMAC_KeyType_t15AES_CMAC_KEY_IDE">
+<span id="_CPPv3N18AES_CMAC_KeyType_t15AES_CMAC_KEY_IDE"></span><span id="_CPPv2N18AES_CMAC_KeyType_t15AES_CMAC_KEY_IDE"></span><span class="target" id="group___a_e_s___c_m_a_c_1gga538929b03b840b7c8638ae9d93480f9aa56af628f92b264da8be9c7bb6233dd4d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_KEY_ID</span></span></span><a class="headerlink" href="#_CPPv4N18AES_CMAC_KeyType_t15AES_CMAC_KEY_IDE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key value is provided by its ID. The key is in a key container. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="error-status">
+<h4>Error status<a class="headerlink" href="#error-status" title="Permalink to this headline"></a></h4>
+<p>The API error status is given by:</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv420AES_CMAC_Lib_error_t">
+<span id="_CPPv320AES_CMAC_Lib_error_t"></span><span id="_CPPv220AES_CMAC_Lib_error_t"></span><span class="target" id="group___a_e_s___c_m_a_c_1ga48f0ff557c0cbf1f2ee1aad1e206fdae"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_Lib_error_t</span></span></span><a class="headerlink" href="#_CPPv420AES_CMAC_Lib_error_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Error status words for AES CMAC mode. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20AES_CMAC_Lib_error_t16AES_CMAC_SUCCESSE">
+<span id="_CPPv3N20AES_CMAC_Lib_error_t16AES_CMAC_SUCCESSE"></span><span id="_CPPv2N20AES_CMAC_Lib_error_t16AES_CMAC_SUCCESSE"></span><span class="target" id="group___a_e_s___c_m_a_c_1gga48f0ff557c0cbf1f2ee1aad1e206fdaeaf9df57ad396f4d430e91536c49837af5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_SUCCESS</span></span></span><a class="headerlink" href="#_CPPv4N20AES_CMAC_Lib_error_t16AES_CMAC_SUCCESSE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES CMAC computation successful. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20AES_CMAC_Lib_error_t31AES_CMAC_INCOMPATIBLE_PARAMETERE">
+<span id="_CPPv3N20AES_CMAC_Lib_error_t31AES_CMAC_INCOMPATIBLE_PARAMETERE"></span><span id="_CPPv2N20AES_CMAC_Lib_error_t31AES_CMAC_INCOMPATIBLE_PARAMETERE"></span><span class="target" id="group___a_e_s___c_m_a_c_1gga48f0ff557c0cbf1f2ee1aad1e206fdaea7e8a482933b8e4f0cf492babbf6e0ea8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_INCOMPATIBLE_PARAMETER</span></span></span><a class="headerlink" href="#_CPPv4N20AES_CMAC_Lib_error_t31AES_CMAC_INCOMPATIBLE_PARAMETERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incompatible key size with key type and AES type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20AES_CMAC_Lib_error_t25AES_CMAC_INCORRECT_LENGTHE">
+<span id="_CPPv3N20AES_CMAC_Lib_error_t25AES_CMAC_INCORRECT_LENGTHE"></span><span id="_CPPv2N20AES_CMAC_Lib_error_t25AES_CMAC_INCORRECT_LENGTHE"></span><span class="target" id="group___a_e_s___c_m_a_c_1gga48f0ff557c0cbf1f2ee1aad1e206fdaea170807f9d336a9c71550266aa093b292"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_INCORRECT_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N20AES_CMAC_Lib_error_t25AES_CMAC_INCORRECT_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Incorrect length- MAC length should be in [0..16]. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20AES_CMAC_Lib_error_t29AES_CMAC_INCORRECT_KEY_LENGTHE">
+<span id="_CPPv3N20AES_CMAC_Lib_error_t29AES_CMAC_INCORRECT_KEY_LENGTHE"></span><span id="_CPPv2N20AES_CMAC_Lib_error_t29AES_CMAC_INCORRECT_KEY_LENGTHE"></span><span class="target" id="group___a_e_s___c_m_a_c_1gga48f0ff557c0cbf1f2ee1aad1e206fdaea4e60e65bc06c9abe0a3e449528490da2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_INCORRECT_KEY_LENGTH</span></span></span><a class="headerlink" href="#_CPPv4N20AES_CMAC_Lib_error_t29AES_CMAC_INCORRECT_KEY_LENGTHE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key length is incorrect.It shall be 128,192 or 256. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N20AES_CMAC_Lib_error_t33AES_CMAC_INCORRECT_RESULT_POINTERE">
+<span id="_CPPv3N20AES_CMAC_Lib_error_t33AES_CMAC_INCORRECT_RESULT_POINTERE"></span><span id="_CPPv2N20AES_CMAC_Lib_error_t33AES_CMAC_INCORRECT_RESULT_POINTERE"></span><span class="target" id="group___a_e_s___c_m_a_c_1gga48f0ff557c0cbf1f2ee1aad1e206fdaea7f81ecd45038b9777e07dae75a427ade"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_INCORRECT_RESULT_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N20AES_CMAC_Lib_error_t33AES_CMAC_INCORRECT_RESULT_POINTERE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Result pointer is null. </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="context">
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline"></a></h3>
+<p>A context that contains the key size, the underlying AES , the key type , the key value \ key ID  and the data accumulated up to now is defined as follows.</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv412AES_CMAC_CTX">
+<span id="_CPPv312AES_CMAC_CTX"></span><span id="_CPPv212AES_CMAC_CTX"></span><span id="AES_CMAC_CTX"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_CTX</span></span></span><a class="headerlink" href="#_CPPv412AES_CMAC_CTX" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES CMAC context </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_CMAC_CTX7keySizeE">
+<span id="_CPPv3N12AES_CMAC_CTX7keySizeE"></span><span id="_CPPv2N12AES_CMAC_CTX7keySizeE"></span><span id="AES_CMAC_CTX::keySize__AES_key_size_bit_t"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x_1a18243bb2f2981c49d1e1c21908b877cb"></span><a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keySize</span></span></span><a class="headerlink" href="#_CPPv4N12AES_CMAC_CTX7keySizeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_CMAC_CTX7AESTypeE">
+<span id="_CPPv3N12AES_CMAC_CTX7AESTypeE"></span><span id="_CPPv2N12AES_CMAC_CTX7AESTypeE"></span><span id="AES_CMAC_CTX::AESType__AES_Select_t"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x_1a1cfb11223f5fc14e4d051eb0d409b639"></span><a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AESType</span></span></span><a class="headerlink" href="#_CPPv4N12AES_CMAC_CTX7AESTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>AES Type: Either AES_HARDWARE or AES_SOFTWARE. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_CMAC_CTX7keyTypeE">
+<span id="_CPPv3N12AES_CMAC_CTX7keyTypeE"></span><span id="_CPPv2N12AES_CMAC_CTX7keyTypeE"></span><span id="AES_CMAC_CTX::keyType__AES_CMAC_KeyType_t"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x_1a4c77634c5fc654533acde95515bb47f6"></span><a class="reference internal" href="#_CPPv418AES_CMAC_KeyType_t" title="AES_CMAC_KeyType_t"><span class="n"><span class="pre">AES_CMAC_KeyType_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">keyType</span></span></span><a class="headerlink" href="#_CPPv4N12AES_CMAC_CTX7keyTypeE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Key type. Either KEY_ID or KEY_VALUE </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_CMAC_CTX3keyE">
+<span id="_CPPv3N12AES_CMAC_CTX3keyE"></span><span id="_CPPv2N12AES_CMAC_CTX3keyE"></span><span id="AES_CMAC_CTX::key__uint8_tA"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x_1afdc405d14775d2b07ddbc15f07424cb0"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N12AES_CMAC_CTX3keyE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>The key value or the key index </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_CMAC_CTX6bufferE">
+<span id="_CPPv3N12AES_CMAC_CTX6bufferE"></span><span id="_CPPv2N12AES_CMAC_CTX6bufferE"></span><span id="AES_CMAC_CTX::buffer__uint8_tA"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x_1a42f385e55a7c055db777b8392252be19"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">buffer</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N12AES_CMAC_CTX6bufferE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Buffer to accumulate data </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_CMAC_CTX14nbByteInBufferE">
+<span id="_CPPv3N12AES_CMAC_CTX14nbByteInBufferE"></span><span id="_CPPv2N12AES_CMAC_CTX14nbByteInBufferE"></span><span id="AES_CMAC_CTX::nbByteInBuffer__uint8_t"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x_1a0daa1ff9eed3b4874482abc619326f05"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nbByteInBuffer</span></span></span><a class="headerlink" href="#_CPPv4N12AES_CMAC_CTX14nbByteInBufferE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Number of bytes in the accumulation buffer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12AES_CMAC_CTX13isNullMessageE">
+<span id="_CPPv3N12AES_CMAC_CTX13isNullMessageE"></span><span id="_CPPv2N12AES_CMAC_CTX13isNullMessageE"></span><span id="AES_CMAC_CTX::isNullMessage__uint8_t"></span><span class="target" id="struct_a_e_s___c_m_a_c___c_t_x_1a9bf79d01380fa7a28598d77a9fc8f2d1"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isNullMessage</span></span></span><a class="headerlink" href="#_CPPv4N12AES_CMAC_CTX13isNullMessageE" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Special tag to indicate if the message is null </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="aes-cmac-initctx">
+<h3>AES_CMAC_InitCtx<a class="headerlink" href="#aes-cmac-initctx" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>This function initializes an AES context with the different options: key size, underlying AES and key type. It also sets the key and the initial counter value.</p>
+</section>
+<section id="prototype">
+<h4>Prototype<a class="headerlink" href="#prototype" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416AES_CMAC_InitCtxP12AES_CMAC_CTX12AES_Select_t18AES_CMAC_KeyType_t18AES_key_size_bit_tP7uint8_t">
+<span id="_CPPv316AES_CMAC_InitCtxP12AES_CMAC_CTX12AES_Select_t18AES_CMAC_KeyType_t18AES_key_size_bit_tP7uint8_t"></span><span id="_CPPv216AES_CMAC_InitCtxP12AES_CMAC_CTX12AES_Select_t18AES_CMAC_KeyType_t18AES_key_size_bit_tP7uint8_t"></span><span id="AES_CMAC_InitCtx__AES_CMAC_CTXP.AES_Select_t.AES_CMAC_KeyType_t.AES_key_size_bit_t.uint8_tP"></span><span class="target" id="group___a_e_s___c_m_a_c_1ga83fdddc1ba11b00c3e030c70a26411cc"></span><a class="reference internal" href="#_CPPv420AES_CMAC_Lib_error_t" title="AES_CMAC_Lib_error_t"><span class="n"><span class="pre">AES_CMAC_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_InitCtx</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412AES_CMAC_CTX" title="AES_CMAC_CTX"><span class="n"><span class="pre">AES_CMAC_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <a class="reference internal" href="AES.html#_CPPv412AES_Select_t" title="AES_Select_t"><span class="n"><span class="pre">AES_Select_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">AESSelect</span></span>, <a class="reference internal" href="#_CPPv418AES_CMAC_KeyType_t" title="AES_CMAC_KeyType_t"><span class="n"><span class="pre">AES_CMAC_KeyType_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keyType</span></span>, <a class="reference internal" href="AES.html#_CPPv418AES_key_size_bit_t" title="AES_key_size_bit_t"><span class="n"><span class="pre">AES_key_size_bit_t</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">keySize</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416AES_CMAC_InitCtxP12AES_CMAC_CTX12AES_Select_t18AES_CMAC_KeyType_t18AES_key_size_bit_tP7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Initialize an AES CMAC context. Choose the underlying AES, the key type and key size. Set the key value. Set the initial value. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using key container, the key must be typed either AES_HW_ENC_DEC or AES_HW_ENC_ONLY. This is due to the fact, that AES always encrypts the blocks to compute a CMAC.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[out]</strong> AES CMAC context to set </p></li>
+<li><p><strong>AESSelect</strong> – <strong>[in]</strong> The underlying AES. Either AES_HARDWARE or AES_SOFTWARE </p></li>
+<li><p><strong>keyType</strong> – <strong>[in]</strong> The type of the key: either KEY_VALUE for explicitly key value or KEY_ID for a key in a key container </p></li>
+<li><p><strong>keySize</strong> – <strong>[in]</strong> The size of the key in bits : AES_KEY_128,AES_KEY_192 or AES_KEY_256 </p></li>
+<li><p><strong>key</strong> – <strong>[in]</strong> The key value(16 to 32 bytes) or the key ID (first byte) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CMAC_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_CMAC_INCORRECT_KEY_LENGTH</strong> – Incorrect key length </p></li>
+<li><p><strong>AES_CMAC_INCOMPATIBLE_PARAMETER</strong> – Hardware/software selection is not compatible with the key length </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CMAC context to initialize</p></li>
+<li><p><strong>AESSelect</strong>: Select the AES hardware or the AES software</p></li>
+<li><p><strong>keyType</strong> : Select if the key is given explicitly by value or if it refers by its key container ID.</p></li>
+<li><p><strong>keySize</strong> : Key size in bits</p></li>
+<li><dl class="simple">
+<dt><strong>key</strong>:</dt><dd><ul>
+<li><p>When the key is given explicitly: 16, 24 or 32 bytes representing the key value.</p></li>
+<li><p>When the key is given by its ID: 1 byte with the key ID.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CMAC_SUCCESS</p></td>
+<td><p>Initialization successful</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CMAC_INCORRECT_KEY_LENGTH</p></td>
+<td><p>Incorrect key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CMAC_INCOMPATIBLE_PARAMETER</p></td>
+<td><p>Hardware AES is not compatible with this key length</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-cmac-compute">
+<h3>AES_CMAC_Compute<a class="headerlink" href="#aes-cmac-compute" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h4>Goal of the function<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>Accumulate data for the MAC computation and compute intermediate MAC.</p>
+</section>
+<section id="id2">
+<h4>Prototype<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv416AES_CMAC_ComputeP12AES_CMAC_CTXP7uint8_t8uint32_t">
+<span id="_CPPv316AES_CMAC_ComputeP12AES_CMAC_CTXP7uint8_t8uint32_t"></span><span id="_CPPv216AES_CMAC_ComputeP12AES_CMAC_CTXP7uint8_t8uint32_t"></span><span id="AES_CMAC_Compute__AES_CMAC_CTXP.uint8_tP.uint32_t"></span><span class="target" id="group___a_e_s___c_m_a_c_1gacbd06a9a9c7cbfc82b7f9bca8460a6de"></span><a class="reference internal" href="#_CPPv420AES_CMAC_Lib_error_t" title="AES_CMAC_Lib_error_t"><span class="n"><span class="pre">AES_CMAC_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_Compute</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412AES_CMAC_CTX" title="AES_CMAC_CTX"><span class="n"><span class="pre">AES_CMAC_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeInBytes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv416AES_CMAC_ComputeP12AES_CMAC_CTXP7uint8_t8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Accumulate data for the MAC computation and compute intermediate MAC. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CMAC context </p></li>
+<li><p><strong>data</strong> – <strong>[in]</strong> Pointer on data to MAC. It should be sizeInBytes long </p></li>
+<li><p><strong>sizeInBytes</strong> – <strong>[in]</strong> Size of the data. It can be any size.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CMAC_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_CMAC_INCORRECT_KEY_LENGTH</strong> – Incorrect key length </p></li>
+<li><p><strong>AES_CMAC_INCOMPATIBLE_PARAMETER</strong> – Hardware/software selection is not compatible with the key length </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong> : The AES CMAC context</p></li>
+<li><p><strong>data</strong>: Message to MAC</p></li>
+<li><p><strong>sizeInBytes</strong>: Size of the data to deal with during this call.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Granularity of CMAC mode is 1 byte. There is no constraint on the size of the message to MAC.</p></li>
+<li><p>Several calls of AES_CMAC_Compute  can be performed consecutively.</p></li>
+<li><p>In addition, several AES CMAC computations with different contexts can be interlaced.</p></li>
+<li><p>When accumulating data shorter than 16 bytes, it may be possible that the buffer to encrypt is not yet full. In that case, the execution time of this function will be faster.</p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id4">
+<h4>Return values<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CMAC_SUCCESS</p></td>
+<td><p>Successful intermediate computation</p></td>
+<td><p>OK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="aes-cmac-getmac">
+<h3>AES_CMAC_GetMAC<a class="headerlink" href="#aes-cmac-getmac" title="Permalink to this headline"></a></h3>
+<section id="id5">
+<h4>Goal of the function<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h4>
+<p>This function finalizes the MAC computation.</p>
+</section>
+<section id="id6">
+<h4>Prototype<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415AES_CMAC_GetMACP12AES_CMAC_CTXP7uint8_t7uint8_t">
+<span id="_CPPv315AES_CMAC_GetMACP12AES_CMAC_CTXP7uint8_t7uint8_t"></span><span id="_CPPv215AES_CMAC_GetMACP12AES_CMAC_CTXP7uint8_t7uint8_t"></span><span id="AES_CMAC_GetMAC__AES_CMAC_CTXP.uint8_tP.uint8_t"></span><span class="target" id="group___a_e_s___c_m_a_c_1ga980747ccd193a1ef35e9fe3f4b33f9ba"></span><a class="reference internal" href="#_CPPv420AES_CMAC_Lib_error_t" title="AES_CMAC_Lib_error_t"><span class="n"><span class="pre">AES_CMAC_Lib_error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AES_CMAC_GetMAC</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412AES_CMAC_CTX" title="AES_CMAC_CTX"><span class="n"><span class="pre">AES_CMAC_CTX</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">MAC</span></span>, <span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeMACInByte</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415AES_CMAC_GetMACP12AES_CMAC_CTXP7uint8_t7uint8_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>return the sizeMACInByte MAC </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> – <strong>[inout]</strong> AES CMAC context </p></li>
+<li><p><strong>sizeMACInByte</strong> – <strong>[in]</strong> MAC size required . It should be in [0..16] </p></li>
+<li><p><strong>MAC</strong> – <strong>[out]</strong> MAC value( sizeMACInByte byte long)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AES_CMAC_SUCCESS</strong> – No error occurred </p></li>
+<li><p><strong>AES_CMAC_INCORRECT_RESULT_POINTER</strong> – Result pointer not initialized. </p></li>
+<li><p><strong>AES_CMAC_INCORRECT_LENGTH</strong> – MAC length should be lower or equal to 16. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h4>
+<ul class="simple">
+<li><p><strong>Ctx</strong>: The AES CMAC context.</p></li>
+<li><p><strong>MAC</strong>: Pointer on the MAC buffer.</p></li>
+<li><p><strong>sizeMACInByte</strong>: Size of the desired MAC. It must be in the range[0..16].</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using a key container, the key must be either of type AES_HW_ENC_DEC (encryption and decryption) or type AES_ENC_ONLY(Encryption). <strong>AES_DEC_ONLY(Decryption)</strong> would <strong>not</strong> work since the AES CMAC mode only uses the AES core algorithm in encryption mode. The key must not have been invalidated. In case those conditions are not respected, this function returns an error of type AES_Error_t.</p>
+</div>
+</section>
+<section id="id8">
+<h4>Return values<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CMAC_SUCCESS</p></td>
+<td><p>Successful encryption</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CMAC_INCORRECT_RESULT_POINTER</p></td>
+<td><p>MAC pointer is not initialized</p></td>
+<td><p>NOK</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CMAC_INCORRECT_LENGTH</p></td>
+<td><p>The size of the MAC should be smaller or equal to 16</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="performances">
+<h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>604 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No usage of global RAM except the AES_CMAC_CTX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>128 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="execution-time">
+<h3>Execution time<a class="headerlink" href="#execution-time" title="Permalink to this headline"></a></h3>
+<p>The AES_CMAC_InitCtx function time is rather constant and almost independent on the key size.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CMAC_InitCtx</p></td>
+<td><p>Any</p></td>
+<td><p>Any</p></td>
+<td><p>7</p></td>
+</tr>
+</tbody>
+</table>
+<p>The execution time AES_CMAC_Compute clearly depends on the size of the message, the key size and the underlying algorithm.
+Next table shows the time per complete 16-byte block. Because data are accumulated and processed when the accumulation buffer is full, it may happen that no AES is performed during the call. It may also happen that an AES execution is performed while only 1 byte of data is provided. For a complete CMAC computation, AES_CMAC_Compute will perform (nbByte/16) AES executions or ((nbByte/16)-1) AES executions. The last block is always processed by AES_CMAC_GetMAC.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CMAC_Compute</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>12</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CMAC_Compute</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>117</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CMAC_Compute</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>143</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CMAC_Compute</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>161</p></td>
+</tr>
+</tbody>
+</table>
+<p>The AES_CMAC_GetMAC always involves 2 AES computations. One for the computation of K1 or K2 and one to complete the MAC computation.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Underlying algorithm</p></th>
+<th class="head"><p>Key size in bits</p></th>
+<th class="head"><p>Time in us at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AES_CMAC_GetMAC</p></td>
+<td><p>AES Hardware</p></td>
+<td><p>128</p></td>
+<td><p>26</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CMAC_GetMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>128</p></td>
+<td><p>236</p></td>
+</tr>
+<tr class="row-even"><td><p>AES_CMAC_GetMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>192</p></td>
+<td><p>289</p></td>
+</tr>
+<tr class="row-odd"><td><p>AES_CMAC_GetMAC</p></td>
+<td><p>AES Software</p></td>
+<td><p>256</p></td>
+<td><p>325</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h2>
+<p>AES CMAC lib depends on the AES lib.</p>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<dl class="simple">
+<dt>Next code shows basic examples:</dt><dd><ul class="simple">
+<li><p>using the AES hardware with an explicit key</p></li>
+<li><p>using the AES hardware with key stored in key containers</p></li>
+<li><p>using the AES software</p></li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @file       ExampleAES_CMAC.c</span>
+<span class="c1">///</span>
+<span class="c1">///</span>
+<span class="c1">/// @brief   	Example of use of AES CMAC</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// @copyright Copyright (C) 2022 EM Microelectronic</span>
+<span class="c1">/// @cond</span>
+<span class="c1">///</span>
+<span class="c1">/// All rights reserved.</span>
+<span class="c1">///</span>
+<span class="c1">/// Redistribution and use in source and binary forms, with or without</span>
+<span class="c1">/// modification, are permitted provided that the following conditions are met:</span>
+<span class="c1">/// 1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer.</span>
+<span class="c1">/// 2. Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1">/// this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1">/// and/or other materials provided with the distribution.</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;</span>
+<span class="c1">/// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</span>
+<span class="c1">/// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</span>
+<span class="c1">/// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE</span>
+<span class="c1">/// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR</span>
+<span class="c1">/// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<span class="c1">/// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS</span>
+<span class="c1">/// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN</span>
+<span class="c1">/// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<span class="c1">/// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE</span>
+<span class="c1">/// POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="c1">/// @endcond</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;hw_aes.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;AES_CMAC.h&quot;</span><span class="cp"></span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">ExampleAES_CMAC</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY128</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xc9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x40</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3f</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x1e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x60</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x94</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x23</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xdb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6d</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">message</span><span class="p">[</span><span class="mi">37</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x36</span><span class="p">,</span><span class="w"> </span><span class="mh">0x26</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb5</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x4b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x32</span><span class="p">,</span><span class="w"> </span><span class="mh">0x91</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x39</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8c</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x70</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3e</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd8</span><span class="p">,</span><span class="w"> </span><span class="mh">0xbf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x57</span><span class="p">,</span><span class="w"> </span><span class="mh">0x54</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfe</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf5</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf6</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xe4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x75</span><span class="p">,</span><span class="w"> </span><span class="mh">0x21</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x67</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2e</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mac</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x58</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc3</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x98</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5d</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7c</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x5c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfc</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfe</span><span class="p">,</span><span class="w"> </span><span class="mh">0x88</span><span class="p">,</span><span class="w"> </span><span class="mh">0x37</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">key256</span><span class="p">[</span><span class="n">AES_BYTE_SIZE_KEY256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5f</span><span class="p">,</span><span class="w"> </span><span class="mh">0xec</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x96</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1a</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb8</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x68</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf5</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6c</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x66</span><span class="p">,</span><span class="w"> </span><span class="mh">0x58</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6e</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x59</span><span class="p">,</span><span class="w"> </span><span class="mh">0x42</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x25</span><span class="p">,</span><span class="w"> </span><span class="mh">0x94</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1d</span><span class="p">,</span><span class="w"> </span><span class="mh">0xfd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xc4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa8</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xfd</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x76</span><span class="p">,</span><span class="w"> </span><span class="mh">0x34</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">message256</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xf0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x89</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x75</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x39</span><span class="p">,</span><span class="w"> </span><span class="mh">0x48</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x89</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">mac256</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xb4</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x22</span><span class="p">,</span><span class="w"> </span><span class="mh">0x39</span><span class="p">,</span><span class="w"> </span><span class="mh">0xe7</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="n">AES_CMAC_CTX</span><span class="w"> </span><span class="n">Ctx</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">AES_CMAC_Lib_error_t</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">result</span><span class="p">[</span><span class="mi">36</span><span class="p">];</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">keyId</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// First example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CMAC with a 128-bit key</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware but not the crypto containers.</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We compute the MAC in one step. The required MAC size is 15 bytes.</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CMAC_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//compute the MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_Compute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="mi">37</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//get the 15 bytes MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">mac</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Second example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CMAC with a 128-bit key</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We compute the MAC in several steps. 15 bytes first, then 17 , then 5 bytes</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// The required MAC size is 4 bytes.</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CMAC_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//compute the MAC on</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_Compute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_Compute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_Compute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//get the 4 bytes MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">mac</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// Third example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CMAC with a 128-bit key</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES hardware and the crypto container</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We compute the MAC in one step. The required MAC size is 6 bytes</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">//A priori the key has been written previously in a key container.</span>
+<span class="w">	</span><span class="c1">//Here we write the key in container 0x09</span>
+<span class="w">	</span><span class="n">AES_SetKeyContainer</span><span class="p">((</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HW_ENC_ONLY</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="n">keyId</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x09</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_HARDWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CMAC_KEY_ID</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_128</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">keyId</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//compute the MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_Compute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="mi">37</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//get the 6 bytes MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">mac</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+<span class="w">	</span><span class="c1">// fourth example</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// AES CMAC with a 256-bit key</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We use the AES software</span>
+<span class="w">	</span><span class="c1">//</span>
+<span class="w">	</span><span class="c1">// We compute the MAC in one step. The required MAC size is 5 bytes.</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------------------------------------</span>
+
+<span class="w">	</span><span class="c1">//initialize the context</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_InitCtx</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">AES_SOFTWARE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_CMAC_KEY_VALUE</span><span class="p">,</span><span class="w"> </span><span class="n">AES_KEY_256</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="n">key256</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//compute the MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_Compute</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">message256</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sw</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">AES_CMAC_SUCCESS</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//get the 5 bytes MAC</span>
+<span class="w">	</span><span class="n">sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AES_CMAC_GetMAC</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Ctx</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="c1">//check the result</span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">mac256</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="AES_CTR.html" class="btn btn-neutral float-left" title="AES Counter mode(CTR)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="AES_CCM.html" class="btn btn-neutral float-right" title="AES CCM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECDH - Diffie Hellman key agreement &mdash; EM9305 CryptoLib 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ECDSA" href="ECDSA.html" />
+    <link rel="prev" title="ECC Key management" href="ECCKey.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: black" >
+            <a href="index.html" class="icon icon-home"> EM9305 CryptoLib
+            <img src="_static/logoEM.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AES.html">AES (one block)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CryptoContainer.html">AES Crypto Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AESModes.html">AES modes and MAC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRNG.html">PRNG (Pseudo Random Number Generation)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ECC_FUNCTIONS.html">ECC Functions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="P256.html">ECC P-256</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCEnum.html">ECC Error Enumeration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ECCKey.html">ECC Key management</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ECDH - Diffie Hellman key agreement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goal-of-the-document">Goal of the document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reminder-on-the-ecdh-protocol">Reminder on the ECDH  protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apis">APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ecc-computesharedkey">ECC_ComputeSharedKey</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#goal-of-the-function">Goal of the function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#function">Function</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-values">Return values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#general-performances">General Performances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#library-location">Library location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-size">Code size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">RAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack">Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performances">Performances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ECDSA.html">ECDSA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Schnoor.html">ECC Schnorr’s Authentication protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="HASH_FUNCTIONS.html">Hash functions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: black" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EM9305 CryptoLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ECC_FUNCTIONS.html">ECC Functions</a> &raquo;</li>
+      <li>ECDH - Diffie Hellman key agreement</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ecdh-diffie-hellman-key-agreement">
+<h1>ECDH - Diffie Hellman key agreement<a class="headerlink" href="#ecdh-diffie-hellman-key-agreement" title="Permalink to this headline"></a></h1>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline"></a></h2>
+<p>[1] NIST 800-56A: Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography</p>
+<p><a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf">NIST 800-56A</a>: <a class="reference external" href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf">https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf</a></p>
+</section>
+<section id="goal-of-the-document">
+<h2>Goal of the document<a class="headerlink" href="#goal-of-the-document" title="Permalink to this headline"></a></h2>
+<p>The goal of this document is to describe the ECC Diffie Hellman function of the <strong>ECC.lib</strong>.</p>
+<dl class="simple">
+<dt>This document:</dt><dd><ul class="simple">
+<li><p>describes the supported functions,</p></li>
+<li><p>describes the parameters, etc…</p></li>
+<li><p>provides the performances of the functions</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="reminder-on-the-ecdh-protocol">
+<h2>Reminder on the ECDH  protocol<a class="headerlink" href="#reminder-on-the-ecdh-protocol" title="Permalink to this headline"></a></h2>
+<p>ECDH is a key agreement protocol based on elliptic curves. In the context of EM9305, we use ECDH for the devices pairing.  Each device owns a pair of keys, composed of a private key and a public key.</p>
+<p>Each device sends its public key to the other device.</p>
+<p>Then, they perform an ECC computation, in order to generate on both side a common secret key SK. After the execution of ECDH protocol, the secret key SK is the same on both sides.</p>
+<p>Bluetooth specification mandates the use of the curves <strong>P-256</strong>. It results that the ECDH protocol is performed on P-256 curve.
+For details on <strong>P-256</strong> see <a class="reference internal" href="P256.html#ecc-p256-label"><span class="std std-ref">ECC P-256</span></a>.</p>
+<p>Next figure illustrates ECDH protocol.</p>
+<img alt="_images/ECDH.png" src="_images/ECDH.png" />
+<p>The protocol is performed in 2 phases:</p>
+<blockquote>
+<div><ul>
+<li><p><strong>Phase 1: the key pairs generation</strong> (in brown in the figure)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Each party generates a private key. Each party derives its public key from the private key.</p></li>
+<li><p>Each party stores its key pair. The private key is stored securely.</p></li>
+<li><p>This phase can be performed only once.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Phase 2: the secret key agreement</strong> (in blue in the figure)</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Each party sends its public key to the other party.</p></li>
+<li><p>Each party generates the shared key SK from the recieved public key and its own private key.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="apis">
+<h2>APIs<a class="headerlink" href="#apis" title="Permalink to this headline"></a></h2>
+<p>The library includes an API that generates the shared secret key.
+For the phase 1,  <a class="reference internal" href="ECCKey.html#ecc-key-label"><span class="std std-ref">ECC Key management</span></a> page describes the functions to generate a key pair.</p>
+<section id="enumerations">
+<h3>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline"></a></h3>
+<p>The error status are given here: <a class="reference internal" href="ECCEnum.html#ecc-enumerations-label"><span class="std std-ref">ECC Error Enumeration</span></a>.</p>
+</section>
+<section id="ecc-computesharedkey">
+<h3>ECC_ComputeSharedKey<a class="headerlink" href="#ecc-computesharedkey" title="Permalink to this headline"></a></h3>
+<section id="goal-of-the-function">
+<h4>Goal of the function<a class="headerlink" href="#goal-of-the-function" title="Permalink to this headline"></a></h4>
+<p>The function generates a shared key SK from a public key and a private key.</p>
+</section>
+<section id="function">
+<h4>Function<a class="headerlink" href="#function" title="Permalink to this headline"></a></h4>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv420ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t">
+<span id="_CPPv320ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t"></span><span id="_CPPv220ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t"></span><span id="ECC_ComputeSharedKey__POINTP.uint32_tP.uint32_tP"></span><span class="target" id="group___e_c_d_h_1ga5ba55dd30169b6551bcb799c20792042"></span><a class="reference internal" href="ECCEnum.html#_CPPv411ECC_Error_t" title="ECC_Error_t"><span class="n"><span class="pre">ECC_Error_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECC_ComputeSharedKey</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">POINT</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PubKeyA</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">PrivateKeyB</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">SK</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420ECC_ComputeSharedKeyP5POINTP8uint32_tP8uint32_t" title="Permalink to this definition"></a><br /></dt>
+<dd><p>Computes the shared key between 2 devices. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>PubKeyA</strong> – <strong>[in]</strong> Public key of device A. It is an affine point received from device A. </p></li>
+<li><p><strong>PrivateKeyB</strong> – <strong>[in]</strong> Private key of device B. It is a scalar. </p></li>
+<li><p><strong>SK</strong> – <strong>[out]</strong> The shared key, i.e a scalar of the size of the curve. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return values</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>SW_ECC_OK</strong> – Successful computation </p></li>
+<li><p><strong>SW_ECC_INVALID_PUBLIC_POINT</strong> – Invalid public point </p></li>
+<li><p><strong>SW_ECC_INCORRECT_RESULT_POINTER</strong> – Invalid result buffer(SK) </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Error status </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>PubKey</strong> : Recieved public key (an ECC point)</p></li>
+<li><p><strong>SecretKey</strong> : a 256-bit private key</p></li>
+<li><p><strong>SK</strong>: the generated shared key (256 bits)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="return-values">
+<h4>Return values<a class="headerlink" href="#return-values" title="Permalink to this headline"></a></h4>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>OK \ NOK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SW_ECC_OK</p></td>
+<td><p>The shared key was successfully generated</p></td>
+<td><p>OK</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW_ECC_INVALID_PUBLIC_POINT</p></td>
+<td><p>The public key is not on the curve</p></td>
+<td><p>NOK</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="general-performances">
+<h2>General Performances<a class="headerlink" href="#general-performances" title="Permalink to this headline"></a></h2>
+<section id="library-location">
+<h3>Library location<a class="headerlink" href="#library-location" title="Permalink to this headline"></a></h3>
+<p>The lib is located in ROM. ECDH is included in the <strong>ECC.lib</strong>.</p>
+</section>
+<section id="code-size">
+<h3>Code size<a class="headerlink" href="#code-size" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5284 bytes in ROM for the complete ECC lib</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ram">
+<h3>RAM<a class="headerlink" href="#ram" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No global RAM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stack">
+<h3>Stack<a class="headerlink" href="#stack" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Size in bytes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Approximately 944 bytes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="performances">
+<h3>Performances<a class="headerlink" href="#performances" title="Permalink to this headline"></a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Number of cycles</p></th>
+<th class="head"><p>Time in ms at 48Mhz</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ECC_ComputeSharedKey</p></td>
+<td><p>5235170</p></td>
+<td><p>109</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline"></a></h3>
+<dl class="simple">
+<dt>The ECC lib depends on :</dt><dd><ul class="simple">
+<li><p>PRNG.lib for the random number generation</p></li>
+<li><p>AES.lib which is used by PRNG.lib</p></li>
+</ul>
+</dd>
+</dl>
+<p>For security reasons, some operations are performed with random numbers. It explains the dependency with the RNG.</p>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<p>Next C code example shows how to compute the shared key on the two communicating devices.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">///</span>
+<span class="c1">/// FILE       ExampleECDH.c</span>
+<span class="c1">///</span>
+<span class="c1">/// GOAL	   Example of DH computation</span>
+<span class="c1">///</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCTypedef.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECCStatus.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ECDH.h&quot;</span><span class="cp"></span>
+
+<span class="c1">//==================================================================================</span>
+<span class="c1">//						Example</span>
+<span class="c1">//==================================================================================</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">Example_ECDH</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">	</span><span class="n">ECC_Error_t</span><span class="w"> </span><span class="n">SW</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">SK</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//we assume that entity A has the following key pair</span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">PrivateA</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x3f49f6d4</span><span class="p">,</span><span class="w"> </span><span class="mh">0xa3c55f38</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x74c9b3e3</span><span class="p">,</span><span class="w"> </span><span class="mh">0xd2103f50</span><span class="p">,</span><span class="w"> </span><span class="mh">0x4aff607b</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeb40b799</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5899b8a6</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xcd3c1abd</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">POINT_P256</span><span class="w"> </span><span class="n">PubA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x20b003d2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf297be2c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5e2c83a7</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xe9f9a5b9</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeff49111</span><span class="p">,</span><span class="w"> </span><span class="mh">0xacf4fddb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xcc030148</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0e359de6</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="mh">0xdc809c49</span><span class="p">,</span><span class="w"> </span><span class="mh">0x652aeb6d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x63329abf</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5a52155c</span><span class="p">,</span><span class="w"> </span><span class="mh">0x766345c2</span><span class="p">,</span><span class="w"></span>
+<span class="w">					</span><span class="mh">0x8fed3024</span><span class="p">,</span><span class="w"> </span><span class="mh">0x741c8ed0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1589d28b</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//we assume that entity B has the following key pair</span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">PrivateB</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x55188b3d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x32f6bb9a</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x900afcfb</span><span class="p">,</span><span class="w"> </span><span class="mh">0xeed4e72a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x59cb9ac2</span><span class="p">,</span><span class="w"> </span><span class="mh">0xf19d7cfb</span><span class="p">,</span><span class="w"> </span><span class="mh">0x6b4fdd49</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xf47fc5fd</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">POINT_P256</span><span class="w"> </span><span class="n">PubB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0x1ea1f0f0</span><span class="p">,</span><span class="w"> </span><span class="mh">0x1faf1d96</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09592284</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0xf19e4c00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x47b58afd</span><span class="p">,</span><span class="w"> </span><span class="mh">0x8615a69f</span><span class="p">,</span><span class="w"> </span><span class="mh">0x559077b2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2faaa190</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">					</span><span class="mh">0x4c55f33e</span><span class="p">,</span><span class="w"> </span><span class="mh">0x429dad37</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7356703a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x9ab85160</span><span class="p">,</span><span class="w"> </span><span class="mh">0x472d1130</span><span class="p">,</span><span class="w"></span>
+<span class="w">					</span><span class="mh">0xe28e3676</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5f89aff9</span><span class="p">,</span><span class="w"> </span><span class="mh">0x15b1214a</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//DH protocol between the entity A and B should be as follows:</span>
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">ExpectedDHKey</span><span class="p">[</span><span class="n">CURVE_SIZE_P256</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mh">0xec0234a3</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x57c8ad05</span><span class="p">,</span><span class="w"> </span><span class="mh">0x341010a6</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a397d9b</span><span class="p">,</span><span class="w"> </span><span class="mh">0x99796b13</span><span class="p">,</span><span class="w"> </span><span class="mh">0xb4f866f1</span><span class="p">,</span><span class="w"></span>
+<span class="w">			</span><span class="mh">0x868d34f3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x73bfa698</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//Function ECC_ComputeSharedKey:</span>
+<span class="w">	</span><span class="c1">//compute secret key between two entities A and B</span>
+<span class="w">	</span><span class="c1">//-----------------------------------------------</span>
+<span class="w">	</span><span class="c1">//check the DH key with PubA and PrivB</span>
+<span class="w">	</span><span class="c1">//(computation performed by entity B)</span>
+<span class="w">	</span><span class="n">SW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ECC_ComputeSharedKey</span><span class="p">((</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PubA</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">PrivateB</span><span class="p">,</span><span class="w"> </span><span class="n">SK</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SW</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SW_ECC_OK</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">CURVE_SIZE_P256</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SK</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedDHKey</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//check the DH key with PubB and PrivA</span>
+<span class="w">	</span><span class="c1">//(computation performed by entity A)</span>
+<span class="w">	</span><span class="n">SW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ECC_ComputeSharedKey</span><span class="p">((</span><span class="n">POINT</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PubB</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">PrivateA</span><span class="p">,</span><span class="w"> </span><span class="n">SK</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SW</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">SW_ECC_OK</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">CURVE_SIZE_P256</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">		</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SK</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ExpectedDHKey</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">			</span><span class="n">error</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">	</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">	</span><span class="c1">//return the test status</span>
+<span class="w">	</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">	</span><span class="k">else</span><span class="w"></span>
+<span class="w">		</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ECCKey.html" class="btn btn-neutral float-left" title="ECC Key management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ECDSA.html" class="btn btn-neutral float-right" title="ECDSA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, EM.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

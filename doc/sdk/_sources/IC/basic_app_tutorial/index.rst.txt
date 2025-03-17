@@ -1,0 +1,100 @@
+=========================================================================
+Basic Application Tutorial
+=========================================================================
+
+
+Overview
+--------
+
+This application example shows how to integrate multiple drivers that are
+running simultaneously in a QP/C driven environment.
+It plays with GPIOs so that traces can be seen to show internal activity,
+makes a periodic voltage sample triggered by a dedicated timer.
+It shows how to create QP/C user signals that can be used in a real
+time application.
+
+Refer to the EM9305 Implementer's guide for a comprehensive description of
+this sample application.
+
+Application structure
+---------------------
+
+The source of this application is split in the following files:
+
+* basic_app_tutorial.c
+  This is the main file that contains the so called ``NVM_ConfigModules()``
+  and the ``NVM_ApplicationEntry()`` functions.
+* tasks.c
+  This file contains all functions related to QP/C. This includes functions
+  to create and activate tasks, the idle task as well and also the various
+  callbacks that are use throughout this application.
+* utils.c
+  This file contains functions to configure the GPIOs so GPIO6 and GPIO7 are
+  used for the UART and GPIO8 to GPIO10 are used as real GPIOs that can be
+  spied with a Salae or Digilent device.
+* nvm_main.h
+  This small header file is the nvm_main.c companion file. It contains function
+  prototypes with some GPIO definitions.
+* tasks.h
+  This file contains the user defined signal used in the frame of QP/C along with
+  some function prototypes.
+
+The C source files are gathered within the ``src`` directory while the header files
+are stored within the ``inc`` folder just for the sake to avoid mixing up things.
+
+The application is well commented so the code is quite self explanatory. It is
+recommended to first analyze the file ``nvm_main.c`` content relying on the provided
+comments.
+Then, the ``idleTask()`` function located in the file ``tasks.c`` can be reviewed.
+This is where all signals are processed so reading this code provides a good understanding
+on how things work.
+
+Application description behavior
+--------------------------------
+
+The application uses a first periodic timer which calls the ``timerCallback`` every 100 ms.
+In this callback, a user defined ``APP_TIMER_SIG`` is posted so it can be processed in the
+idle task. When this signal is received, the GPIO9 is toggled.
+
+A second periodic timer is created with a frequency of 1 Hz. Then, each second, the
+``adcTimerCallback()`` function is called. In this callback function, the user defined
+``APP_ADC_TIMER_SIG`` signal is sent. Like the timer signal, this signal is processed
+in the idle task. When this happens, the GPIO8 is toggled and a single asynchronous ADC
+sampling is started. Once done, the system can safely go to sleep mode.
+
+When the ADC sampling is complete, the system wakes-up and the ADC callback function
+``adcCallback()`` is called. In this function, the user defined ``APP_ADC_SIG`` signal
+is sent so it can be processed in the idle function. What is done in this case is reading
+the actually sampled value which is sent over the UART.
+
+And then all this mechanic is repeated forever.
+
+Note that the two used timers are created once and reused over the time. To be able to achieve
+this, the timer creation is done in the idle task when the QP/C signal ``Q_ENTRY_SIG`` is
+received which happens only once at device startup.
+
+Building the application
+------------------------
+
+As usual with the SDK, building the application is straightforward.
+
+.. code-block:: bash
+
+    cd <sdk>/build
+    cmake --build . --target basic_app_tutorial
+
+The option ``-v`` can be appended to the above line to display the full
+compilation and link instructions line. This is useful for debugging
+purpose.
+
+Programming the application
+---------------------------
+
+The generated ``ihex`` file can be programmed to the device by issuing on the terminal
+windows a command similar to the one below:
+
+.. code-block:: bash
+
+  blengine --port COM5 --debug run emsystem_prog projects\basic_app_tutorial\basic_app_tutorial.ihex
+
+The COM port parameter needs to be customized to match the actual user installation.
